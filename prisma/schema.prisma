@@ -1,0 +1,39 @@
+// Prisma schema for Prompt Hub
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Prompt {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  summary     String
+  description String
+  category    String
+  subcategory String?
+  tags        String   // JSON-encoded string array (SQLite has no native array)
+  models      String   // JSON-encoded string array
+  audience    String?  // JSON-encoded string array
+  prompt      String
+  variables   String?  // JSON-encoded array of {name, description, example}
+  bestFor     String?  // JSON-encoded string array
+  workflow    String?  // JSON-encoded string array
+  tips        String?  // JSON-encoded string array
+  examples    String?  // JSON-encoded string array
+  previewImage String?
+  previewAlt  String?
+  featured    Boolean  @default(false)
+  viewCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([subcategory])
+  @@index([featured])
+  @@index([createdAt])
+}

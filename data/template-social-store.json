@@ -1,0 +1,45 @@
+{
+  "templates": {
+    "mtverse-modular-nextjs-dashboard-template": {
+      "slug": "mtverse-modular-nextjs-dashboard-template",
+      "basePurchaseCount": 103,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-06-28T00:00:00.000Z"
+    },
+    "mt-box-enterprise-nextjs-dashboard-template": {
+      "slug": "mt-box-enterprise-nextjs-dashboard-template",
+      "basePurchaseCount": 77,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-06-28T00:00:00.000Z"
+    },
+    "mat-dash-nextjs-admin-dashboard-template": {
+      "slug": "mat-dash-nextjs-admin-dashboard-template",
+      "basePurchaseCount": 256,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-06-28T00:00:00.000Z"
+    },
+    "lumiere-ecommerce": {
+      "slug": "lumiere-ecommerce",
+      "basePurchaseCount": 142,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-06-29T00:00:00.000Z"
+    },
+    "helios-pro": {
+      "slug": "helios-pro",
+      "basePurchaseCount": 189,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-06-29T00:00:00.000Z"
+    }
+  },
+  "users": {},
+  "meta": {
+    "source": "local-template-social-store",
+    "updatedAt": "2026-06-29T16:06:03.208Z",
+    "count": 5
+  }
+}

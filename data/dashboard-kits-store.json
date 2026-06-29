@@ -1,0 +1,1760 @@
+{
+  "kits": [
+    {
+      "id": "dashboard-kit-helios-pro",
+      "slug": "helios-pro",
+      "title": "Helios Pro - Premium Next.js Admin Dashboard UI Kit",
+      "shortTitle": "Helios Pro",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "summary": "Premium Next.js 16 admin UI kit with 137 pages, 28 reusable components, dark mode, theme customizer, command palette, ecommerce, SaaS, analytics, and app dashboards.",
+      "description": "Helios Pro is a premium Next.js admin dashboard UI kit for SaaS, ecommerce, CRM, analytics, support, finance, and internal tools. It includes a large dashboard page set, reusable interface components, dark mode, theme customization, command palette navigation, responsive layouts, polished charts, data tables, forms, app screens, auth screens, and marketing pages. The preview runs in demo mode so buyers can inspect the product before purchase, and the package is ready to customize for production products.",
+      "seoTitle": "Helios Pro - Premium Next.js Admin Dashboard UI Kit",
+      "metaDescription": "Helios Pro is a premium Next.js admin dashboard UI kit with 137 pages, reusable components, dark mode, theme customizer, command palette, ecommerce, SaaS, and analytics screens.",
+      "priceUsd": 12,
+      "originalPriceUsd": 49,
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js App Router",
+      "previewPath": "/dashboard-kits/helios-pro",
+      "packageFilename": "helios-pro (1).zip",
+      "packageKey": "templates/dashboards/helios-pro/helios-pro-1--5384559186.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/helios-pro/Screenshot-2026-06-29-191003-6730647041.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/helios-pro/Screenshot-2026-06-29-191003-6730647041.png"
+      ],
+      "tags": [
+        "nextjs dashboard",
+        "admin template",
+        "saas dashboard",
+        "ecommerce admin",
+        "analytics dashboard",
+        "ui kit",
+        "dark mode",
+        "command palette"
+      ],
+      "keywords": [
+        "Next.js admin template",
+        "premium dashboard UI kit",
+        "SaaS dashboard template",
+        "React admin dashboard",
+        "Tailwind dashboard template",
+        "ecommerce admin template",
+        "analytics dashboard UI",
+        "dark mode dashboard",
+        "command palette dashboard",
+        "TypeScript admin template"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript",
+        "Tailwind CSS 4",
+        "ApexCharts",
+        "Theme customization",
+        "Dark mode",
+        "Responsive layouts"
+      ],
+      "includedPages": [
+        "Ecommerce Dashboard (/)",
+        "Analytics Dashboard",
+        "CRM Dashboard",
+        "Finance Dashboard",
+        "SaaS Dashboard",
+        "Projects Dashboard",
+        "Marketing Dashboard",
+        "AI Dashboard",
+        "Support Dashboard",
+        "Logistics Dashboard",
+        "Email Inbox",
+        "Email Detail",
+        "Chat",
+        "Calendar",
+        "Kanban Board",
+        "Notes",
+        "Tasks",
+        "File Manager",
+        "Contacts",
+        "Support Tickets",
+        "Ticket Detail",
+        "Invoice List",
+        "Invoice Detail",
+        "Invoice Create",
+        "Invoice Edit",
+        "Products",
+        "Product Detail",
+        "Add Product",
+        "Edit Product",
+        "Orders",
+        "Order Detail",
+        "Customers",
+        "Customer Detail",
+        "Cart",
+        "Checkout",
+        "Reviews",
+        "Coupons",
+        "Inventory",
+        "Profile",
+        "Account Settings",
+        "Security Settings",
+        "Billing Settings",
+        "Team Members",
+        "Roles",
+        "Permissions (matrix)",
+        "Activity Log",
+        "Notifications Settings",
+        "Connected Apps",
+        "Basic Inputs",
+        "Advanced Inputs",
+        "Selects",
+        "Checkbox & Radio",
+        "Switches",
+        "Date Picker",
+        "File Upload",
+        "Rich Text Editor",
+        "Form Layouts",
+        "Form Validation",
+        "Multi-Step Form",
+        "Payment Form",
+        "Basic Table",
+        "Data Table",
+        "Sorting Table",
+        "Filtering Table",
+        "Pagination Table",
+        "Row Selection Table",
+        "Editable Table",
+        "Sticky Table",
+        "Column Visibility Table",
+        "Drag & Drop Table",
+        "Empty State Table",
+        "Line Charts",
+        "Area Charts",
+        "Bar Charts",
+        "Pie & Doughnut Charts",
+        "Radar & Radial Charts",
+        "Candlestick Charts",
+        "KPI Cards",
+        "Realtime Metrics",
+        "Chart Dashboard",
+        "Reports",
+        "Buttons",
+        "Badges",
+        "Cards",
+        "Alerts",
+        "Avatars",
+        "Dropdowns",
+        "Modals",
+        "Drawers",
+        "Tabs",
+        "Accordions",
+        "Tooltips",
+        "Popovers",
+        "Breadcrumbs",
+        "Pagination",
+        "Progress",
+        "Spinners",
+        "Toasts",
+        "Timeline",
+        "Empty States",
+        "Banners",
+        "Command Menu",
+        "Landing Page",
+        "Pricing",
+        "FAQ",
+        "Help Center",
+        "About",
+        "Contact",
+        "Maintenance",
+        "Coming Soon",
+        "Changelog",
+        "Roadmap",
+        "Login",
+        "Register",
+        "Forgot Password",
+        "Reset Password",
+        "Two-Step Verification",
+        "Lock Screen",
+        "Side Login",
+        "Side Register",
+        "Boxed Login",
+        "Boxed Register",
+        "400 Bad Request",
+        "401 Unauthorized",
+        "403 Forbidden",
+        "404 Not Found",
+        "500 Internal Server Error",
+        "503 Service Unavailable"
+      ],
+      "features": [
+        "137 unique pages across 11 categories - no duplicated layouts",
+        "Original Helios Pro brand identity (emerald + amber",
+        "sun-ray logo)",
+        "28 reusable components (Button",
+        "Card",
+        "StatCard",
+        "ChartCard",
+        "DataTable",
+        "Modal",
+        "Drawer",
+        "Tabs",
+        "Accordion",
+        "Timeline",
+        "CommandPalette",
+        "ThemeCustomizer",
+        "HeliosChart",
+        "and more)",
+        "Light & dark mode with smooth transitions via next-themes",
+        "Theme customizer with 6 primary colors (Emerald",
+        "Amber",
+        "Rose",
+        "Violet",
+        "Cyan",
+        "Sky) and density toggle",
+        "Global command palette (Ctrl/Cmd+K) with fuzzy search across all 137 routes",
+        "Searchable",
+        "collapsible sidebar with grouped navigation",
+        "badges",
+        "and active states",
+        "Premium design system: refined shadows",
+        "animations",
+        "micro-interactions",
+        "custom scrollbars",
+        "Advanced DataTable: sorting",
+        "filtering",
+        "pagination",
+        "row selection",
+        "sticky headers",
+        "column visibility",
+        "editable cells",
+        "drag-and-drop reordering",
+        "Theme-aware ApexCharts wrapper with line",
+        "area",
+        "bar",
+        "pie",
+        "donut",
+        "radar",
+        "radialBar",
+        "candlestick",
+        "and heatmap variants",
+        "Real apps: email (3-pane)",
+        "chat (3-pane)",
+        "kanban",
+        "calendar",
+        "file manager",
+        "contacts",
+        "invoices with live totals",
+        "Multi-step forms with per-step validation (checkout",
+        "multi-step-form",
+        "two-step auth)",
+        "Real-time metrics page with live-updating chart and number tickers",
+        "Permission matrix (roles x modules with view/create/edit/delete toggles)",
+        "Demo mode: runs without database or auth backend - defensive stubs in lib/db",
+        "lib/auth",
+        "middleware",
+        "Vercel-deploy ready: vercel.json",
+        "postinstall prisma generate",
+        ".env.example",
+        "ESLint 9 flat config",
+        "Fully responsive: desktop",
+        "tablet",
+        "mobile with polished mobile sidebar",
+        "Real SVG icons only - no emojis (60+ icons in sidebar icon set)",
+        "TypeScript strict mode",
+        "0 errors",
+        "0 lint errors",
+        "Server/Client component split pattern (page.tsx metadata wrapper + _client.tsx for interactivity)"
+      ],
+      "highlights": [
+        {
+          "label": "Route pages",
+          "value": "137"
+        },
+        {
+          "label": "Components",
+          "value": "28"
+        },
+        {
+          "label": "Dashboard types",
+          "value": "10"
+        },
+        {
+          "label": "Demo mode",
+          "value": "Included"
+        }
+      ],
+      "useCases": [
+        "SaaS admin dashboards",
+        "ecommerce back offices",
+        "analytics products",
+        "internal tools",
+        "client dashboard starters"
+      ],
+      "metadataLanguages": [
+        {
+          "code": "en",
+          "name": "English",
+          "direction": "ltr"
+        },
+        {
+          "code": "es",
+          "name": "Espanol",
+          "direction": "ltr"
+        },
+        {
+          "code": "fr",
+          "name": "Francais",
+          "direction": "ltr"
+        },
+        {
+          "code": "de",
+          "name": "Deutsch",
+          "direction": "ltr"
+        },
+        {
+          "code": "it",
+          "name": "Italiano",
+          "direction": "ltr"
+        },
+        {
+          "code": "pt",
+          "name": "Portugues",
+          "direction": "ltr"
+        },
+        {
+          "code": "ja",
+          "name": "æ¥æ¬èª",
+          "direction": "ltr"
+        },
+        {
+          "code": "ko",
+          "name": "íêµ­ì´",
+          "direction": "ltr"
+        },
+        {
+          "code": "zh",
+          "name": "ä¸­æ",
+          "direction": "ltr"
+        },
+        {
+          "code": "ru",
+          "name": "Ð ÑÑÑÐºÐ¸Ð¹",
+          "direction": "ltr"
+        },
+        {
+          "code": "ar",
+          "name": "Ø§ÙØ¹Ø±Ø¨ÙØ©",
+          "direction": "rtl"
+        },
+        {
+          "code": "hi",
+          "name": "à¤¹à¤¿à¤¨à¥à¤¦à¥",
+          "direction": "ltr"
+        },
+        {
+          "code": "bn",
+          "name": "à¦¬à¦¾à¦à¦²à¦¾",
+          "direction": "ltr"
+        },
+        {
+          "code": "tr",
+          "name": "Turkce",
+          "direction": "ltr"
+        },
+        {
+          "code": "nl",
+          "name": "Nederlands",
+          "direction": "ltr"
+        },
+        {
+          "code": "pl",
+          "name": "Polski",
+          "direction": "ltr"
+        },
+        {
+          "code": "sv",
+          "name": "Svenska",
+          "direction": "ltr"
+        },
+        {
+          "code": "da",
+          "name": "Dansk",
+          "direction": "ltr"
+        },
+        {
+          "code": "fi",
+          "name": "Suomi",
+          "direction": "ltr"
+        },
+        {
+          "code": "no",
+          "name": "Norsk",
+          "direction": "ltr"
+        },
+        {
+          "code": "cs",
+          "name": "Cestina",
+          "direction": "ltr"
+        },
+        {
+          "code": "sk",
+          "name": "Slovcina",
+          "direction": "ltr"
+        },
+        {
+          "code": "ro",
+          "name": "Romana",
+          "direction": "ltr"
+        },
+        {
+          "code": "hu",
+          "name": "Magyar",
+          "direction": "ltr"
+        },
+        {
+          "code": "el",
+          "name": "ÎÎ»Î»Î·Î½Î¹ÎºÎ¬",
+          "direction": "ltr"
+        },
+        {
+          "code": "he",
+          "name": "×¢××¨××ª",
+          "direction": "rtl"
+        },
+        {
+          "code": "th",
+          "name": "à¹à¸à¸¢",
+          "direction": "ltr"
+        },
+        {
+          "code": "vi",
+          "name": "Tiáº¿ng Viá»t",
+          "direction": "ltr"
+        },
+        {
+          "code": "id",
+          "name": "Bahasa Indonesia",
+          "direction": "ltr"
+        },
+        {
+          "code": "ms",
+          "name": "Bahasa Melayu",
+          "direction": "ltr"
+        },
+        {
+          "code": "uk",
+          "name": "Ð£ÐºÑÐ°ÑÐ½ÑÑÐºÐ°",
+          "direction": "ltr"
+        }
+      ],
+      "updatedAt": "2026-06-29"
+    },
+    {
+      "id": "dashboard-kit-lumiere-ecommerce",
+      "slug": "lumiere-ecommerce",
+      "title": "Lumiere Premium Ecommerce Platform Template",
+      "shortTitle": "Lumiere Ecommerce",
+      "status": "available",
+      "category": "ecommerce",
+      "categoryTitle": "Ecommerce",
+      "summary": "A complete, production-ready premium ecommerce platform with a React + Vite customer storefront, a secure admin dashboard, cart, wishlist, checkout, mock payments, coupons, reviews, and a built-in standalone mock API - no backend required for live preview.",
+      "description": "Lumiere is a complete, production-ready ecommerce platform built with React + Vite (client) and Express + MongoDB (server, optional). The client runs fully standalone thanks to a built-in mock API layer that serves 21 realistic products across 6 categories, complete with reviews, coupons, orders, and admin data - all persisted to localStorage. Features include a premium customer storefront (home, shop with filters/sort/pagination, category pages with FAQ schema, product detail with gallery/variants/reviews, cart drawer, wishlist drawer, checkout, order success, account section with orders/addresses/settings, auth, 9 static pages, 404/500 error pages), a full admin dashboard (revenue charts, product/category/order/customer/coupon/review/inventory/message/subscriber/settings management), JWT auth with role-based access, SEO with JSON-LD schemas, a warm premium design system with light/dark mode, and full responsiveness. Ships with demo data and credentials for instant exploration.",
+      "seoTitle": "React Ecommerce Template with Admin Dashboard | Lumiere Ecommerce",
+      "metaDescription": "Download Lumiere, a premium React ecommerce template with storefront, admin dashboard, cart, wishlist, checkout, coupons, reviews, mock payments, and demo data.",
+      "priceUsd": 12,
+      "originalPriceUsd": 49,
+      "framework": "nextjs",
+      "frameworkLabel": "React + Vite",
+      "previewPath": "/dashboard-kits/lumiere-ecommerce",
+      "packageFilename": "lumiere-ecommerce (1).zip",
+      "packageKey": "templates/dashboards/lumiere-ecommerce/lumiere-ecommerce-1--6734225805.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/lumiere-ecommerce/Screenshot-2026-06-29-165516-7600440163.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/lumiere-ecommerce/Screenshot-2026-06-29-165516-7600440163.png"
+      ],
+      "tags": [
+        "ecommerce",
+        "react",
+        "vite",
+        "typescript",
+        "tailwindcss",
+        "admin-dashboard",
+        "shopping-cart",
+        "checkout",
+        "mock-api",
+        "premium",
+        "responsive",
+        "dark-mode"
+      ],
+      "keywords": [
+        "react ecommerce template",
+        "vite ecommerce",
+        "premium online store",
+        "admin dashboard",
+        "shopping cart react",
+        "checkout flow",
+        "mock payment",
+        "product catalog",
+        "wishlist",
+        "coupons",
+        "reviews",
+        "typescript ecommerce",
+        "tailwind ecommerce",
+        "standalone preview",
+        "localStorage persistence"
+      ],
+      "techStack": [
+        "React 18",
+        "Vite 5",
+        "TypeScript 5",
+        "Tailwind CSS 3",
+        "React Router 6",
+        "Zustand",
+        "React Hook Form + Zod",
+        "Recharts",
+        "Framer Motion",
+        "Lucide Icons",
+        "Sonner Toasts",
+        "React Helmet Async",
+        "Express (optional backend)",
+        "MongoDB + Mongoose (optional)",
+        "JWT + bcrypt (optional)",
+        "mongodb-memory-server (dev)"
+      ],
+      "includedPages": [
+        "Home (hero",
+        "categories",
+        "trending",
+        "best sellers",
+        "new arrivals",
+        "promo",
+        "testimonials",
+        "SEO content",
+        "newsletter)",
+        "Shop (filters",
+        "sort",
+        "search",
+        "pagination",
+        "mobile filter drawer",
+        "empty state",
+        "skeletons)",
+        "Category (hero",
+        "SEO content",
+        "buying guide",
+        "FAQ accordion",
+        "related categories)",
+        "Product Detail (gallery",
+        "variants",
+        "quantity",
+        "tabs",
+        "reviews",
+        "related",
+        "recently viewed",
+        "product schema)",
+        "Cart (coupon validation",
+        "free-shipping progress",
+        "recommended products)",
+        "Checkout (form validation",
+        "delivery methods",
+        "mock payment",
+        "sticky summary",
+        "saved addresses)",
+        "Order Success (timeline",
+        "items",
+        "totals",
+        "invoice print)",
+        "Payment Failed",
+        "Wishlist (page + drawer)",
+        "Login / Register / Forgot Password",
+        "Account Profile / Orders / Order Detail / Addresses / Settings",
+        "About / Contact / FAQ / Shipping Policy / Returns / Privacy / Terms / Size Guide / Track Order",
+        "404 Not Found / 500 Server Error",
+        "Admin Dashboard (revenue + orders charts",
+        "recent orders",
+        "best sellers",
+        "low-stock alerts)",
+        "Admin Products (CRUD with variants",
+        "specs",
+        "SEO",
+        "flags)",
+        "Admin Categories (CRUD with SEO fields)",
+        "Admin Orders (search",
+        "filter",
+        "status update",
+        "tracking",
+        "detail modal",
+        "invoice print)",
+        "Admin Customers (search",
+        "detail",
+        "suspend/reinstate",
+        "spending summary)",
+        "Admin Coupons (percentage/fixed",
+        "limits",
+        "expiry)",
+        "Admin Reviews (approve/reject/delete",
+        "rating filter)",
+        "Admin Inventory (overview",
+        "low/out filters",
+        "inline stock editing)",
+        "Admin Messages (contact inbox",
+        "reply",
+        "delete)",
+        "Admin Newsletter Subscribers (CSV export)",
+        "Admin Store Settings (identity",
+        "contact",
+        "commerce",
+        "social",
+        "SEO)"
+      ],
+      "features": [
+        "Standalone mock API - no backend required for live preview",
+        "21 realistic products with Unsplash images across 6 categories",
+        "70+ pre-seeded reviews",
+        "4 active coupons",
+        "8 demo orders",
+        "4 demo users",
+        "All data persists to localStorage (orders",
+        "reviews",
+        "addresses",
+        "admin edits survive refresh)",
+        "JWT auth with role-based access (CUSTOMER / ADMIN) and httpOnly cookie support",
+        "Backend price recompute",
+        "stock validation",
+        "and coupon validation (when backend is used)",
+        "Cart drawer with free-shipping progress bar and coupon validation",
+        "Wishlist drawer + page with move-to-cart",
+        "Quick view modal with variant selection",
+        "Search overlay with live suggestions and popular searches",
+        "Mobile menu with full navigation",
+        "Premium navbar with mega menu and scroll-aware sticky header",
+        "Light/dark mode with system preference",
+        "SEO: unique titles",
+        "meta descriptions",
+        "Open Graph",
+        "Twitter cards",
+        "JSON-LD (Product",
+        "BreadcrumbList",
+        "FAQPage",
+        "Organization",
+        "CollectionPage)",
+        "Premium design system: Fraunces (display) + Plus Jakarta Sans (body)",
+        "warm cognac/cream palette",
+        "Fully responsive (mobile / tablet / desktop) with mobile filter drawers and sticky bottom CTAs",
+        "Accessibility: semantic HTML",
+        "ARIA labels",
+        "keyboard navigation",
+        "focus-visible states",
+        "alt text",
+        "Skeleton loading states",
+        "empty states",
+        "error states",
+        "toast notifications",
+        "Scroll reveal animations",
+        "hover effects",
+        "shimmer skeletons",
+        "prefers-reduced-motion support",
+        "Code-split build (6 chunks: react-vendor",
+        "ui-vendor",
+        "forms-vendor",
+        "charts-vendor",
+        "app",
+        "css)",
+        "Vercel-ready with SPA routing config and asset cache headers",
+        "Optional Express + MongoDB backend with full REST API (60+ endpoints)",
+        "Optional real MongoDB support via MONGODB_URI env var",
+        "Optional real payment provider support (Stripe/Razorpay/PayPal) via env vars",
+        "Optional real email support via SMTP env var",
+        "Comprehensive README with setup",
+        "env vars",
+        "deployment",
+        "and production checklist"
+      ],
+      "highlights": [
+        {
+          "label": "Pages",
+          "value": "40"
+        },
+        {
+          "label": "Components",
+          "value": "26"
+        },
+        {
+          "label": "Admin Pages",
+          "value": "11"
+        },
+        {
+          "label": "Products (seeded)",
+          "value": "21"
+        },
+        {
+          "label": "API Endpoints",
+          "value": "60+"
+        },
+        {
+          "label": "Build Size (gzipped)",
+          "value": "301 KB"
+        },
+        {
+          "label": "Backend Required",
+          "value": "No (standalone mock)"
+        },
+        {
+          "label": "TypeScript Errors",
+          "value": "0"
+        },
+        {
+          "label": "ESLint Errors",
+          "value": "0"
+        },
+        {
+          "label": "Demo Logins",
+          "value": "Admin + Customer"
+        }
+      ],
+      "useCases": [
+        "Production ecommerce storefront for a premium lifestyle brand",
+        "Admin dashboard template for managing products",
+        "orders",
+        "and customers",
+        "Standalone portfolio/showcase piece - runs in browser with no backend",
+        "Starting point for a fullstack React + Express + MongoDB ecommerce app",
+        "Learning resource for React + Vite + TypeScript + Tailwind patterns",
+        "Reference implementation for cart",
+        "checkout",
+        "auth",
+        "and admin CRUD patterns",
+        "Design system reference (premium typography",
+        "spacing",
+        "color",
+        "components)",
+        "SEO reference (JSON-LD schemas",
+        "meta tags",
+        "semantic HTML",
+        "sitemap-ready)",
+        "Mockup/wireframe for client presentations - fully interactive",
+        "not static",
+        "Hackathon or MVP starting point - deploy to Vercel in under 60 seconds"
+      ],
+      "metadataLanguages": [
+        {
+          "code": "en",
+          "name": "English",
+          "direction": "ltr"
+        },
+        {
+          "code": "es",
+          "name": "Espanol",
+          "direction": "ltr"
+        },
+        {
+          "code": "fr",
+          "name": "Francais",
+          "direction": "ltr"
+        },
+        {
+          "code": "de",
+          "name": "Deutsch",
+          "direction": "ltr"
+        },
+        {
+          "code": "it",
+          "name": "Italiano",
+          "direction": "ltr"
+        },
+        {
+          "code": "pt",
+          "name": "Portugues",
+          "direction": "ltr"
+        },
+        {
+          "code": "ja",
+          "name": "æ¥æ¬èª",
+          "direction": "ltr"
+        },
+        {
+          "code": "ko",
+          "name": "íêµ­ì´",
+          "direction": "ltr"
+        },
+        {
+          "code": "zh",
+          "name": "ä¸­æ",
+          "direction": "ltr"
+        },
+        {
+          "code": "ru",
+          "name": "Ð ÑÑÑÐºÐ¸Ð¹",
+          "direction": "ltr"
+        },
+        {
+          "code": "ar",
+          "name": "Ø§ÙØ¹Ø±Ø¨ÙØ©",
+          "direction": "rtl"
+        },
+        {
+          "code": "hi",
+          "name": "à¤¹à¤¿à¤¨à¥à¤¦à¥",
+          "direction": "ltr"
+        },
+        {
+          "code": "bn",
+          "name": "à¦¬à¦¾à¦à¦²à¦¾",
+          "direction": "ltr"
+        },
+        {
+          "code": "tr",
+          "name": "Turkce",
+          "direction": "ltr"
+        },
+        {
+          "code": "nl",
+          "name": "Nederlands",
+          "direction": "ltr"
+        },
+        {
+          "code": "pl",
+          "name": "Polski",
+          "direction": "ltr"
+        },
+        {
+          "code": "sv",
+          "name": "Svenska",
+          "direction": "ltr"
+        },
+        {
+          "code": "da",
+          "name": "Dansk",
+          "direction": "ltr"
+        },
+        {
+          "code": "fi",
+          "name": "Suomi",
+          "direction": "ltr"
+        },
+        {
+          "code": "no",
+          "name": "Norsk",
+          "direction": "ltr"
+        },
+        {
+          "code": "cs",
+          "name": "Cestina",
+          "direction": "ltr"
+        },
+        {
+          "code": "sk",
+          "name": "Slovcina",
+          "direction": "ltr"
+        },
+        {
+          "code": "ro",
+          "name": "Romana",
+          "direction": "ltr"
+        },
+        {
+          "code": "hu",
+          "name": "Magyar",
+          "direction": "ltr"
+        },
+        {
+          "code": "el",
+          "name": "ÎÎ»Î»Î·Î½Î¹ÎºÎ¬",
+          "direction": "ltr"
+        },
+        {
+          "code": "he",
+          "name": "×¢××¨××ª",
+          "direction": "rtl"
+        },
+        {
+          "code": "th",
+          "name": "à¹à¸à¸¢",
+          "direction": "ltr"
+        },
+        {
+          "code": "vi",
+          "name": "Tiáº¿ng Viá»t",
+          "direction": "ltr"
+        },
+        {
+          "code": "id",
+          "name": "Bahasa Indonesia",
+          "direction": "ltr"
+        },
+        {
+          "code": "ms",
+          "name": "Bahasa Melayu",
+          "direction": "ltr"
+        },
+        {
+          "code": "uk",
+          "name": "Ð£ÐºÑÐ°ÑÐ½ÑÑÐºÐ°",
+          "direction": "ltr"
+        }
+      ],
+      "updatedAt": "2026-06-29"
+    },
+    {
+      "id": "dashboard-kit-mtverse-modular",
+      "slug": "mtverse-modular-nextjs-dashboard-template",
+      "title": "MTVerse Modular AI SaaS Next.js Dashboard Template",
+      "shortTitle": "MTVerse Modular",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "summary": "Modular Next.js admin dashboard template for AI SaaS, ecommerce, CRM, analytics, finance, logistics, marketing, sales, stocks, and reusable dashboard components.",
+      "description": "Built from the real mt-modular suite source. This package is organized as a modular dashboard system with reusable shell primitives, dashboard navigation, premium cards, lazy charts, lazy maps, AI generator screens, ecommerce flows, CRM sections, and domain dashboards. It is positioned for developers who want a flexible Next.js admin kit they can extend feature by feature.",
+      "seoTitle": "MTVerse Modular AI SaaS Next.js Dashboard Template | Admin UI Kit",
+      "metaDescription": "Download MTVerse Modular, an AI SaaS Next.js dashboard template for ecommerce, CRM, analytics, finance, logistics, marketing, sales, stocks, charts, maps, and admin apps.",
+      "priceUsd": 12,
+      "originalPriceUsd": 49,
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js App Router",
+      "previewPath": "/dashboard-kits/mtverse-modular-nextjs-dashboard-template",
+      "packageFilename": "mtverse-modular-nextjs-dashboard-kit.zip",
+      "packageKey": "templates/dashboards/mtverse-modular-nextjs-dashboard-template/mtverse-modular-nextjs-dashboard-kit-6497530525.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/mtverse-modular-nextjs-dashboard-template/mtverse-modular-nextjs-dashboard-template-1794492769.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/mtverse-modular-nextjs-dashboard-template/mtverse-modular-nextjs-dashboard-template-1794492769.png"
+      ],
+      "tags": [
+        "nextjs dashboard",
+        "admin template",
+        "ai saas",
+        "ecommerce dashboard",
+        "crm dashboard",
+        "analytics dashboard"
+      ],
+      "keywords": [
+        "Next.js dashboard template",
+        "Next.js admin dashboard template",
+        "AI SaaS dashboard template",
+        "React admin dashboard kit",
+        "Tailwind dashboard template",
+        "CRM dashboard template",
+        "ecommerce admin dashboard",
+        "analytics dashboard UI kit",
+        "modular admin template",
+        "mtverse modular dashboard"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript",
+        "Tailwind CSS 4",
+        "Radix UI",
+        "Recharts",
+        "ApexCharts",
+        "D3 Geo",
+        "TopoJSON",
+        "Prisma-ready"
+      ],
+      "includedPages": [
+        "Analytics dashboard",
+        "AI dashboard",
+        "AI workspace",
+        "AI chat",
+        "AI image generator",
+        "AI video generator",
+        "AI code generator",
+        "AI API usage",
+        "Ecommerce dashboard",
+        "Products",
+        "Product detail",
+        "Product cards",
+        "Add product",
+        "Billing",
+        "Invoices",
+        "Create invoice",
+        "Transactions",
+        "Single transaction",
+        "Single invoice",
+        "CRM pipeline sections",
+        "CRM account health",
+        "CRM lead radar",
+        "CRM renewal risk",
+        "Finance dashboard",
+        "Logistics dashboard",
+        "Marketing dashboard",
+        "SaaS dashboard",
+        "Sales dashboard",
+        "Stocks dashboard",
+        "Charts and maps components",
+        "Forms and input components",
+        "Data tables",
+        "Command palette"
+      ],
+      "features": [
+        "Modular dashboard shell with header, sidebar, command palette, theme provider, and shared dashboard primitives.",
+        "AI product screens for workspace, chat, image generation, video generation, code generation, API usage, and settings.",
+        "Ecommerce modules for product management, product detail, billing, invoices, transactions, and single-record views.",
+        "CRM modules for account health, pipeline board, renewal risk, lead radar, timeline, follow-ups, meeting schedule, drawers, and contacts table.",
+        "Real chart and map foundations with Recharts, ApexCharts, D3 Geo, TopoJSON, lazy chart loading, and lazy map loading.",
+        "Source-organized component library covering advanced UI, forms, tables, overlays, navigation, communication, media, feedback, and utilities."
+      ],
+      "highlights": [
+        {
+          "label": "Source files",
+          "value": "215"
+        },
+        {
+          "label": "Dashboard modules",
+          "value": "80+"
+        },
+        {
+          "label": "AI pages",
+          "value": "7"
+        },
+        {
+          "label": "ZIP size",
+          "value": "1.27 MB"
+        }
+      ],
+      "useCases": [
+        "AI SaaS products",
+        "modular admin panels",
+        "CRM tools",
+        "ecommerce operations",
+        "analytics workspaces"
+      ],
+      "metadataLanguages": [
+        {
+          "code": "en",
+          "name": "English",
+          "direction": "ltr"
+        },
+        {
+          "code": "es",
+          "name": "Espanol",
+          "direction": "ltr"
+        },
+        {
+          "code": "fr",
+          "name": "Francais",
+          "direction": "ltr"
+        },
+        {
+          "code": "de",
+          "name": "Deutsch",
+          "direction": "ltr"
+        },
+        {
+          "code": "it",
+          "name": "Italiano",
+          "direction": "ltr"
+        },
+        {
+          "code": "pt",
+          "name": "Portugues",
+          "direction": "ltr"
+        },
+        {
+          "code": "ja",
+          "name": "æ¥æ¬èª",
+          "direction": "ltr"
+        },
+        {
+          "code": "ko",
+          "name": "íêµ­ì´",
+          "direction": "ltr"
+        },
+        {
+          "code": "zh",
+          "name": "ä¸­æ",
+          "direction": "ltr"
+        },
+        {
+          "code": "ru",
+          "name": "Ð ÑÑÑÐºÐ¸Ð¹",
+          "direction": "ltr"
+        },
+        {
+          "code": "ar",
+          "name": "Ø§ÙØ¹Ø±Ø¨ÙØ©",
+          "direction": "rtl"
+        },
+        {
+          "code": "hi",
+          "name": "à¤¹à¤¿à¤¨à¥à¤¦à¥",
+          "direction": "ltr"
+        },
+        {
+          "code": "bn",
+          "name": "à¦¬à¦¾à¦à¦²à¦¾",
+          "direction": "ltr"
+        },
+        {
+          "code": "tr",
+          "name": "Turkce",
+          "direction": "ltr"
+        },
+        {
+          "code": "nl",
+          "name": "Nederlands",
+          "direction": "ltr"
+        },
+        {
+          "code": "pl",
+          "name": "Polski",
+          "direction": "ltr"
+        },
+        {
+          "code": "sv",
+          "name": "Svenska",
+          "direction": "ltr"
+        },
+        {
+          "code": "da",
+          "name": "Dansk",
+          "direction": "ltr"
+        },
+        {
+          "code": "fi",
+          "name": "Suomi",
+          "direction": "ltr"
+        },
+        {
+          "code": "no",
+          "name": "Norsk",
+          "direction": "ltr"
+        },
+        {
+          "code": "cs",
+          "name": "Cestina",
+          "direction": "ltr"
+        },
+        {
+          "code": "sk",
+          "name": "Slovcina",
+          "direction": "ltr"
+        },
+        {
+          "code": "ro",
+          "name": "Romana",
+          "direction": "ltr"
+        },
+        {
+          "code": "hu",
+          "name": "Magyar",
+          "direction": "ltr"
+        },
+        {
+          "code": "el",
+          "name": "ÎÎ»Î»Î·Î½Î¹ÎºÎ¬",
+          "direction": "ltr"
+        },
+        {
+          "code": "he",
+          "name": "×¢××¨××ª",
+          "direction": "rtl"
+        },
+        {
+          "code": "th",
+          "name": "à¹à¸à¸¢",
+          "direction": "ltr"
+        },
+        {
+          "code": "vi",
+          "name": "Tiáº¿ng Viá»t",
+          "direction": "ltr"
+        },
+        {
+          "code": "id",
+          "name": "Bahasa Indonesia",
+          "direction": "ltr"
+        },
+        {
+          "code": "ms",
+          "name": "Bahasa Melayu",
+          "direction": "ltr"
+        },
+        {
+          "code": "uk",
+          "name": "Ð£ÐºÑÐ°ÑÐ½ÑÑÐºÐ°",
+          "direction": "ltr"
+        }
+      ],
+      "updatedAt": "2026-06-28"
+    },
+    {
+      "id": "dashboard-kit-mt-box-enterprise",
+      "slug": "mt-box-enterprise-nextjs-dashboard-template",
+      "title": "MT Box Enterprise Next.js SaaS Admin Dashboard Template",
+      "shortTitle": "MT Box Enterprise",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "summary": "Enterprise Next.js SaaS admin dashboard template with analytics, business apps, RBAC, billing, API keys, audit logs, settings, auth pages, and UI systems.",
+      "description": "Built from the real mtverse suite source and published as the MT Box preview. This package focuses on enterprise SaaS back offices: organization settings, team management, billing, integrations, API keys, security, RBAC, audit logs, activity logs, notifications, help, FAQ, pricing, business apps, auth flows, and reusable UI screens.",
+      "seoTitle": "MT Box Enterprise Next.js SaaS Admin Dashboard Template | B2B UI Kit",
+      "metaDescription": "Download MT Box Enterprise, a Next.js SaaS admin dashboard template with analytics, RBAC, billing, API keys, audit logs, auth pages, and business app screens.",
+      "priceUsd": 12,
+      "originalPriceUsd": 49,
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js App Router",
+      "previewPath": "/dashboard-kits/mt-box-enterprise-nextjs-dashboard-template",
+      "packageFilename": "mt-box-enterprise-nextjs-dashboard-kit.zip",
+      "packageKey": "templates/dashboards/mt-box-enterprise-nextjs-dashboard-template/mt-box-enterprise-nextjs-dashboard-kit-8915384771.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/mt-box-enterprise-nextjs-dashboard-template/mt-box-enterprise-nextjs-dashboard-template-0406654103.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/mt-box-enterprise-nextjs-dashboard-template/mt-box-enterprise-nextjs-dashboard-template-0406654103.png"
+      ],
+      "tags": [
+        "enterprise dashboard",
+        "saas admin",
+        "rbac",
+        "audit logs",
+        "billing dashboard",
+        "nextjs admin"
+      ],
+      "keywords": [
+        "enterprise dashboard template",
+        "SaaS admin dashboard template",
+        "Next.js SaaS dashboard",
+        "RBAC admin dashboard UI",
+        "audit logs dashboard template",
+        "billing dashboard template",
+        "API keys dashboard UI",
+        "team workspace dashboard",
+        "React SaaS admin template",
+        "MT Box dashboard template"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript",
+        "Tailwind CSS 4",
+        "Radix UI",
+        "Recharts",
+        "Zustand",
+        "Prisma-ready",
+        "MDX-ready"
+      ],
+      "includedPages": [
+        "Overview dashboard",
+        "Analytics dashboard",
+        "Ecommerce dashboard",
+        "CRM dashboard",
+        "Finance dashboard",
+        "HR dashboard",
+        "Logistics dashboard",
+        "Marketing dashboard",
+        "Projects dashboard",
+        "SaaS dashboard",
+        "Sales dashboard",
+        "Support dashboard",
+        "AI workspace dashboard",
+        "AI assistant app",
+        "Calendar app",
+        "Chat app",
+        "CRM pipeline app",
+        "Email app",
+        "File manager app",
+        "Invoice app",
+        "Kanban app",
+        "Notes app",
+        "Tasks app",
+        "Team workspace app",
+        "Enterprise profile",
+        "Enterprise billing",
+        "Enterprise settings",
+        "Enterprise security",
+        "Enterprise RBAC",
+        "Enterprise API keys",
+        "Enterprise integrations",
+        "Enterprise audit logs",
+        "Enterprise activity logs",
+        "Auth sign in and sign up",
+        "Auth forgot and reset",
+        "OTP and two-factor auth",
+        "Lock screen and sessions",
+        "Maintenance and coming soon"
+      ],
+      "features": [
+        "Enterprise workspace screens for billing, settings, security, RBAC, API keys, integrations, audit logs, activity logs, team, profile, notifications, changelog, help, FAQ, and pricing.",
+        "Domain dashboard coverage for analytics, ecommerce, CRM, finance, HR, logistics, marketing, projects, SaaS, sales, support, and AI workspace.",
+        "Business app surfaces for AI assistant, calendar, chat, CRM pipeline, email, file manager, invoice, kanban, notes, tasks, and team workspace.",
+        "UI library pages for accordions, command palette, forms, inputs, tables, charts, maps, modals, drawers, popovers, loaders, media gallery, file upload, search, tabs, and timeline.",
+        "Auth coverage for sign in, sign up, forgot password, reset password, OTP, two-factor, lock screen, sessions, maintenance, and coming soon pages.",
+        "Reusable MT Box primitives for sidebar, topbar, logo, navigation spinner, command palette, theme toggle, providers, and chart components."
+      ],
+      "highlights": [
+        {
+          "label": "Source files",
+          "value": "163"
+        },
+        {
+          "label": "Route pages",
+          "value": "74"
+        },
+        {
+          "label": "Enterprise pages",
+          "value": "14+"
+        },
+        {
+          "label": "ZIP size",
+          "value": "470 KB"
+        }
+      ],
+      "useCases": [
+        "enterprise SaaS",
+        "B2B admin portals",
+        "team workspaces",
+        "organization settings",
+        "internal tools"
+      ],
+      "metadataLanguages": [
+        {
+          "code": "en",
+          "name": "English",
+          "direction": "ltr"
+        },
+        {
+          "code": "es",
+          "name": "Espanol",
+          "direction": "ltr"
+        },
+        {
+          "code": "fr",
+          "name": "Francais",
+          "direction": "ltr"
+        },
+        {
+          "code": "de",
+          "name": "Deutsch",
+          "direction": "ltr"
+        },
+        {
+          "code": "it",
+          "name": "Italiano",
+          "direction": "ltr"
+        },
+        {
+          "code": "pt",
+          "name": "Portugues",
+          "direction": "ltr"
+        },
+        {
+          "code": "ja",
+          "name": "æ¥æ¬èª",
+          "direction": "ltr"
+        },
+        {
+          "code": "ko",
+          "name": "íêµ­ì´",
+          "direction": "ltr"
+        },
+        {
+          "code": "zh",
+          "name": "ä¸­æ",
+          "direction": "ltr"
+        },
+        {
+          "code": "ru",
+          "name": "Ð ÑÑÑÐºÐ¸Ð¹",
+          "direction": "ltr"
+        },
+        {
+          "code": "ar",
+          "name": "Ø§ÙØ¹Ø±Ø¨ÙØ©",
+          "direction": "rtl"
+        },
+        {
+          "code": "hi",
+          "name": "à¤¹à¤¿à¤¨à¥à¤¦à¥",
+          "direction": "ltr"
+        },
+        {
+          "code": "bn",
+          "name": "à¦¬à¦¾à¦à¦²à¦¾",
+          "direction": "ltr"
+        },
+        {
+          "code": "tr",
+          "name": "Turkce",
+          "direction": "ltr"
+        },
+        {
+          "code": "nl",
+          "name": "Nederlands",
+          "direction": "ltr"
+        },
+        {
+          "code": "pl",
+          "name": "Polski",
+          "direction": "ltr"
+        },
+        {
+          "code": "sv",
+          "name": "Svenska",
+          "direction": "ltr"
+        },
+        {
+          "code": "da",
+          "name": "Dansk",
+          "direction": "ltr"
+        },
+        {
+          "code": "fi",
+          "name": "Suomi",
+          "direction": "ltr"
+        },
+        {
+          "code": "no",
+          "name": "Norsk",
+          "direction": "ltr"
+        },
+        {
+          "code": "cs",
+          "name": "Cestina",
+          "direction": "ltr"
+        },
+        {
+          "code": "sk",
+          "name": "Slovcina",
+          "direction": "ltr"
+        },
+        {
+          "code": "ro",
+          "name": "Romana",
+          "direction": "ltr"
+        },
+        {
+          "code": "hu",
+          "name": "Magyar",
+          "direction": "ltr"
+        },
+        {
+          "code": "el",
+          "name": "ÎÎ»Î»Î·Î½Î¹ÎºÎ¬",
+          "direction": "ltr"
+        },
+        {
+          "code": "he",
+          "name": "×¢××¨××ª",
+          "direction": "rtl"
+        },
+        {
+          "code": "th",
+          "name": "à¹à¸à¸¢",
+          "direction": "ltr"
+        },
+        {
+          "code": "vi",
+          "name": "Tiáº¿ng Viá»t",
+          "direction": "ltr"
+        },
+        {
+          "code": "id",
+          "name": "Bahasa Indonesia",
+          "direction": "ltr"
+        },
+        {
+          "code": "ms",
+          "name": "Bahasa Melayu",
+          "direction": "ltr"
+        },
+        {
+          "code": "uk",
+          "name": "Ð£ÐºÑÐ°ÑÐ½ÑÑÐºÐ°",
+          "direction": "ltr"
+        }
+      ],
+      "updatedAt": "2026-06-28"
+    },
+    {
+      "id": "dashboard-kit-mat-dash",
+      "slug": "mat-dash-nextjs-admin-dashboard-template",
+      "title": "Mat Dash Next.js Admin Dashboard Template",
+      "shortTitle": "Mat Dash",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "summary": "Large Next.js admin dashboard template with modern, minimal, and analytics dashboards, ecommerce apps, invoices, tickets, notes, blog, tables, charts, and auth variants.",
+      "description": "Built from the real mat-dash suite source. This package is the broadest admin studio in the set, with a full App Router structure, dashboards, ecommerce screens, invoice flows, tickets, notes, blog, chat, email, calendar, kanban, contacts, table examples, icon pages, UI components, auth layouts, and front-site sections.",
+      "seoTitle": "Mat Dash Next.js Admin Dashboard Template | React Tailwind UI Kit",
+      "metaDescription": "Download Mat Dash, a Next.js admin dashboard template with analytics dashboards, ecommerce apps, invoices, tickets, notes, blog, tables, charts, auth pages, and UI components.",
+      "priceUsd": 12,
+      "originalPriceUsd": 49,
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js App Router",
+      "previewPath": "/dashboard-kits/mat-dash-nextjs-admin-dashboard-template",
+      "packageFilename": "mat-dash-nextjs-admin-dashboard-template.zip",
+      "packageKey": "templates/dashboards/mat-dash-nextjs-admin-dashboard-template/mat-dash-nextjs-admin-dashboard-template-8928749901.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/mat-dash-nextjs-admin-dashboard-template/mat-dash-nextjs-admin-dashboard-template-5590399037.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/mat-dash-nextjs-admin-dashboard-template/mat-dash-nextjs-admin-dashboard-template-5590399037.png"
+      ],
+      "tags": [
+        "mat dash",
+        "nextjs dashboard",
+        "admin template",
+        "ecommerce admin",
+        "invoice dashboard",
+        "tanstack table"
+      ],
+      "keywords": [
+        "Mat Dash Next.js admin template",
+        "Next.js admin dashboard template",
+        "React admin dashboard template",
+        "Tailwind admin dashboard",
+        "ecommerce dashboard template",
+        "invoice dashboard template",
+        "ticket dashboard UI",
+        "TanStack table dashboard",
+        "ApexCharts dashboard template",
+        "premium admin UI kit"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript",
+        "Tailwind CSS 4",
+        "Radix UI",
+        "Tabler Icons",
+        "ApexCharts",
+        "TanStack Table",
+        "SWR",
+        "Swiper"
+      ],
+      "includedPages": [
+        "Modern dashboard",
+        "Minimal dashboard",
+        "Analytics dashboard",
+        "Ecommerce shop",
+        "Product list",
+        "Product detail",
+        "Checkout",
+        "Invoices list",
+        "Invoice create",
+        "Invoice edit",
+        "Invoice detail",
+        "Tickets list",
+        "Create ticket",
+        "Notes app",
+        "Blog list",
+        "Blog detail",
+        "Blog post",
+        "Chat app",
+        "Email app",
+        "Calendar app",
+        "Kanban app",
+        "Contacts app",
+        "User profile",
+        "React table basic",
+        "React table dense",
+        "React table editable",
+        "React table filtering",
+        "React table sorting",
+        "React table pagination",
+        "React table row selection",
+        "React table drag-drop",
+        "React table sticky",
+        "Tabler icons",
+        "Solar icons",
+        "Auth login",
+        "Auth register",
+        "Auth forgot password",
+        "Auth two-step",
+        "Side auth layouts"
+      ],
+      "features": [
+        "Three dashboard modes with revenue forecast, product revenue, total income, new customers, daily activity, and blog card widgets.",
+        "App screens for ecommerce, invoices, tickets, notes, blog, chat, email, calendar, kanban, contacts, and user profile workflows.",
+        "Table library with basic, dense, editable, filtering, sorting, pagination, row selection, column visibility, drag-drop, expanding, sticky, striped, and hover examples.",
+        "Auth layouts for login, register, forgot password, two-step verification, and side-auth variants.",
+        "Reusable UI layer based on Radix primitives, Tabler icons, ApexCharts, TanStack Table, Tailwind CSS, theme provider, loaders, and global search.",
+        "Large route inventory with 140 route pages and 380 packaged source/config files after excluding local build caches and dependencies."
+      ],
+      "highlights": [
+        {
+          "label": "Source files",
+          "value": "380"
+        },
+        {
+          "label": "Route pages",
+          "value": "140"
+        },
+        {
+          "label": "Table examples",
+          "value": "12+"
+        },
+        {
+          "label": "ZIP size",
+          "value": "3.99 MB"
+        }
+      ],
+      "useCases": [
+        "admin panels",
+        "analytics dashboards",
+        "ecommerce back offices",
+        "invoice systems",
+        "agency starter kits"
+      ],
+      "metadataLanguages": [
+        {
+          "code": "en",
+          "name": "English",
+          "direction": "ltr"
+        },
+        {
+          "code": "es",
+          "name": "Espanol",
+          "direction": "ltr"
+        },
+        {
+          "code": "fr",
+          "name": "Francais",
+          "direction": "ltr"
+        },
+        {
+          "code": "de",
+          "name": "Deutsch",
+          "direction": "ltr"
+        },
+        {
+          "code": "it",
+          "name": "Italiano",
+          "direction": "ltr"
+        },
+        {
+          "code": "pt",
+          "name": "Portugues",
+          "direction": "ltr"
+        },
+        {
+          "code": "ja",
+          "name": "æ¥æ¬èª",
+          "direction": "ltr"
+        },
+        {
+          "code": "ko",
+          "name": "íêµ­ì´",
+          "direction": "ltr"
+        },
+        {
+          "code": "zh",
+          "name": "ä¸­æ",
+          "direction": "ltr"
+        },
+        {
+          "code": "ru",
+          "name": "Ð ÑÑÑÐºÐ¸Ð¹",
+          "direction": "ltr"
+        },
+        {
+          "code": "ar",
+          "name": "Ø§ÙØ¹Ø±Ø¨ÙØ©",
+          "direction": "rtl"
+        },
+        {
+          "code": "hi",
+          "name": "à¤¹à¤¿à¤¨à¥à¤¦à¥",
+          "direction": "ltr"
+        },
+        {
+          "code": "bn",
+          "name": "à¦¬à¦¾à¦à¦²à¦¾",
+          "direction": "ltr"
+        },
+        {
+          "code": "tr",
+          "name": "Turkce",
+          "direction": "ltr"
+        },
+        {
+          "code": "nl",
+          "name": "Nederlands",
+          "direction": "ltr"
+        },
+        {
+          "code": "pl",
+          "name": "Polski",
+          "direction": "ltr"
+        },
+        {
+          "code": "sv",
+          "name": "Svenska",
+          "direction": "ltr"
+        },
+        {
+          "code": "da",
+          "name": "Dansk",
+          "direction": "ltr"
+        },
+        {
+          "code": "fi",
+          "name": "Suomi",
+          "direction": "ltr"
+        },
+        {
+          "code": "no",
+          "name": "Norsk",
+          "direction": "ltr"
+        },
+        {
+          "code": "cs",
+          "name": "Cestina",
+          "direction": "ltr"
+        },
+        {
+          "code": "sk",
+          "name": "Slovcina",
+          "direction": "ltr"
+        },
+        {
+          "code": "ro",
+          "name": "Romana",
+          "direction": "ltr"
+        },
+        {
+          "code": "hu",
+          "name": "Magyar",
+          "direction": "ltr"
+        },
+        {
+          "code": "el",
+          "name": "ÎÎ»Î»Î·Î½Î¹ÎºÎ¬",
+          "direction": "ltr"
+        },
+        {
+          "code": "he",
+          "name": "×¢××¨××ª",
+          "direction": "rtl"
+        },
+        {
+          "code": "th",
+          "name": "à¹à¸à¸¢",
+          "direction": "ltr"
+        },
+        {
+          "code": "vi",
+          "name": "Tiáº¿ng Viá»t",
+          "direction": "ltr"
+        },
+        {
+          "code": "id",
+          "name": "Bahasa Indonesia",
+          "direction": "ltr"
+        },
+        {
+          "code": "ms",
+          "name": "Bahasa Melayu",
+          "direction": "ltr"
+        },
+        {
+          "code": "uk",
+          "name": "Ð£ÐºÑÐ°ÑÐ½ÑÑÐºÐ°",
+          "direction": "ltr"
+        }
+      ],
+      "updatedAt": "2026-06-29"
+    }
+  ],
+  "meta": {
+    "source": "runtime-admin-sync-sanitized",
+    "updatedAt": "2026-06-29T16:05:26.881Z",
+    "count": 5,
+    "packagePrefix": "templates/dashboards",
+    "previewPrefix": "templates/dashboard-previews"
+  }
+}
