@@ -44,10 +44,16 @@ const nextConfig: NextConfig = {
         headers: securityHeaders,
       },
       {
-        source: "/:path((?!api/preview|preview).*)",
+        source: "/:path((?!api/preview|preview|dashboard-kits).*)",
         headers: frameDenyHeaders,
       },
 
+      {
+        source: "/dashboard-kits/:slug*",
+        headers: [
+          { key: "Content-Security-Policy", value: "frame-ancestors https://www.mtverse.dev https://mtverse.dev http://localhost:3000 http://127.0.0.1:3000" },
+        ],
+      },
       {
         source: "/prompts/:slug*",
         headers: [
