@@ -98,8 +98,8 @@ export function ModernSelect({
         <div
           ref={menuRef}
           role="listbox"
-          className="absolute left-0 top-full z-[10000] mt-2 min-w-full max-h-[min(320px,48vh)] overflow-y-auto rounded-2xl border bg-popover p-1.5 shadow-lg [scrollbar-width:thin] animate-in fade-in-0 zoom-in-95 duration-150"
-          style={{ width: 'max-content', maxWidth: '320px' }}
+          className="absolute right-0 sm:left-0 top-full z-[10000] mt-2 min-w-full max-h-[min(320px,48vh)] overflow-y-auto rounded-2xl border bg-popover p-1.5 shadow-lg [scrollbar-width:thin] animate-in fade-in-0 zoom-in-95 duration-150"
+          style={{ width: 'max-content', maxWidth: 'min(320px, calc(100vw - 2rem))' }}
         >
           {options.map((opt) => {
             const isActive = opt.value === value

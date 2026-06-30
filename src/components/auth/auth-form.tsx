@@ -227,7 +227,7 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center ds-bg-section relative overflow-hidden py-12">
+    <main className="min-h-[100dvh] flex items-center justify-center ds-bg-section relative overflow-hidden py-6">
       <div aria-hidden className="absolute inset-0 -z-10">
         <Blob variant="lavender" size={500} position={{ top: '-10%', left: '-10%' }} float="slow" />
         <Blob variant="peach" size={400} position={{ bottom: '-10%', right: '-10%' }} float="normal" />
@@ -236,18 +236,18 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
       <div className="ds-container-sm w-full px-4">
         <div className="max-w-md mx-auto">
           <Reveal>
-            <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-              <Image src="/SiteLogo.png" alt="mtverse" width={36} height={36} className="rounded-lg" />
-              <span className="text-lg font-bold tracking-tight">mtverse</span>
+            <Link href="/" className="flex items-center justify-center gap-2 mb-5">
+              <Image src="/SiteLogo.png" alt="mtverse" width={32} height={32} className="rounded-lg" />
+              <span className="text-base font-bold tracking-tight">mtverse</span>
             </Link>
           </Reveal>
 
           <Reveal delay={0.08}>
-            <div className="ds-card p-8">
-              <div className="text-center mb-6">
-                <span className="ds-eyebrow ds-eyebrow-accent mb-3">{copy.eyebrow}</span>
-                <h1 className="ds-h1 mb-2">{copy.title}</h1>
-                <p className="text-sm text-muted-foreground">{copy.subtitle}</p>
+            <div className="ds-card p-5 sm:p-6">
+              <div className="text-center mb-4">
+                <span className="ds-eyebrow ds-eyebrow-accent mb-2">{copy.eyebrow}</span>
+                <h1 className="text-lg sm:text-xl font-bold mb-1">{copy.title}</h1>
+                <p className="text-xs text-muted-foreground">{copy.subtitle}</p>
               </div>
 
               {(error || missingResetToken) && (
@@ -280,7 +280,7 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
                   ) : null}
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-3">
                   {copy.showName && (
                     <div>
                       <label className="block text-sm font-medium mb-1.5" htmlFor="name">
@@ -394,17 +394,14 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
                   )}
 
                   {mode === 'sign-in' && (
-                    <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-border bg-background/70 p-3 text-sm transition-colors hover:bg-accent/40">
+                    <label className="flex cursor-pointer items-center gap-2 text-xs text-muted-foreground">
                       <input
                         type="checkbox"
                         checked={rememberMe}
                         onChange={(e) => setRememberMe(e.target.checked)}
-                        className="mt-0.5 h-4 w-4 rounded border-border accent-primary-600"
+                        className="h-3.5 w-3.5 rounded border-border accent-primary-600"
                       />
-                      <span>
-                        <span className="block font-medium text-foreground">Remember me on this device</span>
-                        <span className="block text-xs text-muted-foreground">Keep this browser signed in for 30 days.</span>
-                      </span>
+                      <span>Remember me for 30 days</span>
                     </label>
                   )}
 
@@ -426,12 +423,12 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
 
               {(mode === 'sign-in' || mode === 'sign-up') && !success && (
                 <>
-                  <div className="flex items-center gap-3 my-6">
+                  <div className="flex items-center gap-3 my-4">
                     <div className="flex-1 h-px bg-border" />
-                    <span className="text-xs text-muted-foreground uppercase tracking-wider">or continue with</span>
+                    <span className="text-[11px] text-muted-foreground uppercase tracking-wider">or</span>
                     <div className="flex-1 h-px bg-border" />
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2">
                     <button
                       type="button"
                       onClick={() => {
@@ -476,7 +473,7 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
           </Reveal>
 
           <Reveal delay={0.16}>
-            <p className="text-center text-sm text-muted-foreground mt-6">
+            <p className="text-center text-xs text-muted-foreground mt-4">
               {copy.footer}{' '}
               <Link href={copy.footerHref} className="font-medium text-primary-600 hover:underline inline-flex items-center gap-1">
                 {copy.footerLink}
@@ -486,14 +483,11 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
           </Reveal>
 
           <Reveal delay={0.24}>
-            <div className="flex items-center justify-center gap-4 mt-8 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Sparkles className="h-3 w-3" />
-                Free to start
-              </span>
-              <span>-</span>
-              <span>No credit card required</span>
-              <span>-</span>
+            <div className="flex items-center justify-center gap-3 mt-3 text-[11px] text-muted-foreground">
+              <span>Free to start</span>
+              <span>·</span>
+              <span>No credit card</span>
+              <span>·</span>
               <span>Cancel anytime</span>
             </div>
           </Reveal>

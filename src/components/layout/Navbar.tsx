@@ -504,15 +504,24 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
                 </div>
 
                 <div className="px-4 pb-4">
-                  <SheetClose asChild>
-                    <Link
-                      href="/prompts"
-                      className="flex items-center gap-3 rounded-lg border border-border px-4 py-3 text-sm text-muted-foreground transition-all hover:bg-accent"
-                    >
-                      <Search className="h-4 w-4" />
-                      Search prompts and templates
-                    </Link>
-                  </SheetClose>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      const input = e.currentTarget.querySelector('input')
+                      const q = input?.value?.trim()
+                      if (q) {
+                        window.location.href = `/prompts?q=${encodeURIComponent(q)}`
+                      }
+                    }}
+                    className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 transition-all focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
+                  >
+                    <Search className="h-4 w-4 text-muted-foreground shrink-0" />
+                    <input
+                      type="search"
+                      placeholder="Search prompts & templates..."
+                      className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+                    />
+                  </form>
                 </div>
 
                 <div className="mt-auto border-t border-border px-4 pb-6 pt-4">

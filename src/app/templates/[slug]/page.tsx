@@ -191,8 +191,8 @@ export default async function TemplateDetailPage({ params }: { params: Params })
           <div className="ds-container">
             {/* Title + meta row */}
             <Reveal>
-              <div className="mb-6 space-y-3">
-                <div className="flex flex-wrap items-center gap-2">
+              <div className="mb-4 sm:mb-6 space-y-2 sm:space-y-3">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                   {template.featured && (
                     <span className="ds-badge ds-badge-primary"><Sparkles className="h-3 w-3" /> Featured</span>
                   )}
@@ -204,23 +204,23 @@ export default async function TemplateDetailPage({ params }: { params: Params })
                   )}
                   <span className="text-xs text-muted-foreground capitalize">{template.category}</span>
                 </div>
-                <h1 className="ds-display-3 ds-text-balance">{template.title}</h1>
-                <p className="ds-lead ds-text-pretty max-w-3xl">{template.summary}</p>
-                <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight ds-text-balance">{template.title}</h1>
+                <p className="text-sm sm:text-base text-muted-foreground ds-text-pretty max-w-3xl">{template.summary}</p>
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                   {template.reviewCount > 0 ? (
                     <span className="flex items-center gap-1">
-                      <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                      <Star className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-amber-400 text-amber-400" />
                       <strong className="text-foreground">{template.rating}</strong>
                       ({template.reviewCount} reviews)
                     </span>
                   ) : (
                     <span className="flex items-center gap-1 font-medium text-foreground">
-                      <Sparkles className="h-3.5 w-3.5" />
+                      <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                       New release
                     </span>
                   )}
                   <span className="flex items-center gap-1">
-                    <Package className="h-3.5 w-3.5" />
+                    <Package className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                     {template.components}+ components
                   </span>
                 </div>
@@ -228,12 +228,11 @@ export default async function TemplateDetailPage({ params }: { params: Params })
             </Reveal>
 
             {/* Screenshot + Buy box grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_320px] gap-3 md:gap-5 items-start">
               {/* Left: full screenshot preview */}
               <Reveal>
-                <div className="space-y-4">
-                  <div className="overflow-hidden rounded-xl border border-border/80 bg-muted/35 p-2 shadow-lg">
-                    <div className="group relative overflow-hidden rounded-lg border border-border/70 bg-background">
+                <div className="overflow-hidden rounded-xl border border-border/80 bg-muted/35 p-1.5 sm:p-2 shadow-lg">
+                  <div className="group relative overflow-hidden rounded-lg border border-border/70 bg-background">
                       <Image
                         src={template.screenshotUrl}
                         alt={template.title}
@@ -258,7 +257,6 @@ export default async function TemplateDetailPage({ params }: { params: Params })
                       </Link>
                     </div>
                   </div>
-                </div>
               </Reveal>
 
               {/* Right: Buy box */}
@@ -272,7 +270,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
         {/* ═══ Highlights — bento-style grid ═══ */}
         <section className="ds-section-sm">
           <div className="ds-container">
-            <Stagger className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <Stagger className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {template.highlights.map((h, i) => {
                 const Icon = HIGHLIGHT_ICONS[h.icon] ?? Sparkles
                 return (
@@ -301,24 +299,24 @@ export default async function TemplateDetailPage({ params }: { params: Params })
 
             {/* What's included — below tabs */}
             <Reveal delay={0.1}>
-              <div className="mt-10 pt-8 border-t">
-                <h2 className="ds-h2 mb-4">What&apos;s included</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t">
+                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">What&apos;s included</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                   {template.features.map((f, i) => (
-                    <div key={i} className="flex items-start gap-2.5">
-                      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 shrink-0 mt-0.5">
-                        <Check className="h-3 w-3" />
+                    <div key={i} className="flex items-start gap-2">
+                      <span className="inline-flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 shrink-0 mt-0.5">
+                        <Check className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                       </span>
-                      <span className="text-sm">{f}</span>
+                      <span className="text-xs sm:text-sm">{f}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Pages */}
-                <h3 className="ds-h4 mb-3 mt-6">Pages included</h3>
-                <div className="flex flex-wrap gap-2">
+                <h3 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3 mt-5 sm:mt-6">Pages included</h3>
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {template.pages.map((p, i) => (
-                    <span key={`${p}-${i}`} className="ds-badge ds-badge-neutral">{p}</span>
+                    <span key={`${p}-${i}`} className="text-[11px] sm:text-xs px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full border bg-background">{p}</span>
                   ))}
                 </div>
               </div>
@@ -329,7 +327,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
         <section className="ds-section-sm">
           <div className="ds-container max-w-4xl">
             <Reveal>
-              <h2 className="ds-h2 mb-6">Template details</h2>
+              <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Template details</h2>
               <div className="ds-card overflow-hidden p-0">
                 <dl className="divide-y divide-border">
                   {[
@@ -339,9 +337,9 @@ export default async function TemplateDetailPage({ params }: { params: Params })
                     { label: 'Last updated', value: new Date(template.lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) },
                     { label: 'Responsive', value: 'Desktop, tablet, and mobile' },
                   ].map((spec) => (
-                    <div key={spec.label} className="flex items-center justify-between px-5 py-3 hover:bg-accent/30 transition-colors">
-                      <dt className="text-sm text-muted-foreground">{spec.label}</dt>
-                      <dd className="text-sm font-medium text-foreground">{spec.value}</dd>
+                    <div key={spec.label} className="flex items-center justify-between px-4 sm:px-5 py-2.5 sm:py-3 hover:bg-accent/30 transition-colors">
+                      <dt className="text-xs sm:text-sm text-muted-foreground">{spec.label}</dt>
+                      <dd className="text-xs sm:text-sm font-medium text-foreground">{spec.value}</dd>
                     </div>
                   ))}
                 </dl>
@@ -465,18 +463,18 @@ export default async function TemplateDetailPage({ params }: { params: Params })
           <CtaBackground />
           <div className="ds-container relative text-center max-w-2xl">
             <Reveal>
-              <h2 className="ds-display-3 mb-4">Ready to ship?</h2>
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4">Ready to ship?</h2>
             </Reveal>
             <Reveal delay={0.08}>
-              <p className="ds-lead mb-6">Get instant access to {template.title} and start building today.</p>
+              <p className="text-sm sm:text-base text-muted-foreground mb-5 sm:mb-6">Get instant access to {template.title} and start building today.</p>
             </Reveal>
             <Reveal delay={0.16}>
-              <div className="flex flex-wrap items-center justify-center gap-3">
-                <Link href="#buy" className="ds-btn ds-btn-accent ds-btn-lg">
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                <Link href="#buy" className="ds-btn ds-btn-accent ds-btn-lg text-sm sm:text-base">
                   <ShoppingCart className="h-4 w-4" />
                   Buy now — ${template.price}
                 </Link>
-                <Link href={`/preview/${template.slug}`} target="_blank" className="ds-btn ds-btn-secondary ds-btn-lg">
+                <Link href={`/preview/${template.slug}`} target="_blank" className="ds-btn ds-btn-secondary ds-btn-lg text-sm sm:text-base">
                   <Eye className="h-4 w-4" />
                   Live preview
                 </Link>

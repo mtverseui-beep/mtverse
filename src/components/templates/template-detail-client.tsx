@@ -170,19 +170,19 @@ export function TemplateDetailClient({ template }: Props) {
   }
 
   return (
-    <div id="buy" className="ds-card sticky top-20 p-6">
+    <div id="buy" className="ds-card sticky top-20 p-4 sm:p-5">
       <div className="flex items-baseline gap-2 mb-1">
-        <span className="text-4xl font-bold text-foreground">${template.price}</span>
+        <span className="text-3xl sm:text-4xl font-bold text-foreground">${template.price}</span>
         {hasDiscount ? (
           <>
-            <span className="text-lg text-muted-foreground line-through">${template.originalPriceUsd}</span>
+            <span className="text-base sm:text-lg text-muted-foreground line-through">${template.originalPriceUsd}</span>
             <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
               {Math.round((1 - template.price / template.originalPriceUsd!) * 100)}% off
             </span>
           </>
         ) : null}
       </div>
-      <p className="text-xs text-muted-foreground mb-4">USD - one-time payment - lifetime access</p>
+      <p className="text-xs text-muted-foreground mb-3">USD · one-time payment · lifetime access</p>
 
       {canDownload ? (
         <Link href={`/api/download/template/${template.slug}`} className="ds-btn ds-btn-primary w-full mb-3">
@@ -209,12 +209,12 @@ export function TemplateDetailClient({ template }: Props) {
         </button>
       )}
 
-      <Link href={`/preview/${template.slug}`} target="_blank" className="ds-btn ds-btn-secondary w-full mb-3">
+      <Link href={`/preview/${template.slug}`} target="_blank" className="ds-btn ds-btn-secondary w-full mb-2">
         <Eye className="h-4 w-4" />
         Live preview
       </Link>
 
-      <div className="grid grid-cols-2 gap-2 mb-5">
+      <div className="grid grid-cols-2 gap-2 mb-4">
         <button
           onClick={handleSave}
           disabled={authLoading || checkingAccess || saving}
@@ -233,7 +233,7 @@ export function TemplateDetailClient({ template }: Props) {
         </button>
       </div>
 
-      <div className="flex items-center gap-3 pb-4 mb-4 border-b">
+      <div className="flex items-center gap-3 pb-3 mb-3 border-b">
         <div className="h-10 w-10 rounded-full bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 flex items-center justify-center font-bold">
           {template.author.avatar}
         </div>
@@ -243,7 +243,7 @@ export function TemplateDetailClient({ template }: Props) {
         </div>
       </div>
 
-      <div className="space-y-2.5 text-sm">
+      <div className="space-y-2 text-sm">
         <div className="flex items-start gap-2">
           <Shield className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
           <div>
@@ -260,7 +260,7 @@ export function TemplateDetailClient({ template }: Props) {
         </div>
       </div>
 
-      <div className="mt-4 pt-4 border-t text-xs text-muted-foreground flex items-center justify-between">
+      <div className="mt-3 pt-3 border-t text-xs text-muted-foreground flex items-center justify-between">
         <span>Updated: {new Date(template.lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
         <span>v1.0</span>
       </div>
