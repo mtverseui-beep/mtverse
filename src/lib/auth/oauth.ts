@@ -2,6 +2,23 @@ import type { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import GitHubProvider from 'next-auth/providers/github'
 
+// Auto-detect base URL for OAuth callbacks
+function getBaseUrl() {
+  // Vercel deployment
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`
+  }
+  
+  // Explicitly set NEXTAUTH_URL
+  if (process.env.NEXTAUTH_URL) {
+    return process.env.NEXTAUTH_URL
+  }
+  
+  // Development fallback
+  return `http://localhost:${process.env.PORT || 3000}`
+}
+
+const baseUrl = getBaseUrl()
 const providers: NextAuthOptions['providers'] = []
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID?.trim()
@@ -63,5 +80,15 @@ export const authOptions: NextAuthOptions = {
 
       return session
     },
+    async redirect({ url, baseUrl: callbackBaseUrl }) {
+      // Handle relative URLs
+      if (url.startsWith('/')) return `${callbackBaseUrl}${url}`
+      // Handle same origin URLs
+      if (new URL(url).origin === callbackBaseUrl) return url
+      // Default to base URL
+      return callbackBaseUrl
+    },
   },
+  // Enable debug in development
+  debug: process.env.NODE_ENV === 'development',
 }

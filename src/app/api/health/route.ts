@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
 
   checks.adminAuth = Boolean(
     process.env.ADMIN_EMAIL &&
-    process.env.ADMIN_PASSWORD &&
+    process.env.ADMIN_PASSWORD_HASH &&
     process.env.ADMIN_SESSION_SECRET
   )
 

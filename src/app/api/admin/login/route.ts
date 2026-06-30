@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-import { getAdminCredentials, createAdminSessionToken, ADMIN_SESSION_COOKIE } from '@/lib/admin-auth'
+import { getAdminCredentials, verifyAdminPassword, createAdminSessionToken, ADMIN_SESSION_COOKIE } from '@/lib/admin-auth'
 import { checkRateLimit, getClientIp, getRateLimitRetryAfterSeconds } from '@/lib/rate-limit'
 
 type AdminLoginPayload = {
@@ -48,7 +48,15 @@ export async function POST(request: Request) {
       )
     }
 
-    if (email.toLowerCase() !== adminCreds.email.toLowerCase() || password !== adminCreds.password) {
+    if (email.toLowerCase() !== adminCreds.email.toLowerCase()) {
+      return NextResponse.json(
+        { error: 'Invalid email or password' },
+        { status: 401, headers: { 'Cache-Control': 'no-store' } },
+      )
+    }
+
+    const isPasswordValid = await verifyAdminPassword(password, adminCreds.passwordHash)
+    if (!isPasswordValid) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401, headers: { 'Cache-Control': 'no-store' } },

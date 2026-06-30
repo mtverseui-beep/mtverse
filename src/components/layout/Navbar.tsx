@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -48,6 +48,7 @@ const NAV_LINKS = [
   { name: 'Home', href: '/' },
   { name: 'Prompts', href: '/prompts' },
   { name: 'Templates', href: '/templates' },
+  { name: 'Pricing', href: '/pricing' },
 ]
 
 const DEFAULT_USER_AVATAR = '/default-3d-avatar.jpg'

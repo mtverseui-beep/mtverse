@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Eye } from 'lucide-react'
 import { getDashboardKit } from '@/lib/dashboard-kit-store'
-import { getPreviewUrl } from '@/lib/dashboard-kits'
+import { PreviewIframe } from '@/components/preview/preview-iframe'
 
 type Params = Promise<{ slug: string }>
 
@@ -25,22 +25,15 @@ export default async function PreviewPage({ params }: { params: Params }) {
     notFound()
   }
 
-  const previewFrameUrl = getPreviewUrl(kit)
+  // Use direct external URL for the iframe since template deployments
+  // now have Content-Security-Policy: frame-ancestors configured.
+  const directPreviewUrl = kit.livePreviewUrl?.trim() || `/api/preview/proxy/${slug}`
 
   return (
     <main className="fixed inset-0 overflow-hidden bg-background" style={{ width: '100vw', height: '100dvh' }}>
       <h1 className="sr-only">{kit.title} live preview</h1>
-      {previewFrameUrl ? (
-        <iframe
-          src={previewFrameUrl}
-          title={`${kit.title} live preview`}
-          className="block border-0 bg-background"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', minWidth: '100%', minHeight: '100%' }}
-          allow="accelerometer; camera; clipboard-read; clipboard-write; encrypted-media; geolocation; gyroscope; microphone; payment; picture-in-picture; publickey-credentials-get; screen-wake-lock; xr-spatial-tracking"
-          allowFullScreen
-          referrerPolicy="no-referrer"
-          loading="eager"
-        />
+      {directPreviewUrl ? (
+        <PreviewIframe url={directPreviewUrl} directUrl={directPreviewUrl} title={kit.title} />
       ) : (
         <div className="flex h-full items-center justify-center p-8">
           <div className="max-w-md text-center">

@@ -109,8 +109,8 @@ export function TemplateTabs({ template }: Props) {
 
             <h3 className="ds-h4 mb-3">Tags</h3>
             <div className="flex flex-wrap gap-2">
-              {template.tags.map((tag) => (
-                <span key={tag} className="text-xs px-2.5 py-1 rounded-full border bg-background hover:border-primary-300 hover:text-primary-600 transition-colors cursor-pointer">
+              {template.tags.map((tag, i) => (
+                <span key={`${tag}-${i}`} className="text-xs px-2.5 py-1 rounded-full border bg-background hover:border-primary-300 hover:text-primary-600 transition-colors cursor-pointer">
                   #{tag}
                 </span>
               ))}

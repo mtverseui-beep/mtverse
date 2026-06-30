@@ -20,6 +20,7 @@ export type DashboardKit = {
   framework: 'nextjs'
   frameworkLabel: string
   previewPath: string
+  livePreviewUrl?: string
   packageFilename: string
   packageKey?: string
   coverImage?: string
@@ -53,7 +54,9 @@ function withDashboardKitDefaults(kit: DashboardKit): DashboardKit {
 
 export const dashboardKits: DashboardKit[] = (dashboardStore.kits as DashboardKit[]).map(withDashboardKitDefaults)
 
-export function getPreviewUrl(kit: Pick<DashboardKit, 'previewPath'>) {
+export function getPreviewUrl(kit: Pick<DashboardKit, 'previewPath' | 'livePreviewUrl'>) {
+  if (kit.livePreviewUrl?.trim()) return kit.livePreviewUrl.trim()
+
   return `${PREVIEW_BASE_URL}${kit.previewPath.startsWith('/') ? kit.previewPath : `/${kit.previewPath}`}`
 }
 

@@ -51,7 +51,12 @@ const nextConfig: NextConfig = {
       {
         source: "/dashboard-kits/:slug*",
         headers: [
-          { key: "Content-Security-Policy", value: "frame-ancestors https://www.mtverse.dev https://mtverse.dev http://localhost:3000 http://127.0.0.1:3000" },
+          {
+            key: "Content-Security-Policy",
+            value: process.env.NODE_ENV === "production"
+              ? "frame-ancestors https://www.mtverse.dev https://mtverse.dev"
+              : "frame-ancestors https://www.mtverse.dev https://mtverse.dev http://localhost:3000 http://127.0.0.1:3000",
+          },
         ],
       },
       {

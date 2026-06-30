@@ -14,6 +14,7 @@ const FOOTER_COLUMNS: Array<{
     links: [
       { name: 'Prompts', href: '/prompts', icon: PenTool },
       { name: 'Templates', href: '/templates', icon: LayoutGrid },
+      { name: 'Pricing', href: '/pricing' },
       { name: 'Featured', href: '/prompts?sort=featured' },
       { name: 'Trending', href: '/prompts?sort=hot' },
     ],

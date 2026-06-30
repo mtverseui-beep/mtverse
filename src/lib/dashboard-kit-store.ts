@@ -119,6 +119,7 @@ export function normalizeDashboardKit(input: Partial<DashboardKit>): DashboardKi
   const packageFilename = cleanText(input.packageFilename || 'mtverse-next-package.zip')
   const matchedFallback = dashboardKits.find((kit) => kit.slug === slug)
   const fallback = matchedFallback || dashboardKits[0]
+  const livePreviewUrl = cleanText(input.livePreviewUrl || matchedFallback?.livePreviewUrl || '')
   const category = slugify(cleanText(input.category || 'dashboard-kits')) || 'dashboard-kits'
   const categoryTitle = cleanText(input.categoryTitle || (category === 'dashboard-kits' ? 'Dashboard Kits' : category))
   const summary = cleanText(input.summary || input.description || fallback.summary)
@@ -141,6 +142,7 @@ export function normalizeDashboardKit(input: Partial<DashboardKit>): DashboardKi
     framework: 'nextjs',
     frameworkLabel: cleanText(input.frameworkLabel || 'Next.js App Router'),
     previewPath,
+    livePreviewUrl: livePreviewUrl || undefined,
     packageFilename,
     packageKey: input.packageKey ? cleanText(input.packageKey) : matchedFallback?.packageKey,
     coverImage: input.coverImage ? cleanText(input.coverImage) : fallback.coverImage,

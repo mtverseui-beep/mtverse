@@ -300,8 +300,8 @@ export default async function TemplateDetailPage({ params }: { params: Params })
                 {/* Pages */}
                 <h3 className="ds-h4 mb-3 mt-6">Pages included</h3>
                 <div className="flex flex-wrap gap-2">
-                  {template.pages.map((p) => (
-                    <span key={p} className="ds-badge ds-badge-neutral">{p}</span>
+                  {template.pages.map((p, i) => (
+                    <span key={`${p}-${i}`} className="ds-badge ds-badge-neutral">{p}</span>
                   ))}
                 </div>
               </div>

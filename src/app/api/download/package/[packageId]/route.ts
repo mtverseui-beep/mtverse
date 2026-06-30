@@ -54,6 +54,28 @@ export async function GET(request: NextRequest, context: RouteContext) {
     return NextResponse.json({ error: 'Please sign in to download this package.' }, { status: 401 })
   }
 
+  // Rate limit: 5 downloads per 15 minutes per user
+  const { checkRateLimit, getRateLimitRetryAfterSeconds } = await import('@/lib/rate-limit')
+  const rateLimit = await checkRateLimit(`download:package:${email}`, {
+    max: 5,
+    windowMs: 15 * 60 * 1000,
+  })
+
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { 
+        error: 'Too many downloads. Please wait before downloading again.',
+        retryAfter: getRateLimitRetryAfterSeconds(rateLimit.resetAt)
+      },
+      { 
+        status: 429,
+        headers: {
+          'Retry-After': String(getRateLimitRetryAfterSeconds(rateLimit.resetAt))
+        }
+      }
+    )
+  }
+
   const planRecord = await getPlan(email)
   if (!canDownloadPackage(planRecord, rawPackageId)) {
     return NextResponse.json({ error: 'This package is not included in your purchase.' }, { status: 403 })

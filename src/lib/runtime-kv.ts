@@ -95,3 +95,35 @@ export async function writeRuntimeJson<T>(key: string, payload: T) {
 
   await callUpstashPipeline([['SET', key, serialized]], 'write')
 }
+
+/**
+ * Lightweight Redis client facade over Upstash REST API.
+ * Used for simple key-value ops like webhook deduplication.
+ */
+export function getRedisClient() {
+  const config = getUpstashConfig()
+  if (!config) {
+    throw new Error('Redis (Upstash) is not configured. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN.')
+  }
+
+  return {
+    async get(key: string): Promise<string | null> {
+      const result = await callUpstashPipeline([['GET', key]], 'read', [], true)
+      const raw = result?.[0]?.result
+      if (typeof raw !== 'string' || !raw) return null
+      return raw
+    },
+
+    async set(key: string, value: string): Promise<void> {
+      await callUpstashPipeline([['SET', key, value]], 'write')
+    },
+
+    async setex(key: string, ttlSeconds: number, value: string): Promise<void> {
+      await callUpstashPipeline([['SET', key, value, 'EX', ttlSeconds]], 'write')
+    },
+
+    async del(key: string): Promise<void> {
+      await callUpstashPipeline([['DEL', key]], 'write')
+    },
+  }
+}

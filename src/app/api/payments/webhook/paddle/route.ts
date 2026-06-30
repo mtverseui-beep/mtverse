@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { setPlan } from '@/lib/plan-store'
 import { getProductPackage, isPackageId } from '@/lib/packages'
 import { recordTemplatePurchase } from '@/lib/template-social-store'
+import { hasRuntimeKvStore, getRedisClient } from '@/lib/runtime-kv'
 
 export const runtime = 'nodejs'
 
@@ -93,8 +94,36 @@ export async function POST(request: NextRequest) {
 
     const event = JSON.parse(rawBody) as PaddleWebhookEvent
     const eventType = event.event_type || event.type
+    const eventId = event.event_id
+
+    // Check for event_id to prevent duplicate processing
+    if (!eventId) {
+      return NextResponse.json({ error: 'Missing event_id in webhook payload' }, { status: 400 })
+    }
+
+    // Check if already processed (using Redis if available)
+    if (hasRuntimeKvStore()) {
+      const redis = getRedisClient()
+      const alreadyProcessed = await redis.get(`webhook:paddle:${eventId}`)
+      
+      if (alreadyProcessed) {
+        return NextResponse.json({ 
+          received: true, 
+          ignored: true, 
+          reason: 'duplicate event_id',
+          eventId 
+        })
+      }
+    }
 
     if (eventType !== 'transaction.completed') {
+      // Mark as processed even for ignored events
+      if (hasRuntimeKvStore()) {
+        const redis = getRedisClient()
+        // 30-day TTL for event deduplication
+        await redis.setex(`webhook:paddle:${eventId}`, 30 * 24 * 60 * 60, 'processed')
+      }
+      
       return NextResponse.json({ received: true, ignored: true, eventType })
     }
 
@@ -126,9 +155,17 @@ export async function POST(request: NextRequest) {
       await recordTemplatePurchase(kitSlug, email)
     }
 
+    // Mark as successfully processed
+    if (hasRuntimeKvStore()) {
+      const redis = getRedisClient()
+      // 30-day TTL for event deduplication
+      await redis.setex(`webhook:paddle:${eventId}`, 30 * 24 * 60 * 60, 'processed')
+    }
+
     return NextResponse.json({
       received: true,
       eventType,
+      eventId,
       packageId,
       kitSlug: kitSlug || undefined,
       email,

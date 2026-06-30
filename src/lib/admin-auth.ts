@@ -18,15 +18,28 @@ export type AdminSession = {
 
 export function getAdminCredentials() {
   const email = process.env.ADMIN_EMAIL?.trim()
-  const password = process.env.ADMIN_PASSWORD
+  const passwordHash = process.env.ADMIN_PASSWORD_HASH?.trim()
 
-  if (!email || !password) {
+  if (!email || !passwordHash) {
     throw new Error(
-      'Admin credentials not configured. Set ADMIN_EMAIL and ADMIN_PASSWORD in .env.local'
+      'Admin credentials not configured. Set ADMIN_EMAIL and ADMIN_PASSWORD_HASH in .env'
     )
   }
 
-  return { email, password }
+  return { email, passwordHash }
+}
+
+export async function verifyAdminPassword(plainPassword: string, storedHash: string): Promise<boolean> {
+  const { scrypt } = await import('node:crypto')
+  const { promisify } = await import('node:util')
+  const scryptAsync = promisify(scrypt) as (password: string, salt: string, keylen: number) => Promise<Buffer>
+
+  try {
+    const derivedHash = await scryptAsync(plainPassword, 'mtverse-admin-salt-v1', 32)
+    return derivedHash.toString('hex') === storedHash
+  } catch {
+    return false
+  }
 }
 
 function getAdminSessionSecret() {

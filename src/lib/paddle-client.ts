@@ -109,6 +109,16 @@ function buildSuccessUrl(baseSuccessUrl: string, transactionId?: string) {
 
 export async function openPaddleCheckout(payload: PaddleCheckoutPayload, successUrl: string) {
   const paddle = await getInitializedPaddle(payload, (event) => {
+    if (event.name === 'checkout.loaded') {
+      // Disable background scroll when checkout opens
+      document.body.style.overflow = 'hidden'
+    }
+
+    if (event.name === 'checkout.closed') {
+      // Re-enable background scroll when checkout closes
+      document.body.style.overflow = ''
+    }
+
     if (event.name !== 'checkout.completed') return
 
     const transactionId = event.data?.transaction_id || event.data?.transactionId || event.data?.id
