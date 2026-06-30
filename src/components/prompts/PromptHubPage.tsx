@@ -82,7 +82,7 @@ const TRENDING_SEARCHES = [
   'Art prompt',
 ]
 
-const DEFAULT_PROMPT_PAGE_SIZE = 180
+const DEFAULT_PROMPT_PAGE_SIZE = 100
 
 function getSortLabel(sortMode: PromptSortMode) {
   if (sortMode === 'hot') return 'Trending'
@@ -131,7 +131,7 @@ const PromptCard = memo(function PromptCard({
   return (
     <Link
       href={`/prompts/${prompt.slug}`}
-      prefetch={false}
+      prefetch={true}
       onClick={() =>
         trackPromptEvent('Prompt Opened', {
           slug: prompt.slug,
@@ -709,7 +709,7 @@ export default function PromptHubPage({
         {visiblePrompts.length > 0 ? (
           <>
             {/* Main Grid */}
-            <div className="columns-2 gap-1.5 sm:columns-3 sm:gap-2 lg:columns-4 xl:columns-5 2xl:columns-6">
+            <div className="columns-2 gap-1.5 sm:columns-3 sm:gap-2 md:columns-4 lg:columns-5 xl:columns-6 2xl:columns-7">
               {visiblePrompts.map((prompt, index) => (
                 <PromptCard key={prompt.slug} prompt={prompt} index={index} priority={index < 8} />
               ))}
@@ -720,7 +720,7 @@ export default function PromptHubPage({
               <nav aria-label="Prompt pages" className="flex items-center gap-1.5">
                 <Link
                   href={pageHref(Math.max(1, activePage - 1))}
-                  prefetch={false}
+                  prefetch={true}
                   onClick={handleNavigationStart}
                   aria-disabled={activePage === 1}
                   className={cn(
@@ -739,7 +739,7 @@ export default function PromptHubPage({
                       {showGap ? <span className="px-1 text-xs font-bold text-muted-foreground">...</span> : null}
                       <Link
                         href={pageHref(page)}
-                        prefetch={false}
+                        prefetch={true}
                         onClick={handleNavigationStart}
                         aria-current={active ? 'page' : undefined}
                         className={cn(
@@ -756,7 +756,7 @@ export default function PromptHubPage({
                 })}
                 <Link
                   href={pageHref(Math.min(totalPages, activePage + 1))}
-                  prefetch={false}
+                  prefetch={true}
                   onClick={handleNavigationStart}
                   aria-disabled={activePage === totalPages}
                   className={cn(

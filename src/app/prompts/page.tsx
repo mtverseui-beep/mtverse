@@ -111,8 +111,8 @@ export async function generateMetadata({
 
 // ISR: revalidate every 5 minutes
 export const revalidate = 300
-const DEFAULT_PROMPT_TAKE = 60
-const MAX_PROMPT_TAKE = 120
+const DEFAULT_PROMPT_TAKE = 100
+const MAX_PROMPT_TAKE = 100
 
 interface PromptsPageProps {
   searchParams?: Promise<{
