@@ -124,6 +124,23 @@ export default async function TemplateDetailPage({ params }: { params: Params })
           priceCurrency: template.currency,
           availability: 'https://schema.org/InStock',
           itemCondition: 'https://schema.org/NewCondition',
+          shippingDetails: {
+            '@type': 'OfferShippingDetails',
+            shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'USD' },
+            shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' },
+            deliveryTime: {
+              '@type': 'ShippingDeliveryTime',
+              handlingTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 0, unitCode: 'MIN' },
+            },
+          },
+          hasMerchantReturnPolicy: {
+            '@type': 'MerchantReturnPolicy',
+            applicableCountry: 'US',
+            returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+            merchantReturnDays: 14,
+            returnMethod: 'https://schema.org/ReturnByMail',
+            returnFees: 'https://schema.org/FreeReturn',
+          },
         },
       },
       {

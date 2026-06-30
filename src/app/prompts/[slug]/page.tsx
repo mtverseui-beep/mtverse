@@ -111,6 +111,12 @@ function buildPromptStructuredData(baseUrl: string, prompt: PromptEntry) {
         keywords: promptKeywords,
         image: prompt.previewImage,
         datePublished: prompt.updatedAt,
+        author: { '@type': 'Organization', name: 'mtverse', url: baseUrl },
+        publisher: {
+          '@type': 'Organization',
+          name: 'mtverse',
+          logo: { '@type': 'ImageObject', url: `${baseUrl}/SiteLogo.png` },
+        },
       },
     ],
   }
