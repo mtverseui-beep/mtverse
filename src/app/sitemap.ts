@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { getPublishedPrompts, isPromptIndexable } from "@/lib/prompt-db";
 import { getPromptCollectionHref, PROMPT_COLLECTIONS } from "@/lib/prompt-collections";
 import { getAllTemplatesFromStore } from "@/lib/templates-data";
+import { BLOG_POSTS } from "@/lib/blog-posts";
 import { SITE_URL } from "@/lib/site-url";
 import { generateHreflangMap } from "@/lib/seo-languages";
 
@@ -18,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/prompts`, lastModified: contentDate, changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/templates`, lastModified: contentDate, changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/pricing`, lastModified: contentDate, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/blog`, lastModified: contentDate, changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/about`, lastModified: staticDate, changeFrequency: "yearly", priority: 0.6 },
     { url: `${baseUrl}/contact`, lastModified: staticDate, changeFrequency: "yearly", priority: 0.6 },
     { url: `${baseUrl}/faq`, lastModified: contentDate, changeFrequency: "monthly", priority: 0.7 },
@@ -60,8 +62,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  // ── Blog post routes ───────────────────────────────────
+  const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.isoDate),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
   // ── Add hreflang alternates to key routes ──────────────
-  const routesWithHreflang = [...staticRoutes, ...promptCollectionRoutes, ...promptRoutes, ...templateRoutes].map((route) => ({
+  const routesWithHreflang = [...staticRoutes, ...promptCollectionRoutes, ...promptRoutes, ...templateRoutes, ...blogRoutes].map((route) => ({
     ...route,
     alternates: {
       languages: generateHreflangMap(route.url.replace(baseUrl, ""), baseUrl),

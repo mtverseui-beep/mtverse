@@ -49,6 +49,7 @@ const NAV_LINKS = [
   { name: 'Prompts', href: '/prompts' },
   { name: 'Templates', href: '/templates' },
   { name: 'Pricing', href: '/pricing' },
+  { name: 'Blog', href: '/blog' },
 ]
 
 const DEFAULT_USER_AVATAR = '/default-3d-avatar.jpg'

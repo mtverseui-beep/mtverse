@@ -15,6 +15,7 @@ const FOOTER_COLUMNS: Array<{
       { name: 'Prompts', href: '/prompts', icon: PenTool },
       { name: 'Templates', href: '/templates', icon: LayoutGrid },
       { name: 'Pricing', href: '/pricing' },
+      { name: 'Blog', href: '/blog' },
       { name: 'Featured', href: '/prompts?sort=featured' },
       { name: 'Trending', href: '/prompts?sort=hot' },
     ],
