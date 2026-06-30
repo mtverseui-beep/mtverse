@@ -22,10 +22,51 @@ export const metadata: Metadata = {
 export default function PricingPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'PricePage',
-    name: 'mtverse Pricing',
-    description: 'Premium Next.js dashboard template pricing',
+    '@type': 'Product',
+    name: 'mtverse UI Framework Packages',
+    description: 'One-time UI framework zip packages for HTML, React, Next.js, Vue.js, Angular, and Laravel. Public prompts are free.',
     url: SITE_URL + '/pricing',
+    image: SITE_URL + '/SiteLogo.png',
+    brand: {
+      '@type': 'Brand',
+      name: 'mtverse',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: '12',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      url: SITE_URL + '/pricing',
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          value: '0',
+          currency: 'USD',
+        },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'US',
+        },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 0,
+            maxValue: 0,
+            unitCode: 'MIN',
+          },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'US',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 14,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/FreeReturn',
+      },
+    },
   }
 
   const features = [
