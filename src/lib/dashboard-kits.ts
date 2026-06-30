@@ -20,7 +20,6 @@ export type DashboardKit = {
   framework: 'nextjs'
   frameworkLabel: string
   previewPath: string
-  livePreviewUrl?: string
   packageFilename: string
   packageKey?: string
   coverImage?: string

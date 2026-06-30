@@ -16,6 +16,8 @@ import {
 import { toast } from 'sonner'
 import type { Template } from '@/lib/templates-catalog'
 import { useAuth } from '@/hooks/use-auth'
+import { openPaddleCheckout } from '@/lib/paddle-client'
+import type { PaddleCheckoutPayload } from '@/lib/paddle-types'
 
 type Props = {
   template: Template
@@ -88,7 +90,7 @@ export function TemplateDetailClient({ template }: Props) {
       })
       const checkout = (await response.json()) as {
         url?: string
-        paddle?: unknown
+        paddle?: PaddleCheckoutPayload
         error?: string
         code?: string
       }
@@ -107,7 +109,13 @@ export function TemplateDetailClient({ template }: Props) {
       }
 
       if (checkout.paddle) {
-        throw new Error('Paddle checkout payload returned, but the browser checkout client is not enabled yet.')
+        const successUrl = new URL('/pricing/success', window.location.origin)
+        successUrl.searchParams.set('package', checkout.paddle.packageId)
+        successUrl.searchParams.set('provider', 'paddle')
+        successUrl.searchParams.set('kit', template.slug)
+        if (checkout.paddle.customerEmail) successUrl.searchParams.set('email', checkout.paddle.customerEmail)
+        await openPaddleCheckout(checkout.paddle, successUrl.toString())
+        return
       }
 
       throw new Error('Checkout did not return a redirect URL.')

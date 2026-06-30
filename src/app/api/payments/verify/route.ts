@@ -5,7 +5,7 @@ import { recordTemplatePurchase } from '@/lib/template-social-store'
 
 export async function GET(request: NextRequest) {
   const result = verifyPaymentFromSearchParams(request.nextUrl.searchParams)
-  const transactionId = request.nextUrl.searchParams.get('transaction_id')
+  const transactionId = request.nextUrl.searchParams.get('transaction_id') || request.nextUrl.searchParams.get('_ptxn') || request.nextUrl.searchParams.get('transactionId')
   const kitSlug = request.nextUrl.searchParams.get('kit')
 
   if (result.mock && !isMockPaymentAllowed()) {

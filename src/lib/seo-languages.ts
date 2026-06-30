@@ -1,13 +1,11 @@
-// ─────────────────────────────────────────────────────────
-// SEO Languages — Multi-language hreflang support
-// ─────────────────────────────────────────────────────────
+// SEO Languages - Multi-language hreflang support
 
 export type SeoLanguage = {
   /** BCP 47 language tag */
   code: string
   /** Language name in its native script */
   name: string
-  /** Text direction — "rtl" for Arabic & Hebrew */
+  /** Text direction - "rtl" for Arabic and Hebrew */
   direction: 'ltr' | 'rtl'
 }
 
@@ -54,7 +52,7 @@ export const SEO_LANGUAGES: SeoLanguage[] = [
  * Useful for embedding in meta tags or page footers for language discovery.
  *
  * Example output:
- *   "English (en), Espanol (es), Français (fr), ..."
+ *   "English (en), Spanish (es), French (fr), ..."
  */
 export const LANGUAGE_DISCOVERY_META: string = SEO_LANGUAGES.map(
   (lang) => `${lang.name} (${lang.code})`
@@ -117,7 +115,7 @@ export function generateHreflangMap(
   return map
 }
 
-// ── Keep backwards-compatible POPULAR_SITE_LANGUAGES export ──
+// Keep backwards-compatible POPULAR_SITE_LANGUAGES export
 export const POPULAR_SITE_LANGUAGES: ReadonlyArray<{ code: string; label: string }> = SEO_LANGUAGES.map((lang) => ({
   code: lang.code,
   label: lang.name,

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Eye } from 'lucide-react'
 import { getDashboardKit } from '@/lib/dashboard-kit-store'
+import { getPreviewUrl } from '@/lib/dashboard-kits'
 
 type Params = Promise<{ slug: string }>
 
@@ -24,18 +25,14 @@ export default async function PreviewPage({ params }: { params: Params }) {
     notFound()
   }
 
-  const previewBaseUrl = process.env.NEXT_PUBLIC_PREVIEW_BASE_URL?.replace(/\/+$/, '') || ''
-  const livePreviewUrl =
-    (kit as { livePreviewUrl?: string }).livePreviewUrl ||
-    (kit.previewPath && previewBaseUrl ? `${previewBaseUrl}${kit.previewPath}` : '')
-  const hasLivePreview = Boolean(livePreviewUrl && livePreviewUrl.startsWith('http'))
+  const previewFrameUrl = getPreviewUrl(kit)
 
   return (
     <main className="fixed inset-0 overflow-hidden bg-background" style={{ width: '100vw', height: '100dvh' }}>
       <h1 className="sr-only">{kit.title} live preview</h1>
-      {hasLivePreview ? (
+      {previewFrameUrl ? (
         <iframe
-          src={`/api/preview/live/${encodeURIComponent(kit.slug)}`}
+          src={previewFrameUrl}
           title={`${kit.title} live preview`}
           className="block border-0 bg-background"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', minWidth: '100%', minHeight: '100%' }}

@@ -141,7 +141,6 @@ export function normalizeDashboardKit(input: Partial<DashboardKit>): DashboardKi
     framework: 'nextjs',
     frameworkLabel: cleanText(input.frameworkLabel || 'Next.js App Router'),
     previewPath,
-    livePreviewUrl: input.livePreviewUrl ? cleanText(input.livePreviewUrl) : undefined,
     packageFilename,
     packageKey: input.packageKey ? cleanText(input.packageKey) : matchedFallback?.packageKey,
     coverImage: input.coverImage ? cleanText(input.coverImage) : fallback.coverImage,

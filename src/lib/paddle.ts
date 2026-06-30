@@ -1,19 +1,8 @@
-﻿import 'server-only'
+import 'server-only'
 
 import { getProductPackage, type PackageId } from './packages'
-
-export type PaddleEnvironment = 'sandbox' | 'production'
-
-export type PaddleCheckoutPayload = {
-  environment: PaddleEnvironment
-  clientToken: string
-  priceId: string
-  packageId: PackageId
-  packageName: string
-  amountUsd: number
-  customerEmail?: string
-  customData: Record<string, string>
-}
+import type { PaddleCheckoutPayload, PaddleEnvironment } from '@/lib/paddle-types'
+export type { PaddleCheckoutPayload, PaddleEnvironment } from '@/lib/paddle-types'
 
 const PADDLE_PRICE_ENV: Record<PackageId, string> = {
   next: 'PADDLE_NEXT_PRICE_ID',

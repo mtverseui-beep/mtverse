@@ -35,7 +35,7 @@ function toUrlSearchParams(input: Record<string, string | string[] | undefined>)
 
 async function verifySuccess(searchParams: URLSearchParams) {
   const result = verifyPaymentFromSearchParams(searchParams)
-  const transactionId = searchParams.get('transaction_id')
+  const transactionId = searchParams.get('transaction_id') || searchParams.get('_ptxn') || searchParams.get('transactionId')
   const kitSlug = searchParams.get('kit')
 
   if (result.mock && !isMockPaymentAllowed()) {
