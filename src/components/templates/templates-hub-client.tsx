@@ -50,7 +50,7 @@ export function TemplatesHubClient({
   const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Only main frameworks — exact match (case-insensitive, ignoring version numbers)
-  const KNOWN_FRAMEWORKS = ['next.js', 'react', 'html']
+  const KNOWN_FRAMEWORKS = ['next.js', 'react']
 
   const frameworkOptions = useMemo(() => {
     const labels = new Map<string, string>()
