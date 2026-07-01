@@ -6,7 +6,6 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import {
   ArrowUpRight,
-  CheckCircle2,
   ChevronDown,
   LayoutDashboard,
   Loader2,
@@ -381,60 +380,63 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
               <div ref={userMenuRef} className="relative hidden md:block">
                 <button
                   onClick={() => setUserMenuOpen((open) => !open)}
-                  className="inline-flex h-10 items-center gap-2 rounded-full border border-border bg-card py-1 pl-1 pr-2 text-sm font-medium shadow-sm transition-all hover:border-primary/40 hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  className="inline-flex h-9 items-center gap-2 rounded-full border border-border/60 bg-background px-1.5 pr-3 text-sm font-medium transition-all hover:border-primary/30 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                   aria-label="User menu"
                   aria-haspopup="menu"
                   aria-expanded={userMenuOpen}
                 >
                   <UserAvatar user={user} />
-                  <span className="hidden max-w-[120px] truncate xl:inline">{displayName}</span>
-                  <ChevronDown className={cn('h-4 w-4 text-muted-foreground transition-transform', userMenuOpen && 'rotate-180')} />
+                  <span className="hidden max-w-[100px] truncate text-xs font-semibold xl:inline">{displayName}</span>
+                  <ChevronDown className={cn('h-3.5 w-3.5 text-muted-foreground transition-transform', userMenuOpen && 'rotate-180')} />
                 </button>
 
                 {userMenuOpen ? (
-                  <div className="absolute right-0 top-12 z-50 w-72 overflow-hidden rounded-lg border border-border bg-popover shadow-xl">
-                    <div className="flex items-center gap-3 border-b border-border p-4">
+                  <div className="absolute right-0 top-11 z-50 w-64 overflow-hidden rounded-2xl border border-border/60 bg-popover p-1.5 shadow-xl animate-in fade-in-0 zoom-in-95 duration-150">
+                    {/* User info header */}
+                    <div className="flex items-center gap-3 rounded-xl bg-muted/50 p-3 mb-1">
                       <UserAvatar user={user} size="lg" />
                       <div className="min-w-0">
                         <div className="truncate text-sm font-semibold">{displayName}</div>
-                        <div className="truncate text-xs text-muted-foreground">{user.email}</div>
+                        <div className="truncate text-[11px] text-muted-foreground">{user.email}</div>
                       </div>
                     </div>
-                    <div className="grid gap-1 p-2">
-                      <div className="flex items-center gap-2 rounded-md bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300">
-                        <CheckCircle2 className="h-4 w-4" />
-                        Signed in securely
-                      </div>
+
+                    {/* Menu items */}
+                    <div className="grid gap-0.5">
                       <Link
                         href="/account"
-                        className="flex items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent"
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent"
                         onClick={() => setUserMenuOpen(false)}
                       >
-                        <User className="h-4 w-4" />
-                        Account settings
+                        <User className="h-4 w-4 text-muted-foreground" />
+                        Account
                       </Link>
                       <Link
                         href="/account#library"
-                        className="flex items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent"
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent"
                         onClick={() => setUserMenuOpen(false)}
                       >
-                        <PackageCheck className="h-4 w-4" />
-                        Template library
+                        <PackageCheck className="h-4 w-4 text-muted-foreground" />
+                        My templates
                       </Link>
                       <Link
                         href="/templates"
-                        className="flex items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent"
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent"
                         onClick={() => setUserMenuOpen(false)}
                       >
-                        <LayoutDashboard className="h-4 w-4" />
+                        <LayoutDashboard className="h-4 w-4 text-muted-foreground" />
                         Browse templates
                       </Link>
+                    </div>
+
+                    {/* Divider + sign out */}
+                    <div className="mt-1 border-t border-border/60 pt-1">
                       <button
                         onClick={() => {
                           setUserMenuOpen(false)
                           setShowLogoutConfirm(true)
                         }}
-                        className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/30"
+                        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium text-rose-600 transition-colors hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/20"
                       >
                         <LogOut className="h-4 w-4" />
                         Sign out

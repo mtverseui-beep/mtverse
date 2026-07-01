@@ -54,28 +54,6 @@ export async function GET(request: NextRequest, context: RouteContext) {
     return NextResponse.json({ error: 'Please sign in to download this template.' }, { status: 401 })
   }
 
-  // Rate limit: 5 downloads per 15 minutes per user
-  const { checkRateLimit, getRateLimitRetryAfterSeconds } = await import('@/lib/rate-limit')
-  const rateLimit = await checkRateLimit(`download:template:${email}`, {
-    max: 5,
-    windowMs: 15 * 60 * 1000,
-  })
-
-  if (!rateLimit.allowed) {
-    return NextResponse.json(
-      { 
-        error: 'Too many downloads. Please wait before downloading again.',
-        retryAfter: getRateLimitRetryAfterSeconds(rateLimit.resetAt)
-      },
-      { 
-        status: 429,
-        headers: {
-          'Retry-After': String(getRateLimitRetryAfterSeconds(rateLimit.resetAt))
-        }
-      }
-    )
-  }
-
   // Free template flow
   if (kit.isFree) {
     const [planRecord, alreadyDownloaded, freeStatus] = await Promise.all([

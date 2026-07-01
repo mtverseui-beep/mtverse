@@ -35,6 +35,8 @@ export function TemplateDetailClient({ template }: Props) {
   const [freeLimitReached, setFreeLimitReached] = useState(false)
   const [freeUnlocked, setFreeUnlocked] = useState(false)
   const [alreadyDownloaded, setAlreadyDownloaded] = useState(false)
+  const [downloading, setDownloading] = useState(false)
+  const [downloadError, setDownloadError] = useState<string | null>(null)
   const hasDiscount = typeof template.originalPriceUsd === 'number' && template.originalPriceUsd > template.price
 
   useEffect(() => {
@@ -180,6 +182,34 @@ export function TemplateDetailClient({ template }: Props) {
     }
   }
 
+  async function handleDownload() {
+    setDownloading(true)
+    setDownloadError(null)
+    try {
+      const response = await fetch(`/api/download/template/${template.slug}`, { credentials: 'include' })
+      if (!response.ok) {
+        const data = await response.json().catch(() => null) as { error?: string } | null
+        setDownloadError(data?.error || 'Download failed. Please try again.')
+        return
+      }
+      // Trigger file download from the response blob
+      const blob = await response.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = template.slug + '.zip'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+      toast.success('Download started!')
+    } catch {
+      setDownloadError('Network error. Please check your connection and try again.')
+    } finally {
+      setDownloading(false)
+    }
+  }
+
   return (
     <div id="buy" className="ds-card sticky top-20 p-4 sm:p-5">
       <div className="flex items-baseline gap-2 mb-1">
@@ -212,10 +242,23 @@ export function TemplateDetailClient({ template }: Props) {
 
       {/* Download button for already-downloaded or canDownload */}
       {canDownload && !freeLimitReached ? (
-        <Link href={`/api/download/template/${template.slug}`} className="ds-btn ds-btn-primary w-full mb-3">
-          <Download className="h-4 w-4" />
-          {template.isFree ? 'Download Free' : 'Download package'}
-        </Link>
+        <button
+          onClick={handleDownload}
+          disabled={downloading}
+          className="ds-btn ds-btn-primary w-full mb-3"
+        >
+          {downloading ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Downloading...
+            </>
+          ) : (
+            <>
+              <Download className="h-4 w-4" />
+              {template.isFree ? 'Download Free' : 'Download package'}
+            </>
+          )}
+        </button>
       ) : freeLimitReached && template.isFree ? (
         /* Free limit reached — show unlock CTA */
         <button
@@ -242,15 +285,15 @@ export function TemplateDetailClient({ template }: Props) {
           disabled={buying || authLoading || checkingAccess}
           className="ds-btn ds-btn-primary w-full mb-3"
         >
-          {buying ? (
+          {buying || authLoading || checkingAccess ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              Starting checkout...
+              {buying ? 'Starting checkout...' : 'Loading...'}
             </>
           ) : template.isFree ? (
             <>
               <Download className="h-4 w-4" />
-              {authenticated ? 'Download Free' : 'Sign in to download'}
+              Download Free
             </>
           ) : (
             <>
@@ -323,6 +366,25 @@ export function TemplateDetailClient({ template }: Props) {
         <span>Updated: {new Date(template.lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
         <span>v1.0</span>
       </div>
+
+      {/* Error Modal */}
+      {downloadError && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-zinc-950/50 backdrop-blur-sm p-4" onClick={() => setDownloadError(null)}>
+          <div className="w-full max-w-sm rounded-2xl border border-border bg-background p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">
+              <Shield className="h-6 w-6" />
+            </div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">Download failed</h3>
+            <p className="text-sm text-muted-foreground mb-5">{downloadError}</p>
+            <button
+              onClick={() => setDownloadError(null)}
+              className="ds-btn ds-btn-primary w-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
