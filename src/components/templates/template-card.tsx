@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Eye, ShoppingCart } from 'lucide-react'
+import { Download, Eye, ShoppingCart } from 'lucide-react'
 import type { Template } from '@/lib/templates-catalog'
 
 type Props = {
@@ -10,7 +10,16 @@ type Props = {
   priority?: boolean
 }
 
+function getFrameworkShort(template: Template): string {
+  if (template.category === 'html') return 'HTML'
+  if (template.frameworkLabel?.toLowerCase().includes('next')) return 'Next.js'
+  if (template.techStack.some((t) => t.toLowerCase().startsWith('react'))) return 'React'
+  return ''
+}
+
 export function TemplateCard({ template, priority = false }: Props) {
+  const frameworkLabel = getFrameworkShort(template)
+
   return (
     <Link href={`/templates/${template.slug}`} className="group block h-full no-underline">
       <article className="relative h-full overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/[0.04]">
@@ -38,24 +47,31 @@ export function TemplateCard({ template, priority = false }: Props) {
           </div>
         </div>
 
-        {/* Card body */}
-        <div className="p-4">
-          <div className="flex items-start justify-between gap-3">
-            <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-foreground transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-300 sm:text-base">
+        {/* Card body — compact */}
+        <div className="px-3 pb-3 pt-2.5">
+          {/* Title + price — single line */}
+          <div className="flex items-center justify-between gap-2">
+            <h3 className="truncate text-sm font-semibold text-foreground transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-300">
               {template.title}
             </h3>
             {template.isFree ? (
-              <span className="shrink-0 rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+              <span className="shrink-0 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
                 Free
               </span>
             ) : (
-              <span className="shrink-0 text-lg font-semibold text-foreground">${template.price}</span>
+              <span className="shrink-0 text-sm font-bold text-foreground">${template.price}</span>
             )}
           </div>
 
-          <div className="mt-2 flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
-            <ShoppingCart className="h-4 w-4" />
-            <span>{template.salesCount.toLocaleString()} Purchases</span>
+          {/* Meta row — downloads/purchases left, framework right */}
+          <div className="mt-1.5 flex items-center justify-between text-xs text-muted-foreground">
+            <span className="flex items-center gap-1">
+              {template.isFree ? <Download className="h-3.5 w-3.5" /> : <ShoppingCart className="h-3.5 w-3.5" />}
+              {template.salesCount.toLocaleString()} {template.isFree ? 'Downloads' : 'Purchases'}
+            </span>
+            {frameworkLabel && (
+              <span className="font-medium">{frameworkLabel}</span>
+            )}
           </div>
         </div>
       </article>

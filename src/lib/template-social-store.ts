@@ -274,9 +274,17 @@ function createGenericSeededSocial(slug: string): { purchaseCount: number; revie
     'The template gives a useful foundation with enough included screens to avoid starting from a blank project.',
   ]
 
+  // Free HTML templates get varied download counts (500-2500 range, spread out)
+  // Paid templates get varied purchase counts (150-400 range)
+  const isHtmlFree = slug.startsWith('html-') || slug.includes('-portfolio')
+  const purchaseCount = isHtmlFree
+    ? [520, 870, 1560, 2340, 680, 1120, 940, 1780, 2100, 610, 1450, 760, 1920, 1300, 890][hash % 15]
+    : [156, 210, 340, 185, 270, 310, 195, 245, 290, 175][hash % 10]
+
   return {
-    purchaseCount: 84 + (hash % 180),
-    reviews: [0, 1, 2].map((offset) => ({
+    purchaseCount,
+    // No reviews for free HTML templates
+    reviews: isHtmlFree ? [] : [0, 1, 2].map((offset) => ({
       id: 'seed-' + slug + '-' + (offset + 1),
       name: names[(hash + offset) % names.length],
       rating: offset === 1 ? 4 : 5,

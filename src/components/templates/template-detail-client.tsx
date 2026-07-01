@@ -203,8 +203,8 @@ export function TemplateDetailClient({ template }: Props) {
         {template.isFree ? 'Free download · sign in required' : 'USD · one-time payment · lifetime access'}
       </p>
 
-      {/* Free template: show remaining downloads info */}
-      {template.isFree && authenticated && !freeUnlocked && !alreadyDownloaded && !freeLimitReached && (
+      {/* Free template: show remaining downloads info (only if user has used at least one) */}
+      {template.isFree && authenticated && !freeUnlocked && !alreadyDownloaded && !freeLimitReached && freeRemaining < 5 && (
         <p className="text-xs text-muted-foreground mb-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1.5">
           {freeRemaining}/5 free downloads remaining
         </p>

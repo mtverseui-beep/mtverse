@@ -230,7 +230,10 @@ export function TemplatesHubClient({
                 {categoryOptions.map((chip) => (
                   <button
                     key={chip.id}
-                    onClick={() => updateParams({ category: chip.id })}
+                    onClick={() => {
+                      if (chip.id === 'html') setFrameworkFilter('all')
+                      updateParams({ category: chip.id })
+                    }}
                     className={cn(
                       'shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 sm:px-3.5',
                       initialCategory === chip.id
@@ -272,12 +275,14 @@ export function TemplatesHubClient({
             >
               Free
             </button>
-            <ModernSelect
-              value={frameworkFilter}
-              onChange={handleFrameworkChange}
-              ariaLabel="Filter by framework"
-              options={frameworkOptions}
-            />
+            {initialCategory !== 'html' && (
+              <ModernSelect
+                value={frameworkFilter}
+                onChange={handleFrameworkChange}
+                ariaLabel="Filter by framework"
+                options={frameworkOptions}
+              />
+            )}
             <div className="hidden h-4 w-px bg-border sm:block" />
             <ModernSelect
               value={initialSort}
@@ -397,7 +402,7 @@ export function TemplatesHubClient({
                 </button>
               </div>
             ) : (
-              <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:gap-6">
+              <div className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {filtered.map((t, i) => (
                   <TemplateCard key={t.id} template={t} priority={i < 6} />
                 ))}
