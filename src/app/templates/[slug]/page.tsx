@@ -227,8 +227,8 @@ export default async function TemplateDetailPage({ params }: { params: Params })
               </div>
             </Reveal>
 
-            {/* Screenshot + Buy box grid */}
-            <div className="grid grid-cols-1 gap-4 items-start sm:grid-cols-[1fr_300px] md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_340px]">
+            {/* Screenshot + Buy box grid — side-by-side from sm (640px) */}
+            <div className="grid grid-cols-1 gap-4 items-start sm:grid-cols-[1fr_280px] md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px]">
               {/* Left: full screenshot preview */}
               <Reveal>
                 <div className="overflow-hidden rounded-xl border border-border/80 bg-muted/35 p-1.5 sm:p-2 shadow-lg">
