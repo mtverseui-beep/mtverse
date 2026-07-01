@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { AlertTriangle, ExternalLink, Loader2, RefreshCw } from 'lucide-react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { ExternalLink, Loader2, RefreshCw } from 'lucide-react'
 
 type PreviewIframeProps = {
   url: string
@@ -13,34 +13,43 @@ export function PreviewIframe({ url, directUrl, title }: PreviewIframeProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [retryCount, setRetryCount] = useState(0)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const loadedRef = useRef(false)
 
-  // Detect iframe load failure via timeout (X-Frame-Options blocks don't trigger onerror)
+  // Warm up the preview server with a HEAD request to avoid cold start delay
   useEffect(() => {
+    fetch(url, { method: 'HEAD', mode: 'no-cors' }).catch(() => {})
+  }, [url])
+
+  // Timeout: 15s covers cold starts. Only error if onLoad never fires.
+  useEffect(() => {
+    loadedRef.current = false
     const timer = setTimeout(() => {
-      if (loading) {
-        // If still loading after 8s, likely blocked by X-Frame-Options
+      if (!loadedRef.current && loading) {
         setLoading(false)
         setError(true)
       }
-    }, 8000)
+    }, 15000)
     return () => clearTimeout(timer)
-  }, [loading, retryCount])
+  }, [retryCount]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleLoad = () => {
+  const handleLoad = useCallback(() => {
+    loadedRef.current = true
     setLoading(false)
     setError(false)
-  }
+  }, [])
 
-  const handleError = () => {
+  const handleError = useCallback(() => {
+    loadedRef.current = true
     setLoading(false)
     setError(true)
-  }
+  }, [])
 
-  const handleRetry = () => {
+  const handleRetry = useCallback(() => {
     setLoading(true)
     setError(false)
     setRetryCount(prev => prev + 1)
-  }
+  }, [])
 
   return (
     <>
@@ -49,6 +58,7 @@ export function PreviewIframe({ url, directUrl, title }: PreviewIframeProps) {
           <div className="text-center">
             <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
             <p className="mt-4 text-sm text-muted-foreground">Loading preview...</p>
+            <p className="mt-1 text-xs text-muted-foreground/60">This may take a few seconds on first load</p>
           </div>
         </div>
       )}
@@ -86,6 +96,7 @@ export function PreviewIframe({ url, directUrl, title }: PreviewIframeProps) {
       )}
 
       <iframe
+        ref={iframeRef}
         key={retryCount}
         src={url}
         title={`${title} live preview`}
