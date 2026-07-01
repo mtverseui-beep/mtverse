@@ -228,7 +228,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
             </Reveal>
 
             {/* Screenshot + Buy box grid */}
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_320px] gap-3 md:gap-5 items-start">
+            <div className="grid grid-cols-1 gap-4 items-start sm:grid-cols-[1fr_300px] md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_340px]">
               {/* Left: full screenshot preview */}
               <Reveal>
                 <div className="overflow-hidden rounded-xl border border-border/80 bg-muted/35 p-1.5 sm:p-2 shadow-lg">
@@ -270,17 +270,29 @@ export default async function TemplateDetailPage({ params }: { params: Params })
         {/* ═══ Highlights — bento-style grid ═══ */}
         <section className="ds-section-sm">
           <div className="ds-container">
-            <Stagger className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <Stagger className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
               {template.highlights.map((h, i) => {
                 const Icon = HIGHLIGHT_ICONS[h.icon] ?? Sparkles
+                const gradients = [
+                  'from-violet-50 to-indigo-50 dark:from-violet-950/20 dark:to-indigo-950/20 border-violet-100 dark:border-violet-900/30',
+                  'from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 border-emerald-100 dark:border-emerald-900/30',
+                  'from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-amber-100 dark:border-amber-900/30',
+                  'from-sky-50 to-blue-50 dark:from-sky-950/20 dark:to-blue-950/20 border-sky-100 dark:border-sky-900/30',
+                ]
+                const iconColors = [
+                  'bg-violet-100 text-violet-600 dark:bg-violet-900/40 dark:text-violet-300',
+                  'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-300',
+                  'bg-amber-100 text-amber-600 dark:bg-amber-900/40 dark:text-amber-300',
+                  'bg-sky-100 text-sky-600 dark:bg-sky-900/40 dark:text-sky-300',
+                ]
                 return (
                   <StaggerItem key={i}>
-                    <div className="ds-card h-full p-4 sm:p-5 group hover:border-primary-300 transition-colors">
-                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 text-primary-600 mb-3 dark:bg-primary-900/30 dark:text-primary-300 group-hover:scale-110 transition-transform">
-                        <Icon className="h-5 w-5" />
+                    <div className={`h-full rounded-xl border bg-gradient-to-br p-3 sm:p-4 group hover:shadow-md transition-all ${gradients[i % 4]}`}>
+                      <div className={`inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg mb-2 group-hover:scale-110 transition-transform ${iconColors[i % 4]}`}>
+                        <Icon className="h-4 w-4" />
                       </div>
-                      <h3 className="text-sm font-semibold mb-1">{h.title}</h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{h.description}</p>
+                      <h3 className="text-xs sm:text-sm font-semibold mb-0.5">{h.title}</h3>
+                      <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed line-clamp-2">{h.description}</p>
                     </div>
                   </StaggerItem>
                 )
@@ -324,7 +336,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
           </div>
         </section>
 
-        <section className="ds-section-sm">
+        <section className="ds-section-sm ds-bg-section">
           <div className="ds-container max-w-4xl">
             <Reveal>
               <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Template details</h2>
