@@ -60,8 +60,9 @@ export type Template = {
 }
 
 export const TEMPLATE_CATEGORIES: TemplateCategory[] = [
-  { id: 'all', label: 'All', description: 'Browse all dashboard templates', icon: 'LayoutGrid' },
+  { id: 'all', label: 'All', description: 'Browse all templates', icon: 'LayoutGrid' },
   { id: 'dashboards', label: 'Dashboards', description: 'Analytics, SaaS, enterprise, and admin dashboards', icon: 'LayoutDashboard' },
+  { id: 'html', label: 'HTML', description: 'HTML website templates, portfolio pages, and static site starters', icon: 'Code2' },
 ]
 
 export type TemplateSortMode = 'featured' | 'trending' | 'new' | 'price-low' | 'price-high' | 'rating'

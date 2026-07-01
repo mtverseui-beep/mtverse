@@ -109,6 +109,11 @@ function normalizeStatus(value: unknown): DashboardKitStatus {
   return 'draft'
 }
 
+function normalizeFramework(value: unknown): DashboardKit['framework'] {
+  if (value === 'html' || value === 'react' || value === 'nextjs') return value
+  return 'nextjs'
+}
+
 export function normalizeDashboardKit(input: Partial<DashboardKit>): DashboardKit {
   const slug = slugify(input.slug || input.title || 'kit-' + Date.now())
   const title = cleanText(input.title || slug)
@@ -122,6 +127,7 @@ export function normalizeDashboardKit(input: Partial<DashboardKit>): DashboardKi
   const livePreviewUrl = cleanText(input.livePreviewUrl || matchedFallback?.livePreviewUrl || '')
   const category = slugify(cleanText(input.category || 'dashboard-kits')) || 'dashboard-kits'
   const categoryTitle = cleanText(input.categoryTitle || (category === 'dashboard-kits' ? 'Dashboard Kits' : category))
+  const framework = normalizeFramework(input.framework)
   const summary = cleanText(input.summary || input.description || fallback.summary)
   const description = cleanText(input.description || input.summary || fallback.description)
 
@@ -139,8 +145,9 @@ export function normalizeDashboardKit(input: Partial<DashboardKit>): DashboardKi
     metaDescription: cleanText(input.metaDescription) || buildMetaDescription(title, summary || description, categoryTitle),
     priceUsd,
     originalPriceUsd,
-    framework: 'nextjs',
-    frameworkLabel: cleanText(input.frameworkLabel || 'Next.js App Router'),
+    framework,
+    frameworkLabel: cleanText(input.frameworkLabel || (framework === 'html' ? 'HTML/CSS/JavaScript' : 'Next.js App Router')),
+    subcategory: input.subcategory ? cleanText(input.subcategory) : matchedFallback?.subcategory,
     previewPath,
     livePreviewUrl: livePreviewUrl || undefined,
     packageFilename,
@@ -156,6 +163,7 @@ export function normalizeDashboardKit(input: Partial<DashboardKit>): DashboardKi
     useCases: asStringArray(input.useCases).length ? asStringArray(input.useCases) : fallback.useCases,
     metadataLanguages: Array.isArray(input.metadataLanguages) && input.metadataLanguages.length ? input.metadataLanguages : fallback.metadataLanguages,
     updatedAt: cleanText(input.updatedAt || new Date().toISOString().slice(0, 10)),
+    isFree: Boolean(input.isFree),
   }
 }
 
@@ -274,4 +282,5 @@ export async function deleteDashboardKit(slugOrId: string) {
   await writeStore(nextKits, 'admin-delete')
   return nextKits.length !== store.kits.length
 }
+
 

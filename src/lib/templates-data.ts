@@ -106,6 +106,7 @@ function normalizeCategoryId(value: string | undefined) {
 
 function getCategoryLabel(kit: DashboardKit, category: string) {
   if (category === 'dashboards') return 'Dashboards'
+  if (category === 'html') return 'HTML'
   return kit.categoryTitle?.trim() || titleCase(category)
 }
 
@@ -147,7 +148,7 @@ function toTemplate(kit: DashboardKit): Template {
     keywords: kit.keywords,
     category,
     categoryLabel,
-    subcategory: meta?.subcategory || categoryLabel,
+    subcategory: meta?.subcategory || kit.subcategory || categoryLabel,
     tags: kit.tags,
     techStack: kit.techStack,
     frameworkLabel: kit.frameworkLabel,
@@ -168,20 +169,22 @@ function toTemplate(kit: DashboardKit): Template {
     features: kit.features,
     pages: kit.includedPages,
     components: meta?.components ?? Math.max(pageCount + featureCount * 4, 12),
-    license: 'Single Project License',
+    license: kit.isFree ? 'Free Template License' : 'Single Project License',
     highlights: meta?.highlights ?? fallbackHighlights(kit),
     faq: [
       {
-        question: 'Is this based on a real dashboard project?',
-        answer: 'Yes. Each template is prepared from a real dashboard project and connected to a private live preview.',
+        question: 'Is this based on a real template project?',
+        answer: 'Yes. Each template is prepared from a real project and connected to a live preview when available.',
       },
       {
-        question: 'What do I receive after purchase?',
-        answer: 'You receive the dashboard package for this template, including the included pages and reusable UI sections.',
+        question: kit.isFree ? 'What do I receive after download?' : 'What do I receive after purchase?',
+        answer: kit.isFree
+          ? 'You receive the template ZIP package, including the included pages and reusable UI sections.'
+          : 'You receive the template package, including the included pages and reusable UI sections.',
       },
       {
-        question: 'Can I inspect the template before buying?',
-        answer: 'Yes. Use the live preview button to inspect the dashboard before checkout.',
+        question: kit.isFree ? 'Can I inspect the template before downloading?' : 'Can I inspect the template before buying?',
+        answer: 'Yes. Use the live preview button to inspect the template before downloading or checkout.',
       },
     ],
     isFree: Boolean(kit.isFree),
@@ -248,7 +251,7 @@ export function getTemplateCategoriesFor(templates: Template[]): TemplateCategor
       id: template.category,
       label: template.categoryLabel || titleCase(template.category),
       description: `${template.categoryLabel || titleCase(template.category)} templates`,
-      icon: template.category === 'dashboards' ? 'LayoutDashboard' : 'LayoutGrid',
+      icon: template.category === 'dashboards' ? 'LayoutDashboard' : template.category === 'html' ? 'Code2' : 'LayoutGrid',
     })
   }
 

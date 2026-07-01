@@ -17,8 +17,9 @@ export type DashboardKit = {
   metaDescription: string
   priceUsd: number
   originalPriceUsd: number
-  framework: 'nextjs'
+  framework: 'nextjs' | 'html' | 'react'
   frameworkLabel: string
+  subcategory?: string
   previewPath: string
   livePreviewUrl?: string
   packageFilename: string
@@ -68,3 +69,4 @@ export function getAvailableDashboardKits(kits = dashboardKits) {
 export function getDashboardKitBySlug(slug: string, kits = dashboardKits) {
   return kits.find((kit) => kit.slug === slug) || null
 }
+

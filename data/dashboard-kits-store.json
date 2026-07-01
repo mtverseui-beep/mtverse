@@ -2764,11 +2764,1466 @@
         }
       ],
       "updatedAt": "2026-02-22"
+    },
+    {
+      "id": "html-portfolio-3d-interactive-portfolio",
+      "slug": "3d-interactive-portfolio",
+      "title": "3D Interactive Portfolio",
+      "shortTitle": "3D Interactive Portfolio",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "3D Interactive Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "3D Interactive Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download 3D Interactive Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/3d-interactive-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/3d-interactive-portfolio",
+      "packageFilename": "3d-interactive-portfolio.zip",
+      "packageKey": "templates/html/portfolio/3d-interactive-portfolio/3d-interactive-portfolio-3551235354.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/3d-interactive-portfolio/3d-interactive-portfolio-0523971410.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/3d-interactive-portfolio/3d-interactive-portfolio-0523971410.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-alex-chen-developer-terminal-portfolio",
+      "slug": "alex-chen-developer-terminal-portfolio",
+      "title": "Alex Chen - Developer Terminal Portfolio",
+      "shortTitle": "Alex Chen",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "Alex Chen - Developer Terminal Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "Alex Chen - Developer Terminal Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download Alex Chen - Developer Terminal Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/alex-chen-developer-terminal-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/alex-chen-developer-terminal-portfolio",
+      "packageFilename": "alex-chen-developer-terminal-portfolio.zip",
+      "packageKey": "templates/html/portfolio/alex-chen-developer-terminal-portfolio/alex-chen-developer-terminal-portfolio-4305035836.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/alex-chen-developer-terminal-portfolio/alex-chen-developer-terminal-portfolio-0312490271.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/alex-chen-developer-terminal-portfolio/alex-chen-developer-terminal-portfolio-0312490271.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-alex-morgan-dark-minimal-portfolio",
+      "slug": "alex-morgan-dark-minimal-portfolio",
+      "title": "Alex Morgan - Dark Minimal Portfolio",
+      "shortTitle": "Alex Morgan",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "Alex Morgan - Dark Minimal Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "Alex Morgan - Dark Minimal Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download Alex Morgan - Dark Minimal Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/alex-morgan-dark-minimal-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/alex-morgan-dark-minimal-portfolio",
+      "packageFilename": "alex-morgan-dark-minimal-portfolio.zip",
+      "packageKey": "templates/html/portfolio/alex-morgan-dark-minimal-portfolio/alex-morgan-dark-minimal-portfolio-1331580938.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/alex-morgan-dark-minimal-portfolio/alex-morgan-dark-minimal-portfolio-7873500903.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/alex-morgan-dark-minimal-portfolio/alex-morgan-dark-minimal-portfolio-7873500903.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-architect-studio-portfolio",
+      "slug": "architect-studio-portfolio",
+      "title": "Halvorsen + Voss - Architecture Studio Portfolio",
+      "shortTitle": "Halvorsen + Voss",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "Halvorsen + Voss - Architecture Studio Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "Halvorsen + Voss - Architecture Studio Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download Halvorsen + Voss - Architecture Studio Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/architect-studio-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/architect-studio-portfolio",
+      "packageFilename": "architect-studio-portfolio.zip",
+      "packageKey": "templates/html/portfolio/architect-studio-portfolio/architect-studio-portfolio-3506440734.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/architect-studio-portfolio/architect-studio-portfolio-1963342783.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/architect-studio-portfolio/architect-studio-portfolio-1963342783.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-brutalist-portfolio",
+      "slug": "brutalist-portfolio",
+      "title": "MAX KLAW - Brutalist Portfolio",
+      "shortTitle": "MAX KLAW",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "MAX KLAW - Brutalist Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "MAX KLAW - Brutalist Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download MAX KLAW - Brutalist Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/brutalist-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/brutalist-portfolio",
+      "packageFilename": "brutalist-portfolio.zip",
+      "packageKey": "templates/html/portfolio/brutalist-portfolio/brutalist-portfolio-8035756596.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/brutalist-portfolio/brutalist-portfolio-4774525928.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/brutalist-portfolio/brutalist-portfolio-4774525928.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-bug-hunter-developer-portfolio",
+      "slug": "bug-hunter-developer-portfolio",
+      "title": "Bug Hunter Developer Portfolio - Andrey Petrovic",
+      "shortTitle": "Bug Hunter Developer Portfolio",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "Bug Hunter Developer Portfolio - Andrey Petrovic is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "Bug Hunter Developer Portfolio - Andrey Petrovic | Free HTML Portfolio Template",
+      "metaDescription": "Download Bug Hunter Developer Portfolio - Andrey Petrovic, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/bug-hunter-developer-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/bug-hunter-developer-portfolio",
+      "packageFilename": "bug-hunter-developer-portfolio.zip",
+      "packageKey": "templates/html/portfolio/bug-hunter-developer-portfolio/bug-hunter-developer-portfolio-0424827651.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/bug-hunter-developer-portfolio/bug-hunter-developer-portfolio-4007564811.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/bug-hunter-developer-portfolio/bug-hunter-developer-portfolio-4007564811.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-creative-agency-bold-portfolio",
+      "slug": "creative-agency-bold-portfolio",
+      "title": "VOLT/STUDIO - Creative Agency Bold Portfolio",
+      "shortTitle": "VOLT/STUDIO",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "VOLT/STUDIO - Creative Agency Bold Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "VOLT/STUDIO - Creative Agency Bold Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download VOLT/STUDIO - Creative Agency Bold Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/creative-agency-bold-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/creative-agency-bold-portfolio",
+      "packageFilename": "creative-agency-bold-portfolio.zip",
+      "packageKey": "templates/html/portfolio/creative-agency-bold-portfolio/creative-agency-bold-portfolio-2428683755.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/creative-agency-bold-portfolio/creative-agency-bold-portfolio-2401679402.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/creative-agency-bold-portfolio/creative-agency-bold-portfolio-2401679402.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-designer-folio-editorial-portfolio",
+      "slug": "designer-folio-editorial-portfolio",
+      "title": "Designer Folio - Sara Lindqvist Editorial Portfolio",
+      "shortTitle": "Designer Folio",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "Designer Folio - Sara Lindqvist Editorial Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "Designer Folio - Sara Lindqvist Editorial Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download Designer Folio - Sara Lindqvist Editorial Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/designer-folio-editorial-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/designer-folio-editorial-portfolio",
+      "packageFilename": "designer-folio-editorial-portfolio.zip",
+      "packageKey": "templates/html/portfolio/designer-folio-editorial-portfolio/designer-folio-editorial-portfolio-1351929506.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/designer-folio-editorial-portfolio/designer-folio-editorial-portfolio-6996655494.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/designer-folio-editorial-portfolio/designer-folio-editorial-portfolio-6996655494.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-elena-voss-photographer-portfolio",
+      "slug": "elena-voss-photographer-portfolio",
+      "title": "Elena Voss - Photographer Portfolio",
+      "shortTitle": "Elena Voss",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "Elena Voss - Photographer Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "Elena Voss - Photographer Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download Elena Voss - Photographer Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/elena-voss-photographer-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/elena-voss-photographer-portfolio",
+      "packageFilename": "elena-voss-photographer-portfolio.zip",
+      "packageKey": "templates/html/portfolio/elena-voss-photographer-portfolio/elena-voss-photographer-portfolio-0003685554.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/elena-voss-photographer-portfolio/elena-voss-photographer-portfolio-8741161152.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/elena-voss-photographer-portfolio/elena-voss-photographer-portfolio-8741161152.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-macos-desktop-portfolio-experience",
+      "slug": "macos-desktop-portfolio-experience",
+      "title": "Marcus Reyes - macOS Desktop Portfolio Experience",
+      "shortTitle": "Marcus Reyes",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "Marcus Reyes - macOS Desktop Portfolio Experience is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "Marcus Reyes - macOS Desktop Portfolio Experience | Free HTML Portfolio Template",
+      "metaDescription": "Download Marcus Reyes - macOS Desktop Portfolio Experience, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/macos-desktop-portfolio-experience",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/macos-desktop-portfolio-experience",
+      "packageFilename": "macos-desktop-portfolio-experience.zip",
+      "packageKey": "templates/html/portfolio/macos-desktop-portfolio-experience/macos-desktop-portfolio-experience-9973105731.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/macos-desktop-portfolio-experience/macos-desktop-portfolio-experience-7605688003.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/macos-desktop-portfolio-experience/macos-desktop-portfolio-experience-7605688003.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-neon-cyberpunk-portfolio",
+      "slug": "neon-cyberpunk-portfolio",
+      "title": "Kai Nakamura - Neon Cyberpunk Portfolio",
+      "shortTitle": "Kai Nakamura",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "Kai Nakamura - Neon Cyberpunk Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "Kai Nakamura - Neon Cyberpunk Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download Kai Nakamura - Neon Cyberpunk Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/neon-cyberpunk-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/neon-cyberpunk-portfolio",
+      "packageFilename": "neon-cyberpunk-portfolio.zip",
+      "packageKey": "templates/html/portfolio/neon-cyberpunk-portfolio/neon-cyberpunk-portfolio-1030749370.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/neon-cyberpunk-portfolio/neon-cyberpunk-portfolio-5230161585.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/neon-cyberpunk-portfolio/neon-cyberpunk-portfolio-5230161585.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-purple-wave-creative-portfolio",
+      "slug": "purple-wave-creative-portfolio",
+      "title": "Luna Park - Purple Wave Creative Portfolio",
+      "shortTitle": "Luna Park",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "Luna Park - Purple Wave Creative Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "Luna Park - Purple Wave Creative Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download Luna Park - Purple Wave Creative Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/purple-wave-creative-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/purple-wave-creative-portfolio",
+      "packageFilename": "purple-wave-creative-portfolio.zip",
+      "packageKey": "templates/html/portfolio/purple-wave-creative-portfolio/purple-wave-creative-portfolio-9094816553.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/purple-wave-creative-portfolio/purple-wave-creative-portfolio-5047807056.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/purple-wave-creative-portfolio/purple-wave-creative-portfolio-5047807056.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-retro-terminal-portfolio",
+      "slug": "retro-terminal-portfolio",
+      "title": "Halcyon Reed - Retro Terminal Portfolio",
+      "shortTitle": "Halcyon Reed",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "Halcyon Reed - Retro Terminal Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "Halcyon Reed - Retro Terminal Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download Halcyon Reed - Retro Terminal Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/retro-terminal-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/retro-terminal-portfolio",
+      "packageFilename": "retro-terminal-portfolio.zip",
+      "packageKey": "templates/html/portfolio/retro-terminal-portfolio/retro-terminal-portfolio-0112506571.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/retro-terminal-portfolio/retro-terminal-portfolio-9281707296.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/retro-terminal-portfolio/retro-terminal-portfolio-9281707296.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-swiss-design-portfolio",
+      "slug": "swiss-design-portfolio",
+      "title": "Elias Brunner - Swiss Design Portfolio",
+      "shortTitle": "Elias Brunner",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "Elias Brunner - Swiss Design Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "Elias Brunner - Swiss Design Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download Elias Brunner - Swiss Design Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/swiss-design-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/swiss-design-portfolio",
+      "packageFilename": "swiss-design-portfolio.zip",
+      "packageKey": "templates/html/portfolio/swiss-design-portfolio/swiss-design-portfolio-1590107967.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/swiss-design-portfolio/swiss-design-portfolio-6092563449.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/swiss-design-portfolio/swiss-design-portfolio-6092563449.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
+    },
+    {
+      "id": "html-portfolio-valentine-fashion-editorial-portfolio",
+      "slug": "valentine-fashion-editorial-portfolio",
+      "title": "Valentine Laurent - Fashion Editorial Portfolio",
+      "shortTitle": "Valentine Laurent",
+      "status": "available",
+      "category": "html",
+      "categoryTitle": "HTML",
+      "subcategory": "Portfolio",
+      "summary": "Free HTML portfolio template for personal brands, creative portfolios, resumes, project showcases, and static website launches.",
+      "description": "Valentine Laurent - Fashion Editorial Portfolio is a free, static HTML portfolio template with a polished single-page experience, ready-to-edit source, screenshot preview, and ZIP download. It is useful for developers, designers, photographers, architects, agencies, freelancers, and creators who need a fast portfolio website starter without a build step.",
+      "seoTitle": "Valentine Laurent - Fashion Editorial Portfolio | Free HTML Portfolio Template",
+      "metaDescription": "Download Valentine Laurent - Fashion Editorial Portfolio, a free HTML portfolio template for personal websites, creative portfolios, resumes, project showcases, and static landing pages.",
+      "priceUsd": 0,
+      "originalPriceUsd": 0,
+      "framework": "html",
+      "frameworkLabel": "HTML/CSS/JavaScript",
+      "previewPath": "/templates/html/portfolio/valentine-fashion-editorial-portfolio",
+      "livePreviewUrl": "https://mt-html-portfolio.vercel.app/valentine-fashion-editorial-portfolio",
+      "packageFilename": "valentine-fashion-editorial-portfolio.zip",
+      "packageKey": "templates/html/portfolio/valentine-fashion-editorial-portfolio/valentine-fashion-editorial-portfolio-3122311106.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/valentine-fashion-editorial-portfolio/valentine-fashion-editorial-portfolio-3709554845.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/html/portfolio-previews/valentine-fashion-editorial-portfolio/valentine-fashion-editorial-portfolio-3709554845.png"
+      ],
+      "tags": [
+        "free html template",
+        "portfolio template",
+        "personal website",
+        "static website",
+        "creative portfolio",
+        "responsive portfolio"
+      ],
+      "keywords": [
+        "free HTML portfolio template",
+        "free portfolio website template",
+        "HTML CSS portfolio",
+        "personal portfolio template",
+        "developer portfolio template",
+        "designer portfolio template",
+        "photographer portfolio template",
+        "creative agency portfolio",
+        "static website template",
+        "resume website template"
+      ],
+      "techStack": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "includedPages": [
+        "Portfolio homepage",
+        "Hero section",
+        "About section",
+        "Work showcase",
+        "Contact section"
+      ],
+      "features": [
+        "Free static HTML portfolio template",
+        "No payment required",
+        "No build step required",
+        "Editable index.html source",
+        "Responsive portfolio layout",
+        "Screenshot preview included",
+        "ZIP download package",
+        "Useful for personal brands and creative portfolios"
+      ],
+      "highlights": [
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Format",
+          "value": "Static HTML"
+        },
+        {
+          "label": "Category",
+          "value": "Portfolio"
+        },
+        {
+          "label": "Download",
+          "value": "ZIP package"
+        }
+      ],
+      "useCases": [
+        "personal portfolios",
+        "developer portfolios",
+        "designer portfolios",
+        "photography portfolios",
+        "creative agency portfolios",
+        "resume websites",
+        "static landing pages"
+      ],
+      "updatedAt": "2026-07-01",
+      "isFree": true
     }
   ],
   "meta": {
-    "source": "admin-save",
-    "updatedAt": "2026-07-01T06:12:29.729Z",
-    "count": 8
+    "source": "local-plus-portfolio-html",
+    "updatedAt": "2026-07-01T12:27:51.360Z",
+    "count": 23
   }
 }
