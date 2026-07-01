@@ -212,11 +212,18 @@ type TemplateSocialRecord = {
   updatedAt: string
 }
 
+type FreeDownloadRecord = {
+  count: number
+  slugs: string[]
+  unlockedAt: string | null
+}
+
 type TemplateUserRecord = {
   email: string
   purchases: Record<string, UserTemplatePurchase>
   reviews: Record<string, string[]>
   savedTemplates: Record<string, SavedTemplateRecord>
+  freeDownloads: FreeDownloadRecord
   updatedAt: string
 }
 
@@ -386,6 +393,13 @@ function normalizeUserRecord(emailKey: string, record: Partial<TemplateUserRecor
     purchases,
     reviews,
     savedTemplates,
+    freeDownloads: {
+      count: Math.max(0, Math.floor(Number(record?.freeDownloads?.count) || 0)),
+      slugs: Array.isArray(record?.freeDownloads?.slugs)
+        ? record.freeDownloads.slugs.map((s) => normalizeSlug(String(s))).filter(Boolean)
+        : [],
+      unlockedAt: record?.freeDownloads?.unlockedAt ? sanitizeText(record.freeDownloads.unlockedAt, 40) : null,
+    },
     updatedAt: sanitizeText(record?.updatedAt, 40) || nowIso(),
   }
 }
@@ -705,4 +719,98 @@ export async function getSavedTemplateSlugs(emailInput: string | null | undefine
 
   const store = await readStore()
   return Object.keys(store.users[email]?.savedTemplates || {})
+}
+
+
+// ═══ Free Template Download Functions ═══
+
+const FREE_DOWNLOAD_LIMIT = 5
+
+export type FreeDownloadStatus = {
+  count: number
+  slugs: string[]
+  remaining: number
+  limitReached: boolean
+  unlocked: boolean
+}
+
+export async function getFreeDownloadStatus(emailInput: string | null | undefined): Promise<FreeDownloadStatus> {
+  const email = emailInput ? normalizeEmail(emailInput) : ''
+  if (!email) return { count: 0, slugs: [], remaining: FREE_DOWNLOAD_LIMIT, limitReached: false, unlocked: false }
+
+  const store = await readStore()
+  const userRecord = store.users[email]
+  const freeDownloads = userRecord?.freeDownloads || { count: 0, slugs: [], unlockedAt: null }
+  const unlocked = Boolean(freeDownloads.unlockedAt)
+
+  return {
+    count: freeDownloads.count,
+    slugs: freeDownloads.slugs,
+    remaining: unlocked ? Infinity : Math.max(0, FREE_DOWNLOAD_LIMIT - freeDownloads.count),
+    limitReached: !unlocked && freeDownloads.count >= FREE_DOWNLOAD_LIMIT,
+    unlocked,
+  }
+}
+
+export async function hasFreeDownload(slug: string, emailInput: string | null | undefined): Promise<boolean> {
+  const email = emailInput ? normalizeEmail(emailInput) : ''
+  if (!email) return false
+
+  const store = await readStore()
+  const userRecord = store.users[email]
+  return Boolean(userRecord?.freeDownloads?.slugs?.includes(normalizeSlug(slug)))
+}
+
+export async function recordFreeDownload(slug: string, emailInput: string): Promise<FreeDownloadStatus> {
+  const safeSlug = normalizeSlug(slug)
+  const email = normalizeEmail(emailInput)
+  const store = await readStore()
+  const userRecord = getUserRecord(store, email)
+  const now = nowIso()
+
+  // If already downloaded this slug, don't increment counter
+  if (userRecord.freeDownloads.slugs.includes(safeSlug)) {
+    const unlocked = Boolean(userRecord.freeDownloads.unlockedAt)
+    return {
+      count: userRecord.freeDownloads.count,
+      slugs: userRecord.freeDownloads.slugs,
+      remaining: unlocked ? Infinity : Math.max(0, FREE_DOWNLOAD_LIMIT - userRecord.freeDownloads.count),
+      limitReached: !unlocked && userRecord.freeDownloads.count >= FREE_DOWNLOAD_LIMIT,
+      unlocked,
+    }
+  }
+
+  // Add new slug
+  userRecord.freeDownloads.slugs.push(safeSlug)
+  userRecord.freeDownloads.count = userRecord.freeDownloads.slugs.length
+  userRecord.updatedAt = now
+  store.users[email] = userRecord
+
+  // Also increment the template's purchase count for social proof
+  const record = getRecord(store, safeSlug)
+  record.realPurchaseCount += 1
+  record.updatedAt = now
+
+  await writeStore(store)
+
+  const unlocked = Boolean(userRecord.freeDownloads.unlockedAt)
+  return {
+    count: userRecord.freeDownloads.count,
+    slugs: userRecord.freeDownloads.slugs,
+    remaining: unlocked ? Infinity : Math.max(0, FREE_DOWNLOAD_LIMIT - userRecord.freeDownloads.count),
+    limitReached: !unlocked && userRecord.freeDownloads.count >= FREE_DOWNLOAD_LIMIT,
+    unlocked,
+  }
+}
+
+export async function setFreeUnlocked(emailInput: string): Promise<void> {
+  const email = normalizeEmail(emailInput)
+  const store = await readStore()
+  const userRecord = getUserRecord(store, email)
+
+  userRecord.freeDownloads.unlockedAt = nowIso()
+  userRecord.updatedAt = nowIso()
+  store.users[email] = userRecord
+
+  await writeStore(store)
 }

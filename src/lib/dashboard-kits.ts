@@ -34,6 +34,7 @@ export type DashboardKit = {
   useCases: string[]
   metadataLanguages: Array<{ code: string; name: string; direction: 'ltr' | 'rtl' }>
   updatedAt: string
+  isFree?: boolean
 }
 
 export const PREVIEW_BASE_URL =

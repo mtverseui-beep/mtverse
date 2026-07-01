@@ -56,6 +56,7 @@ export type Template = {
   license: string
   highlights: { title: string; description: string; icon: string }[]
   faq: { question: string; answer: string }[]
+  isFree: boolean
 }
 
 export const TEMPLATE_CATEGORIES: TemplateCategory[] = [

@@ -31,6 +31,10 @@ export function TemplateDetailClient({ template }: Props) {
   const [buying, setBuying] = useState(false)
   const [canDownload, setCanDownload] = useState(false)
   const [checkingAccess, setCheckingAccess] = useState(false)
+  const [freeRemaining, setFreeRemaining] = useState(5)
+  const [freeLimitReached, setFreeLimitReached] = useState(false)
+  const [freeUnlocked, setFreeUnlocked] = useState(false)
+  const [alreadyDownloaded, setAlreadyDownloaded] = useState(false)
   const hasDiscount = typeof template.originalPriceUsd === 'number' && template.originalPriceUsd > template.price
 
   useEffect(() => {
@@ -50,12 +54,18 @@ export function TemplateDetailClient({ template }: Props) {
           fetch(`/api/templates/${encodeURIComponent(template.slug)}/access`, { credentials: 'include' }),
           fetch(`/api/templates/${encodeURIComponent(template.slug)}/save`, { credentials: 'include' }),
         ])
-        const accessPayload = (await accessResponse.json().catch(() => null)) as { canDownload?: boolean } | null
+        const accessPayload = (await accessResponse.json().catch(() => null)) as { canDownload?: boolean; isFree?: boolean; freeRemaining?: number; freeLimitReached?: boolean; freeUnlocked?: boolean; alreadyDownloaded?: boolean } | null
         const savedPayload = (await savedResponse.json().catch(() => null)) as { saved?: boolean } | null
 
         if (!cancelled) {
           setCanDownload(Boolean(accessResponse.ok && accessPayload?.canDownload))
           setLiked(Boolean(savedResponse.ok && savedPayload?.saved))
+          if (accessPayload) {
+            setFreeRemaining(accessPayload.freeRemaining ?? 5)
+            setFreeLimitReached(Boolean(accessPayload.freeLimitReached))
+            setFreeUnlocked(Boolean(accessPayload.freeUnlocked))
+            setAlreadyDownloaded(Boolean(accessPayload.alreadyDownloaded))
+          }
         }
       } catch {
         if (!cancelled) {
@@ -76,17 +86,18 @@ export function TemplateDetailClient({ template }: Props) {
 
   async function handleBuy() {
     if (!authenticated) {
-      toast.info('Please sign in to purchase templates')
+      toast.info(template.isFree ? 'Please sign in to download free templates' : 'Please sign in to purchase templates')
       router.push(`/sign-in?next=/templates/${template.slug}`)
       return
     }
 
     setBuying(true)
     try {
+      const packageId = template.isFree && freeLimitReached ? 'free-unlock' : 'next'
       const response = await fetch('/api/payments/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ packageId: 'next', kitSlug: template.slug }),
+        body: JSON.stringify({ packageId, kitSlug: template.slug }),
       })
       const checkout = (await response.json()) as {
         url?: string
@@ -172,24 +183,60 @@ export function TemplateDetailClient({ template }: Props) {
   return (
     <div id="buy" className="ds-card sticky top-20 p-4 sm:p-5">
       <div className="flex items-baseline gap-2 mb-1">
-        <span className="text-3xl sm:text-4xl font-bold text-foreground">${template.price}</span>
-        {hasDiscount ? (
+        {template.isFree ? (
+          <span className="text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400">Free</span>
+        ) : (
           <>
-            <span className="text-base sm:text-lg text-muted-foreground line-through">${template.originalPriceUsd}</span>
-            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-              {Math.round((1 - template.price / template.originalPriceUsd!) * 100)}% off
-            </span>
+            <span className="text-3xl sm:text-4xl font-bold text-foreground">${template.price}</span>
+            {hasDiscount ? (
+              <>
+                <span className="text-base sm:text-lg text-muted-foreground line-through">${template.originalPriceUsd}</span>
+                <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                  {Math.round((1 - template.price / template.originalPriceUsd!) * 100)}% off
+                </span>
+              </>
+            ) : null}
           </>
-        ) : null}
+        )}
       </div>
-      <p className="text-xs text-muted-foreground mb-3">USD · one-time payment · lifetime access</p>
+      <p className="text-xs text-muted-foreground mb-3">
+        {template.isFree ? 'Free download · sign in required' : 'USD · one-time payment · lifetime access'}
+      </p>
 
-      {canDownload ? (
+      {/* Free template: show remaining downloads info */}
+      {template.isFree && authenticated && !freeUnlocked && !alreadyDownloaded && !freeLimitReached && (
+        <p className="text-xs text-muted-foreground mb-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1.5">
+          {freeRemaining}/5 free downloads remaining
+        </p>
+      )}
+
+      {/* Download button for already-downloaded or canDownload */}
+      {canDownload && !freeLimitReached ? (
         <Link href={`/api/download/template/${template.slug}`} className="ds-btn ds-btn-primary w-full mb-3">
           <Download className="h-4 w-4" />
-          Download package
+          {template.isFree ? 'Download Free' : 'Download package'}
         </Link>
+      ) : freeLimitReached && template.isFree ? (
+        /* Free limit reached — show unlock CTA */
+        <button
+          onClick={handleBuy}
+          disabled={buying || authLoading || checkingAccess}
+          className="ds-btn ds-btn-accent w-full mb-3"
+        >
+          {buying ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Starting checkout...
+            </>
+          ) : (
+            <>
+              <ShoppingCart className="h-4 w-4" />
+              Unlock unlimited — $5
+            </>
+          )}
+        </button>
       ) : (
+        /* Standard buy button */
         <button
           onClick={handleBuy}
           disabled={buying || authLoading || checkingAccess}
@@ -200,6 +247,11 @@ export function TemplateDetailClient({ template }: Props) {
               <Loader2 className="h-4 w-4 animate-spin" />
               Starting checkout...
             </>
+          ) : template.isFree ? (
+            <>
+              <Download className="h-4 w-4" />
+              {authenticated ? 'Download Free' : 'Sign in to download'}
+            </>
           ) : (
             <>
               <ShoppingCart className="h-4 w-4" />
@@ -207,6 +259,13 @@ export function TemplateDetailClient({ template }: Props) {
             </>
           )}
         </button>
+      )}
+
+      {/* Free limit reached info */}
+      {freeLimitReached && template.isFree && (
+        <p className="text-xs text-center text-muted-foreground mb-3">
+          You&apos;ve used all 5 free downloads. Unlock unlimited for a one-time $5 payment.
+        </p>
       )}
 
       <Link href={`/preview/${template.slug}`} target="_blank" className="ds-btn ds-btn-secondary w-full mb-2">

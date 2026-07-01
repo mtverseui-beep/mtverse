@@ -44,7 +44,13 @@ export function TemplateCard({ template, priority = false }: Props) {
             <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-foreground transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-300 sm:text-base">
               {template.title}
             </h3>
-            <span className="shrink-0 text-lg font-semibold text-foreground">${template.price}</span>
+            {template.isFree ? (
+              <span className="shrink-0 rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+                Free
+              </span>
+            ) : (
+              <span className="shrink-0 text-lg font-semibold text-foreground">${template.price}</span>
+            )}
           </div>
 
           <div className="mt-2 flex items-center gap-1.5 text-sm font-medium text-muted-foreground">

@@ -1,6 +1,6 @@
 ﻿import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Gauge, Store, Building2 } from 'lucide-react'
+import { Gauge, Store, Building2, ChevronDown } from 'lucide-react'
 import { SITE_URL } from '@/lib/site-url'
 import { Suspense } from 'react'
 import PublicLayout from '@/components/layout/PublicLayout'
@@ -118,19 +118,19 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
           />
         </Suspense>
 
-        <section className="border-t border-border/50 bg-gradient-to-b from-muted/30 to-muted/60">
-          <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
+        <section className="ds-section-sm ds-bg-section">
+          <div className="ds-container max-w-5xl">
             {/* Heading + description */}
             <div className="max-w-3xl">
-              <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-                Next.js dashboard templates for SaaS, ecommerce, CRM, and admin products
+              <h2 className="ds-h2 mb-3">
+                Next.js templates for SaaS, ecommerce, CRM, and admin products
               </h2>
-              <p className="mt-3 text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
+              <p className="text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
                 mtverse templates are curated source packages for teams building production dashboards, internal tools, analytics products, ecommerce back offices, AI SaaS apps, and B2B admin portals. Each template includes screenshots, a live preview, reusable sections, and secure download access after purchase.
               </p>
             </div>
 
-            {/* Category cards — with lucide icons and hover */}
+            {/* Category cards — ds-card style matching site */}
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
                 { title: 'SaaS dashboards', copy: 'Admin shells, metrics, billing, workspace, and team management screens for subscription products.', icon: 'gauge' },
@@ -139,9 +139,9 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
               ].map((item) => {
                 const Icon = item.icon === 'gauge' ? Gauge : item.icon === 'store' ? Store : Building2
                 return (
-                  <div key={item.title} className="rounded-xl border border-border/70 bg-background p-5 shadow-sm transition-all duration-200 hover:border-primary/30 hover:shadow-md">
+                  <div key={item.title} className="ds-card p-5">
                     <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                      <Icon className="h-4.5 w-4.5" />
+                      <Icon className="h-4 w-4" />
                     </div>
                     <h3 className="text-sm font-bold text-foreground">{item.title}</h3>
                     <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.copy}</p>
@@ -150,32 +150,30 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
               })}
             </div>
 
-            {/* FAQ */}
-            <div className="mt-10 overflow-hidden rounded-xl border border-border/70 bg-background shadow-sm">
-              <div className="divide-y divide-border/60">
-                {[
-                  { q: 'Which dashboard template should I choose?', a: 'Choose MTVerse Modular for broad AI SaaS and CRM coverage, MT Box for enterprise SaaS admin flows, Mat Dash for a large admin studio, and Lumiere for ecommerce storefront plus admin workflows.' },
-                  { q: 'Are these free website templates?', a: 'The public prompt library is free. Dashboard templates are premium source packages with live previews, secure download access, and one-time pricing.' },
-                  { q: 'Do templates include live preview and screenshots?', a: 'Yes. Each listed dashboard template includes a preview page and full-width screenshot so you can inspect the visual quality before checkout.' },
-                  { q: 'Can I use these templates in production?', a: 'Yes. The license is for one production project, and the template package is delivered after checkout through protected checkout access.' },
-                ].map((item) => (
-                  <details key={item.q} className="group px-5 py-4 transition-colors hover:bg-muted/30">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-foreground">
-                      {item.q}
-                      <span className="shrink-0 text-muted-foreground transition-transform group-open:rotate-45">+</span>
-                    </summary>
-                    <p className="mt-2 pr-8 text-sm leading-6 text-muted-foreground">{item.a}</p>
-                  </details>
-                ))}
-              </div>
+            {/* FAQ — site-wide ds-card group pattern */}
+            <div className="mt-10 space-y-3">
+              {[
+                { q: 'Which dashboard template should I choose?', a: 'Choose MTVerse Modular for broad AI SaaS and CRM coverage, MT Box for enterprise SaaS admin flows, Mat Dash for a large admin studio, and Lumiere for ecommerce storefront plus admin workflows.' },
+                { q: 'Are these free website templates?', a: 'Some templates are free (up to 5 downloads). Premium templates are one-time purchase with live previews, secure download access, and instant delivery.' },
+                { q: 'Do templates include live preview and screenshots?', a: 'Yes. Each template includes a preview page and full-width screenshot so you can inspect the visual quality before checkout.' },
+                { q: 'Can I use these templates in production?', a: 'Yes. The license is for one production project, and the template package is delivered after checkout through protected access.' },
+              ].map((item) => (
+                <details key={item.q} className="ds-card group">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-medium text-foreground">
+                    {item.q}
+                    <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+                  </summary>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{item.a}</p>
+                </details>
+              ))}
             </div>
 
             {/* Footer links */}
             <div className="mt-8 flex flex-wrap gap-2 text-sm">
-              <Link href="/prompts" className="rounded-full border border-border/70 bg-background px-4 py-2 font-medium text-foreground shadow-sm transition-all hover:border-primary/40 hover:shadow-md">Free AI prompts</Link>
-              <Link href="/faq" className="rounded-full border border-border/70 bg-background px-4 py-2 font-medium text-foreground shadow-sm transition-all hover:border-primary/40 hover:shadow-md">Template FAQ</Link>
-              <Link href="/support" className="rounded-full border border-border/70 bg-background px-4 py-2 font-medium text-foreground shadow-sm transition-all hover:border-primary/40 hover:shadow-md">Support</Link>
-              <Link href="/refund-policy" className="rounded-full border border-border/70 bg-background px-4 py-2 font-medium text-foreground shadow-sm transition-all hover:border-primary/40 hover:shadow-md">Refund policy</Link>
+              <Link href="/prompts" className="ds-btn ds-btn-ghost ds-btn-sm">Free AI prompts</Link>
+              <Link href="/faq" className="ds-btn ds-btn-ghost ds-btn-sm">Template FAQ</Link>
+              <Link href="/support" className="ds-btn ds-btn-ghost ds-btn-sm">Support</Link>
+              <Link href="/refund-policy" className="ds-btn ds-btn-ghost ds-btn-sm">Refund policy</Link>
             </div>
           </div>
         </section>

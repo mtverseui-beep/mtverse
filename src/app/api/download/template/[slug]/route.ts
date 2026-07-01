@@ -5,7 +5,7 @@ import { getCurrentCustomerEmail } from '@/lib/auth/current-customer'
 import { getCloudflareR2Config, isCloudflareR2Configured } from '@/lib/cloudflare-r2'
 import { getDashboardKit } from '@/lib/dashboard-kit-store'
 import { getPlan } from '@/lib/plan-store'
-import { hasTemplatePurchase } from '@/lib/template-social-store'
+import { hasTemplatePurchase, hasFreeDownload, getFreeDownloadStatus, recordFreeDownload } from '@/lib/template-social-store'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -76,12 +76,37 @@ export async function GET(request: NextRequest, context: RouteContext) {
     )
   }
 
-  const [planRecord, purchased] = await Promise.all([
-    getPlan(email),
-    hasTemplatePurchase(slug, email),
-  ])
-  if (!canDownloadTemplate(planRecord) || !purchased) {
-    return NextResponse.json({ error: 'This template is not included in your purchase.' }, { status: 403 })
+  // Free template flow
+  if (kit.isFree) {
+    const [planRecord, alreadyDownloaded, freeStatus] = await Promise.all([
+      getPlan(email),
+      hasFreeDownload(slug, email),
+      getFreeDownloadStatus(email),
+    ])
+
+    const hasPaidPlan = canDownloadTemplate(planRecord)
+    const canDl = hasPaidPlan || freeStatus.unlocked || alreadyDownloaded || !freeStatus.limitReached
+
+    if (!canDl) {
+      return NextResponse.json(
+        { error: 'Free download limit reached. Unlock unlimited free downloads for $5.' },
+        { status: 403 }
+      )
+    }
+
+    // Record the free download (won't increment if already downloaded)
+    if (!alreadyDownloaded && !hasPaidPlan) {
+      await recordFreeDownload(slug, email)
+    }
+  } else {
+    // Paid template flow (unchanged)
+    const [planRecord, purchased] = await Promise.all([
+      getPlan(email),
+      hasTemplatePurchase(slug, email),
+    ])
+    if (!canDownloadTemplate(planRecord) || !purchased) {
+      return NextResponse.json({ error: 'This template is not included in your purchase.' }, { status: 403 })
+    }
   }
 
   if (!isCloudflareR2Configured()) {

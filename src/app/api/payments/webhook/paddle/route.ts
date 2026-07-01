@@ -141,15 +141,22 @@ export async function POST(request: NextRequest) {
     }
 
     const product = getProductPackage(packageId)
-    await setPlan(
-      email,
-      product.accessPlan,
-      undefined,
-      event.data?.id,
-      event.data?.customer_id || event.data?.customer?.id || undefined,
-      'paddle',
-      packageId
-    )
+
+    if (packageId === 'free-unlock') {
+      // Free unlock payment — don't upgrade plan, just set the free unlock flag
+      const { setFreeUnlocked } = await import('@/lib/template-social-store')
+      await setFreeUnlocked(email)
+    } else {
+      await setPlan(
+        email,
+        product.accessPlan as 'pro',
+        undefined,
+        event.data?.id,
+        event.data?.customer_id || event.data?.customer?.id || undefined,
+        'paddle',
+        packageId
+      )
+    }
 
     if (kitSlug) {
       await recordTemplatePurchase(kitSlug, email)

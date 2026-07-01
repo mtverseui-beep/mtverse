@@ -1,36 +1,40 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Check, Sparkles, Zap, Shield, Download, Eye } from 'lucide-react'
+import { Check, Sparkles, Zap, Shield, Download, Eye, Infinity } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { SITE_URL } from '@/lib/site-url'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
 import { CtaBackground } from '@/components/design-system/backgrounds'
 import { AmexIcon, ApplePayIcon, GooglePayIcon, MastercardIcon, PaddleIcon, PayPalIcon, VisaIcon } from '@/components/payment/payment-icons'
+import { FreeUnlockButton } from '@/components/payment/free-unlock-button'
+import { getAllTemplatesFromStore } from '@/lib/templates-data'
 
 export const metadata: Metadata = {
-  title: 'Pricing - Premium Next.js Dashboard Templates | mtverse',
-  description: 'One-time payment for lifetime access to premium Next.js dashboard templates. No subscriptions, no hidden fees. Includes all future updates.',
+  title: 'Pricing - Premium Next.js Templates | mtverse',
+  description: 'One-time payment for lifetime access to premium Next.js templates. No subscriptions, no hidden fees. Includes all future updates.',
   alternates: { canonical: '/pricing' },
   openGraph: {
     title: 'Pricing - mtverse',
-    description: 'One-time payment for lifetime access to premium Next.js dashboard templates.',
+    description: 'One-time payment for lifetime access to premium Next.js templates.',
     url: SITE_URL + '/pricing',
     type: 'website',
   },
 }
 
-export default function PricingPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function PricingPage() {
+  const templates = await getAllTemplatesFromStore()
+  const hasFreeTemplates = templates.some((t) => t.isFree)
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: 'mtverse UI Framework Packages',
-    description: 'One-time UI framework zip packages for HTML, React, Next.js, Vue.js, Angular, and Laravel. Public prompts are free.',
+    description: 'One-time UI framework zip packages for Next.js, React, and more.',
     url: SITE_URL + '/pricing',
     image: SITE_URL + '/SiteLogo.png',
-    brand: {
-      '@type': 'Brand',
-      name: 'mtverse',
-    },
+    brand: { '@type': 'Brand', name: 'mtverse' },
     offers: {
       '@type': 'Offer',
       price: '12',
@@ -39,24 +43,9 @@ export default function PricingPage() {
       url: SITE_URL + '/pricing',
       shippingDetails: {
         '@type': 'OfferShippingDetails',
-        shippingRate: {
-          '@type': 'MonetaryAmount',
-          value: '0',
-          currency: 'USD',
-        },
-        shippingDestination: {
-          '@type': 'DefinedRegion',
-          addressCountry: 'US',
-        },
-        deliveryTime: {
-          '@type': 'ShippingDeliveryTime',
-          handlingTime: {
-            '@type': 'QuantitativeValue',
-            minValue: 0,
-            maxValue: 0,
-            unitCode: 'MIN',
-          },
-        },
+        shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'USD' },
+        shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' },
+        deliveryTime: { '@type': 'ShippingDeliveryTime', handlingTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 0, unitCode: 'MIN' } },
       },
       hasMerchantReturnPolicy: {
         '@type': 'MerchantReturnPolicy',
@@ -69,56 +58,33 @@ export default function PricingPage() {
     },
   }
 
-  const features = [
-    'All premium dashboard templates',
-    'Lifetime access & updates',
-    'Source code included',
+  const premiumFeatures = [
+    'All premium templates included',
+    'Lifetime access & free updates',
+    'Full source code',
     'Commercial use license',
     'Live preview before purchase',
     'Instant download after payment',
     'Email support included',
     '14-day money-back guarantee',
-    'Single project license',
-    'No subscription fees',
-    'Secure payment via Paddle',
-    'Multiple payment methods',
   ]
 
   const paymentMethods = [
-    { name: 'Visa', description: 'Credit and debit cards', Icon: VisaIcon },
-    { name: 'Mastercard', description: 'Credit and debit cards', Icon: MastercardIcon },
-    { name: 'American Express', description: 'Premium card payments', Icon: AmexIcon },
-    { name: 'PayPal', description: 'Secure wallet checkout', Icon: PayPalIcon },
-    { name: 'Apple Pay', description: 'One-click Apple checkout', Icon: ApplePayIcon },
-    { name: 'Google Pay', description: 'Fast Google Pay checkout', Icon: GooglePayIcon },
-    { name: 'Paddle', description: 'Secure merchant of record', Icon: PaddleIcon },
+    { name: 'Visa', Icon: VisaIcon },
+    { name: 'Mastercard', Icon: MastercardIcon },
+    { name: 'American Express', Icon: AmexIcon },
+    { name: 'PayPal', Icon: PayPalIcon },
+    { name: 'Apple Pay', Icon: ApplePayIcon },
+    { name: 'Google Pay', Icon: GooglePayIcon },
   ]
 
   const faqs = [
-    {
-      q: 'What payment methods do you accept?',
-      a: 'We accept all major credit cards, Google Pay, Apple Pay, PayPal, and local payment methods through Paddle. All payments are processed securely with industry-standard encryption.',
-    },
-    {
-      q: 'Is it a one-time payment or subscription?',
-      a: 'One-time payment only! No recurring charges, no hidden fees. You get lifetime access to the template you purchase, including all future updates.',
-    },
-    {
-      q: 'What happens after I purchase?',
-      a: 'After successful payment, you\'ll receive instant access to download your template. A license key will be sent to your email for future downloads and support.',
-    },
-    {
-      q: 'Do you offer refunds?',
-      a: 'Yes! We offer a 14-day money-back guarantee. If you\'re not satisfied with your purchase, contact us within 14 days for a full refund.',
-    },
-    {
-      q: 'Can I use Google Pay or Apple Pay?',
-      a: 'Absolutely! Our checkout supports Google Pay, Apple Pay, and all major payment methods. The available options will show automatically based on your device and location.',
-    },
-    {
-      q: 'Is the payment secure?',
-      a: 'Yes. All payments are processed through Paddle, a trusted payment processor. We don\'t store your card information. All transactions are encrypted and PCI-DSS compliant.',
-    },
+    { q: 'What payment methods do you accept?', a: 'All major credit cards, Google Pay, Apple Pay, PayPal, and local payment methods through Paddle. Payments are processed with industry-standard encryption.' },
+    { q: 'Is it a one-time payment or subscription?', a: 'One-time payment only. No recurring charges, no hidden fees. You get lifetime access including all future updates.' },
+    { q: 'What happens after I purchase?', a: 'After payment, you get instant access to download your template. A license key is sent to your email for future downloads and support.' },
+    { q: 'Do you offer refunds?', a: 'Yes. We offer a 14-day money-back guarantee. Contact us within 14 days for a full refund, no questions asked.' },
+    { q: 'What about the free templates?', a: 'Free templates can be downloaded up to 5 times with a free account. After that, unlock unlimited free downloads for a one-time $5 payment.' },
+    { q: 'Is the payment secure?', a: 'All payments are processed through Paddle, a trusted payment processor. We never store your card information. Fully PCI-DSS compliant.' },
   ]
 
   return (
@@ -126,7 +92,7 @@ export default function PricingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <main>
-        {/* Hero Section */}
+        {/* ═══ Hero ═══ */}
         <section className="ds-section-lg pt-20 relative overflow-hidden">
           <CtaBackground />
           <div className="ds-container relative text-center max-w-4xl">
@@ -137,137 +103,185 @@ export default function PricingPage() {
               </div>
             </Reveal>
             <Reveal delay={0.1}>
-              <h1 className="ds-display-2 mb-4">One-time payment.<br />Lifetime access.</h1>
+              <h1 className="ds-display-2 mb-4">One price. Lifetime access.</h1>
             </Reveal>
             <Reveal delay={0.2}>
-              <p className="ds-lead ds-text-pretty mb-8">
-                No subscriptions, no hidden fees. Purchase once and get lifetime access to premium Next.js dashboard templates with all future updates.
+              <p className="ds-lead ds-text-pretty mb-8 max-w-2xl mx-auto">
+                No subscriptions. No hidden fees. Pay once for premium templates, or start free with up to 5 downloads.
               </p>
             </Reveal>
           </div>
         </section>
 
-        {/* Pricing Card */}
+        {/* ═══ Pricing Cards ═══ */}
         <section className="ds-section-sm">
-          <div className="ds-container max-w-4xl">
-            <div className="ds-card overflow-hidden">
-              <div className="grid md:grid-cols-2 gap-8 p-8">
-                {/* Left: Price */}
-                <div className="space-y-6">
-                  <div>
-                    <div className="text-sm font-medium text-muted-foreground mb-2">Premium Templates</div>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-5xl font-bold">$12</span>
-                      <span className="text-muted-foreground">USD</span>
+          <div className="ds-container max-w-5xl">
+            <div className={`grid gap-6 ${hasFreeTemplates ? 'lg:grid-cols-3' : 'max-w-lg mx-auto'}`}>
+              {/* Free Tier — only if free templates exist */}
+              {hasFreeTemplates && (
+                <Reveal>
+                  <div className="h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-shadow hover:shadow-md sm:p-7">
+                    <div className="mb-6">
+                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 mb-3">
+                        <Download className="h-5 w-5" />
+                      </div>
+                      <h3 className="text-lg font-bold">Free</h3>
+                      <div className="mt-2 flex items-baseline gap-1">
+                        <span className="text-3xl font-bold">$0</span>
+                      </div>
+                      <p className="mt-1.5 text-sm text-muted-foreground">Up to 5 template downloads</p>
                     </div>
-                    <div className="mt-2 text-sm text-muted-foreground">
-                      <span className="line-through">$49</span> &middot; Save 76%
-                    </div>
+
+                    <Link href="/sign-up" className="ds-btn ds-btn-secondary w-full mb-6">
+                      Create free account
+                    </Link>
+
+                    <ul className="space-y-2.5">
+                      {['5 free template downloads', 'Full source code', 'Live preview access', 'Single project license', 'Community support'].map((f) => (
+                        <li key={f} className="flex items-start gap-2.5 text-sm">
+                          <Check className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              )}
+
+              {/* Premium — highlighted */}
+              <Reveal delay={hasFreeTemplates ? 0.08 : 0}>
+                <div className="relative h-full rounded-2xl border-2 border-primary/30 bg-card p-6 shadow-lg shadow-primary/[0.04] sm:p-7 lg:scale-[1.03]">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                    <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground shadow-sm">
+                      Most popular
+                    </span>
                   </div>
 
-                  <Link
-                    href="/templates"
-                    className="ds-btn ds-btn-accent ds-btn-lg w-full"
-                  >
+                  <div className="mb-6">
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary mb-3">
+                      <Zap className="h-5 w-5" />
+                    </div>
+                    <h3 className="text-lg font-bold">Premium</h3>
+                    <div className="mt-2 flex items-baseline gap-1.5">
+                      <span className="text-3xl font-bold">$12</span>
+                      <span className="text-sm text-muted-foreground line-through">$49</span>
+                      <span className="ml-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">76% off</span>
+                    </div>
+                    <p className="mt-1.5 text-sm text-muted-foreground">Per template · one-time payment</p>
+                  </div>
+
+                  <Link href="/templates" className="ds-btn ds-btn-accent w-full mb-6">
                     <Zap className="h-4 w-4" />
                     Browse Templates
                   </Link>
 
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Shield className="h-4 w-4 text-emerald-600" />
-                    <span>14-day money-back guarantee</span>
+                  <ul className="space-y-2.5">
+                    {premiumFeatures.map((f) => (
+                      <li key={f} className="flex items-start gap-2.5 text-sm">
+                        <Check className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
+                    <Shield className="h-3.5 w-3.5 text-emerald-600" />
+                    14-day money-back guarantee
                   </div>
                 </div>
+              </Reveal>
 
-                {/* Right: Features */}
-                <div className="space-y-3">
-                  <div className="text-sm font-semibold mb-4">What's included:</div>
-                  {features.slice(0, 8).map((feature) => (
-                    <div key={feature} className="flex items-start gap-2.5">
-                      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 shrink-0 mt-0.5">
-                        <Check className="h-3 w-3" />
-                      </span>
-                      <span className="text-sm">{feature}</span>
+              {/* Free Unlock — only if free templates exist */}
+              {hasFreeTemplates && (
+                <Reveal delay={0.16}>
+                  <div className="h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-shadow hover:shadow-md sm:p-7">
+                    <div className="mb-6">
+                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400 mb-3">
+                        <Infinity className="h-5 w-5" />
+                      </div>
+                      <h3 className="text-lg font-bold">Free Unlock</h3>
+                      <div className="mt-2 flex items-baseline gap-1">
+                        <span className="text-3xl font-bold">$5</span>
+                      </div>
+                      <p className="mt-1.5 text-sm text-muted-foreground">Unlimited free template downloads</p>
                     </div>
-                  ))}
-                </div>
-              </div>
+
+                    <FreeUnlockButton />
+
+                    <ul className="mt-6 space-y-2.5">
+                      {['Unlimited free template downloads', 'One-time $5 payment', 'Full source code', 'All future free templates', 'No expiration'].map((f) => (
+                        <li key={f} className="flex items-start gap-2.5 text-sm">
+                          <Check className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              )}
             </div>
           </div>
         </section>
 
-        {/* Payment Methods */}
+        {/* ═══ Payment Methods — compact strip ═══ */}
         <section className="ds-section-sm ds-bg-section">
-          <div className="ds-container max-w-5xl">
-            <Reveal className="text-center mb-8">
-              <h2 className="ds-h2 mb-2">Flexible payment options</h2>
-              <p className="ds-muted">We support multiple payment methods for your convenience</p>
-            </Reveal>
-
-            <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {paymentMethods.map((method) => {
-                const Icon = method.Icon
-                return (
-                  <StaggerItem key={method.name}>
-                    <div className="ds-card p-5">
-                      <Icon className="mb-4 h-8 w-auto" />
-                      <div className="font-semibold text-sm mb-1">{method.name}</div>
-                      <div className="text-xs text-muted-foreground">{method.description}</div>
-                    </div>
-                  </StaggerItem>
-                )
-              })}
-            </Stagger>
-
-            <Reveal delay={0.3} className="mt-6 text-center">
-              <p className="text-sm text-muted-foreground">
-                <Shield className="inline h-4 w-4 mr-1" />
-                All payments are securely processed by <strong>Paddle</strong> &middot; PCI-DSS compliant
+          <div className="ds-container max-w-4xl text-center">
+            <Reveal>
+              <p className="text-sm font-medium text-muted-foreground mb-4">Accepted payment methods</p>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                {paymentMethods.map((method) => {
+                  const Icon = method.Icon
+                  return <Icon key={method.name} className="h-8 w-auto opacity-70 transition-opacity hover:opacity-100" />
+                })}
+              </div>
+              <p className="mt-4 text-xs text-muted-foreground">
+                <Shield className="inline h-3.5 w-3.5 mr-1" />
+                Processed securely by <strong>Paddle</strong> &middot; PCI-DSS compliant
               </p>
             </Reveal>
           </div>
         </section>
 
-        {/* Benefits */}
+        {/* ═══ Benefits ═══ */}
         <section className="ds-section-sm">
           <div className="ds-container max-w-5xl">
             <Reveal className="text-center mb-8">
               <h2 className="ds-h2 mb-2">Why choose mtverse?</h2>
             </Reveal>
 
-            <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <StaggerItem>
-                <div className="ds-card p-6">
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 mb-4 dark:bg-primary-900/30 dark:text-primary-300">
+                <div className="ds-card p-6 text-center">
+                  <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-300">
                     <Eye className="h-6 w-6" />
                   </div>
                   <h3 className="font-semibold mb-2">Preview before you buy</h3>
                   <p className="text-sm text-muted-foreground">
-                    Try the full live preview of each template before making a purchase. See exactly what you're getting.
+                    Full live preview of every template. See exactly what you get before checkout.
                   </p>
                 </div>
               </StaggerItem>
 
               <StaggerItem>
-                <div className="ds-card p-6">
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 mb-4 dark:bg-emerald-900/30 dark:text-emerald-300">
+                <div className="ds-card p-6 text-center">
+                  <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-300">
                     <Download className="h-6 w-6" />
                   </div>
                   <h3 className="font-semibold mb-2">Instant access</h3>
                   <p className="text-sm text-muted-foreground">
-                    Download your template immediately after payment. No waiting, no approval needed.
+                    Download immediately after payment. No waiting, no approval process.
                   </p>
                 </div>
               </StaggerItem>
 
               <StaggerItem>
-                <div className="ds-card p-6">
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 mb-4 dark:bg-amber-900/30 dark:text-amber-300">
+                <div className="ds-card p-6 text-center">
+                  <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-300">
                     <Sparkles className="h-6 w-6" />
                   </div>
-                  <h3 className="font-semibold mb-2">Free updates</h3>
+                  <h3 className="font-semibold mb-2">Lifetime updates</h3>
                   <p className="text-sm text-muted-foreground">
-                    Get all future updates and improvements for free. Your purchase includes lifetime access.
+                    All future updates and improvements included. One purchase, forever access.
                   </p>
                 </div>
               </StaggerItem>
@@ -275,7 +289,7 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* FAQ */}
+        {/* ═══ FAQ ═══ */}
         <section className="ds-section-sm ds-bg-section">
           <div className="ds-container max-w-3xl">
             <Reveal className="text-center mb-8">
@@ -284,12 +298,12 @@ export default function PricingPage() {
 
             <div className="space-y-3">
               {faqs.map((faq, i) => (
-                <Reveal key={i} delay={i * 0.05}>
+                <Reveal key={i} delay={i * 0.04}>
                   <div className="ds-card group">
                     <details>
                       <summary className="flex items-center justify-between gap-3 cursor-pointer list-none font-medium text-foreground p-5">
                         {faq.q}
-                        <span className="text-muted-foreground transition-transform group-open:rotate-90">→</span>
+                        <span className="shrink-0 text-muted-foreground transition-transform group-open:rotate-45">+</span>
                       </summary>
                       <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
                     </details>
@@ -300,16 +314,16 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* CTA */}
+        {/* ═══ CTA ═══ */}
         <section className="ds-section-lg ds-bg-section relative overflow-hidden">
           <CtaBackground />
           <div className="ds-container relative text-center max-w-2xl">
             <Reveal>
-              <h2 className="ds-display-3 mb-4">Ready to get started?</h2>
+              <h2 className="ds-display-3 mb-4">Ready to build?</h2>
             </Reveal>
             <Reveal delay={0.08}>
               <p className="ds-lead mb-6">
-                Browse our collection of premium Next.js dashboard templates and find the perfect fit for your project.
+                Browse premium Next.js templates and find the perfect fit for your project.
               </p>
             </Reveal>
             <Reveal delay={0.16}>

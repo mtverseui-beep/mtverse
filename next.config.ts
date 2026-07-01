@@ -35,6 +35,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
+    scrollRestoration: true,
   },
   compress: true,
   async headers() {

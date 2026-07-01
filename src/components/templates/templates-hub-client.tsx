@@ -45,6 +45,7 @@ export function TemplatesHubClient({
   const [searchInput, setSearchInput] = useState(initialSearch)
   const [activeSearch, setActiveSearch] = useState(initialSearch)
   const [frameworkFilter, setFrameworkFilter] = useState('all')
+  const [freeOnly, setFreeOnly] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -108,6 +109,9 @@ export function TemplatesHubClient({
     if (initialCategory && initialCategory !== 'all') {
       result = result.filter((t) => t.category === initialCategory)
     }
+    if (freeOnly) {
+      result = result.filter((t) => t.isFree)
+    }
     if (frameworkFilter !== 'all') {
       result = result.filter((t) => {
         // Match against frameworkLabel OR any tech stack item
@@ -127,7 +131,7 @@ export function TemplatesHubClient({
       )
     }
     return sortTemplates(result, initialSort)
-  }, [allTemplates, initialCategory, activeSearch, initialSort, frameworkFilter])
+  }, [allTemplates, initialCategory, activeSearch, initialSort, frameworkFilter, freeOnly])
 
   const updateParams = useCallback(
     (updates: Record<string, string | undefined>) => {
@@ -151,7 +155,7 @@ export function TemplatesHubClient({
     triggerLoading()
   }, [triggerLoading])
 
-  const hasActiveFilters = Boolean(activeSearch || frameworkFilter !== 'all' || (initialCategory && initialCategory !== 'all'))
+  const hasActiveFilters = Boolean(activeSearch || frameworkFilter !== 'all' || freeOnly || (initialCategory && initialCategory !== 'all'))
 
   return (
     <div className="min-h-screen">
@@ -257,6 +261,17 @@ export function TemplatesHubClient({
           </p>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => { setFreeOnly(!freeOnly); triggerLoading() }}
+              className={cn(
+                'hidden sm:inline-flex h-11 items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-all',
+                freeOnly
+                  ? 'border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
+                  : 'border-border bg-background text-muted-foreground hover:border-emerald-300 hover:text-emerald-700'
+              )}
+            >
+              Free
+            </button>
             <ModernSelect
               value={frameworkFilter}
               onChange={handleFrameworkChange}
@@ -320,10 +335,22 @@ export function TemplatesHubClient({
                 </button>
               </span>
             )}
+            {freeOnly && (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 shadow-sm dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300">
+                Free only
+                <button
+                  onClick={() => { setFreeOnly(false); triggerLoading() }}
+                  className="rounded-full p-0.5 hover:bg-emerald-100 dark:hover:bg-emerald-800/50"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </span>
+            )}
             <button
               onClick={() => {
                 setSearchInput('')
                 setFrameworkFilter('all')
+                setFreeOnly(false)
                 triggerLoading()
                 router.push('/templates', { scroll: false })
               }}

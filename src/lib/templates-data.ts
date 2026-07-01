@@ -184,6 +184,7 @@ function toTemplate(kit: DashboardKit): Template {
         answer: 'Yes. Use the live preview button to inspect the dashboard before checkout.',
       },
     ],
+    isFree: Boolean(kit.isFree),
   }
 }
 

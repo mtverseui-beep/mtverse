@@ -1,6 +1,6 @@
 import type { PlanLevel } from './plan-access'
 
-export const PACKAGE_IDS = ['next'] as const
+export const PACKAGE_IDS = ['next', 'free-unlock'] as const
 
 export type PackageId = (typeof PACKAGE_IDS)[number]
 
@@ -10,7 +10,7 @@ export type ProductPackage = {
   shortName: string
   amountUsd: number
   currency: 'USD'
-  accessPlan: Extract<PlanLevel, 'pro'>
+  accessPlan: PlanLevel
 }
 
 export const PRODUCT_PACKAGES: Record<PackageId, ProductPackage> = {
@@ -21,6 +21,14 @@ export const PRODUCT_PACKAGES: Record<PackageId, ProductPackage> = {
     amountUsd: 12,
     currency: 'USD',
     accessPlan: 'pro',
+  },
+  'free-unlock': {
+    id: 'free-unlock',
+    name: 'Free Templates Unlock',
+    shortName: 'Free Unlock',
+    amountUsd: 5,
+    currency: 'USD',
+    accessPlan: 'free',  // doesn't upgrade plan level — handled specially in webhook
   },
 }
 
