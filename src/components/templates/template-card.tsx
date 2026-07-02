@@ -19,6 +19,7 @@ function getFrameworkShort(template: Template): string {
 
 export function TemplateCard({ template, priority = false }: Props) {
   const frameworkLabel = getFrameworkShort(template)
+  const showProBadge = !template.isFree && template.pricingTier === 'pro'
 
   return (
     <Link href={`/templates/${template.slug}`} className="group block h-full no-underline">
@@ -50,17 +51,24 @@ export function TemplateCard({ template, priority = false }: Props) {
         {/* Card body — compact */}
         <div className="px-3 pb-3 pt-2.5">
           {/* Title + price — single line */}
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex items-start justify-between gap-2">
             <h3 className="truncate text-sm font-semibold text-foreground transition-colors group-hover:text-primary-600 dark:group-hover:text-primary-300">
               {template.title}
             </h3>
-            {template.isFree ? (
-              <span className="shrink-0 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
-                Free
-              </span>
-            ) : (
-              <span className="shrink-0 text-sm font-bold text-foreground">${template.price}</span>
-            )}
+            <div className="flex shrink-0 items-center gap-2">
+              {showProBadge ? (
+                <span className="rounded-full border border-amber-300/80 bg-gradient-to-r from-amber-100 via-orange-50 to-rose-100 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.18em] text-amber-900 shadow-sm dark:border-amber-500/30 dark:from-amber-500/20 dark:via-orange-500/10 dark:to-rose-500/20 dark:text-amber-200">
+                  Pro
+                </span>
+              ) : null}
+              {template.isFree ? (
+                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+                  Free
+                </span>
+              ) : (
+                <span className="text-sm font-bold text-foreground">${template.price}</span>
+              )}
+            </div>
           </div>
 
           {/* Meta row — downloads/purchases left, framework right */}

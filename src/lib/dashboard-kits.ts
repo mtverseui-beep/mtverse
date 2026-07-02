@@ -3,6 +3,8 @@ import { SEO_LANGUAGES } from '@/lib/seo-languages'
 
 export type DashboardKitStatus = 'available' | 'draft' | 'coming-soon'
 
+export type TemplatePricingTier = 'normal' | 'pro'
+
 export type DashboardKit = {
   id: string
   slug: string
@@ -17,6 +19,7 @@ export type DashboardKit = {
   metaDescription: string
   priceUsd: number
   originalPriceUsd: number
+  pricingTier: TemplatePricingTier
   framework: 'nextjs' | 'html' | 'react'
   frameworkLabel: string
   subcategory?: string
@@ -47,14 +50,17 @@ const metadataLanguages = SEO_LANGUAGES.slice(0, 31).map((language) => ({
   direction: language.direction,
 }))
 
-function withDashboardKitDefaults(kit: DashboardKit): DashboardKit {
+type DashboardKitSeed = Omit<DashboardKit, 'metadataLanguages' | 'pricingTier'> & Partial<Pick<DashboardKit, 'metadataLanguages' | 'pricingTier'>>
+
+function withDashboardKitDefaults(kit: DashboardKitSeed): DashboardKit {
   return {
     ...kit,
+    pricingTier: kit.isFree ? 'normal' : kit.pricingTier === 'pro' ? 'pro' : 'normal',
     metadataLanguages: Array.isArray(kit.metadataLanguages) && kit.metadataLanguages.length ? kit.metadataLanguages : metadataLanguages,
   }
 }
 
-export const dashboardKits: DashboardKit[] = (dashboardStore.kits as DashboardKit[]).map(withDashboardKitDefaults)
+export const dashboardKits: DashboardKit[] = (dashboardStore.kits as DashboardKitSeed[]).map(withDashboardKitDefaults)
 
 export function getPreviewUrl(kit: Pick<DashboardKit, 'previewPath' | 'livePreviewUrl'>) {
   if (kit.livePreviewUrl?.trim()) return kit.livePreviewUrl.trim()

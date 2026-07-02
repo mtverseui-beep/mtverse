@@ -14,7 +14,7 @@ type RouteContext = {
 
 function canDownloadTemplate(record: Awaited<ReturnType<typeof getPlan>>) {
   if (!record) return false
-  return record.packageId === 'next' || (!record.packageId && (record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'))
+  return record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'
 }
 
 export async function GET(request: NextRequest, context: RouteContext) {

@@ -5,6 +5,8 @@ export type TemplateCategory = {
   icon: string
 }
 
+export type TemplatePricingTier = 'normal' | 'pro'
+
 export type TemplateReview = {
   id: string
   name: string
@@ -37,6 +39,7 @@ export type Template = {
   previewUrl?: string
   price: number
   originalPriceUsd?: number
+  pricingTier: TemplatePricingTier
   currency: string
   featured: boolean
   trending: boolean

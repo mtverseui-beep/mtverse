@@ -1,6 +1,6 @@
 import type { PlanLevel } from './plan-access'
 
-export const PACKAGE_IDS = ['next', 'free-unlock'] as const
+export const PACKAGE_IDS = ['next', 'pro', 'free-unlock'] as const
 
 export type PackageId = (typeof PACKAGE_IDS)[number]
 
@@ -19,6 +19,14 @@ export const PRODUCT_PACKAGES: Record<PackageId, ProductPackage> = {
     name: 'Next.js Dashboard Kit Package',
     shortName: 'Next.js Kit',
     amountUsd: 12,
+    currency: 'USD',
+    accessPlan: 'pro',
+  },
+  pro: {
+    id: 'pro',
+    name: 'Pro Dashboard Template Package',
+    shortName: 'Pro Template',
+    amountUsd: 20,
     currency: 'USD',
     accessPlan: 'pro',
   },

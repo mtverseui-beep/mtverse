@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentCustomerEmail } from '@/lib/auth/current-customer'
 import { getPlan } from '@/lib/plan-store'
 import { getAllTemplatesFromStore } from '@/lib/templates-data'
-import { getSavedTemplateSlugs, hasTemplatePurchase } from '@/lib/template-social-store'
+import { getFreeDownloadStatus, getSavedTemplateSlugs, hasTemplatePurchase } from '@/lib/template-social-store'
 
 export const dynamic = 'force-dynamic'
 
 function canDownloadTemplate(record: Awaited<ReturnType<typeof getPlan>>) {
   if (!record) return false
-  return record.packageId === 'next' || (!record.packageId && (record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'))
+  return record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'
 }
 
 export async function GET(request: NextRequest) {
@@ -19,18 +19,28 @@ export async function GET(request: NextRequest) {
   }
 
   const templates = await getAllTemplatesFromStore()
-  const [planRecord, purchasedFlags, savedSlugs] = await Promise.all([
+  const [planRecord, purchasedFlags, savedSlugs, freeStatus] = await Promise.all([
     getPlan(email),
     Promise.all(templates.map((template) => hasTemplatePurchase(template.slug, email))),
     getSavedTemplateSlugs(email),
+    getFreeDownloadStatus(email),
   ])
-  const downloadAllowed = canDownloadTemplate(planRecord)
+
+  const paidTemplateAccess = canDownloadTemplate(planRecord)
   const savedSet = new Set(savedSlugs)
+  const freeDownloadedSet = new Set(freeStatus.slugs)
 
   return NextResponse.json({
     authenticated: true,
     templates: templates.map((template, index) => {
-      const purchased = purchasedFlags[index]
+      const purchased = !template.isFree && purchasedFlags[index]
+      const freeDownloaded = template.isFree && freeDownloadedSet.has(template.slug)
+      const canDownloadFreeTemplate = template.isFree && (
+        paidTemplateAccess ||
+        freeStatus.unlocked ||
+        freeDownloaded ||
+        !freeStatus.limitReached
+      )
 
       return {
         slug: template.slug,
@@ -40,7 +50,8 @@ export async function GET(request: NextRequest) {
         price: template.price,
         purchased,
         saved: savedSet.has(template.slug),
-        canDownload: downloadAllowed && purchased,
+        freeDownloaded,
+        canDownload: (paidTemplateAccess && purchased) || canDownloadFreeTemplate,
       }
     }),
   })

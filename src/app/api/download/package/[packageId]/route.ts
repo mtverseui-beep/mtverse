@@ -16,10 +16,14 @@ type RouteContext = {
   }>
 }
 
-function canDownloadPackage(record: Awaited<ReturnType<typeof getPlan>>, packageId: PackageId) {
+function hasPaidTemplateAccess(record: Awaited<ReturnType<typeof getPlan>>) {
   if (!record) return false
+  return record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'
+}
+
+function canDownloadPackage(record: Awaited<ReturnType<typeof getPlan>>, packageId: PackageId) {
   if (packageId !== 'next') return false
-  return record.packageId === 'next' || (!record.packageId && (record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'))
+  return hasPaidTemplateAccess(record)
 }
 
 function toWebStream(body: GetObjectCommandOutput['Body']) {

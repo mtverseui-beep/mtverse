@@ -19,6 +19,10 @@ export const metadata: Metadata = {
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>
 
+function shouldRecordTemplatePurchase(packageId: string | null | undefined, kitSlug: string | null) {
+  return Boolean(kitSlug && packageId !== 'free-unlock')
+}
+
 function toUrlSearchParams(input: Record<string, string | string[] | undefined>) {
   const params = new URLSearchParams()
 
@@ -61,7 +65,7 @@ async function verifySuccess(searchParams: URLSearchParams) {
       }
     }
 
-    if (record.status !== 'revoked' && kitSlug) {
+    if (record.status !== 'revoked' && shouldRecordTemplatePurchase(record.packageId || result.packageId, kitSlug)) {
       await recordTemplatePurchase(kitSlug, record.email)
     }
 
@@ -87,7 +91,7 @@ async function verifySuccess(searchParams: URLSearchParams) {
       result.packageId || undefined
     )
 
-    if (kitSlug) {
+    if (shouldRecordTemplatePurchase(result.packageId, kitSlug)) {
       await recordTemplatePurchase(kitSlug, result.email)
     }
   }

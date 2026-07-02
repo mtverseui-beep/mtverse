@@ -140,13 +140,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing customer email in Paddle webhook' }, { status: 400 })
     }
 
-    const product = getProductPackage(packageId)
-
     if (packageId === 'free-unlock') {
-      // Free unlock payment — don't upgrade plan, just set the free unlock flag
+      // Free unlock payment - don't upgrade plan, just set the free unlock flag
       const { setFreeUnlocked } = await import('@/lib/template-social-store')
       await setFreeUnlocked(email)
     } else {
+      const product = getProductPackage(packageId)
+
       await setPlan(
         email,
         product.accessPlan as 'pro',
@@ -156,10 +156,10 @@ export async function POST(request: NextRequest) {
         'paddle',
         packageId
       )
-    }
 
-    if (kitSlug) {
-      await recordTemplatePurchase(kitSlug, email)
+      if (kitSlug) {
+        await recordTemplatePurchase(kitSlug, email)
+      }
     }
 
     // Mark as successfully processed

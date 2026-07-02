@@ -23,6 +23,11 @@ type Props = {
   template: Template
 }
 
+function getCheckoutPackageId(template: Template) {
+  if (template.isFree) return 'free-unlock' as const
+  return template.pricingTier === 'pro' ? 'pro' as const : 'next' as const
+}
+
 export function TemplateDetailClient({ template }: Props) {
   const { authenticated, loading: authLoading } = useAuth()
   const router = useRouter()
@@ -37,6 +42,9 @@ export function TemplateDetailClient({ template }: Props) {
   const [alreadyDownloaded, setAlreadyDownloaded] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [downloadError, setDownloadError] = useState<string | null>(null)
+  const [accessError, setAccessError] = useState<string | null>(null)
+  const freeDownloadsUsed = Math.max(0, 5 - freeRemaining)
+  const showFreeDownloadStatus = template.isFree && authenticated && !freeUnlocked && (freeDownloadsUsed > 0 || alreadyDownloaded || freeLimitReached)
   const hasDiscount = typeof template.originalPriceUsd === 'number' && template.originalPriceUsd > template.price
 
   useEffect(() => {
@@ -45,6 +53,7 @@ export function TemplateDetailClient({ template }: Props) {
     if (!authenticated) {
       setCanDownload(false)
       setLiked(false)
+      setAccessError(null)
       setCheckingAccess(false)
       return
     }
@@ -62,6 +71,7 @@ export function TemplateDetailClient({ template }: Props) {
         if (!cancelled) {
           setCanDownload(Boolean(accessResponse.ok && accessPayload?.canDownload))
           setLiked(Boolean(savedResponse.ok && savedPayload?.saved))
+          setAccessError(accessResponse.ok ? null : 'Could not verify template access right now. Please refresh and try again.')
           if (accessPayload) {
             setFreeRemaining(accessPayload.freeRemaining ?? 5)
             setFreeLimitReached(Boolean(accessPayload.freeLimitReached))
@@ -73,6 +83,7 @@ export function TemplateDetailClient({ template }: Props) {
         if (!cancelled) {
           setCanDownload(false)
           setLiked(false)
+          setAccessError('Could not verify template access right now. Please refresh and try again.')
         }
       } finally {
         if (!cancelled) setCheckingAccess(false)
@@ -95,7 +106,12 @@ export function TemplateDetailClient({ template }: Props) {
 
     setBuying(true)
     try {
-      const packageId = template.isFree && freeLimitReached ? 'free-unlock' : 'next'
+      if (template.isFree && !freeLimitReached) {
+        setDownloadError(accessError || 'Free download access could not be verified right now. Please refresh and try again.')
+        return
+      }
+
+      const packageId = getCheckoutPackageId(template)
       const response = await fetch('/api/payments/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -189,10 +205,17 @@ export function TemplateDetailClient({ template }: Props) {
       const response = await fetch(`/api/download/template/${template.slug}`, { credentials: 'include' })
       if (!response.ok) {
         const data = await response.json().catch(() => null) as { error?: string } | null
+        if (response.status === 403 && template.isFree && !alreadyDownloaded) {
+          setCanDownload(false)
+          setFreeLimitReached(true)
+          setFreeRemaining(0)
+        }
+        if (response.status === 401) {
+          setAccessError('Please sign in again to continue downloading.')
+        }
         setDownloadError(data?.error || 'Download failed. Please try again.')
         return
       }
-      // Trigger file download from the response blob
       const blob = await response.blob()
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -202,6 +225,15 @@ export function TemplateDetailClient({ template }: Props) {
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
+
+      if (template.isFree && !freeUnlocked && !alreadyDownloaded) {
+        setAlreadyDownloaded(true)
+        setFreeRemaining((current) => Math.max(0, current - 1))
+        setFreeLimitReached(false)
+      }
+
+      setCanDownload(true)
+      setAccessError(null)
       toast.success('Download started!')
     } catch {
       setDownloadError('Network error. Please check your connection and try again.')
@@ -230,13 +262,17 @@ export function TemplateDetailClient({ template }: Props) {
         )}
       </div>
       <p className="text-xs text-muted-foreground mb-3">
-        {template.isFree ? 'Free download · sign in required' : 'USD · one-time payment · lifetime access'}
+        {template.isFree ? 'Free download - sign in required' : 'USD - one-time payment - lifetime access'}
       </p>
 
-      {/* Free template: show remaining downloads info (only if user has used at least one) */}
-      {template.isFree && authenticated && !freeUnlocked && !alreadyDownloaded && !freeLimitReached && freeRemaining < 5 && (
+      {/* Free template: keep status visible after download too */}
+      {showFreeDownloadStatus && (
         <p className="text-xs text-muted-foreground mb-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1.5">
-          {freeRemaining}/5 free downloads remaining
+          {alreadyDownloaded
+            ? `This template is already unlocked. ${freeRemaining}/5 free downloads remaining`
+            : freeLimitReached
+              ? '5/5 free downloads used'
+              : `${freeRemaining}/5 free downloads remaining`}
         </p>
       )}
 
@@ -274,7 +310,7 @@ export function TemplateDetailClient({ template }: Props) {
           ) : (
             <>
               <ShoppingCart className="h-4 w-4" />
-              Unlock unlimited — $5
+              Unlock unlimited - $5
             </>
           )}
         </button>
@@ -310,6 +346,12 @@ export function TemplateDetailClient({ template }: Props) {
           You&apos;ve used all 5 free downloads. Unlock unlimited for a one-time $5 payment.
         </p>
       )}
+
+      {accessError ? (
+        <p className="mb-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-200">
+          {accessError}
+        </p>
+      ) : null}
 
       <Link href={`/preview/${template.slug}`} target="_blank" className="ds-btn ds-btn-secondary w-full mb-2">
         <Eye className="h-4 w-4" />

@@ -88,6 +88,20 @@ const TEMPLATE_META: Record<string, TemplateMeta> = {
       { title: 'Live preview', description: 'Inspect the dashboard experience before purchase.', icon: 'Eye' },
     ],
   },
+  'pipeline-pilot-production': {
+    category: 'dashboards',
+    subcategory: 'Sales Operations Dashboard',
+    components: 214,
+    featured: true,
+    trending: true,
+    new: true,
+    highlights: [
+      { title: 'SalesOps page set', description: 'Pipeline, deals, leads, accounts, forecasting, reports, billing, settings, and auth flows.', icon: 'Layers' },
+      { title: 'Three-pane workspace', description: 'Collapsible sidebar, main work area, and live right-panel workspace for daily ops.', icon: 'Sparkles' },
+      { title: 'Secure access', description: 'Downloads are available only to signed-in buyers after checkout.', icon: 'Package' },
+      { title: 'Live preview', description: 'Inspect the sales dashboard experience before purchase.', icon: 'Eye' },
+    ],
+  },
 }
 
 function titleCase(value: string) {
@@ -156,6 +170,7 @@ function toTemplate(kit: DashboardKit): Template {
     thumbnailUrl: kit.coverImage || kit.screenshots[0] || '/SiteLogo.png',
     price: kit.priceUsd,
     originalPriceUsd: kit.originalPriceUsd,
+    pricingTier: kit.pricingTier,
     currency: 'USD',
     featured: meta?.featured ?? kit.status === 'available',
     trending: meta?.trending ?? kit.status === 'available',

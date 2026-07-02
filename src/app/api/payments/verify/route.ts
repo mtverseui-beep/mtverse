@@ -3,6 +3,10 @@ import { getPlanByProviderTransactionId, setPlan } from '@/lib/plan-store'
 import { isMockPaymentAllowed, verifyPaymentFromSearchParams } from '@/lib/payments'
 import { recordTemplatePurchase } from '@/lib/template-social-store'
 
+function shouldRecordTemplatePurchase(packageId: string | null | undefined, kitSlug: string | null) {
+  return Boolean(kitSlug && packageId !== 'free-unlock')
+}
+
 export async function GET(request: NextRequest) {
   const result = verifyPaymentFromSearchParams(request.nextUrl.searchParams)
   const transactionId = request.nextUrl.searchParams.get('transaction_id') || request.nextUrl.searchParams.get('_ptxn') || request.nextUrl.searchParams.get('transactionId')
@@ -37,7 +41,7 @@ export async function GET(request: NextRequest) {
         })
       }
 
-      if (kitSlug) {
+      if (shouldRecordTemplatePurchase(record.packageId || result.packageId, kitSlug)) {
         await recordTemplatePurchase(kitSlug, record.email)
       }
 
@@ -80,7 +84,7 @@ export async function GET(request: NextRequest) {
       result.packageId || undefined
     )
 
-    if (kitSlug) {
+    if (shouldRecordTemplatePurchase(result.packageId, kitSlug)) {
       await recordTemplatePurchase(kitSlug, result.email)
     }
   }

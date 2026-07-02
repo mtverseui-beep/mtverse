@@ -742,6 +742,13 @@ export type FreeDownloadStatus = {
   unlocked: boolean
 }
 
+export class FreeDownloadLimitError extends Error {
+  constructor(message = 'Free download limit reached. Unlock unlimited free downloads for $5.') {
+    super(message)
+    this.name = 'FreeDownloadLimitError'
+  }
+}
+
 export async function getFreeDownloadStatus(emailInput: string | null | undefined): Promise<FreeDownloadStatus> {
   const email = emailInput ? normalizeEmail(emailInput) : ''
   if (!email) return { count: 0, slugs: [], remaining: FREE_DOWNLOAD_LIMIT, limitReached: false, unlocked: false }
@@ -786,6 +793,10 @@ export async function recordFreeDownload(slug: string, emailInput: string): Prom
       limitReached: !unlocked && userRecord.freeDownloads.count >= FREE_DOWNLOAD_LIMIT,
       unlocked,
     }
+  }
+
+  if (!userRecord.freeDownloads.unlockedAt && userRecord.freeDownloads.count >= FREE_DOWNLOAD_LIMIT) {
+    throw new FreeDownloadLimitError()
   }
 
   // Add new slug

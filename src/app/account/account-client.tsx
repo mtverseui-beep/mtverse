@@ -43,6 +43,7 @@ type AccountTemplate = {
   price: number
   purchased: boolean
   saved: boolean
+  freeDownloaded: boolean
   canDownload: boolean
 }
 
@@ -123,7 +124,7 @@ export default function AccountClient() {
   const purchasedTemplates = useMemo(() => library.filter((template) => template.purchased), [library])
   const downloadableTemplates = useMemo(() => library.filter((template) => template.canDownload), [library])
   const savedTemplates = useMemo(() => library.filter((template) => template.saved), [library])
-  const visibleLibrary = useMemo(() => library.filter((template) => template.purchased || template.saved), [library])
+  const visibleLibrary = useMemo(() => library.filter((template) => template.purchased || template.saved || template.freeDownloaded), [library])
   const lockedTemplates = useMemo(() => visibleLibrary.filter((template) => !template.canDownload), [visibleLibrary])
 
   async function handleLogout() {
@@ -312,7 +313,13 @@ export default function AccountClient() {
                             Saved
                           </span>
                         ) : null}
-                        {!template.canDownload && !template.saved ? (
+                        {template.freeDownloaded ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-sky-50 px-2 py-0.5 text-xs font-semibold text-sky-700 dark:bg-sky-950/30 dark:text-sky-300">
+                            <Download className="h-3.5 w-3.5" />
+                            Downloaded
+                          </span>
+                        ) : null}
+                        {!template.canDownload && !template.saved && !template.freeDownloaded ? (
                           <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground">
                             <LockKeyhole className="h-3.5 w-3.5" />
                             Locked

@@ -7,6 +7,7 @@ import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animati
 import { CtaBackground } from '@/components/design-system/backgrounds'
 import { AmexIcon, ApplePayIcon, GooglePayIcon, MastercardIcon, PaddleIcon, PayPalIcon, VisaIcon } from '@/components/payment/payment-icons'
 import { FreeUnlockButton } from '@/components/payment/free-unlock-button'
+import { PricingFreeAccountCta } from '@/components/payment/pricing-free-account-cta'
 import { getAllTemplatesFromStore } from '@/lib/templates-data'
 
 export const metadata: Metadata = {
@@ -132,9 +133,7 @@ export default async function PricingPage() {
                       <p className="mt-1.5 text-sm text-muted-foreground">Up to 5 template downloads</p>
                     </div>
 
-                    <Link href="/sign-up" className="ds-btn ds-btn-secondary w-full mb-6">
-                      Create free account
-                    </Link>
+                    <PricingFreeAccountCta />
 
                     <ul className="space-y-2.5">
                       {['5 free template downloads', 'Full source code', 'Live preview access', 'Single project license', 'Community support'].map((f) => (

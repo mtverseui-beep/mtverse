@@ -3,7 +3,7 @@ import 'server-only'
 import { existsSync } from 'fs'
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
-import { dashboardKits, type DashboardKit, type DashboardKitStatus } from '@/lib/dashboard-kits'
+import { dashboardKits, type DashboardKit, type DashboardKitStatus, type TemplatePricingTier } from '@/lib/dashboard-kits'
 import { hasRuntimeKvStore, readRuntimeJsonNoStore, writeRuntimeJson } from '@/lib/runtime-kv'
 import { slugify } from '@/lib/utils'
 
@@ -114,6 +114,10 @@ function normalizeFramework(value: unknown): DashboardKit['framework'] {
   return 'nextjs'
 }
 
+function normalizePricingTier(value: unknown): TemplatePricingTier {
+  return value === 'pro' ? 'pro' : 'normal'
+}
+
 export function normalizeDashboardKit(input: Partial<DashboardKit>): DashboardKit {
   const slug = slugify(input.slug || input.title || 'kit-' + Date.now())
   const title = cleanText(input.title || slug)
@@ -124,6 +128,8 @@ export function normalizeDashboardKit(input: Partial<DashboardKit>): DashboardKi
   const packageFilename = cleanText(input.packageFilename || 'mtverse-next-package.zip')
   const matchedFallback = dashboardKits.find((kit) => kit.slug === slug)
   const fallback = matchedFallback || dashboardKits[0]
+  const isFree = Boolean(input.isFree)
+  const pricingTier = isFree ? 'normal' : normalizePricingTier(input.pricingTier ?? matchedFallback?.pricingTier)
   const livePreviewUrl = cleanText(input.livePreviewUrl || matchedFallback?.livePreviewUrl || '')
   const category = slugify(cleanText(input.category || 'dashboard-kits')) || 'dashboard-kits'
   const categoryTitle = cleanText(input.categoryTitle || (category === 'dashboard-kits' ? 'Dashboard Kits' : category))
@@ -145,6 +151,7 @@ export function normalizeDashboardKit(input: Partial<DashboardKit>): DashboardKi
     metaDescription: cleanText(input.metaDescription) || buildMetaDescription(title, summary || description, categoryTitle),
     priceUsd,
     originalPriceUsd,
+    pricingTier,
     framework,
     frameworkLabel: cleanText(input.frameworkLabel || (framework === 'html' ? 'HTML/CSS/JavaScript' : 'Next.js App Router')),
     subcategory: input.subcategory ? cleanText(input.subcategory) : matchedFallback?.subcategory,
@@ -163,7 +170,7 @@ export function normalizeDashboardKit(input: Partial<DashboardKit>): DashboardKi
     useCases: asStringArray(input.useCases).length ? asStringArray(input.useCases) : fallback.useCases,
     metadataLanguages: Array.isArray(input.metadataLanguages) && input.metadataLanguages.length ? input.metadataLanguages : fallback.metadataLanguages,
     updatedAt: cleanText(input.updatedAt || new Date().toISOString().slice(0, 10)),
-    isFree: Boolean(input.isFree),
+    isFree,
   }
 }
 

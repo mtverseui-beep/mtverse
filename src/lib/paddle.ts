@@ -6,6 +6,7 @@ export type { PaddleCheckoutPayload, PaddleEnvironment } from '@/lib/paddle-type
 
 const PADDLE_PRICE_ENV: Record<PackageId, string> = {
   next: 'PADDLE_NEXT_PRICE_ID',
+  pro: 'PADDLE_PRO_PRICE_ID',
   'free-unlock': 'PADDLE_FREE_UNLOCK_PRICE_ID',
 }
 
