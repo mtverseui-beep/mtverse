@@ -6,7 +6,7 @@ import { buildR2PackageKey } from '@/lib/cloudflare-r2'
 export const PACKAGE_DOWNLOAD_FILENAMES: Record<PackageId, string> = {
   next: 'mtverse-next-package.zip',
   pro: 'mtverse-pro-package.zip',
-  'free-unlock': '',
+  'free-unlock': 'mtverse-all-html-templates.zip',
 }
 
 export function getPackageDownloadFilename(packageId: PackageId) {

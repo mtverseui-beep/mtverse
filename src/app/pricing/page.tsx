@@ -11,12 +11,29 @@ import { PricingFreeAccountCta } from '@/components/payment/pricing-free-account
 import { getAllTemplatesFromStore } from '@/lib/templates-data'
 
 export const metadata: Metadata = {
-  title: 'Pricing - Premium Next.js Templates | mtverse',
-  description: 'One-time payment for lifetime access to premium Next.js templates. No subscriptions, no hidden fees. Includes all future updates.',
+  title: 'Pricing - Premium Templates and $5 HTML Bundle | mtverse',
+  description: 'One-time pricing for premium Next.js templates and a $5 all HTML templates bundle. Unlock 100+ responsive HTML, portfolio, SaaS, ecommerce, agency, restaurant, healthcare, education, fitness, crypto, and real estate website templates in one ZIP.',
+  keywords: [
+    'HTML templates bundle',
+    'all HTML templates zip',
+    'free HTML templates',
+    'website templates bundle',
+    'portfolio templates',
+    'SaaS HTML templates',
+    'ecommerce HTML templates',
+    'agency website templates',
+    'restaurant HTML templates',
+    'real estate website templates',
+    'healthcare HTML templates',
+    'education website templates',
+    'Tailwind CSS templates',
+    'Next.js dashboard templates',
+    'premium website templates',
+  ],
   alternates: { canonical: '/pricing' },
   openGraph: {
     title: 'Pricing - mtverse',
-    description: 'One-time payment for lifetime access to premium Next.js templates.',
+    description: 'One-time access to premium templates and the $5 all HTML website templates ZIP.',
     url: SITE_URL + '/pricing',
     type: 'website',
   },
@@ -27,12 +44,13 @@ export const dynamic = 'force-dynamic'
 export default async function PricingPage() {
   const templates = await getAllTemplatesFromStore()
   const hasFreeTemplates = templates.some((t) => t.isFree)
+  const htmlTemplateCount = templates.filter((t) => t.category === 'html').length
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: 'mtverse UI Framework Packages',
-    description: 'One-time UI framework zip packages for Next.js, React, and more.',
+    description: 'One-time template packages for premium dashboards and the all HTML website templates bundle.',
     url: SITE_URL + '/pricing',
     image: SITE_URL + '/SiteLogo.png',
     brand: { '@type': 'Brand', name: 'mtverse' },
@@ -82,9 +100,9 @@ export default async function PricingPage() {
   const faqs = [
     { q: 'What payment methods do you accept?', a: 'All major credit cards, Google Pay, Apple Pay, PayPal, and local payment methods through Paddle. Payments are processed with industry-standard encryption.' },
     { q: 'Is it a one-time payment or subscription?', a: 'One-time payment only. No recurring charges, no hidden fees. You get lifetime access including all future updates.' },
-    { q: 'What happens after I purchase?', a: 'After payment, you get instant access to download your template. A license key is sent to your email for future downloads and support.' },
+    { q: 'What happens after I purchase?', a: 'After payment, you get instant access to download your template. For the $5 HTML unlock, the server prepares one ZIP containing all HTML template packages.' },
     { q: 'Do you offer refunds?', a: 'Yes. We offer a 14-day money-back guarantee. Contact us within 14 days for a full refund, no questions asked.' },
-    { q: 'What about the free templates?', a: 'Free templates can be downloaded up to 5 times with a free account. After that, unlock unlimited free downloads for a one-time $5 payment.' },
+    { q: 'What about the HTML templates?', a: 'HTML templates can be downloaded individually up to 5 times with a free account. A one-time $5 unlock enables unlimited free downloads and the all HTML templates bundle ZIP.' },
     { q: 'Is the payment secure?', a: 'All payments are processed through Paddle, a trusted payment processor. We never store your card information. Fully PCI-DSS compliant.' },
   ]
 
@@ -108,7 +126,7 @@ export default async function PricingPage() {
             </Reveal>
             <Reveal delay={0.2}>
               <p className="ds-lead ds-text-pretty mb-8 max-w-2xl mx-auto">
-                No subscriptions. No hidden fees. Pay once for premium templates, or start free with up to 5 downloads.
+                No subscriptions. No hidden fees. Pay once for premium templates, or unlock every HTML website template in one ZIP for $5.
               </p>
             </Reveal>
           </div>
@@ -198,17 +216,17 @@ export default async function PricingPage() {
                       <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400 mb-3">
                         <Infinity className="h-5 w-5" />
                       </div>
-                      <h3 className="text-lg font-bold">Free Unlock</h3>
+                      <h3 className="text-lg font-bold">HTML Bundle</h3>
                       <div className="mt-2 flex items-baseline gap-1">
                         <span className="text-3xl font-bold">$5</span>
                       </div>
-                      <p className="mt-1.5 text-sm text-muted-foreground">Unlimited free template downloads</p>
+                      <p className="mt-1.5 text-sm text-muted-foreground">{htmlTemplateCount} HTML templates in one ZIP</p>
                     </div>
 
                     <FreeUnlockButton />
 
                     <ul className="mt-6 space-y-2.5">
-                      {['Unlimited free template downloads', 'One-time $5 payment', 'Full source code', 'All future free templates', 'No expiration'].map((f) => (
+                      {[`All ${htmlTemplateCount} HTML templates in one ZIP`, 'Unlimited individual HTML downloads', 'One-time $5 payment', 'Portfolio, SaaS, ecommerce, agency, and more', 'No expiration'].map((f) => (
                         <li key={f} className="flex items-start gap-2.5 text-sm">
                           <Check className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" />
                           {f}

@@ -422,9 +422,11 @@ function normalizeStore(input: Partial<TemplateSocialStoreData> | null | undefin
     for (const [slug, record] of Object.entries(input.templates)) {
       if (!record || typeof record !== 'object') continue
       const seeded = getSeededSocial(slug)
+      const storedBasePurchaseCount = Math.max(0, Math.floor(Number(record.basePurchaseCount) || 0))
+      const shouldUseSeededBase = Boolean(SEEDED_SOCIAL[slug] || DASHBOARD_TEMPLATE_SLUGS.includes(slug))
       templates[slug] = {
         slug,
-        basePurchaseCount: seeded.purchaseCount,
+        basePurchaseCount: shouldUseSeededBase || !storedBasePurchaseCount ? seeded.purchaseCount : storedBasePurchaseCount,
         realPurchaseCount: Math.max(0, Math.floor(Number(record.realPurchaseCount) || 0)),
         reviews: Array.isArray(record.reviews)
           ? record.reviews.map(normalizeReview).filter((review) => review.source === 'customer').slice(0, MAX_STORED_REVIEWS)

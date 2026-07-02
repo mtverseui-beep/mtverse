@@ -32,11 +32,11 @@ export const PRODUCT_PACKAGES: Record<PackageId, ProductPackage> = {
   },
   'free-unlock': {
     id: 'free-unlock',
-    name: 'Free Templates Unlock',
-    shortName: 'Free Unlock',
+    name: 'All HTML Templates Bundle',
+    shortName: 'HTML Bundle',
     amountUsd: 5,
     currency: 'USD',
-    accessPlan: 'free',  // doesn't upgrade plan level — handled specially in webhook
+    accessPlan: 'free',  // keeps account on free plan; unlock flag is handled separately
   },
 }
 

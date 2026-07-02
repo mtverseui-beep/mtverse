@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
-import { setPlan } from '@/lib/plan-store'
+import { getPlan, setPlan } from '@/lib/plan-store'
 import { getProductPackage, isPackageId } from '@/lib/packages'
 import { recordTemplatePurchase } from '@/lib/template-social-store'
 import { hasRuntimeKvStore, getRedisClient } from '@/lib/runtime-kv'
@@ -141,9 +141,19 @@ export async function POST(request: NextRequest) {
     }
 
     if (packageId === 'free-unlock') {
-      // Free unlock payment - don't upgrade plan, just set the free unlock flag
+      // HTML bundle unlock payment: keep the existing plan tier and set the unlock flag.
       const { setFreeUnlocked } = await import('@/lib/template-social-store')
+      const existingPlan = await getPlan(email)
       await setFreeUnlocked(email)
+      await setPlan(
+        email,
+        existingPlan?.plan || 'free',
+        existingPlan?.licenseKey,
+        event.data?.id,
+        event.data?.customer_id || event.data?.customer?.id || undefined,
+        'paddle',
+        packageId
+      )
     } else {
       const product = getProductPackage(packageId)
 

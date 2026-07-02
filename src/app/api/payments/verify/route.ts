@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPlanByProviderTransactionId, setPlan } from '@/lib/plan-store'
 import { isMockPaymentAllowed, verifyPaymentFromSearchParams } from '@/lib/payments'
-import { recordTemplatePurchase } from '@/lib/template-social-store'
+import { recordTemplatePurchase, setFreeUnlocked } from '@/lib/template-social-store'
 
 function shouldRecordTemplatePurchase(packageId: string | null | undefined, kitSlug: string | null) {
   return Boolean(kitSlug && packageId !== 'free-unlock')
@@ -73,7 +73,9 @@ export async function GET(request: NextRequest) {
     })
   }
 
-  if (result.valid && result.email && result.plan) {
+  if (result.valid && result.email && result.packageId === 'free-unlock') {
+    await setFreeUnlocked(result.email)
+  } else if (result.valid && result.email && result.plan) {
     await setPlan(
       result.email,
       result.plan,

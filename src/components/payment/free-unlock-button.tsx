@@ -15,7 +15,7 @@ export function FreeUnlockButton() {
 
   async function handleClick() {
     if (!authenticated) {
-      toast.info('Please sign in to unlock free downloads')
+      toast.info('Please sign in to unlock the HTML template bundle')
       router.push('/sign-in?next=/pricing')
       return
     }
@@ -77,7 +77,7 @@ export function FreeUnlockButton() {
       ) : (
         <>
           <Lock className="h-4 w-4" />
-          {authenticated ? 'Unlock for $5' : 'Sign in to unlock'}
+          {authenticated ? 'Unlock all HTML for $5' : 'Sign in to unlock'}
         </>
       )}
     </button>

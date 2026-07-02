@@ -1,10 +1,11 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import Link from 'next/link'
-import { AlertTriangle, ArrowRight, CheckCircle2, Download } from 'lucide-react'
+import { AlertTriangle, ArrowRight, CheckCircle2 } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
+import { PackageDownloadButton } from '@/components/payment/package-download-button'
 import { getPlanByProviderTransactionId, setPlan } from '@/lib/plan-store'
 import { isMockPaymentAllowed, verifyPaymentFromSearchParams } from '@/lib/payments'
-import { recordTemplatePurchase } from '@/lib/template-social-store'
+import { recordTemplatePurchase, setFreeUnlocked } from '@/lib/template-social-store'
 
 export const dynamic = 'force-dynamic'
 
@@ -65,6 +66,10 @@ async function verifySuccess(searchParams: URLSearchParams) {
       }
     }
 
+    if (record.status !== 'revoked' && record.packageId === 'free-unlock') {
+      await setFreeUnlocked(record.email)
+    }
+
     if (record.status !== 'revoked' && shouldRecordTemplatePurchase(record.packageId || result.packageId, kitSlug)) {
       await recordTemplatePurchase(kitSlug, record.email)
     }
@@ -80,7 +85,9 @@ async function verifySuccess(searchParams: URLSearchParams) {
     }
   }
 
-  if (result.valid && result.email && result.plan) {
+  if (result.valid && result.email && result.packageId === 'free-unlock') {
+    await setFreeUnlocked(result.email)
+  } else if (result.valid && result.email && result.plan) {
     await setPlan(
       result.email,
       result.plan,
@@ -102,9 +109,15 @@ async function verifySuccess(searchParams: URLSearchParams) {
 export default async function PricingSuccessPage({ searchParams }: { searchParams: SearchParams }) {
   const params = toUrlSearchParams(await searchParams)
   const result = await verifySuccess(params)
-  const valid = Boolean(result.valid && result.plan && result.packageId)
+  const valid = Boolean(result.valid && result.packageId)
   const kitSlug = params.get('kit')
-  const downloadHref = kitSlug ? `/api/download/template/${encodeURIComponent(kitSlug)}` : '/api/download/package/next'
+  const isHtmlBundle = result.packageId === 'free-unlock'
+  const downloadHref = kitSlug
+    ? `/api/download/template/${encodeURIComponent(kitSlug)}`
+    : `/api/download/package/${encodeURIComponent(result.packageId || 'next')}`
+  const successCopy = isHtmlBundle
+    ? 'Your all HTML templates bundle access is active. The server will prepare one ZIP with every HTML template package.'
+    : 'Your mtverse template package access is active. You can download the package now.'
 
   return (
     <PublicLayout>
@@ -118,16 +131,17 @@ export default async function PricingSuccessPage({ searchParams }: { searchParam
             <h1 className="ds-h1 mb-3">{valid ? 'Payment confirmed' : 'Payment not confirmed yet'}</h1>
             <p className="ds-muted mx-auto max-w-md">
               {valid
-                ? 'Your mtverse dashboard package access is active. You can download the package now.'
+                ? successCopy
                 : result.error || 'We could not verify this payment. Please refresh after a moment or contact support if the charge completed.'}
             </p>
 
             <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
               {valid ? (
-                <Link href={downloadHref} className="ds-btn ds-btn-primary">
-                  <Download className="h-4 w-4" />
-                  Download package
-                </Link>
+                <PackageDownloadButton
+                  href={downloadHref}
+                  label={isHtmlBundle ? 'Download all HTML ZIP' : 'Download package'}
+                  loadingLabel={isHtmlBundle ? 'Preparing all HTML ZIP...' : 'Preparing ZIP...'}
+                />
               ) : null}
               <Link href="/templates" className="ds-btn ds-btn-secondary">
                 Back to templates
