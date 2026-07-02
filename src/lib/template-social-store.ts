@@ -278,8 +278,8 @@ function createGenericSeededSocial(slug: string): { purchaseCount: number; revie
   // Paid templates stay under 150 for modest social proof.
   const isHtmlFree = slug.startsWith('html-') || slug.includes('-portfolio')
   const purchaseCount = isHtmlFree
-    ? [74, 129, 212, 88, 156, 241, 103, 198, 267, 117, 324, 143, 286, 171, 226][hash % 15]
-    : [64, 91, 128, 83, 117, 146, 72, 109, 139, 58][hash % 10]
+    ? 72 + (hash % 318) + ((hash >>> 8) % 11)
+    : 54 + (hash % 96)
 
   return {
     purchaseCount,
@@ -423,10 +423,9 @@ function normalizeStore(input: Partial<TemplateSocialStoreData> | null | undefin
       if (!record || typeof record !== 'object') continue
       const seeded = getSeededSocial(slug)
       const storedBasePurchaseCount = Math.max(0, Math.floor(Number(record.basePurchaseCount) || 0))
-      const shouldUseSeededBase = Boolean(SEEDED_SOCIAL[slug] || DASHBOARD_TEMPLATE_SLUGS.includes(slug))
       templates[slug] = {
         slug,
-        basePurchaseCount: shouldUseSeededBase || !storedBasePurchaseCount ? seeded.purchaseCount : storedBasePurchaseCount,
+        basePurchaseCount: storedBasePurchaseCount || seeded.purchaseCount,
         realPurchaseCount: Math.max(0, Math.floor(Number(record.realPurchaseCount) || 0)),
         reviews: Array.isArray(record.reviews)
           ? record.reviews.map(normalizeReview).filter((review) => review.source === 'customer').slice(0, MAX_STORED_REVIEWS)

@@ -78,7 +78,7 @@ export default async function PricingPage() {
   }
 
   const premiumFeatures = [
-    'All premium templates included',
+    'Unlock only the template you purchase',
     'Lifetime access & free updates',
     'Full source code',
     'Commercial use license',

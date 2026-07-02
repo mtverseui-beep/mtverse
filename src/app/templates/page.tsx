@@ -78,6 +78,7 @@ type SearchParams = Promise<{
   search?: string
   sort?: string
   subcategory?: string
+  page?: string
 }>
 
 export default async function TemplatesPage({ searchParams }: { searchParams: SearchParams }) {
@@ -86,6 +87,7 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
   const search = sp.search ?? ''
   const sort = (sp.sort as 'featured' | 'trending' | 'new' | 'downloads' | 'price-low' | 'price-high' | 'rating') ?? 'featured'
   const subcategory = sp.subcategory ?? 'all'
+  const page = Math.max(1, Math.floor(Number(sp.page) || 1))
 
   const baseTemplates = await getAllTemplatesFromStore()
   const templates = await withAllTemplateSocial(baseTemplates)
@@ -131,6 +133,7 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
             initialSearch={search}
             initialSort={sort}
             initialSubcategory={subcategory}
+            initialPage={page}
             totalTemplates={stats.totalTemplates}
             categoryOptions={categoryOptions}
           />

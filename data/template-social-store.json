@@ -2,814 +2,814 @@
   "templates": {
     "pipeline-pilot-production": {
       "slug": "pipeline-pilot-production",
-      "basePurchaseCount": 83,
+      "basePurchaseCount": 134,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.764Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "auric-premium-headphones-ecommerce-template": {
       "slug": "auric-premium-headphones-ecommerce-template",
-      "basePurchaseCount": 128,
+      "basePurchaseCount": 119,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "nimbus-pro": {
       "slug": "nimbus-pro",
-      "basePurchaseCount": 72,
+      "basePurchaseCount": 147,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "aurelia-ecommerce": {
       "slug": "aurelia-ecommerce",
-      "basePurchaseCount": 117,
+      "basePurchaseCount": 71,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "helios-pro": {
       "slug": "helios-pro",
-      "basePurchaseCount": 189,
+      "basePurchaseCount": 283,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-06-29T00:00:00.000Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "lumiere-ecommerce": {
       "slug": "lumiere-ecommerce",
-      "basePurchaseCount": 142,
+      "basePurchaseCount": 137,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-06-29T00:00:00.000Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "mtverse-modular-nextjs-dashboard-template": {
       "slug": "mtverse-modular-nextjs-dashboard-template",
-      "basePurchaseCount": 103,
+      "basePurchaseCount": 57,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-06-28T00:00:00.000Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "mt-box-enterprise-nextjs-dashboard-template": {
       "slug": "mt-box-enterprise-nextjs-dashboard-template",
-      "basePurchaseCount": 77,
+      "basePurchaseCount": 78,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-06-28T00:00:00.000Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "mat-dash-nextjs-admin-dashboard-template": {
       "slug": "mat-dash-nextjs-admin-dashboard-template",
-      "basePurchaseCount": 256,
+      "basePurchaseCount": 81,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-06-28T00:00:00.000Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "3d-interactive-portfolio": {
       "slug": "3d-interactive-portfolio",
-      "basePurchaseCount": 219,
+      "basePurchaseCount": 342,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "alex-chen-developer-terminal-portfolio": {
       "slug": "alex-chen-developer-terminal-portfolio",
-      "basePurchaseCount": 226,
+      "basePurchaseCount": 157,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "alex-morgan-dark-minimal-portfolio": {
       "slug": "alex-morgan-dark-minimal-portfolio",
-      "basePurchaseCount": 198,
+      "basePurchaseCount": 290,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "architect-studio-portfolio": {
       "slug": "architect-studio-portfolio",
-      "basePurchaseCount": 112,
+      "basePurchaseCount": 96,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "brutalist-portfolio": {
       "slug": "brutalist-portfolio",
-      "basePurchaseCount": 241,
+      "basePurchaseCount": 122,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "bug-hunter-developer-portfolio": {
       "slug": "bug-hunter-developer-portfolio",
-      "basePurchaseCount": 219,
+      "basePurchaseCount": 252,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "creative-agency-bold-portfolio": {
       "slug": "creative-agency-bold-portfolio",
-      "basePurchaseCount": 147,
+      "basePurchaseCount": 109,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "designer-folio-editorial-portfolio": {
       "slug": "designer-folio-editorial-portfolio",
-      "basePurchaseCount": 96,
+      "basePurchaseCount": 221,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "elena-voss-photographer-portfolio": {
       "slug": "elena-voss-photographer-portfolio",
-      "basePurchaseCount": 96,
+      "basePurchaseCount": 117,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "macos-desktop-portfolio-experience": {
       "slug": "macos-desktop-portfolio-experience",
-      "basePurchaseCount": 212,
+      "basePurchaseCount": 281,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "neon-cyberpunk-portfolio": {
       "slug": "neon-cyberpunk-portfolio",
-      "basePurchaseCount": 129,
+      "basePurchaseCount": 101,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "purple-wave-creative-portfolio": {
       "slug": "purple-wave-creative-portfolio",
-      "basePurchaseCount": 79,
+      "basePurchaseCount": 144,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "retro-terminal-portfolio": {
       "slug": "retro-terminal-portfolio",
-      "basePurchaseCount": 315,
+      "basePurchaseCount": 225,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.785Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "swiss-design-portfolio": {
       "slug": "swiss-design-portfolio",
-      "basePurchaseCount": 254,
+      "basePurchaseCount": 187,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "valentine-fashion-editorial-portfolio": {
       "slug": "valentine-fashion-editorial-portfolio",
-      "basePurchaseCount": 212,
+      "basePurchaseCount": 147,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "analyticshub-real-time-analytics-insights-platform": {
       "slug": "analyticshub-real-time-analytics-insights-platform",
-      "basePurchaseCount": 117,
+      "basePurchaseCount": 179,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "blockforge-build-deploy-defi-protocols": {
       "slug": "blockforge-build-deploy-defi-protocols",
-      "basePurchaseCount": 226,
+      "basePurchaseCount": 250,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "bookvault-online-bookstore-media": {
       "slug": "bookvault-online-bookstore-media",
-      "basePurchaseCount": 233,
+      "basePurchaseCount": 319,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "boxmaster-boxing-combat-fitness": {
       "slug": "boxmaster-boxing-combat-fitness",
-      "basePurchaseCount": 205,
+      "basePurchaseCount": 237,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "braincode-ai-powered-code-generation": {
       "slug": "braincode-ai-powered-code-generation",
-      "basePurchaseCount": 286,
+      "basePurchaseCount": 341,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "brandforge-full-service-marketing-agency": {
       "slug": "brandforge-full-service-marketing-agency",
-      "basePurchaseCount": 143,
+      "basePurchaseCount": 243,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "businessrealty-commercial-real-estate-solutions": {
       "slug": "businessrealty-commercial-real-estate-solutions",
-      "basePurchaseCount": 298,
+      "basePurchaseCount": 159,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "carelync-coordinate-patient-care": {
       "slug": "carelync-coordinate-patient-care",
-      "basePurchaseCount": 224,
+      "basePurchaseCount": 387,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "chainswap-swap-across-any-blockchain": {
       "slug": "chainswap-swap-across-any-blockchain",
-      "basePurchaseCount": 106,
+      "basePurchaseCount": 376,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "cloudflow-workflow-automation-for-modern-teams": {
       "slug": "cloudflow-workflow-automation-for-modern-teams",
-      "basePurchaseCount": 103,
+      "basePurchaseCount": 160,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "coastal-catch-fresh-seafood": {
       "slug": "coastal-catch-fresh-seafood",
-      "basePurchaseCount": 135,
+      "basePurchaseCount": 346,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "codeworks-web-development-agency": {
       "slug": "codeworks-web-development-agency",
-      "basePurchaseCount": 135,
+      "basePurchaseCount": 375,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "contentworks-content-marketing-agency": {
       "slug": "contentworks-content-marketing-agency",
-      "basePurchaseCount": 156,
+      "basePurchaseCount": 93,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "corevault-corporate-wellness-programs": {
       "slug": "corevault-corporate-wellness-programs",
-      "basePurchaseCount": 88,
+      "basePurchaseCount": 305,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.786Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "creativehub-design-digital-art-academy": {
       "slug": "creativehub-design-digital-art-academy",
-      "basePurchaseCount": 171,
+      "basePurchaseCount": 409,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "creativestudio-branding-design-agency": {
       "slug": "creativestudio-branding-design-agency",
-      "basePurchaseCount": 324,
+      "basePurchaseCount": 328,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "crossflex-functional-fitness-anywhere": {
       "slug": "crossflex-functional-fitness-anywhere",
-      "basePurchaseCount": 324,
+      "basePurchaseCount": 201,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "cryptolearn-academy-master-blockchain": {
       "slug": "cryptolearn-academy-master-blockchain",
-      "basePurchaseCount": 156,
+      "basePurchaseCount": 165,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "cryptoshield-protect-your-digital-assets": {
       "slug": "cryptoshield-protect-your-digital-assets",
-      "basePurchaseCount": 254,
+      "basePurchaseCount": 394,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "cryptovault-secure-cryptocurrency-management-platform": {
       "slug": "cryptovault-secure-cryptocurrency-management-platform",
-      "basePurchaseCount": 286,
+      "basePurchaseCount": 377,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "curveai-ai-customer-experience-platform": {
       "slug": "curveai-ai-customer-experience-platform",
-      "basePurchaseCount": 212,
+      "basePurchaseCount": 406,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "daohub-build-govern-your-dao": {
       "slug": "daohub-build-govern-your-dao",
-      "basePurchaseCount": 92,
+      "basePurchaseCount": 176,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "datasync-enterprise-data-synchronization-platform": {
       "slug": "datasync-enterprise-data-synchronization-platform",
-      "basePurchaseCount": 233,
+      "basePurchaseCount": 313,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "designstudio-creative-digital-agency": {
       "slug": "designstudio-creative-digital-agency",
-      "basePurchaseCount": 233,
+      "basePurchaseCount": 267,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "doctorhub-book-doctor-appointments": {
       "slug": "doctorhub-book-doctor-appointments",
-      "basePurchaseCount": 143,
+      "basePurchaseCount": 200,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "el-fuego-mexican-restaurant": {
       "slug": "el-fuego-mexican-restaurant",
-      "basePurchaseCount": 189,
+      "basePurchaseCount": 104,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "elevatehomes-luxury-real-estate": {
       "slug": "elevatehomes-luxury-real-estate",
-      "basePurchaseCount": 315,
+      "basePurchaseCount": 137,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "elite-realty-group-top-real-estate-brokerage": {
       "slug": "elite-realty-group-top-real-estate-brokerage",
-      "basePurchaseCount": 103,
+      "basePurchaseCount": 240,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "eliteflow-personal-training-fitness-coaching": {
       "slug": "eliteflow-personal-training-fitness-coaching",
-      "basePurchaseCount": 298,
+      "basePurchaseCount": 180,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "ember-oak-bbq-smokehouse": {
       "slug": "ember-oak-bbq-smokehouse",
-      "basePurchaseCount": 129,
+      "basePurchaseCount": 292,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "eventflow-event-marketing-management": {
       "slug": "eventflow-event-marketing-management",
-      "basePurchaseCount": 83,
+      "basePurchaseCount": 123,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "fashionhub-trendy-fashion-store": {
       "slug": "fashionhub-trendy-fashion-store",
-      "basePurchaseCount": 143,
+      "basePurchaseCount": 265,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "fitlife-365-your-personal-ai-fitness-coach": {
       "slug": "fitlife-365-your-personal-ai-fitness-coach",
-      "basePurchaseCount": 324,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "fitlife-your-fitness-companion": {
-      "slug": "fitlife-your-fitness-companion",
-      "basePurchaseCount": 88,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "fitmax-sports-fitness-equipment": {
-      "slug": "fitmax-sports-fitness-equipment",
-      "basePurchaseCount": 241,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "fitnessacademy-trainer-certification": {
-      "slug": "fitnessacademy-trainer-certification",
-      "basePurchaseCount": 92,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "flowhub-simple-project-management-for-teams": {
-      "slug": "flowhub-simple-project-management-for-teams",
-      "basePurchaseCount": 233,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "flowspace-dance-movement-studios": {
-      "slug": "flowspace-dance-movement-studios",
-      "basePurchaseCount": 167,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "freshbite-farm-to-table-dining": {
-      "slug": "freshbite-farm-to-table-dining",
-      "basePurchaseCount": 147,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "greenhomes-sustainable-real-estate": {
-      "slug": "greenhomes-sustainable-real-estate",
-      "basePurchaseCount": 254,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "greenscape-home-garden-store": {
-      "slug": "greenscape-home-garden-store",
-      "basePurchaseCount": 88,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "growthlab-growth-marketing-agency": {
-      "slug": "growthlab-growth-marketing-agency",
-      "basePurchaseCount": 205,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "healthcare-premium-health-insurance": {
-      "slug": "healthcare-premium-health-insurance",
-      "basePurchaseCount": 102,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "homefinder-find-your-community": {
-      "slug": "homefinder-find-your-community",
-      "basePurchaseCount": 79,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "investrealty-real-estate-investment-platform": {
-      "slug": "investrealty-real-estate-investment-platform",
-      "basePurchaseCount": 106,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "ironhub-professional-strength-training-bodybuilding": {
-      "slug": "ironhub-professional-strength-training-bodybuilding",
-      "basePurchaseCount": 139,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "le-petit-bistro-french-cuisine": {
-      "slug": "le-petit-bistro-french-cuisine",
-      "basePurchaseCount": 83,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "learnhub-online-learning-platform": {
-      "slug": "learnhub-online-learning-platform",
-      "basePurchaseCount": 251,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "linguaflow-learn-languages-fast": {
-      "slug": "linguaflow-learn-languages-fast",
-      "basePurchaseCount": 251,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "luminabeauty-premium-cosmetics-skincare": {
-      "slug": "luminabeauty-premium-cosmetics-skincare",
-      "basePurchaseCount": 324,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "luna-bella-italian-fine-dining": {
-      "slug": "luna-bella-italian-fine-dining",
-      "basePurchaseCount": 117,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "luxehome-premium-furniture-store": {
-      "slug": "luxehome-premium-furniture-store",
-      "basePurchaseCount": 189,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "luxeland-property-marketplace": {
-      "slug": "luxeland-property-marketplace",
-      "basePurchaseCount": 117,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "mediflow-streamline-your-medical-practice": {
-      "slug": "mediflow-streamline-your-medical-practice",
-      "basePurchaseCount": 291,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "mentalwell-therapy-for-everyone": {
-      "slug": "mentalwell-therapy-for-everyone",
-      "basePurchaseCount": 92,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "metaverse-exchange-trade-across-all-metaverses": {
-      "slug": "metaverse-exchange-trade-across-all-metaverses",
-      "basePurchaseCount": 102,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "musicacademy-learn-music-online": {
-      "slug": "musicacademy-learn-music-online",
-      "basePurchaseCount": 212,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "nftgallery-create-trade-digital-nfts": {
-      "slug": "nftgallery-create-trade-digital-nfts",
-      "basePurchaseCount": 102,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "novaborn-women-s-fitness-empowerment": {
-      "slug": "novaborn-women-s-fitness-empowerment",
-      "basePurchaseCount": 205,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "pharmadirect-pharmacy-at-your-door": {
-      "slug": "pharmadirect-pharmacy-at-your-door",
-      "basePurchaseCount": 102,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "pilatespro-core-strength-body-sculpting": {
-      "slug": "pilatespro-core-strength-body-sculpting",
-      "basePurchaseCount": 147,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "pixelforce-ui-ux-design-agency": {
-      "slug": "pixelforce-ui-ux-design-agency",
-      "basePurchaseCount": 143,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "professionalhub-advanced-certifications": {
-      "slug": "professionalhub-advanced-certifications",
-      "basePurchaseCount": 161,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "propertymanager-pro-property-management-platform": {
-      "slug": "propertymanager-pro-property-management-platform",
-      "basePurchaseCount": 291,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "propertynest-real-estate-solutions": {
-      "slug": "propertynest-real-estate-solutions",
-      "basePurchaseCount": 74,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "proskills-academy-corporate-training": {
-      "slug": "proskills-academy-corporate-training",
-      "basePurchaseCount": 92,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
-    },
-    "sakura-zen-japanese-restaurant": {
-      "slug": "sakura-zen-japanese-restaurant",
       "basePurchaseCount": 112,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
-    "shopelite-ecommerce-ui-kit": {
-      "slug": "shopelite-ecommerce-ui-kit",
-      "basePurchaseCount": 324,
+    "fitlife-your-fitness-companion": {
+      "slug": "fitlife-your-fitness-companion",
+      "basePurchaseCount": 214,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
-    "shophub-your-online-store": {
-      "slug": "shophub-your-online-store",
+    "fitmax-sports-fitness-equipment": {
+      "slug": "fitmax-sports-fitness-equipment",
+      "basePurchaseCount": 297,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "fitnessacademy-trainer-certification": {
+      "slug": "fitnessacademy-trainer-certification",
+      "basePurchaseCount": 280,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "flowhub-simple-project-management-for-teams": {
+      "slug": "flowhub-simple-project-management-for-teams",
+      "basePurchaseCount": 374,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "flowspace-dance-movement-studios": {
+      "slug": "flowspace-dance-movement-studios",
+      "basePurchaseCount": 235,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "freshbite-farm-to-table-dining": {
+      "slug": "freshbite-farm-to-table-dining",
+      "basePurchaseCount": 274,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "greenhomes-sustainable-real-estate": {
+      "slug": "greenhomes-sustainable-real-estate",
+      "basePurchaseCount": 417,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "greenscape-home-garden-store": {
+      "slug": "greenscape-home-garden-store",
+      "basePurchaseCount": 262,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "growthlab-growth-marketing-agency": {
+      "slug": "growthlab-growth-marketing-agency",
+      "basePurchaseCount": 275,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "healthcare-premium-health-insurance": {
+      "slug": "healthcare-premium-health-insurance",
+      "basePurchaseCount": 98,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "homefinder-find-your-community": {
+      "slug": "homefinder-find-your-community",
+      "basePurchaseCount": 203,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "investrealty-real-estate-investment-platform": {
+      "slug": "investrealty-real-estate-investment-platform",
+      "basePurchaseCount": 75,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "ironhub-professional-strength-training-bodybuilding": {
+      "slug": "ironhub-professional-strength-training-bodybuilding",
+      "basePurchaseCount": 217,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "le-petit-bistro-french-cuisine": {
+      "slug": "le-petit-bistro-french-cuisine",
+      "basePurchaseCount": 166,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "learnhub-online-learning-platform": {
+      "slug": "learnhub-online-learning-platform",
+      "basePurchaseCount": 304,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "linguaflow-learn-languages-fast": {
+      "slug": "linguaflow-learn-languages-fast",
+      "basePurchaseCount": 105,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "luminabeauty-premium-cosmetics-skincare": {
+      "slug": "luminabeauty-premium-cosmetics-skincare",
+      "basePurchaseCount": 314,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "luna-bella-italian-fine-dining": {
+      "slug": "luna-bella-italian-fine-dining",
+      "basePurchaseCount": 175,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "luxehome-premium-furniture-store": {
+      "slug": "luxehome-premium-furniture-store",
+      "basePurchaseCount": 178,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "luxeland-property-marketplace": {
+      "slug": "luxeland-property-marketplace",
+      "basePurchaseCount": 315,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "mediflow-streamline-your-medical-practice": {
+      "slug": "mediflow-streamline-your-medical-practice",
+      "basePurchaseCount": 94,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "mentalwell-therapy-for-everyone": {
+      "slug": "mentalwell-therapy-for-everyone",
+      "basePurchaseCount": 349,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "metaverse-exchange-trade-across-all-metaverses": {
+      "slug": "metaverse-exchange-trade-across-all-metaverses",
+      "basePurchaseCount": 282,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "musicacademy-learn-music-online": {
+      "slug": "musicacademy-learn-music-online",
       "basePurchaseCount": 241,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "nftgallery-create-trade-digital-nfts": {
+      "slug": "nftgallery-create-trade-digital-nfts",
+      "basePurchaseCount": 76,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "novaborn-women-s-fitness-empowerment": {
+      "slug": "novaborn-women-s-fitness-empowerment",
+      "basePurchaseCount": 263,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "pharmadirect-pharmacy-at-your-door": {
+      "slug": "pharmadirect-pharmacy-at-your-door",
+      "basePurchaseCount": 259,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "pilatespro-core-strength-body-sculpting": {
+      "slug": "pilatespro-core-strength-body-sculpting",
+      "basePurchaseCount": 139,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "pixelforce-ui-ux-design-agency": {
+      "slug": "pixelforce-ui-ux-design-agency",
+      "basePurchaseCount": 108,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "professionalhub-advanced-certifications": {
+      "slug": "professionalhub-advanced-certifications",
+      "basePurchaseCount": 119,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "propertymanager-pro-property-management-platform": {
+      "slug": "propertymanager-pro-property-management-platform",
+      "basePurchaseCount": 182,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "propertynest-real-estate-solutions": {
+      "slug": "propertynest-real-estate-solutions",
+      "basePurchaseCount": 173,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "proskills-academy-corporate-training": {
+      "slug": "proskills-academy-corporate-training",
+      "basePurchaseCount": 72,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "sakura-zen-japanese-restaurant": {
+      "slug": "sakura-zen-japanese-restaurant",
+      "basePurchaseCount": 261,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "shopelite-ecommerce-ui-kit": {
+      "slug": "shopelite-ecommerce-ui-kit",
+      "basePurchaseCount": 272,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
+    },
+    "shophub-your-online-store": {
+      "slug": "shophub-your-online-store",
+      "basePurchaseCount": 168,
+      "realPurchaseCount": 0,
+      "reviews": [],
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "skillforge-coding-bootcamp-career-path": {
       "slug": "skillforge-coding-bootcamp-career-path",
-      "basePurchaseCount": 83,
+      "basePurchaseCount": 299,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "skillup-career-skills-courses": {
       "slug": "skillup-career-skills-courses",
-      "basePurchaseCount": 171,
+      "basePurchaseCount": 189,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "socialvibe-social-media-marketing-agency": {
       "slug": "socialvibe-social-media-marketing-agency",
-      "basePurchaseCount": 143,
+      "basePurchaseCount": 142,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "spice-route-indian-restaurant": {
       "slug": "spice-route-indian-restaurant",
-      "basePurchaseCount": 135,
+      "basePurchaseCount": 254,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "stakevault-earn-crypto-through-staking": {
       "slug": "stakevault-earn-crypto-through-staking",
-      "basePurchaseCount": 171,
+      "basePurchaseCount": 113,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "startupboost-startup-consulting-growth": {
       "slug": "startupboost-startup-consulting-growth",
-      "basePurchaseCount": 198,
+      "basePurchaseCount": 312,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "streampro-professional-live-streaming-platform": {
       "slug": "streampro-professional-live-streaming-platform",
-      "basePurchaseCount": 298,
+      "basePurchaseCount": 288,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "stylevogue-fashion-boutique": {
       "slug": "stylevogue-fashion-boutique",
-      "basePurchaseCount": 198,
+      "basePurchaseCount": 238,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "syncteam-team-collaboration-file-sync": {
       "slug": "syncteam-team-collaboration-file-sync",
-      "basePurchaseCount": 92,
+      "basePurchaseCount": 266,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "taskvault-secure-task-password-management": {
       "slug": "taskvault-secure-task-password-management",
-      "basePurchaseCount": 143,
+      "basePurchaseCount": 381,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "taste-haven-fine-dining": {
       "slug": "taste-haven-fine-dining",
-      "basePurchaseCount": 129,
+      "basePurchaseCount": 190,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "techgear-tech-gadgets-store": {
       "slug": "techgear-tech-gadgets-store",
-      "basePurchaseCount": 156,
+      "basePurchaseCount": 352,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "techpulse-premium-electronics-store": {
       "slug": "techpulse-premium-electronics-store",
-      "basePurchaseCount": 161,
+      "basePurchaseCount": 154,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "telahealth-virtual-doctor-visits": {
       "slug": "telahealth-virtual-doctor-visits",
-      "basePurchaseCount": 102,
+      "basePurchaseCount": 153,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.800Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "timber-creek-steakhouse": {
       "slug": "timber-creek-steakhouse",
-      "basePurchaseCount": 117,
+      "basePurchaseCount": 348,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.801Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "tokenlaunch-launch-your-blockchain-project": {
       "slug": "tokenlaunch-launch-your-blockchain-project",
-      "basePurchaseCount": 233,
+      "basePurchaseCount": 268,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.801Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "tutorconnect-online-tutoring-platform": {
       "slug": "tutorconnect-online-tutoring-platform",
-      "basePurchaseCount": 205,
+      "basePurchaseCount": 329,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.801Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "vacationpalace-luxury-holiday-homes": {
       "slug": "vacationpalace-luxury-holiday-homes",
-      "basePurchaseCount": 92,
+      "basePurchaseCount": 118,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.801Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "visionai-intelligent-image-analysis-api": {
       "slug": "visionai-intelligent-image-analysis-api",
-      "basePurchaseCount": 103,
+      "basePurchaseCount": 389,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.801Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "vitalsign-monitor-your-health": {
       "slug": "vitalsign-monitor-your-health",
-      "basePurchaseCount": 129,
+      "basePurchaseCount": 395,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.801Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "wellvital-your-health-companion": {
       "slug": "wellvital-your-health-companion",
-      "basePurchaseCount": 103,
+      "basePurchaseCount": 88,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.801Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     },
     "zenfit-holistic-wellness-mindful-fitness": {
       "slug": "zenfit-holistic-wellness-mindful-fitness",
-      "basePurchaseCount": 79,
+      "basePurchaseCount": 264,
       "realPurchaseCount": 0,
       "reviews": [],
-      "updatedAt": "2026-07-02T12:21:00.801Z"
+      "updatedAt": "2026-07-02T14:04:17.778Z"
     }
   },
   "users": {},
   "meta": {
-    "source": "mt-html-social-sync",
-    "updatedAt": "2026-07-02T12:21:00.801Z",
+    "source": "mtverse-believable-social-counts",
+    "updatedAt": "2026-07-02T14:04:17.778Z",
     "count": 115
   }
 }

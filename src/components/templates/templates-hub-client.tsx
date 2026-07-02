@@ -1,8 +1,8 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, useMemo, useEffect, useCallback, useRef, useTransition } from 'react'
-import { Search, X, LayoutGrid, Sparkles, Loader2 } from 'lucide-react'
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
+import { Search, X, LayoutGrid, Sparkles, Loader2, ChevronLeft, ChevronRight } from 'lucide-react'
 import { TemplateCard } from './template-card'
 import {
   sortTemplates,
@@ -20,6 +20,7 @@ type Props = {
   initialSearch?: string
   initialSort?: TemplateSortMode
   initialSubcategory?: string
+  initialPage?: number
   totalTemplates: number
   categoryOptions: TemplateCategory[]
 }
@@ -42,12 +43,39 @@ function normalizeSubcategory(value: string | undefined) {
   return normalized || 'others'
 }
 
+const PAGE_SIZE = 40
+
+type PaginationItem = number | 'start-ellipsis' | 'end-ellipsis'
+
+function clampPage(page: number, totalPages: number) {
+  if (!Number.isFinite(page)) return 1
+  return Math.min(Math.max(Math.floor(page), 1), Math.max(totalPages, 1))
+}
+
+function getPaginationPages(currentPage: number, totalPages: number): PaginationItem[] {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1)
+  }
+
+  const pages: PaginationItem[] = [1]
+  const start = Math.max(2, currentPage - 1)
+  const end = Math.min(totalPages - 1, currentPage + 1)
+
+  if (start > 2) pages.push('start-ellipsis')
+  for (let page = start; page <= end; page += 1) pages.push(page)
+  if (end < totalPages - 1) pages.push('end-ellipsis')
+  pages.push(totalPages)
+
+  return pages
+}
+
 export function TemplatesHubClient({
   templates: allTemplates,
   initialCategory = 'all',
   initialSearch = '',
   initialSort = 'featured',
   initialSubcategory = 'all',
+  initialPage = 1,
   totalTemplates,
   categoryOptions,
 }: Props) {
@@ -184,9 +212,18 @@ export function TemplatesHubClient({
     return sorted
   }, [allTemplates, initialCategory, isHtmlCategory, normalizedSubcategory, activeSearch, activeSort, frameworkFilter, freeOnly])
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const currentPage = clampPage(initialPage, totalPages)
+  const pageStart = (currentPage - 1) * PAGE_SIZE
+  const visibleTemplates = filtered.slice(pageStart, pageStart + PAGE_SIZE)
+  const paginationPages = getPaginationPages(currentPage, totalPages)
+
   const updateParams = useCallback(
     (updates: Record<string, string | undefined>) => {
       const params = new URLSearchParams(searchParams.toString())
+      if (!Object.prototype.hasOwnProperty.call(updates, 'page')) {
+        params.delete('page')
+      }
       for (const [key, value] of Object.entries(updates)) {
         if (!value || value === 'all' || value === '') {
           params.delete(key)
@@ -205,6 +242,12 @@ export function TemplatesHubClient({
     setFrameworkFilter(value)
     triggerLoading()
   }, [triggerLoading])
+
+  const goToPage = useCallback((page: number) => {
+    const nextPage = clampPage(page, totalPages)
+    if (nextPage === currentPage) return
+    updateParams({ page: nextPage === 1 ? undefined : String(nextPage) })
+  }, [currentPage, totalPages, updateParams])
 
   const sortOptions = isHtmlCategory
     ? [
@@ -499,8 +542,8 @@ export function TemplatesHubClient({
                 </button>
               </div>
             ) : (
-              <div className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {filtered.map((t, i) => (
+              <div id="templates-grid" className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {visibleTemplates.map((t, i) => (
                   <TemplateCard key={t.id} template={t} priority={i < 6} />
                 ))}
               </div>
@@ -510,9 +553,54 @@ export function TemplatesHubClient({
 
         {/* Results footer */}
         {filtered.length > 0 && !isLoading && (
-          <div className="mt-10 flex items-center justify-center">
+          <div className="mt-10 flex flex-col items-center justify-center gap-4">
+            {filtered.length > PAGE_SIZE && (
+              <nav className="flex items-center gap-1.5 rounded-full border border-border/70 bg-background/85 p-1.5 shadow-sm backdrop-blur" aria-label="Templates pagination">
+                <button
+                  type="button"
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-35"
+                  aria-label="Previous page"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+
+                {paginationPages.map((page) =>
+                  typeof page === 'number' ? (
+                    <button
+                      key={page}
+                      type="button"
+                      onClick={() => goToPage(page)}
+                      aria-current={page === currentPage ? 'page' : undefined}
+                      className={cn(
+                        'h-9 min-w-9 rounded-full px-3 text-sm font-semibold transition-all',
+                        page === currentPage
+                          ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20'
+                          : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                      )}
+                    >
+                      {page}
+                    </button>
+                  ) : (
+                    <span key={page} className="px-1 text-sm text-muted-foreground/70">...</span>
+                  )
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-35"
+                  aria-label="Next page"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </nav>
+            )}
+
             <p className="text-xs text-muted-foreground">
-              Showing {filtered.length} of {totalTemplates} templates
+              Showing {pageStart + 1}-{pageStart + visibleTemplates.length} of {filtered.length} templates
             </p>
           </div>
         )}
