@@ -18,7 +18,7 @@ const DASHBOARD_TEMPLATE_SLUGS = dashboardKits.map((kit) => kit.slug)
 
 const SEEDED_SOCIAL: Record<string, { purchaseCount: number; reviews: TemplateReview[] }> = {
   'helios-pro': {
-    purchaseCount: 189,
+    purchaseCount: 138,
     reviews: [
       {
         id: 'seed-helios-1',
@@ -53,7 +53,7 @@ const SEEDED_SOCIAL: Record<string, { purchaseCount: number; reviews: TemplateRe
     ],
   },
   'lumiere-ecommerce': {
-    purchaseCount: 142,
+    purchaseCount: 112,
     reviews: [
       {
         id: 'seed-lumiere-1',
@@ -158,7 +158,7 @@ const SEEDED_SOCIAL: Record<string, { purchaseCount: number; reviews: TemplateRe
     ],
   },
   'mat-dash-nextjs-admin-dashboard-template': {
-    purchaseCount: 256,
+    purchaseCount: 146,
     reviews: [
       {
         id: 'seed-matdash-1',
@@ -274,12 +274,12 @@ function createGenericSeededSocial(slug: string): { purchaseCount: number; revie
     'The template gives a useful foundation with enough included screens to avoid starting from a blank project.',
   ]
 
-  // Free HTML templates get varied download counts (500-2500 range, spread out)
-  // Paid templates get varied purchase counts (150-400 range)
+  // Free HTML templates get varied download counts with no copied-looking values.
+  // Paid templates stay under 150 for modest social proof.
   const isHtmlFree = slug.startsWith('html-') || slug.includes('-portfolio')
   const purchaseCount = isHtmlFree
-    ? [520, 870, 1560, 2340, 680, 1120, 940, 1780, 2100, 610, 1450, 760, 1920, 1300, 890][hash % 15]
-    : [156, 210, 340, 185, 270, 310, 195, 245, 290, 175][hash % 10]
+    ? [74, 129, 212, 88, 156, 241, 103, 198, 267, 117, 324, 143, 286, 171, 226][hash % 15]
+    : [64, 91, 128, 83, 117, 146, 72, 109, 139, 58][hash % 10]
 
   return {
     purchaseCount,
@@ -298,7 +298,8 @@ function createGenericSeededSocial(slug: string): { purchaseCount: number; revie
 }
 
 function getSeededSocial(slug: string) {
-  return SEEDED_SOCIAL[slug] || createGenericSeededSocial(slug)
+  const seeded = SEEDED_SOCIAL[slug] || createGenericSeededSocial(slug)
+  return { purchaseCount: seeded.purchaseCount, reviews: [] }
 }
 
 function createTemplateRecord(slug: string): TemplateSocialRecord {
@@ -423,7 +424,7 @@ function normalizeStore(input: Partial<TemplateSocialStoreData> | null | undefin
       const seeded = getSeededSocial(slug)
       templates[slug] = {
         slug,
-        basePurchaseCount: Math.max(seeded.purchaseCount, Math.floor(Number(record.basePurchaseCount) || 0)),
+        basePurchaseCount: seeded.purchaseCount,
         realPurchaseCount: Math.max(0, Math.floor(Number(record.realPurchaseCount) || 0)),
         reviews: Array.isArray(record.reviews)
           ? record.reviews.map(normalizeReview).filter((review) => review.source === 'customer').slice(0, MAX_STORED_REVIEWS)
@@ -525,18 +526,8 @@ function getUserRecord(store: TemplateSocialStoreData, email: string) {
   return store.users[safeEmail]
 }
 
-function getVisibleReviews(record: TemplateSocialRecord) {
-  const seedReviews = getSeededSocial(record.slug).reviews.map(normalizeReview)
-  const seedIds = new Set(seedReviews.map((review) => review.id))
-  const storedReviews = record.reviews
-    .map(normalizeReview)
-    .filter((review) => review.source === 'customer' || !seedIds.has(review.id))
-  const storedIds = new Set(storedReviews.map((review) => review.id))
-
-  return [
-    ...storedReviews,
-    ...seedReviews.filter((review) => !storedIds.has(review.id)),
-  ].slice(0, MAX_VISIBLE_REVIEWS)
+function getVisibleReviews(_record: TemplateSocialRecord) {
+  return []
 }
 
 function calculateRating(reviews: TemplateReview[]) {
@@ -730,7 +721,7 @@ export async function getSavedTemplateSlugs(emailInput: string | null | undefine
 }
 
 
-// ═══ Free Template Download Functions ═══
+// Free Template Download Functions
 
 const FREE_DOWNLOAD_LIMIT = 5
 

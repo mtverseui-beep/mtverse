@@ -68,7 +68,7 @@ export const TEMPLATE_CATEGORIES: TemplateCategory[] = [
   { id: 'html', label: 'HTML', description: 'HTML website templates, portfolio pages, and static site starters', icon: 'Code2' },
 ]
 
-export type TemplateSortMode = 'featured' | 'trending' | 'new' | 'price-low' | 'price-high' | 'rating'
+export type TemplateSortMode = 'featured' | 'trending' | 'new' | 'downloads' | 'price-low' | 'price-high' | 'rating'
 
 export function sortTemplates(templates: Template[], sort: TemplateSortMode): Template[] {
   const sorted = [...templates]
@@ -77,6 +77,8 @@ export function sortTemplates(templates: Template[], sort: TemplateSortMode): Te
       return sorted.sort((a, b) => Number(b.trending) - Number(a.trending) || b.salesCount - a.salesCount)
     case 'new':
       return sorted.sort((a, b) => Number(b.new) - Number(a.new) || new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime())
+    case 'downloads':
+      return sorted.sort((a, b) => b.salesCount - a.salesCount)
     case 'price-low':
       return sorted.sort((a, b) => a.price - b.price)
     case 'price-high':

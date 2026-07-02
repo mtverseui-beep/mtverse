@@ -19,6 +19,7 @@ type Props = {
   initialCategory?: string
   initialSearch?: string
   initialSort?: TemplateSortMode
+  initialSubcategory?: string
   totalTemplates: number
   categoryOptions: TemplateCategory[]
 }
@@ -31,11 +32,22 @@ function getTemplateFramework(template: Template) {
   return template.frameworkLabel || frameworkLabel(template.techStack[0] || '') || 'Template'
 }
 
+function normalizeSubcategory(value: string | undefined) {
+  const normalized = (value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+
+  return normalized || 'others'
+}
+
 export function TemplatesHubClient({
   templates: allTemplates,
   initialCategory = 'all',
   initialSearch = '',
   initialSort = 'featured',
+  initialSubcategory = 'all',
   totalTemplates,
   categoryOptions,
 }: Props) {
@@ -48,6 +60,10 @@ export function TemplatesHubClient({
   const [freeOnly, setFreeOnly] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isHtmlCategory = initialCategory === 'html'
+  const normalizedSubcategory = normalizeSubcategory(initialSubcategory)
+  const htmlSortModes: TemplateSortMode[] = ['downloads', 'new', 'featured']
+  const activeSort: TemplateSortMode = isHtmlCategory && !htmlSortModes.includes(initialSort) ? 'downloads' : initialSort
 
   // Only main frameworks — exact match (case-insensitive, ignoring version numbers)
   const KNOWN_FRAMEWORKS = ['next.js', 'react']
@@ -104,15 +120,43 @@ export function TemplatesHubClient({
     }
   }, [frameworkFilter, frameworkOptions])
 
+  useEffect(() => {
+    if (!isHtmlCategory) return
+    if (frameworkFilter !== 'all') setFrameworkFilter('all')
+    if (freeOnly) setFreeOnly(false)
+  }, [freeOnly, frameworkFilter, isHtmlCategory])
+
+  const htmlSubcategoryOptions = useMemo(() => {
+    const options = new Map<string, string>([['all', 'All']])
+    let hasUncategorized = false
+
+    for (const template of allTemplates) {
+      if (template.category !== 'html') continue
+      const label = template.subcategory?.trim()
+      if (label) options.set(normalizeSubcategory(label), label)
+      else hasUncategorized = true
+    }
+
+    if (hasUncategorized) options.set('others', 'Others')
+    return Array.from(options, ([value, label]) => ({ value, label }))
+  }, [allTemplates])
+
   const filtered = useMemo(() => {
     let result = allTemplates
     if (initialCategory && initialCategory !== 'all') {
       result = result.filter((t) => t.category === initialCategory)
     }
-    if (freeOnly) {
+    if (isHtmlCategory && normalizedSubcategory !== 'all') {
+      result = result.filter((t) => {
+        const label = t.subcategory?.trim()
+        if (normalizedSubcategory === 'others') return !label
+        return normalizeSubcategory(label) === normalizedSubcategory
+      })
+    }
+    if (freeOnly && !isHtmlCategory) {
       result = result.filter((t) => t.isFree)
     }
-    if (frameworkFilter !== 'all') {
+    if (frameworkFilter !== 'all' && !isHtmlCategory) {
       result = result.filter((t) => {
         // Match against frameworkLabel OR any tech stack item
         if (getTemplateFramework(t) === frameworkFilter) return true
@@ -130,8 +174,15 @@ export function TemplatesHubClient({
           t.techStack.some((tech) => tech.toLowerCase().includes(q))
       )
     }
-    return sortTemplates(result, initialSort)
-  }, [allTemplates, initialCategory, activeSearch, initialSort, frameworkFilter, freeOnly])
+    const sorted = sortTemplates(result, activeSort)
+    if (!initialCategory || initialCategory === 'all') {
+      return [
+        ...sorted.filter((template) => !template.isFree),
+        ...sorted.filter((template) => template.isFree),
+      ]
+    }
+    return sorted
+  }, [allTemplates, initialCategory, isHtmlCategory, normalizedSubcategory, activeSearch, activeSort, frameworkFilter, freeOnly])
 
   const updateParams = useCallback(
     (updates: Record<string, string | undefined>) => {
@@ -155,7 +206,22 @@ export function TemplatesHubClient({
     triggerLoading()
   }, [triggerLoading])
 
-  const hasActiveFilters = Boolean(activeSearch || frameworkFilter !== 'all' || freeOnly || (initialCategory && initialCategory !== 'all'))
+  const sortOptions = isHtmlCategory
+    ? [
+        { value: 'downloads', label: 'Most downloads' },
+        { value: 'new', label: 'Newest' },
+        { value: 'featured', label: 'Featured' },
+      ]
+    : [
+        { value: 'featured', label: 'Featured' },
+        { value: 'trending', label: 'Trending' },
+        { value: 'new', label: 'Newest' },
+        { value: 'rating', label: 'Top rated' },
+        { value: 'price-low', label: 'Price: low to high' },
+        { value: 'price-high', label: 'Price: high to low' },
+      ]
+
+  const hasActiveFilters = Boolean(activeSearch || frameworkFilter !== 'all' || freeOnly || (initialCategory && initialCategory !== 'all') || (isHtmlCategory && normalizedSubcategory !== 'all'))
 
   return (
     <div className="min-h-screen">
@@ -231,8 +297,11 @@ export function TemplatesHubClient({
                   <button
                     key={chip.id}
                     onClick={() => {
-                      if (chip.id === 'html') setFrameworkFilter('all')
-                      updateParams({ category: chip.id })
+                      setFrameworkFilter('all')
+                      setFreeOnly(false)
+                      updateParams(chip.id === 'html'
+                        ? { category: chip.id, subcategory: undefined, sort: 'downloads' }
+                        : { category: chip.id, subcategory: undefined, sort: undefined })
                     }}
                     className={cn(
                       'shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 sm:px-3.5',
@@ -246,6 +315,27 @@ export function TemplatesHubClient({
                 ))}
               </div>
             </div>
+
+            {isHtmlCategory && htmlSubcategoryOptions.length > 1 && (
+              <div className="mt-3 flex items-center justify-center">
+                <div className="flex max-w-full items-center gap-1.5 overflow-x-auto px-1 pb-1 scrollbar-none sm:flex-wrap sm:justify-center sm:gap-2 sm:overflow-visible">
+                  {htmlSubcategoryOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => updateParams({ subcategory: option.value === 'all' ? undefined : option.value, sort: activeSort })}
+                      className={cn(
+                        'shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 sm:px-3.5',
+                        normalizedSubcategory === option.value
+                          ? 'border border-primary/30 bg-primary/10 text-primary shadow-sm'
+                          : 'border border-border/60 bg-background/70 text-muted-foreground backdrop-blur-sm hover:border-primary/30 hover:bg-primary/5 hover:text-foreground'
+                      )}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -264,18 +354,20 @@ export function TemplatesHubClient({
           </p>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => { setFreeOnly(!freeOnly); triggerLoading() }}
-              className={cn(
-                'hidden sm:inline-flex h-11 items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-all',
-                freeOnly
-                  ? 'border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
-                  : 'border-border bg-background text-muted-foreground hover:border-emerald-300 hover:text-emerald-700'
-              )}
-            >
-              Free
-            </button>
-            {initialCategory !== 'html' && (
+            {!isHtmlCategory && (
+              <button
+                onClick={() => { setFreeOnly(!freeOnly); triggerLoading() }}
+                className={cn(
+                  'hidden h-11 items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-all sm:inline-flex',
+                  freeOnly
+                    ? 'border-emerald-300 bg-emerald-50 text-emerald-700 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
+                    : 'border-border bg-background text-muted-foreground hover:border-emerald-300 hover:text-emerald-700'
+                )}
+              >
+                Free
+              </button>
+            )}
+            {!isHtmlCategory && (
               <ModernSelect
                 value={frameworkFilter}
                 onChange={handleFrameworkChange}
@@ -283,19 +375,12 @@ export function TemplatesHubClient({
                 options={frameworkOptions}
               />
             )}
-            <div className="hidden h-4 w-px bg-border sm:block" />
+            {!isHtmlCategory && <div className="hidden h-4 w-px bg-border sm:block" />}
             <ModernSelect
-              value={initialSort}
+              value={activeSort}
               onChange={(v) => updateParams({ sort: v })}
               ariaLabel="Sort templates"
-              options={[
-                { value: 'featured', label: 'Featured' },
-                { value: 'trending', label: 'Trending' },
-                { value: 'new', label: 'Newest' },
-                { value: 'rating', label: 'Top rated' },
-                { value: 'price-low', label: 'Price: low → high' },
-                { value: 'price-high', label: 'Price: high → low' },
-              ]}
+              options={sortOptions}
             />
           </div>
         </div>
@@ -322,7 +407,18 @@ export function TemplatesHubClient({
               <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background px-2.5 py-1 text-xs font-medium text-foreground shadow-sm">
                 {categoryOptions.find((c) => c.id === initialCategory)?.label ?? initialCategory}
                 <button
-                  onClick={() => updateParams({ category: 'all' })}
+                  onClick={() => updateParams({ category: 'all', subcategory: undefined, sort: undefined })}
+                  className="rounded-full p-0.5 hover:bg-accent"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </span>
+            )}
+            {isHtmlCategory && normalizedSubcategory !== 'all' && (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background px-2.5 py-1 text-xs font-medium text-foreground shadow-sm">
+                {htmlSubcategoryOptions.find((item) => item.value === normalizedSubcategory)?.label ?? initialSubcategory}
+                <button
+                  onClick={() => updateParams({ subcategory: undefined, sort: activeSort })}
                   className="rounded-full p-0.5 hover:bg-accent"
                 >
                   <X className="h-3 w-3" />
@@ -394,6 +490,7 @@ export function TemplatesHubClient({
                   onClick={() => {
                     setSearchInput('')
                     setFrameworkFilter('all')
+                    setFreeOnly(false)
                     router.push('/templates', { scroll: false })
                   }}
                   className="mt-4 text-sm font-medium text-primary hover:underline"

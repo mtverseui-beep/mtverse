@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Gauge, Store, Building2, ChevronDown } from 'lucide-react'
 import { SITE_URL } from '@/lib/site-url'
@@ -62,13 +62,15 @@ type SearchParams = Promise<{
   category?: string
   search?: string
   sort?: string
+  subcategory?: string
 }>
 
 export default async function TemplatesPage({ searchParams }: { searchParams: SearchParams }) {
   const sp = await searchParams
   const category = sp.category ?? 'all'
   const search = sp.search ?? ''
-  const sort = (sp.sort as 'featured' | 'trending' | 'new' | 'price-low' | 'price-high' | 'rating') ?? 'featured'
+  const sort = (sp.sort as 'featured' | 'trending' | 'new' | 'downloads' | 'price-low' | 'price-high' | 'rating') ?? 'featured'
+  const subcategory = sp.subcategory ?? 'all'
 
   const baseTemplates = await getAllTemplatesFromStore()
   const templates = await withAllTemplateSocial(baseTemplates)
@@ -113,6 +115,7 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
             initialCategory={category}
             initialSearch={search}
             initialSort={sort}
+            initialSubcategory={subcategory}
             totalTemplates={stats.totalTemplates}
             categoryOptions={categoryOptions}
           />

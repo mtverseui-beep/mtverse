@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Check, Star, MessageSquare, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
-import type { Template, TemplateReview } from '@/lib/templates-catalog'
+import type { Template } from '@/lib/templates-catalog'
 import { useAuth } from '@/hooks/use-auth'
 import { useRouter } from 'next/navigation'
 
@@ -14,21 +14,12 @@ type Props = {
 
 export function TemplateTabs({ template }: Props) {
   const [activeTab, setActiveTab] = useState<'about' | 'reviews'>('about')
-  const { authenticated, user } = useAuth()
+  const { authenticated } = useAuth()
   const router = useRouter()
 
-  const [reviews, setReviews] = useState<TemplateReview[]>(template.reviews)
   const [showReviewForm, setShowReviewForm] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [newReview, setNewReview] = useState({ rating: 5, title: '', comment: '' })
-
-  useEffect(() => {
-    setReviews(template.reviews)
-  }, [template.slug, template.reviews])
-
-  const avgRating = reviews.length > 0
-    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
-    : null
 
   function handleWriteReview() {
     if (!authenticated) {
@@ -54,16 +45,14 @@ export function TemplateTabs({ template }: Props) {
         credentials: 'include',
         body: JSON.stringify(newReview),
       })
-      const payload = (await response.json().catch(() => null)) as { error?: string; social?: { reviews: TemplateReview[] } } | null
+      const payload = (await response.json().catch(() => null)) as { error?: string; success?: boolean } | null
 
-      if (!response.ok || !payload?.social) {
+      if (!response.ok || payload?.success === false) {
         throw new Error(payload?.error || 'Review could not be submitted')
       }
-
-      setReviews(payload.social.reviews)
       setNewReview({ rating: 5, title: '', comment: '' })
       setShowReviewForm(false)
-      toast.success('Review submitted. Thank you for your feedback.')
+      toast.success('Review sent. Thank you for your feedback.')
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Review could not be submitted')
     } finally {
@@ -92,7 +81,7 @@ export function TemplateTabs({ template }: Props) {
               : 'text-muted-foreground hover:text-foreground'
           }`}
         >
-          Reviews ({reviews.length})
+          Review
         </button>
       </div>
 
@@ -124,24 +113,10 @@ export function TemplateTabs({ template }: Props) {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex items-center justify-between gap-4 mb-6 pb-6 border-b">
-              <div className="flex items-center gap-4">
-                <div className="text-center">
-                  <div className="text-4xl font-bold">{avgRating ?? 'New'}</div>
-                  <div className="flex gap-0.5 mt-1">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <Star
-                        key={s}
-                        className={`h-3.5 w-3.5 ${
-                          avgRating && s <= Math.round(Number(avgRating))
-                            ? 'fill-amber-400 text-amber-400'
-                            : 'text-muted-foreground/30'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-1">{reviews.length} reviews</div>
-                </div>
+            <div className="mb-6 flex items-center justify-between gap-4 border-b pb-6">
+              <div>
+                <h3 className="text-base font-semibold text-foreground">Send feedback</h3>
+                <p className="mt-1 text-sm text-muted-foreground">Your feedback is sent privately.</p>
               </div>
               <button onClick={handleWriteReview} className="ds-btn ds-btn-primary ds-btn-sm">
                 <MessageSquare className="h-4 w-4" />
@@ -231,56 +206,6 @@ export function TemplateTabs({ template }: Props) {
                 </motion.form>
               )}
             </AnimatePresence>
-
-            <div className="space-y-4">
-              {reviews.length === 0 ? (
-                <div className="rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">
-                  No reviews yet. Be the first to review this template after purchase.
-                </div>
-              ) : null}
-              {reviews.map((review, i) => (
-                <motion.div
-                  key={review.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.05 }}
-                  className="ds-card"
-                >
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="h-10 w-10 rounded-full bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 flex items-center justify-center font-bold text-sm shrink-0">
-                      {review.name[0]?.toUpperCase()}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-semibold text-sm">{review.name}</span>
-                        <div className="flex gap-0.5">
-                          {[1, 2, 3, 4, 5].map((s) => (
-                            <Star
-                              key={s}
-                              className={`h-3 w-3 ${
-                                s <= review.rating
-                                  ? 'fill-amber-400 text-amber-400'
-                                  : 'text-muted-foreground/30'
-                              }`}
-                            />
-                          ))}
-                        </div>
-                        {review.verifiedPurchase ? (
-                          <span className="rounded-full border px-2 py-0.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-300">
-                            Verified buyer
-                          </span>
-                        ) : null}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {new Date(review.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                      </div>
-                    </div>
-                  </div>
-                  <h4 className="text-sm font-semibold mb-1">{review.title}</h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{review.comment}</p>
-                </motion.div>
-              ))}
-            </div>
           </motion.div>
         )}
       </AnimatePresence>

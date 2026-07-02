@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentCustomer } from '@/lib/auth/current-customer'
 import { getTemplateBySlugFromStore } from '@/lib/templates-data'
-import { addTemplateReview, getTemplateSocial, hasTemplatePurchase } from '@/lib/template-social-store'
+import { addTemplateReview, hasTemplatePurchase } from '@/lib/template-social-store'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,8 +18,7 @@ export async function GET(_request: NextRequest, context: RouteContext) {
     return NextResponse.json({ error: 'Template not found.' }, { status: 404 })
   }
 
-  const social = await getTemplateSocial(slug)
-  return NextResponse.json({ social })
+  return NextResponse.json({ social: { rating: 0, reviewCount: 0, reviews: [] } })
 }
 
 export async function POST(request: NextRequest, context: RouteContext) {
@@ -46,7 +45,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
 
   try {
     const verifiedPurchase = await hasTemplatePurchase(slug, customer.email)
-    const social = await addTemplateReview({
+    await addTemplateReview({
       slug,
       email: customer.email,
       name: customer.name,
@@ -56,7 +55,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
       verifiedPurchase,
     })
 
-    return NextResponse.json({ social })
+    return NextResponse.json({ success: true })
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Review could not be saved.' },

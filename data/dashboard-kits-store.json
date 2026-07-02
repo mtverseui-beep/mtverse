@@ -1116,7 +1116,7 @@
       "description": "Helios Pro is a premium, original-branded Next.js admin dashboard UI kit built on Next.js 16 (App Router), React 19, TypeScript 5, and Tailwind CSS v4. It ships with 137 hand-crafted pages across 11 categories - 10 dashboards, 15 app pages (email, chat, kanban, calendar, invoices, support tickets), 13 ecommerce pages, 10 user & account pages, 12 form pages, 11 table variants, 10 chart pages, 21 UI component showcases, 10 marketing pages, 10 auth flows, and 6 error pages. The kit introduces an original Helios Pro brand identity (emerald primary + amber accent, sun-ray logo mark), a refined design token system (premium shadows, smooth animations, custom utilities), and 28 reusable components in src/components/shared/ - including StatCard, ChartCard, DataTable, Modal, Drawer, Tabs, Accordion, Timeline, CommandPalette, ThemeCustomizer, and a theme-aware HeliosChart wrapper around ApexCharts. Advanced features include a global command palette (Ctrl/Cmd+K) with searchable navigation, a theme customizer with 6 primary colors and density modes, light/dark mode, collapsible sidebar with search and badges, and responsive layouts across desktop, tablet, and mobile. The app runs in demo mode out of the box - no database or auth backend required. Wiring real auth (better-auth) and a database (PostgreSQL via Prisma) is fully supported via environment variables.",
       "seoTitle": "Helios Pro - Premium Next.js 16 Admin Dashboard UI Kit (137 Pages)",
       "metaDescription": "Helios Pro is a premium Next.js 16 admin dashboard UI kit with 137 pages, 28 reusable components, dark mode, theme customizer, command palette, and 11 page categories. Production-ready, Vercel-deployable, demo mode included.",
-      "priceUsd": 12,
+      "priceUsd": 0,
       "originalPriceUsd": 49,
       "framework": "nextjs",
       "frameworkLabel": "Next.js App Router",
@@ -1627,7 +1627,9 @@
           "direction": "ltr"
         }
       ],
-      "updatedAt": "2026-03-05"
+      "updatedAt": "2026-03-05",
+      "pricingTier": "normal",
+      "isFree": true
     },
     {
       "id": "lumiere-ecommerce",
