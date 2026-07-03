@@ -170,6 +170,555 @@
       "updatedAt": "2026-07-02"
     },
     {
+      "id": "dashboard-kit-sentinelgrid",
+      "slug": "sentinelgrid",
+      "title": "SentinelGrid Premium SRE Observability Dashboard Template",
+      "shortTitle": "SentinelGrid",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "subcategory": "SRE Observability Dashboard",
+      "summary": "Premium Next.js SRE, DevOps, incident management, observability, reliability, and platform engineering dashboard template with 195+ routes, command palette, dark/light themes, and production-ready monitoring workflows.",
+      "description": "SentinelGrid is a commercial-grade engineering operations dashboard template for SRE, DevOps, platform engineering, incident response, observability, security, logs, traces, metrics, uptime, postmortems, on-call, infrastructure, service ownership, and reliability workflows. Built with Next.js 16, React 19, TypeScript, Tailwind CSS 4, shadcn/Radix UI, Recharts, TanStack Table, Prisma-ready structure, responsive layouts, and polished dark/light mode.",
+      "seoTitle": "SentinelGrid Premium SRE Observability Dashboard Template",
+      "metaDescription": "Download SentinelGrid, a premium Next.js SRE observability dashboard template with 195+ routes, incident response, logs, metrics, traces, uptime, on-call, and platform engineering screens.",
+      "priceUsd": 20,
+      "originalPriceUsd": 69,
+      "pricingTier": "pro",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js App Router",
+      "previewPath": "/dashboard-kits/sentinelgrid",
+      "livePreviewUrl": "https://mt-sentinelgrid-zw5j.vercel.app",
+      "packageFilename": "sentinelgrid.zip",
+      "packageKey": "local:template-packages/sentinelgrid/sentinelgrid.zip",
+      "coverImage": "/template-previews/sentinelgrid.png",
+      "screenshots": [
+        "/template-previews/sentinelgrid.png"
+      ],
+      "tags": [
+        "sre dashboard",
+        "observability",
+        "devops",
+        "incident management",
+        "platform engineering",
+        "nextjs",
+        "shadcn ui",
+        "recharts",
+        "dark mode",
+        "premium template"
+      ],
+      "keywords": [
+        "Next.js SRE dashboard template",
+        "observability dashboard template",
+        "DevOps admin template",
+        "incident management dashboard",
+        "platform engineering dashboard",
+        "monitoring dashboard UI kit",
+        "reliability dashboard template",
+        "Sentry Datadog style admin UI",
+        "Next.js admin dashboard",
+        "premium dashboard template"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "shadcn/ui",
+        "Radix UI",
+        "Recharts",
+        "TanStack Table",
+        "Prisma",
+        "next-themes"
+      ],
+      "includedPages": [
+        "Overview",
+        "SRE command center",
+        "Services",
+        "Service details",
+        "Incidents",
+        "Incident details",
+        "Alerts",
+        "Alert rules",
+        "Logs",
+        "Traces",
+        "Metrics",
+        "Dashboards",
+        "Query builder",
+        "Infrastructure",
+        "Kubernetes",
+        "Pods",
+        "Queues",
+        "Storage",
+        "Network",
+        "Performance",
+        "Web vitals",
+        "Latency",
+        "Throughput",
+        "API monitoring",
+        "Database monitoring",
+        "CDN monitoring",
+        "Reliability",
+        "SLOs",
+        "SLA",
+        "Uptime",
+        "Error budgets",
+        "Burn rate",
+        "Postmortems",
+        "Action items",
+        "On-call rotations",
+        "Escalation policies",
+        "Security events",
+        "Vulnerabilities",
+        "Access reviews",
+        "Audit logs",
+        "Admin settings",
+        "Team management",
+        "Auth flows",
+        "Error pages"
+      ],
+      "features": [
+        "195+ real routes for SRE and platform operations products",
+        "Incident, alert, on-call, postmortem, and reliability workflows",
+        "Logs, traces, metrics, query builder, and service health screens",
+        "Infrastructure, Kubernetes, queues, storage, network, and performance dashboards",
+        "Security, vulnerabilities, audit logs, access review, and compliance views",
+        "Command palette, saved filters, responsive tables, and mobile card layouts",
+        "Dark mode default with polished light theme",
+        "Production-ready Next.js App Router structure with reusable UI components"
+      ],
+      "highlights": [
+        {
+          "label": "Routes",
+          "value": "195+"
+        },
+        {
+          "label": "Focus",
+          "value": "SRE + observability"
+        },
+        {
+          "label": "Workflows",
+          "value": "Incidents, metrics, logs, traces"
+        },
+        {
+          "label": "Theme",
+          "value": "Dark + light"
+        }
+      ],
+      "useCases": [
+        "SRE SaaS products",
+        "DevOps monitoring platforms",
+        "Incident management tools",
+        "Internal platform engineering portals",
+        "Observability dashboards",
+        "Reliability and uptime products"
+      ],
+      "updatedAt": "2026-07-03"
+    },
+    {
+      "id": "dashboard-kit-planna-dashboard",
+      "slug": "planna-dashboard",
+      "title": "Planna Premium Project Management Dashboard Template",
+      "shortTitle": "Planna",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "subcategory": "Project Management Dashboard",
+      "summary": "Premium Next.js project planning, task management, team productivity, client portal, calendar, analytics, and collaboration dashboard template with 158+ routes and calm productivity UI.",
+      "description": "Planna is a production-ready project management and team productivity dashboard template for SaaS products, internal workspaces, client portals, task management tools, time tracking, calendar planning, collaboration, approvals, invoices, proposals, goals, announcements, and analytics. Built with Next.js 16, React 19, TypeScript, Tailwind CSS 4, shadcn/Radix UI, Recharts, Prisma-ready structure, responsive layouts, and polished green/white visual identity.",
+      "seoTitle": "Planna Premium Project Management Dashboard Template",
+      "metaDescription": "Download Planna, a premium Next.js project management dashboard template with 158+ routes, tasks, projects, clients, calendars, analytics, team collaboration, and productivity workflows.",
+      "priceUsd": 20,
+      "originalPriceUsd": 69,
+      "pricingTier": "pro",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js App Router",
+      "previewPath": "/dashboard-kits/planna-dashboard",
+      "livePreviewUrl": "https://mt-planna-z3pv.vercel.app",
+      "packageFilename": "planna-dashboard.zip",
+      "packageKey": "local:template-packages/planna-dashboard/planna-dashboard.zip",
+      "coverImage": "/template-previews/planna-dashboard.png",
+      "screenshots": [
+        "/template-previews/planna-dashboard.png"
+      ],
+      "tags": [
+        "project management",
+        "task dashboard",
+        "team productivity",
+        "client portal",
+        "nextjs",
+        "shadcn ui",
+        "recharts",
+        "calendar dashboard",
+        "saas admin",
+        "premium template"
+      ],
+      "keywords": [
+        "Next.js project management dashboard",
+        "task management dashboard template",
+        "team productivity SaaS template",
+        "project planning admin UI",
+        "client portal dashboard",
+        "calendar dashboard template",
+        "time tracking dashboard",
+        "Next.js admin template",
+        "premium SaaS dashboard"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "shadcn/ui",
+        "Radix UI",
+        "Recharts",
+        "Prisma",
+        "Lucide React",
+        "next-themes"
+      ],
+      "includedPages": [
+        "Overview",
+        "Projects",
+        "Project details",
+        "Tasks",
+        "Task details",
+        "Kanban board",
+        "Calendar",
+        "Agenda",
+        "Meetings",
+        "Deadlines",
+        "Clients",
+        "Client portal",
+        "Client approvals",
+        "Contracts",
+        "Invoices",
+        "Proposals",
+        "Feedback",
+        "Team",
+        "Workload",
+        "Timesheets",
+        "Analytics",
+        "Productivity analytics",
+        "Project analytics",
+        "Completion analytics",
+        "Performance analytics",
+        "Time analytics",
+        "Activity log",
+        "Announcements",
+        "Chat",
+        "Notifications",
+        "Workspace settings",
+        "Auth flows",
+        "Error pages"
+      ],
+      "features": [
+        "158+ route project management dashboard package",
+        "Tasks, projects, kanban, workload, calendar, and team productivity screens",
+        "Client portal, proposals, contracts, invoices, approvals, and feedback workflows",
+        "Productivity, completion, time, project, and performance analytics",
+        "Responsive workspace layouts with calm green productivity design",
+        "Reusable cards, charts, tables, forms, dialogs, and command patterns",
+        "Dark/light theme support and production-ready Next.js structure"
+      ],
+      "highlights": [
+        {
+          "label": "Routes",
+          "value": "158+"
+        },
+        {
+          "label": "Focus",
+          "value": "Tasks + projects"
+        },
+        {
+          "label": "Client flows",
+          "value": "Portal, invoices, approvals"
+        },
+        {
+          "label": "Analytics",
+          "value": "Productivity + workload"
+        }
+      ],
+      "useCases": [
+        "Project management SaaS apps",
+        "Task planning tools",
+        "Team productivity dashboards",
+        "Client portal products",
+        "Agency operations dashboards",
+        "Internal collaboration workspaces"
+      ],
+      "updatedAt": "2026-07-03"
+    },
+    {
+      "id": "dashboard-kit-ooster",
+      "slug": "ooster",
+      "title": "Ooster Premium UX Research Product Analytics Dashboard Template",
+      "shortTitle": "Ooster",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "subcategory": "UX Research Analytics Dashboard",
+      "summary": "Premium $52 Next.js UX research, product analytics, usability testing, heatmap, journey, experiment, and experience intelligence dashboard template with 111+ routes and Pro licensing.",
+      "description": "Ooster is a premium UX research and product analytics dashboard template for UX researchers, product designers, product managers, CRO teams, and design agencies. It includes usability testing, heatmaps, click maps, attention maps, funnels, journeys, experiments, benchmarks, insights, issues, customers, audit checklists, billing, integrations, and research reporting workflows. Built with Next.js 16, React 19, TypeScript, Tailwind CSS 4, shadcn/Radix UI, Recharts, Prisma-ready structure, polished light/dark themes, and a calm product intelligence aesthetic.",
+      "seoTitle": "Ooster Premium UX Research Product Analytics Dashboard Template",
+      "metaDescription": "Download Ooster, a $52 premium Next.js UX research and product analytics dashboard template with 111+ routes, heatmaps, funnels, journeys, experiments, usability testing, and CRO workflows.",
+      "priceUsd": 52,
+      "originalPriceUsd": 129,
+      "pricingTier": "pro",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js App Router",
+      "previewPath": "/dashboard-kits/ooster",
+      "livePreviewUrl": "https://mt-ooster-dxb4.vercel.app",
+      "packageFilename": "ooster.zip",
+      "packageKey": "local:template-packages/ooster/ooster.zip",
+      "coverImage": "/template-previews/ooster.png",
+      "screenshots": [
+        "/template-previews/ooster.png"
+      ],
+      "tags": [
+        "ux research",
+        "product analytics",
+        "heatmaps",
+        "usability testing",
+        "cro dashboard",
+        "nextjs",
+        "shadcn ui",
+        "experiments",
+        "premium pro template",
+        "analytics dashboard"
+      ],
+      "keywords": [
+        "Next.js UX research dashboard template",
+        "product analytics dashboard template",
+        "heatmap dashboard UI kit",
+        "usability testing SaaS template",
+        "CRO dashboard template",
+        "experiment analytics dashboard",
+        "customer journey dashboard",
+        "UX analytics admin template",
+        "premium Next.js dashboard"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "shadcn/ui",
+        "Radix UI",
+        "Recharts",
+        "Prisma",
+        "Lucide React",
+        "next-themes"
+      ],
+      "includedPages": [
+        "Overview",
+        "Insights",
+        "Insight details",
+        "Heatmaps",
+        "Heatmap details",
+        "Click maps",
+        "Attention maps",
+        "Funnels",
+        "Funnel details",
+        "Journeys",
+        "Journey details",
+        "Experiments",
+        "Experiment details",
+        "A/B tests",
+        "Benchmarks",
+        "Customers",
+        "Customer details",
+        "Issues",
+        "Issue details",
+        "Audit checklist",
+        "Research history",
+        "Data export",
+        "Integrations",
+        "Billing",
+        "Subscription",
+        "Invoices",
+        "Invite team",
+        "API keys",
+        "Auth flows",
+        "Onboarding",
+        "Error pages"
+      ],
+      "features": [
+        "111+ real route UX analytics dashboard package",
+        "Heatmaps, click maps, attention maps, funnels, journeys, and experiment analytics",
+        "Customer insights, issue tracking, benchmarks, and audit checklist workflows",
+        "Billing, integrations, API keys, invites, onboarding, and auth screens",
+        "Calm premium UI designed for UX research and product teams",
+        "Reusable charts, tables, cards, drawers, dialogs, and analytics widgets",
+        "Pro tier package with separate Paddle price ID support"
+      ],
+      "highlights": [
+        {
+          "label": "Routes",
+          "value": "111+"
+        },
+        {
+          "label": "Tier",
+          "value": "Pro"
+        },
+        {
+          "label": "Focus",
+          "value": "UX research + analytics"
+        },
+        {
+          "label": "Price",
+          "value": "$52"
+        }
+      ],
+      "useCases": [
+        "UX research SaaS products",
+        "Product analytics dashboards",
+        "CRO and experiment tools",
+        "Usability testing platforms",
+        "Design agency analytics portals",
+        "Customer journey intelligence products"
+      ],
+      "updatedAt": "2026-07-03"
+    },
+    {
+      "id": "dashboard-kit-nexusgrid-premium-admin-dashboard",
+      "slug": "nexusgrid-premium-admin-dashboard",
+      "title": "NexusGrid Premium Next.js Admin Dashboard UI Kit",
+      "shortTitle": "NexusGrid",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "subcategory": "Multi-Purpose Admin Dashboard",
+      "summary": "Premium Next.js admin dashboard UI kit with 133+ handcrafted pages, 15 dashboard variants, apps, CRM, ecommerce, projects, tables, forms, charts, auth screens, and dark/light mode.",
+      "description": "NexusGrid is a commercial-grade multi-purpose admin dashboard template built with Next.js 16, React 19, TypeScript, Tailwind CSS 4, shadcn/Radix UI, Recharts, Prisma-ready structure, responsive layouts, command palette, and dark/light themes. It includes 133+ pages across dashboards, ecommerce, CRM, apps, projects, admin settings, account, forms, tables, UI components, auth, errors, documentation, and support pages.",
+      "seoTitle": "NexusGrid Premium Next.js Admin Dashboard UI Kit",
+      "metaDescription": "Download NexusGrid, a premium Next.js admin dashboard UI kit with 133+ pages, 15 dashboards, ecommerce, CRM, apps, projects, tables, forms, charts, auth, and dark mode.",
+      "priceUsd": 20,
+      "originalPriceUsd": 69,
+      "pricingTier": "pro",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js App Router",
+      "previewPath": "/dashboard-kits/nexusgrid-premium-admin-dashboard",
+      "livePreviewUrl": "https://mt-nexusgrid.vercel.app",
+      "packageFilename": "nexusgrid-premium-admin-dashboard.zip",
+      "packageKey": "local:template-packages/nexusgrid-premium-admin-dashboard/nexusgrid-premium-admin-dashboard.zip",
+      "coverImage": "/template-previews/nexusgrid-premium-admin-dashboard.png",
+      "screenshots": [
+        "/template-previews/nexusgrid-premium-admin-dashboard.png"
+      ],
+      "tags": [
+        "admin dashboard",
+        "nextjs dashboard",
+        "ui kit",
+        "ecommerce admin",
+        "crm dashboard",
+        "saas dashboard",
+        "shadcn ui",
+        "tables",
+        "charts",
+        "premium template"
+      ],
+      "keywords": [
+        "Next.js admin dashboard template",
+        "React admin dashboard UI kit",
+        "Tailwind dashboard template",
+        "multi-purpose admin template",
+        "ecommerce admin dashboard",
+        "CRM dashboard template",
+        "SaaS dashboard UI kit",
+        "Next.js App Router admin",
+        "premium admin template"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "shadcn/ui",
+        "Radix UI",
+        "Recharts",
+        "Prisma",
+        "Lucide React",
+        "next-themes"
+      ],
+      "includedPages": [
+        "Ecommerce dashboard",
+        "Analytics dashboard",
+        "CRM dashboard",
+        "Finance dashboard",
+        "SaaS dashboard",
+        "Projects dashboard",
+        "Healthcare dashboard",
+        "Real estate dashboard",
+        "Support dashboard",
+        "Logistics dashboard",
+        "Products",
+        "Orders",
+        "Customers",
+        "Coupons",
+        "Inventory",
+        "CRM accounts",
+        "Deals",
+        "Leads",
+        "Contacts",
+        "Calendar",
+        "Chat",
+        "Mailbox",
+        "Notes",
+        "Reports",
+        "File manager",
+        "Projects",
+        "Kanban",
+        "Roadmap",
+        "Tasks",
+        "Forms",
+        "Advanced tables",
+        "Charts",
+        "UI components",
+        "Account settings",
+        "Admin billing",
+        "Team management",
+        "Roles",
+        "Permissions",
+        "Auth flows",
+        "Error pages"
+      ],
+      "features": [
+        "133+ handcrafted pages across dashboards, apps, ecommerce, CRM, projects, forms, tables, charts, UI, auth, and errors",
+        "15 dashboard variants for SaaS, analytics, ecommerce, CRM, finance, logistics, support, healthcare, real estate, and more",
+        "Advanced tables, charts, cards, forms, settings, team management, and admin workflows",
+        "Command palette, responsive navigation, dark/light mode, and reusable components",
+        "Commercial-grade Next.js App Router architecture ready for customization",
+        "Polished multi-purpose visual system for SaaS and internal tools"
+      ],
+      "highlights": [
+        {
+          "label": "Pages",
+          "value": "133+"
+        },
+        {
+          "label": "Dashboards",
+          "value": "15"
+        },
+        {
+          "label": "Use",
+          "value": "Multi-purpose admin"
+        },
+        {
+          "label": "Theme",
+          "value": "Dark + light"
+        }
+      ],
+      "useCases": [
+        "SaaS admin dashboards",
+        "Ecommerce back offices",
+        "CRM and sales dashboards",
+        "Internal tools",
+        "Analytics products",
+        "Multi-purpose admin panels"
+      ],
+      "updatedAt": "2026-07-03"
+    },
+    {
       "id": "auric-ecommerce-template",
       "slug": "auric-premium-headphones-ecommerce-template",
       "title": "AURIC - Premium Wireless Headphones Ecommerce Template",
@@ -15411,9 +15960,9 @@
     }
   ],
   "meta": {
-    "source": "mt-html-import",
-    "updatedAt": "2026-07-02T12:15:06.765Z",
-    "count": 115,
+    "source": "dashboard-import",
+    "updatedAt": "2026-07-03T06:36:06.824Z",
+    "count": 119,
     "htmlImportCount": 91
   }
 }

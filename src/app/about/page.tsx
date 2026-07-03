@@ -1,58 +1,60 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/site-url'
 import Link from 'next/link'
-import { Mail, Github, Twitter, Sparkles, Zap, Shield, Heart } from 'lucide-react'
+import { Mail, Github, Twitter, Sparkles, Zap, Shield, Heart, Code2, LayoutGrid } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
 import { SectionBackground, Blob } from '@/components/design-system/backgrounds'
 import { HomeHeroBackground } from '@/components/design-system/hero-backgrounds'
 import { SOCIAL_EMAIL, SOCIAL_GITHUB, SOCIAL_TWITTER } from '@/lib/site-social'
 import { getPromptLibraryData } from '@/lib/prompt-db'
-import { getTemplateStats } from '@/lib/templates-data'
+import { getAllTemplatesFromStore } from '@/lib/templates-data'
 
 export const metadata: Metadata = {
-  title: 'About mtverse — Free AI Prompts & Premium Templates',
+  title: 'About mtverse - Free AI Prompts, HTML Templates & Premium Templates',
   description:
-    'mtverse is a curated library of free AI prompts and premium Next.js templates. Learn about our mission to help creators ship faster.',
+    'mtverse is a curated library of free AI prompts, responsive HTML website templates, and premium Next.js templates for creators who ship faster.',
   alternates: { canonical: '/about' },
   openGraph: {
     title: 'About mtverse',
-    description: 'Curated AI prompts and premium Next.js templates for creators.',
-    url: `${SITE_URL}/about`,
+    description: 'Free AI prompts, responsive HTML website templates, and premium Next.js templates for creators.',
+    url: SITE_URL + '/about',
     type: 'website',
   },
 }
 
-
-
 export default async function AboutPage() {
-  const library = await getPromptLibraryData().catch(() => null)
+  const [library, templates] = await Promise.all([
+    getPromptLibraryData().catch(() => null),
+    getAllTemplatesFromStore().catch(() => []),
+  ])
   const promptCount = library?.stats?.totalPrompts ?? 0
-  const templateStats = getTemplateStats()
+  const htmlTemplateCount = templates.filter((template) => template.category === 'html').length
+  const premiumTemplateCount = templates.filter((template) => template.category !== 'html' && !template.isFree).length
 
   const values = [
     {
       icon: Sparkles,
       title: 'Quality over quantity',
-      description: 'Every prompt is hand-reviewed and paired with a preview. Every template is production-tested.',
+      description: 'Every prompt is reviewed, every HTML template has a real preview, and every paid template is prepared for production use.',
       color: 'primary',
     },
     {
       icon: Zap,
       title: 'Ship faster',
-      description: 'Copy a prompt in seconds. Buy a template and launch in hours, not weeks.',
+      description: 'Copy a prompt in seconds, download a static HTML site quickly, or buy a premium template and launch faster.',
       color: 'accent',
     },
     {
       icon: Shield,
       title: 'Honest pricing',
-      description: 'Free prompts, forever. Premium templates with a 14-day money-back guarantee. No subscriptions.',
+      description: 'Free prompts, free individual HTML downloads with limits, a $5 HTML bundle unlock, and paid templates sold one template at a time.',
       color: 'emerald',
     },
     {
       icon: Heart,
       title: 'Creator-first',
-      description: 'Built by creators, for creators. We use everything we sell in our own projects.',
+      description: 'Built for people who need useful assets, clear previews, simple downloads, and no confusing subscriptions.',
       color: 'rose',
     },
   ]
@@ -67,7 +69,6 @@ export default async function AboutPage() {
   return (
     <PublicLayout>
       <main>
-        {/* Hero */}
         <section className="ds-section-lg ds-bg-section relative overflow-hidden">
           <HomeHeroBackground />
           <div className="ds-container relative">
@@ -85,15 +86,13 @@ export default async function AboutPage() {
               </Reveal>
               <Reveal delay={0.16}>
                 <p className="ds-lead ds-text-pretty">
-                  mtverse is a curated library of {promptCount.toLocaleString()}+ free AI prompts and {templateStats.totalTemplates} premium
-                  Next.js templates. Built by creators who were tired of trial-and-error and boilerplate code.
+                  mtverse brings together {promptCount.toLocaleString()}+ free AI prompts, {htmlTemplateCount} responsive HTML templates, and {premiumTemplateCount} premium source-code templates for creators who want useful assets without noise.
                 </p>
               </Reveal>
             </div>
           </div>
         </section>
 
-        {/* Stats */}
         <section className="ds-section-sm border-y">
           <div className="ds-container">
             <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -105,7 +104,13 @@ export default async function AboutPage() {
               </StaggerItem>
               <StaggerItem>
                 <div className="text-center">
-                  <div className="ds-stat-number">{templateStats.totalTemplates}</div>
+                  <div className="ds-stat-number">{htmlTemplateCount}</div>
+                  <div className="ds-stat-label">HTML templates</div>
+                </div>
+              </StaggerItem>
+              <StaggerItem>
+                <div className="text-center">
+                  <div className="ds-stat-number">{premiumTemplateCount}</div>
                   <div className="ds-stat-label">Premium templates</div>
                 </div>
               </StaggerItem>
@@ -115,17 +120,10 @@ export default async function AboutPage() {
                   <div className="ds-stat-label">Active creators</div>
                 </div>
               </StaggerItem>
-              <StaggerItem>
-                <div className="text-center">
-                  <div className="ds-stat-number">4.9/5</div>
-                  <div className="ds-stat-label">Avg. rating</div>
-                </div>
-              </StaggerItem>
             </Stagger>
           </div>
         </section>
 
-        {/* Story */}
         <section className="ds-section ds-bg-section relative overflow-hidden">
           <SectionBackground />
           <div className="ds-container max-w-3xl">
@@ -133,25 +131,19 @@ export default async function AboutPage() {
               <h2 className="ds-h1 mb-6">Our story</h2>
               <div className="space-y-4 text-base text-muted-foreground leading-relaxed">
                 <p>
-                  mtverse started as a personal collection of AI prompts — a Notion document that grew into a library of 2,300+ prompts
-                  tested across ChatGPT, Midjourney, Flux, Gemini, and Nano Banana. We were spending more time tweaking prompts than
-                  actually creating, so we decided to share our best work with the world.
+                  mtverse started as a personal collection of AI prompts: a working library tested across ChatGPT, Midjourney, Flux, Gemini, and other creative tools. We were spending more time tweaking prompts than creating useful output, so we turned the best patterns into a public library.
                 </p>
                 <p>
-                  Along the way, we noticed that the same was true for templates. Every SaaS project started with the same boilerplate:
-                  authentication, dashboards, settings, billing. So we started building production-ready templates that we could reuse
-                  across projects — and realized other creators might want them too.
+                  The template side grew from the same problem. Creators need usable websites, dashboards, storefronts, and admin screens without rebuilding the basics every time. That is why mtverse now includes responsive HTML templates, premium Next.js dashboards, ecommerce templates, and admin UI kits with real previews and secure delivery.
                 </p>
                 <p>
-                  Today, mtverse is both: a free prompt library that anyone can use without signing up, and a premium template marketplace
-                  for creators who want to ship faster. No subscriptions, no lock-in, no bloat. Just prompts and templates that work.
+                  The goal is simple: useful prompts, clear template previews, honest pricing, and download flows that feel predictable. No filler, no fake review blocks, and no bundle claims that do not match what the user actually buys.
                 </p>
               </div>
             </Reveal>
           </div>
         </section>
 
-        {/* Values */}
         <section className="ds-section ds-bg-section relative overflow-hidden">
           <Blob variant="peach" size={400} position={{ top: '10%', right: '-5%' }} float="slow" />
           <Blob variant="lavender" size={300} position={{ bottom: '5%', left: '-5%' }} float="normal" />
@@ -166,7 +158,7 @@ export default async function AboutPage() {
                 return (
                   <StaggerItem key={v.title}>
                     <div className="ds-card ds-card-hover h-full flex items-start gap-4">
-                      <div className={`inline-flex h-10 w-10 items-center justify-center rounded-xl ${colorMap[v.color]} shrink-0`}>
+                      <div className={'inline-flex h-10 w-10 items-center justify-center rounded-xl ' + colorMap[v.color] + ' shrink-0'}>
                         <Icon className="h-5 w-5" />
                       </div>
                       <div>
@@ -181,34 +173,44 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        {/* Contact CTA */}
+        <section className="ds-section-sm border-y bg-background">
+          <div className="ds-container">
+            <div className="grid gap-4 md:grid-cols-2">
+              <Link href="/html-templates" className="ds-card ds-card-hover flex items-start gap-4">
+                <Code2 className="mt-1 h-5 w-5 text-primary" />
+                <div>
+                  <h2 className="ds-h3">Explore free HTML templates</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">Browse static website templates by portfolio, SaaS, ecommerce, agency, restaurant, and more.</p>
+                </div>
+              </Link>
+              <Link href="/templates" className="ds-card ds-card-hover flex items-start gap-4">
+                <LayoutGrid className="mt-1 h-5 w-5 text-primary" />
+                <div>
+                  <h2 className="ds-h3">Browse all templates</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">Compare free HTML templates and paid Next.js source-code templates in one catalog.</p>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         <section className="ds-section ds-bg-section">
           <div className="ds-container max-w-2xl text-center">
             <Reveal>
               <h2 className="ds-h1 mb-3">Get in touch</h2>
               <p className="ds-lead mb-6">
-                Questions, feedback, partnership ideas? We&apos;d love to hear from you.
+                Questions, feedback, partnership ideas? We'd love to hear from you.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <Link href="/contact" className="ds-btn ds-btn-primary">
                   <Mail className="h-4 w-4" />
                   Contact us
                 </Link>
-                <a
-                  href={SOCIAL_GITHUB}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ds-btn ds-btn-secondary"
-                >
+                <a href={SOCIAL_GITHUB} target="_blank" rel="noopener noreferrer" className="ds-btn ds-btn-secondary">
                   <Github className="h-4 w-4" />
                   GitHub
                 </a>
-                <a
-                  href={SOCIAL_TWITTER}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ds-btn ds-btn-secondary"
-                >
+                <a href={SOCIAL_TWITTER} target="_blank" rel="noopener noreferrer" className="ds-btn ds-btn-secondary">
                   <Twitter className="h-4 w-4" />
                   Twitter
                 </a>

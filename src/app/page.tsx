@@ -64,11 +64,11 @@ const CATEGORY_PASTEL: Record<string, string> = {
 
 export const metadata = {
   title: {
-    default: 'mtverse — Free AI Prompts & Premium Dashboard Templates',
+    default: 'mtverse - Free AI Prompts, HTML Templates & Dashboard Templates',
     template: '%s | mtverse',
   },
   description:
-    'Browse 2,300+ free AI prompts for ChatGPT, Midjourney, Nano Banana, Gemini, and Flux. Plus premium Next.js dashboard templates for SaaS, enterprise, ecommerce, CRM, and analytics. Copy prompts instantly, buy dashboard templates once.',
+    'Browse 2,300+ free AI prompts, free responsive HTML website templates, and premium Next.js dashboard templates for SaaS, ecommerce, CRM, and analytics. Copy prompts instantly, preview templates live, and download securely.',
   keywords: [
     'AI prompts',
     'free AI prompts',
@@ -86,14 +86,19 @@ export const metadata = {
     'portfolio templates',
     'prompt library',
     'prompt marketplace',
+    'free HTML templates',
+    'responsive website templates',
+    'HTML portfolio templates',
+    'HTML ecommerce templates',
+    'all HTML templates bundle',
   ],
   authors: [{ name: 'mtverse' }],
   metadataBase: new URL(`${SITE_URL}`),
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'mtverse — Free AI Prompts & Premium Dashboard Templates',
+    title: 'mtverse - Free AI Prompts, HTML Templates & Dashboard Templates',
     description:
-      '2,300+ free AI prompts for ChatGPT, Midjourney, Nano Banana, Gemini, Flux. Plus premium Next.js dashboard templates. Copy instantly, buy once.',
+      '2,300+ free AI prompts, free responsive HTML templates, and premium Next.js dashboard templates. Copy prompts instantly and preview templates live.',
     url: `${SITE_URL}`,
     siteName: 'mtverse',
     type: 'website',
@@ -101,9 +106,9 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'mtverse — Free AI Prompts & Premium Dashboard Templates',
+    title: 'mtverse - Free AI Prompts, HTML Templates & Dashboard Templates',
     description:
-      '2,300+ free AI prompts for ChatGPT, Midjourney, Nano Banana, Gemini, Flux. Plus premium Next.js dashboard templates.',
+      '2,300+ free AI prompts, free responsive HTML templates, and premium Next.js dashboard templates.',
   },
   robots: {
     index: true,
@@ -127,7 +132,7 @@ export default async function Home() {
 
   const stats = [
     { value: promptCount.toLocaleString(), label: 'Curated prompts' },
-    { value: `${templateStats.totalTemplates}`, label: 'Dashboard templates' },
+    { value: `${templateStats.totalTemplates}`, label: 'Website templates' },
     { value: `${featuredCount}+`, label: 'Featured picks' },
     { value: 'Weekly', label: 'New prompts added' },
   ]
@@ -140,7 +145,7 @@ export default async function Home() {
         '@id': `${SITE_URL}/#website`,
         url: `${SITE_URL}`,
         name: 'mtverse',
-        description: 'Free AI prompts and premium Next.js templates',
+        description: 'Free AI prompts, free HTML templates, and premium Next.js templates',
         publisher: { '@id': `${SITE_URL}/#organization` },
         potentialAction: {
           '@type': 'SearchAction',
@@ -166,7 +171,7 @@ export default async function Home() {
             name: 'What are AI prompts?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'AI prompts are instructions you give to AI models like ChatGPT, Midjourney, or Gemini to generate text, images, or code. mtverse offers 2,300+ curated prompts across image generation, writing, coding, and more — all free to copy and use.',
+              text: 'AI prompts are instructions you give to AI models like ChatGPT, Midjourney, or Gemini to generate text, images, or code. mtverse offers 2,300+ curated prompts across image generation, writing, coding, and more - all free to copy and use.',
             },
           },
           {
@@ -190,7 +195,7 @@ export default async function Home() {
             name: 'What are the premium templates?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Our premium dashboard templates are production-ready Next.js source packages for SaaS, enterprise, analytics, ecommerce, CRM, and admin products. They include live previews, full source code, and secure download access. Buy once, use forever.',
+              text: 'mtverse includes free responsive HTML website templates and paid Next.js source packages for SaaS, enterprise, analytics, ecommerce, CRM, and admin products. HTML templates support free individual downloads and a $5 bundle unlock. Paid templates include live previews, source code, and secure download access.',
             },
           },
         ],
@@ -205,7 +210,7 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main>
-        {/* ═══════════════ HERO — fits in viewport ═══════════════ */}
+        {/* =============== HERO - fits in viewport =============== */}
         <section className="relative min-h-[88vh] flex items-center overflow-hidden">
           <HomeHero3D />
 
@@ -214,7 +219,7 @@ export default async function Home() {
               <Reveal>
                 <span className="ds-eyebrow ds-eyebrow-accent">
                   <Sparkles className="h-3.5 w-3.5" />
-                  {promptCount.toLocaleString()} prompts · {templateStats.totalTemplates} templates
+                  {promptCount.toLocaleString()} prompts | {templateStats.totalTemplates} templates
                 </span>
               </Reveal>
               <Reveal delay={0.08}>
@@ -225,7 +230,7 @@ export default async function Home() {
               <Reveal delay={0.16}>
                 <p className="ds-lead ds-text-pretty">
                   Free AI prompts for ChatGPT, Midjourney, Nano Banana, Gemini, Flux.
-                  Premium Next.js dashboard templates for SaaS, enterprise, ecommerce, CRM, and analytics.
+                  Free responsive HTML templates plus premium Next.js dashboard templates for SaaS, enterprise, ecommerce, CRM, and analytics.
                 </p>
               </Reveal>
               <Reveal delay={0.24}>
@@ -246,7 +251,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ═══════════════ STATS STRIP ═══════════════ */}
+        {/* =============== STATS STRIP =============== */}
         <section className="ds-section-sm ds-bg-section relative overflow-hidden border-y">
           <SectionBackground />
           <div className="ds-container relative">
@@ -263,7 +268,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ═══════════════ ANIMATED PROMPTS SHOWCASE (8 cards, 24 images cycling) ═══════════════ */}
+        {/* =============== ANIMATED PROMPTS SHOWCASE (8 cards, 24 images cycling) =============== */}
         <section className="ds-section ds-bg-section relative overflow-hidden">
           <div className="ds-container relative">
             <Reveal className="ds-section-head ds-section-head-left mb-8">
@@ -294,7 +299,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ═══════════════ FEATURE CARDS ═══════════════ */}
+        {/* =============== FEATURE CARDS =============== */}
         <section className="ds-section ds-bg-section relative overflow-hidden">
           <SectionBackground />
           <div className="ds-container relative">
@@ -347,7 +352,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ═══════════════ TEMPLATES PREVIEW ═══════════════ */}
+        {/* =============== TEMPLATES PREVIEW =============== */}
         <section className="ds-section ds-bg-section relative overflow-hidden">
           <Blob variant="peach" size={400} position={{ top: '10%', right: '-5%' }} float="slow" />
           <Blob variant="lavender" size={300} position={{ bottom: '5%', left: '-5%' }} float="normal" />
@@ -358,11 +363,11 @@ export default async function Home() {
                 <div>
                   <span className="ds-eyebrow ds-eyebrow-accent mb-3">
                     <LayoutGrid className="h-3.5 w-3.5" />
-                    Dashboard templates
+                    Website templates
                   </span>
-                  <h2 className="ds-h1 ds-text-balance">Ship faster with production-ready dashboards</h2>
+                  <h2 className="ds-h1 ds-text-balance">Ship faster with dashboards and HTML websites</h2>
                   <p className="ds-lead ds-text-pretty mt-2">
-                    Real suite-backed Next.js dashboard templates with live previews, secure download access, and source code you can ship from.
+                    Responsive HTML templates and suite-backed Next.js templates with live previews, secure download access, and source packages you can ship from.
                   </p>
                 </div>
                 <Link
@@ -385,7 +390,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ═══════════════ CATEGORIES ═══════════════ */}
+        {/* =============== CATEGORIES =============== */}
         <section className="ds-section ds-bg-section relative overflow-hidden">
           <SectionBackground />
           <div className="ds-container relative">
@@ -427,7 +432,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ═══════════════ AI TOOLS MARQUEE (real icons) ═══════════════ */}
+        {/* =============== AI TOOLS MARQUEE (real icons) =============== */}
         <section className="ds-section-sm ds-bg-section relative overflow-hidden border-y">
           <div className="ds-container relative">
             <Reveal className="text-center mb-6">
@@ -446,7 +451,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ═══════════════ TESTIMONIALS ═══════════════ */}
+        {/* =============== TESTIMONIALS =============== */}
         <section className="ds-section ds-bg-section relative overflow-hidden">
           <SectionBackground />
           <div className="ds-container relative">
@@ -486,7 +491,7 @@ export default async function Home() {
                         <Star key={j} className="h-4 w-4 fill-current text-foreground/60" />
                       ))}
                     </div>
-                    <p className="text-base leading-relaxed mb-6 flex-1">“{t.quote}”</p>
+                    <p className="text-base leading-relaxed mb-6 flex-1">"{t.quote}"</p>
                     <div className="flex items-center gap-3 pt-4 border-t border-white/40">
                       <div className="h-10 w-10 rounded-full bg-white/70 flex items-center justify-center font-bold text-foreground/70">
                         {t.name[0]}
@@ -503,7 +508,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ═══════════════ ADVANCED SEO CONTENT ═══════════════ */}
+        {/* =============== ADVANCED SEO CONTENT =============== */}
         <section className="ds-section ds-bg-section">
           <div className="ds-container max-w-4xl">
             <Reveal>
@@ -526,11 +531,10 @@ export default async function Home() {
                   to find exactly what you need in seconds.
                 </p>
                 <p>
-                  Beyond prompts, we also offer a curated marketplace of{' '}
+                  Beyond prompts, we also offer <Link href="/html-templates" className="text-primary-600 hover:underline">free responsive HTML templates</Link>{' '}
+                  for portfolios, ecommerce, SaaS, agencies, restaurants, healthcare, education, fitness, crypto, and real estate, plus{' '}
                   <Link href="/templates" className="text-primary-600 hover:underline">premium Next.js templates</Link>{' '}
-                  for SaaS, enterprise, analytics, ecommerce, CRM, and admin products.
-                  Each dashboard template comes with full source code, TypeScript types, Tailwind CSS styling, shadcn/ui
-                  components, dark mode, and a 14-day money-back guarantee. Buy once, use forever.
+                  for SaaS, enterprise, analytics, ecommerce, CRM, and admin products. Paid templates come with source packages and secure access. The $5 HTML bundle unlock prepares one ZIP containing every HTML template package.
                 </p>
               </div>
             </Reveal>
@@ -570,7 +574,7 @@ export default async function Home() {
                     <h3 className="ds-h4 mb-1">Free to use, no sign-up required</h3>
                     <p className="text-sm text-muted-foreground">
                       Every prompt on mtverse is free to copy and use. You do not need an account to browse,
-                      search, or copy prompts. Sign up is optional — it only saves your favorites and lets you
+                      search, or copy prompts. Sign up is optional - it only saves your favorites and lets you
                       download purchased templates.
                     </p>
                   </div>
@@ -580,7 +584,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ═══════════════ CTA ═══════════════ */}
+        {/* =============== CTA =============== */}
         {/* Homepage FAQ */}
         <section className="ds-section ds-bg-section">
           <div className="ds-container max-w-4xl">
@@ -592,7 +596,7 @@ export default async function Home() {
             <div className="grid gap-3">
               {[
                 ['Are mtverse AI prompts free?', 'Yes. Public prompts are free to browse, copy, and adapt. You do not need an account to use the prompt library.'],
-                ['What templates can I buy?', 'mtverse focuses on premium dashboard, SaaS, ecommerce, CRM, analytics, and admin templates with live previews and secure download access.'],
+                ['What templates can I download?', 'mtverse includes free HTML website templates, a $5 all-HTML bundle unlock, and paid Next.js dashboard, SaaS, ecommerce, CRM, analytics, and admin templates with live previews.'],
                 ['Can I preview a template before purchase?', 'Yes. Each paid template has a live preview route and full screenshots so you can inspect the UI before checkout.'],
                 ['What helps mtverse rank in Google?', 'Useful page content, accurate metadata, internal links, fast pages, clean schema, a sitemap, and trustworthy policy pages help more than long keyword stuffing lists.'],
               ].map(([question, answer]) => (
@@ -622,7 +626,7 @@ export default async function Home() {
               </Reveal>
               <Reveal delay={0.16}>
                 <p className="ds-lead ds-text-pretty">
-                  Browse {promptCount.toLocaleString()} curated prompts and {templateStats.totalTemplates} premium templates.
+                  Browse {promptCount.toLocaleString()} curated prompts and {templateStats.totalTemplates} website templates.
                 </p>
               </Reveal>
               <Reveal delay={0.24}>

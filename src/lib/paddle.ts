@@ -7,6 +7,7 @@ export type { PaddleCheckoutPayload, PaddleEnvironment } from '@/lib/paddle-type
 const PADDLE_PRICE_ENV: Record<PackageId, string> = {
   next: 'PADDLE_NEXT_PRICE_ID',
   pro: 'PADDLE_PRO_PRICE_ID',
+  'ooster-pro': 'PADDLE_OOSTER_PRO_PRICE_ID',
   'free-unlock': 'PADDLE_FREE_UNLOCK_PRICE_ID',
 }
 
@@ -32,7 +33,7 @@ export function createPaddleCheckoutPayload(packageId: PackageId, email?: string
   }
 
   if (!priceId) {
-    throw new Error(`Paddle price ID is missing. Set ${PADDLE_PRICE_ENV[packageId]} in .env.local.`)
+    throw new Error(`Paddle price ID is missing. Set ${PADDLE_PRICE_ENV[packageId]} in your environment.`)
   }
 
   const customerEmail = email?.trim().toLowerCase()

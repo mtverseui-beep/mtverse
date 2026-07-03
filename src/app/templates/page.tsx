@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Gauge, Store, Building2, ChevronDown } from 'lucide-react'
+import { Gauge, Store, Building2, ChevronDown, Code2 } from 'lucide-react'
 import { SITE_URL } from '@/lib/site-url'
 import { Suspense } from 'react'
 import PublicLayout from '@/components/layout/PublicLayout'
@@ -10,7 +10,7 @@ import { withAllTemplateSocial } from '@/lib/template-social-store'
 
 export const metadata: Metadata = {
   title: {
-    default: 'Premium Next.js Dashboard Templates and Admin UI Kits',
+    default: 'Premium Next.js Dashboard Templates, Admin UI Kits & Free HTML Templates',
     template: '%s | mtverse',
   },
   description:
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/templates' },
   openGraph: {
-    title: 'Premium Next.js Dashboard Templates and Admin UI Kits',
+    title: 'Premium Next.js Dashboard Templates, Admin UI Kits & Free HTML Templates',
     description:
       'Premium Next.js dashboards plus free responsive HTML website templates for portfolios, SaaS, ecommerce, agencies, restaurants, healthcare, education, fitness, crypto, and real estate.',
     url: `${SITE_URL}/templates`,
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Premium Next.js Dashboard Templates and Admin UI Kits',
+    title: 'Premium Next.js Dashboard Templates, Admin UI Kits & Free HTML Templates',
     description: 'Dashboard templates and free HTML website templates with live previews, screenshots, and secure ZIP delivery from mtverse.',
   },
   robots: { index: true, follow: true, 'max-image-preview': 'large' },
@@ -151,14 +151,15 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
               </p>
             </div>
 
-            {/* Category cards — ds-card style matching site */}
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            {/* Category cards - ds-card style matching site */}
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[
+                { title: 'Free HTML templates', copy: 'Responsive static websites for portfolio, SaaS, ecommerce, agency, restaurant, healthcare, education, and more.', icon: 'code' },
                 { title: 'SaaS dashboards', copy: 'Admin shells, metrics, billing, workspace, and team management screens for subscription products.', icon: 'gauge' },
                 { title: 'Ecommerce templates', copy: 'Storefront, product catalog, cart, checkout, order management, coupons, reviews, and inventory UI.', icon: 'store' },
                 { title: 'Enterprise admin UI', copy: 'Analytics, RBAC, audit logs, integrations, API keys, finance, CRM, and operations dashboards.', icon: 'building' },
               ].map((item) => {
-                const Icon = item.icon === 'gauge' ? Gauge : item.icon === 'store' ? Store : Building2
+                const Icon = item.icon === 'code' ? Code2 : item.icon === 'gauge' ? Gauge : item.icon === 'store' ? Store : Building2
                 return (
                   <div key={item.title} className="ds-card p-5">
                     <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -171,11 +172,11 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
               })}
             </div>
 
-            {/* FAQ — site-wide ds-card group pattern */}
+            {/* FAQ - site-wide ds-card group pattern */}
             <div className="mt-10 space-y-3">
               {[
-                { q: 'Which dashboard template should I choose?', a: 'Choose MTVerse Modular for broad AI SaaS and CRM coverage, MT Box for enterprise SaaS admin flows, Mat Dash for a large admin studio, and Lumiere for ecommerce storefront plus admin workflows.' },
-                { q: 'Are these free website templates?', a: 'Some templates are free (up to 5 downloads). Premium templates are one-time purchase with live previews, secure download access, and instant delivery.' },
+                { q: 'Which template should I choose?', a: 'Use HTML templates for static websites and quick client launches. Choose MTVerse Modular, MT Box, Mat Dash, Helios Pro, or Lumiere when you need paid Next.js source-code templates with richer application screens.' },
+                { q: 'Are these free website templates?', a: 'HTML templates support free individual downloads with a free account download limit. The $5 HTML bundle unlock gives unlimited individual HTML downloads and one ZIP containing every HTML template.' },
                 { q: 'Do templates include live preview and screenshots?', a: 'Yes. Each template includes a preview page and full-width screenshot so you can inspect the visual quality before checkout.' },
                 { q: 'Can I use these templates in production?', a: 'Yes. The license is for one production project, and the template package is delivered after checkout through protected access.' },
               ].map((item) => (
@@ -192,6 +193,7 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
             {/* Footer links */}
             <div className="mt-8 flex flex-wrap gap-2 text-sm">
               <Link href="/prompts" className="ds-btn ds-btn-ghost ds-btn-sm">Free AI prompts</Link>
+              <Link href="/html-templates" className="ds-btn ds-btn-ghost ds-btn-sm">Free HTML templates</Link>
               <Link href="/faq" className="ds-btn ds-btn-ghost ds-btn-sm">Template FAQ</Link>
               <Link href="/support" className="ds-btn ds-btn-ghost ds-btn-sm">Support</Link>
               <Link href="/refund-policy" className="ds-btn ds-btn-ghost ds-btn-sm">Refund policy</Link>
