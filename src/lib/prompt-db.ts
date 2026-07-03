@@ -1,4 +1,4 @@
-﻿import 'server-only'
+import 'server-only'
 
 import { revalidatePath, revalidateTag } from 'next/cache'
 import {
@@ -322,8 +322,16 @@ export async function getPublishedPrompts() {
   return (await getPromptLibraryData()).prompts
 }
 
-export function isPromptIndexable(prompt: Pick<PromptEntry, 'featured'>) {
-  return Boolean(prompt.featured)
+export function isPromptIndexable(
+  prompt: Pick<PromptEntry, 'slug' | 'title' | 'metaDescription' | 'prompt' | 'previewImage'>
+) {
+  return Boolean(
+    prompt.slug &&
+    prompt.title &&
+    prompt.metaDescription &&
+    prompt.prompt &&
+    hasPublicPromptPreview(prompt.previewImage)
+  )
 }
 
 export async function getAdminPrompts() {

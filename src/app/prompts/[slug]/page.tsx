@@ -165,6 +165,10 @@ function buildPromptSeoDescription(prompt: PromptEntry) {
   return `${base}${modelText}${useText}`.slice(0, 220)
 }
 
+function stripPromptBodyForClient(prompt: PromptEntry) {
+  const { prompt: _promptBody, ...clientPrompt } = prompt
+  return clientPrompt
+}
 export async function generateMetadata({ params }: PromptSlugPageProps): Promise<Metadata> {
   const { slug } = await params
   const { prompt } = await getPromptPageData(slug)
@@ -254,7 +258,10 @@ export default async function PromptSlugPage({ params }: PromptSlugPageProps) {
         actionName={prompt.title}
         actionSlug={prompt.slug}
       />
-      <PromptDetailPage prompt={prompt} relatedPrompts={relatedPrompts} />
+      <PromptDetailPage
+        prompt={stripPromptBodyForClient(prompt)}
+        relatedPrompts={relatedPrompts.map(stripPromptBodyForClient)}
+      />
     </PublicLayout>
   )
 }

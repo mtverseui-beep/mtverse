@@ -17,7 +17,7 @@ import { generateHreflangMap } from '@/lib/seo-languages'
 const promptsPageMetadata = {
   title: 'Free AI Prompts - ChatGPT, AI Image, Midjourney & Photo Editing Prompts',
   description:
-    'Browse free copy-ready AI prompts for ChatGPT, AI image generation, Midjourney, Flux, Nano Banana, photo editing, portraits, products, posters, writing, and viral content. No signup required.',
+    'Browse free copy-ready AI prompts for ChatGPT, AI image generation, Midjourney, Flux, Nano Banana, photo editing, portraits, products, posters, writing, and viral content. Sign in to reveal, copy, and save prompts.',
   keywords: [
     'free AI prompts',
     'free AI image prompts',

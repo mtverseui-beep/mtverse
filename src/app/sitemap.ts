@@ -46,7 +46,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: baseUrl + "/prompts/" + prompt.slug,
       lastModified: new Date(prompt.updatedAt),
       changeFrequency: "weekly" as const,
-      priority: 0.75,
+      priority: prompt.featured ? 0.78 : 0.68,
     }));
 
   const templateRoutes: MetadataRoute.Sitemap = templates.map((template) => ({

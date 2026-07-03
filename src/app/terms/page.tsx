@@ -46,7 +46,7 @@ export default function TermsPage() {
 
       <h2>3. Free Prompts</h2>
       <p>
-        All prompts available on the Service are free to copy and use. You may use prompts for personal and commercial projects
+        All prompts available on the Service are free to browse, copy after sign-in, and use. You may use prompts for personal and commercial projects
         without attribution. However, you may not resell or redistribute the prompts as-is as part of a competing prompt library or service.
       </p>
 

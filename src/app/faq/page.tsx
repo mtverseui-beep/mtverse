@@ -23,7 +23,7 @@ const FAQS = [
     questions: [
       {
         q: 'Are the AI prompts really free?',
-        a: 'Yes. All public prompts on mtverse are free to copy and use. You do not need an account to browse, search, filter, or copy prompts.',
+        a: 'Yes. All public prompts on mtverse are free to use. You can browse, search, and filter freely; sign in to reveal, copy, and save prompt text.',
       },
       {
         q: 'Which AI models do the prompts work with?',
@@ -107,7 +107,7 @@ const FAQS = [
     questions: [
       {
         q: 'Do I need an account to use mtverse?',
-        a: 'You do not need an account to browse or copy prompts. An account is needed to save items, download templates, access purchases, and manage your downloads.',
+        a: 'You do not need an account to browse prompt pages. An account is needed to reveal, copy, save prompts, download templates, access purchases, and manage your downloads.',
       },
       {
         q: 'I forgot my password. How do I reset it?',

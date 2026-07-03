@@ -171,7 +171,7 @@ export default async function Home() {
             name: 'What are AI prompts?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'AI prompts are instructions you give to AI models like ChatGPT, Midjourney, or Gemini to generate text, images, or code. mtverse offers 2,300+ curated prompts across image generation, writing, coding, and more - all free to copy and use.',
+              text: 'AI prompts are instructions you give to AI models like ChatGPT, Midjourney, or Gemini to generate text, images, or code. mtverse offers 2,300+ curated prompts across image generation, writing, coding, and more - free to browse, reveal, copy, and save after sign-in.',
             },
           },
           {
@@ -179,7 +179,7 @@ export default async function Home() {
             name: 'Are the prompts really free?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Yes. Every prompt on mtverse is free to copy and use. You can browse by category, search by keyword, filter by AI model, and copy any prompt with one click. No sign-up required.',
+              text: 'Yes. Every prompt on mtverse is free to use. You can browse by category, search by keyword, filter by AI model, then sign in to reveal, copy, and save prompts.',
             },
           },
           {
@@ -571,9 +571,9 @@ export default async function Home() {
                 <div className="flex items-start gap-3">
                   <Shield className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
                   <div>
-                    <h3 className="ds-h4 mb-1">Free to use, no sign-up required</h3>
+                    <h3 className="ds-h4 mb-1">Free to use with sign-in copy access</h3>
                     <p className="text-sm text-muted-foreground">
-                      Every prompt on mtverse is free to copy and use. You do not need an account to browse,
+                      Every prompt on mtverse is free to browse and use. Sign in to reveal, copy, and save prompts,
                       search, or copy prompts. Sign up is optional - it only saves your favorites and lets you
                       download purchased templates.
                     </p>
@@ -595,7 +595,7 @@ export default async function Home() {
             </Reveal>
             <div className="grid gap-3">
               {[
-                ['Are mtverse AI prompts free?', 'Yes. Public prompts are free to browse, copy, and adapt. You do not need an account to use the prompt library.'],
+                ['Are mtverse AI prompts free?', 'Yes. Public prompts are free to browse and adapt. Sign in when you want to reveal, copy, and save the exact prompt text.'],
                 ['What templates can I download?', 'mtverse includes free HTML website templates, a $5 all-HTML bundle unlock, and paid Next.js dashboard, SaaS, ecommerce, CRM, analytics, and admin templates with live previews.'],
                 ['Can I preview a template before purchase?', 'Yes. Each paid template has a live preview route and full screenshots so you can inspect the UI before checkout.'],
                 ['What helps mtverse rank in Google?', 'Useful page content, accurate metadata, internal links, fast pages, clean schema, a sitemap, and trustworthy policy pages help more than long keyword stuffing lists.'],

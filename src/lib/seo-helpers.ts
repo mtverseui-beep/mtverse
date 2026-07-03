@@ -232,7 +232,7 @@ export const GLOBAL_FAQ = [
   {
     question: 'Are mtverse AI prompts free?',
     answer:
-      'Yes. Public prompts on mtverse are free to browse, copy, and adapt for your own workflows. No signup required.',
+      'Yes. Public prompts on mtverse are free to browse and adapt for your own workflows. Sign in to reveal, copy, and save prompt text.',
   },
   {
     question: 'What types of AI prompts are available?',
@@ -252,7 +252,7 @@ export const GLOBAL_FAQ = [
   {
     question: 'Do I need an account to use mtverse?',
     answer:
-      'No. All public prompts are accessible without an account. Premium Next.js dashboard kit downloads require a one-time purchase.',
+      'You can browse public prompt pages without an account. Revealing, copying, and saving prompt text requires sign-in; premium Next.js dashboard kit downloads require a one-time purchase.',
   },
 ]
 

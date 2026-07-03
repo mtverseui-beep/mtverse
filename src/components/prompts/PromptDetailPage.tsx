@@ -4,11 +4,13 @@ import type { CSSProperties } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight, Bot, CheckCircle2, ListChecks, Sparkles } from 'lucide-react'
-import CopyPromptButton from '@/components/prompts/CopyPromptButton'
+import PromptActions from '@/components/prompts/PromptActions'
 import PromptPreviewImage from '@/components/prompts/PromptPreviewImage'
 import type { PromptEntry } from '@/lib/prompt-library-data'
 
 const motionTransition = { duration: 0.42, ease: 'easeOut' } as const
+
+type PromptClientEntry = Omit<PromptEntry, 'prompt'>
 
 function getPreviewAspectStyle(prompt: Pick<PromptEntry, 'previewWidth' | 'previewHeight'>, fallback = '4 / 5') {
   const width = prompt.previewWidth
@@ -27,7 +29,7 @@ function getPreviewAspectStyle(prompt: Pick<PromptEntry, 'previewWidth' | 'previ
   } satisfies CSSProperties
 }
 
-function RelatedPromptCard({ prompt }: { prompt: PromptEntry }) {
+function RelatedPromptCard({ prompt }: { prompt: PromptClientEntry }) {
   return (
     <Link
       href={`/prompts/${prompt.slug}`}
@@ -64,8 +66,8 @@ export default function PromptDetailPage({
   prompt,
   relatedPrompts,
 }: {
-  prompt: PromptEntry
-  relatedPrompts: PromptEntry[]
+  prompt: PromptClientEntry
+  relatedPrompts: PromptClientEntry[]
 }) {
   const keywords = Array.from(new Set(prompt.tags)).slice(0, 10)
   const bestFor = prompt.bestFor.slice(0, 5)
@@ -144,19 +146,7 @@ export default function PromptDetailPage({
               ))}
             </div>
 
-            <div className="mt-5 overflow-hidden rounded-md border border-slate-900 bg-slate-950 text-white shadow-lg shadow-slate-950/10 dark:border-slate-800 dark:bg-black">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-3 py-2.5 sm:px-4 sm:py-3">
-                <h2 className="text-[11px] font-black uppercase tracking-[0.16em] text-slate-300 sm:text-xs sm:tracking-[0.18em]">Prompt</h2>
-                <CopyPromptButton
-                  prompt={prompt.prompt}
-                  eventProperties={{ slug: prompt.slug, source: 'detail_prompt_panel' }}
-                  className="rounded-md border-white bg-white px-3 py-1.5 text-xs font-black text-slate-950 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                />
-              </div>
-              <pre className="modern-scrollbar max-h-[260px] overflow-auto px-3 py-3 pr-2 text-[12px] leading-6 text-slate-100 sm:max-h-[380px] sm:px-4 sm:py-4 sm:pr-3 sm:text-sm sm:leading-7">
-                <code className="whitespace-pre-wrap break-words">{prompt.prompt}</code>
-              </pre>
-            </div>
+            <PromptActions slug={prompt.slug} title={prompt.title} summary={prompt.summary} />
           </motion.article>
         </motion.section>
 

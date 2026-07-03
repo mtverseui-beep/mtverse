@@ -800,7 +800,7 @@ export default function PromptHubPage({
             {[
               ['Trending prompts', 'Discover ranked visual prompts based on source engagement and creator demand.'],
               ['Image generation', 'Explore prompts for portraits, products, posters, architecture, food, and social visuals.'],
-              ['Free prompt library', 'Browse, filter, and copy prompt ideas without sign-in or account friction.'],
+              ['Free prompt library', 'Browse prompt ideas freely, then sign in to reveal, copy, and save the exact prompt.'],
             ].map(([title, copy]) => (
               <div key={title} className="rounded-lg border border-border bg-card p-4">
                 <h3 className="text-sm font-bold text-foreground">{title}</h3>

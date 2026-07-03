@@ -155,7 +155,7 @@ export const PROMPT_COLLECTIONS: PromptCollection[] = [
       },
       {
         question: 'Do I need a paid account to copy them?',
-        answer: 'No. The prompts on mtverse are free to copy.',
+        answer: 'No. The prompts on mtverse are free to use; sign in to reveal, copy, and save the exact prompt text.',
       },
     ],
   },
@@ -209,7 +209,7 @@ export const PROMPT_COLLECTIONS: PromptCollection[] = [
       },
       {
         question: 'Can I copy these for reels or shorts?',
-        answer: 'Yes. They are free to copy and can be adapted for social media formats.',
+        answer: 'Yes. They are free to use and can be adapted for social media formats after you sign in to copy the prompt text.',
       },
     ],
   },
