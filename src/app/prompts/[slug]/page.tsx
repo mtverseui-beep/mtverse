@@ -175,7 +175,12 @@ export async function generateMetadata({ params }: PromptSlugPageProps): Promise
 
   if (!prompt) {
     return {
-      title: 'mtverse',
+      title: 'Prompt not found | mtverse',
+      robots: {
+        index: false,
+        follow: false,
+        googleBot: { index: false, follow: false },
+      },
     }
   }
 
