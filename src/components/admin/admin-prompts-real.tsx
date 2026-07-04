@@ -72,7 +72,7 @@ function createBlankPrompt(categories: PromptCategory[], models: PromptModelId[]
     visualStyle: '',
     previewImage: '',
     previewAlt: '',
-    featured: true,
+    featured: false,
     prompt: '',
     variables: [],
     bestFor: [],
@@ -84,11 +84,34 @@ function createBlankPrompt(categories: PromptCategory[], models: PromptModelId[]
   }
 }
 
+function isUnsavedPromptId(id: string) {
+  return id.startsWith('prompt-draft-') || id.startsWith('prompt-duplicate-')
+}
+
+function getPromptSaveValidationError(prompt: PromptEntry) {
+  const title = prompt.title.trim()
+  const slug = slugify(prompt.slug || title)
+  const promptBody = prompt.prompt.replace(/\s+/g, ' ').trim()
+  const previewImage = prompt.previewImage.trim()
+
+  if (!title) return 'Add a title before saving this prompt.'
+  if (!slug) return 'Add a valid slug before saving this prompt.'
+  if (!promptBody) return 'Add the main prompt text before saving.'
+  if (promptBody.length < 20) return 'Main prompt is too short. Add the complete reusable prompt before saving.'
+  if (!previewImage) return 'Upload a Cloudflare R2 preview image before saving.'
+  if (!previewImage.startsWith('https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/')) {
+    return 'Preview image must be uploaded to Cloudflare R2 before saving.'
+  }
+  if (!prompt.models.length) return 'Choose at least one AI model before saving.'
+
+  return ''
+}
+
 function normalizeForSave(prompt: PromptEntry, categories: PromptCategory[]) {
   const category = categories.find(entry => entry.id === prompt.category)
   const title = prompt.title.trim()
   const slug = slugify(prompt.slug || title)
-  const id = !prompt.id || prompt.id.startsWith('prompt-draft-') ? `prompt-${slug}` : prompt.id
+  const id = !prompt.id || isUnsavedPromptId(prompt.id) ? `prompt-${slug}` : prompt.id
 
   return {
     ...prompt,
@@ -150,6 +173,7 @@ export default function AdminPromptsClient({
   models: PromptModelId[]
 }) {
   const [promptsState, setPromptsState] = useState(prompts)
+  const [draftPrompt, setDraftPrompt] = useState<PromptEntry | null>(null)
   const [selectedId, setSelectedId] = useState(prompts[0]?.id || '')
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState<'all' | PromptCategoryId>('all')
@@ -167,10 +191,11 @@ export default function AdminPromptsClient({
   const [deleteOpen, setDeleteOpen] = useState(false)
   const deferredSearch = useDeferredValue(search)
 
-  const selectedPrompt = useMemo(
-    () => promptsState.find(prompt => prompt.id === selectedId) || null,
-    [promptsState, selectedId]
-  )
+  const selectedPrompt = useMemo(() => {
+    if (draftPrompt?.id === selectedId) return draftPrompt
+    return promptsState.find(prompt => prompt.id === selectedId) || null
+  }, [draftPrompt, promptsState, selectedId])
+  const selectedPromptIsDraft = Boolean(selectedPrompt && draftPrompt?.id === selectedPrompt.id)
 
   const filteredPrompts = useMemo(() => {
     const normalizedSearch = deferredSearch.trim().toLowerCase()
@@ -263,6 +288,12 @@ export default function AdminPromptsClient({
     if (!selectedPrompt) return
     const nextPrompt = { ...selectedPrompt, ...patch }
     setJsonEditorTouched(false)
+
+    if (draftPrompt?.id === selectedPrompt.id) {
+      setDraftPrompt(nextPrompt)
+      return
+    }
+
     setPromptsState(previous => previous.map(prompt => (prompt.id === selectedPrompt.id ? nextPrompt : prompt)))
   }
 
@@ -272,7 +303,13 @@ export default function AdminPromptsClient({
       const response = await fetch('/api/admin/prompts', { cache: 'no-store' })
       const result = await parseResponse(response)
       if (!response.ok) throw new Error(result.error || 'Failed to refresh prompts.')
-      if (result.prompts) setPromptsState(result.prompts)
+      if (result.prompts) {
+        setPromptsState(result.prompts)
+        if (draftPrompt) {
+          setDraftPrompt(null)
+          setSelectedId(result.prompts[0]?.id || '')
+        }
+      }
       setFeedback({ tone: 'info', title: 'Prompt library refreshed', message: 'The latest local prompt data is loaded.' })
     } catch (error) {
       setFeedback({ tone: 'error', title: 'Refresh failed', message: error instanceof Error ? error.message : 'Failed to refresh prompts.' })
@@ -283,14 +320,14 @@ export default function AdminPromptsClient({
 
   function createPromptDraft() {
     const nextPrompt = createBlankPrompt(categories, models)
-    setPromptsState(previous => [nextPrompt, ...previous])
+    setDraftPrompt(nextPrompt)
     setSelectedId(nextPrompt.id)
     setPinnedPromptId(nextPrompt.id)
     setSearch('')
     setCategoryFilter('all')
     setCurrentPage(1)
     setSeoInsights([])
-    setFeedback({ tone: 'info', title: 'New draft ready', message: 'Fill the core fields or paste full JSON in the advanced editor.' })
+    setFeedback({ tone: 'info', title: 'New draft ready', message: 'This draft is not saved yet. Add title, main prompt, and R2 preview image, then click Save.' })
   }
 
   function duplicateSelectedPrompt() {
@@ -306,13 +343,13 @@ export default function AdminPromptsClient({
       updatedAt: new Date().toISOString().slice(0, 10),
     }
 
-    setPromptsState(previous => [duplicated, ...previous])
+    setDraftPrompt(duplicated)
     setSelectedId(duplicated.id)
     setPinnedPromptId(duplicated.id)
     setSearch('')
     setCategoryFilter('all')
     setCurrentPage(1)
-    setFeedback({ tone: 'info', title: 'Prompt duplicated', message: 'Edit the copy and save to create a new prompt.' })
+    setFeedback({ tone: 'info', title: 'Prompt duplicated as draft', message: 'Edit the copy and save to publish it as a new prompt.' })
   }
 
   function exportPrompts() {
@@ -328,15 +365,11 @@ export default function AdminPromptsClient({
       try {
         const parsed = jsonEditorTouched ? (JSON.parse(jsonEditor) as PromptEntry) : selectedPrompt
         const normalized = normalizeForSave(parsed, categories)
-        if (!normalized.title || !normalized.prompt) {
-          throw new Error('Title and main prompt are required before saving.')
-        }
-        if (!normalized.slug) {
-          throw new Error('Add a title or slug before saving.')
-        }
+        const validationError = getPromptSaveValidationError(normalized)
+        if (validationError) throw new Error(validationError)
+
         const isNewPrompt =
-          selectedPrompt.id.startsWith('prompt-draft-') ||
-          selectedPrompt.id.startsWith('prompt-duplicate-') ||
+          isUnsavedPromptId(selectedPrompt.id) ||
           !promptsState.some(prompt => prompt.id === normalized.id || prompt.slug === normalized.slug)
 
         const response = await fetch('/api/admin/prompts', {
@@ -351,6 +384,7 @@ export default function AdminPromptsClient({
           const source = result.prompts?.length ? result.prompts : previous
           return upsertPrompt(source, savedPrompt, { pinToTop: isNewPrompt })
         })
+        if (draftPrompt?.id === selectedPrompt.id) setDraftPrompt(null)
         setSelectedId(savedPrompt.id)
         setPinnedPromptId(savedPrompt.id)
         setCurrentPage(1)
@@ -375,6 +409,15 @@ export default function AdminPromptsClient({
 
   function performDeleteSelectedPrompt() {
     if (!selectedPrompt) return
+
+    if (selectedPromptIsDraft) {
+      setDraftPrompt(null)
+      setSelectedId(promptsState[0]?.id || '')
+      setDeleteOpen(false)
+      setJsonEditorTouched(false)
+      setFeedback({ tone: 'info', title: 'Draft discarded', message: 'The unsaved prompt draft was removed. No live prompt data changed.' })
+      return
+    }
 
     startTransition(async () => {
       setBusyAction('delete')
@@ -520,6 +563,7 @@ export default function AdminPromptsClient({
         const source = saveResult.prompts?.length ? saveResult.prompts : previous
         return upsertPrompt(source, savedPrompt)
       })
+      if (draftPrompt?.id === selectedPrompt.id) setDraftPrompt(null)
       setSelectedId(savedPrompt.id)
       setPinnedPromptId(savedPrompt.id)
       setJsonEditor(JSON.stringify(savedPrompt, null, 2))
@@ -557,7 +601,11 @@ export default function AdminPromptsClient({
         if (!response.ok) throw new Error(result.error || 'Failed to generate SEO fields.')
         if (!result.prompt) throw new Error('SEO generator did not return a prompt draft.')
 
-        setPromptsState(previous => previous.map(prompt => (prompt.id === selectedPrompt.id ? result.prompt! : prompt)))
+        if (draftPrompt?.id === selectedPrompt.id) {
+          setDraftPrompt(result.prompt)
+        } else {
+          setPromptsState(previous => previous.map(prompt => (prompt.id === selectedPrompt.id ? result.prompt! : prompt)))
+        }
         setSelectedId(result.prompt.id)
         setJsonEditor(JSON.stringify(result.prompt, null, 2))
         setJsonEditorTouched(false)
@@ -596,7 +644,7 @@ export default function AdminPromptsClient({
             <button type="button" onClick={duplicateSelectedPrompt} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800" disabled={!selectedPrompt}><Copy className="h-4 w-4" />Duplicate</button>
             <button type="button" onClick={generateSeoDraft} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800" disabled={!selectedPrompt || isPending || busyAction === 'auto-seo'}><Sparkles className={cn('h-4 w-4', busyAction === 'auto-seo' && 'animate-pulse')} />{busyAction === 'auto-seo' ? 'Generating...' : 'Auto SEO'}</button>
             <button type="button" onClick={saveCurrentPrompt} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-zinc-900 px-4 text-sm font-semibold text-white transition hover:bg-zinc-800 active:scale-[0.98] disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200" disabled={!selectedPrompt || isPending || busyAction === 'save'}><Save className="h-4 w-4" />Save</button>
-            <button type="button" onClick={requestDeleteSelectedPrompt} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-rose-200 bg-rose-50 px-4 text-sm font-semibold text-rose-700 transition hover:bg-rose-100 active:scale-[0.98] disabled:opacity-50 dark:border-rose-900/50 dark:bg-rose-950/20 dark:text-rose-200 dark:hover:bg-rose-950/35" disabled={!selectedPrompt || isPending || busyAction === 'delete'}><Trash2 className="h-4 w-4" />Delete</button>
+            <button type="button" onClick={requestDeleteSelectedPrompt} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-rose-200 bg-rose-50 px-4 text-sm font-semibold text-rose-700 transition hover:bg-rose-100 active:scale-[0.98] disabled:opacity-50 dark:border-rose-900/50 dark:bg-rose-950/20 dark:text-rose-200 dark:hover:bg-rose-950/35" disabled={!selectedPrompt || isPending || busyAction === 'delete'}><Trash2 className="h-4 w-4" />{selectedPromptIsDraft ? 'Discard draft' : 'Delete'}</button>
             <button type="button" onClick={refreshPrompts} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800" disabled={busyAction === 'refresh'}><RefreshCw className={cn('h-4 w-4', busyAction === 'refresh' && 'animate-spin')} />Refresh</button>
             <button type="button" onClick={exportPrompts} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98] dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"><Download className="h-4 w-4" />Export</button>
           </div>
@@ -737,6 +785,12 @@ export default function AdminPromptsClient({
         <section className="order-1 lg:order-2 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-5">
           {selectedPrompt ? (
             <div className="space-y-5">
+              {selectedPromptIsDraft ? (
+                <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950 dark:border-amber-900/50 dark:bg-amber-950/20 dark:text-amber-100">
+                  <p className="font-bold">Unsaved draft</p>
+                  <p className="mt-1 leading-6">This prompt is only in the editor. It will not appear in the library, export, sitemap, or public pages until validation passes and you click Save.</p>
+                </div>
+              ) : null}
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <h2 className="text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">{selectedPrompt.title || 'Untitled prompt'}</h2>
@@ -752,7 +806,7 @@ export default function AdminPromptsClient({
                     <Sparkles className={cn('h-4 w-4', busyAction === 'auto-seo' && 'animate-pulse')} />
                     {busyAction === 'auto-seo' ? 'Generating...' : 'Auto SEO'}
                   </button>
-                  {selectedPrompt.slug ? (
+                  {selectedPrompt.slug && !selectedPromptIsDraft ? (
                     <Link href={`/prompts/${selectedPrompt.slug}`} target="_blank" className="inline-flex items-center rounded-lg border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 gap-2 px-4 py-2 text-sm"><Eye className="h-4 w-4" />Open Live Page</Link>
                   ) : null}
                   <button
@@ -762,7 +816,7 @@ export default function AdminPromptsClient({
                     className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 text-sm font-bold text-rose-700 transition hover:bg-rose-100 active:scale-[0.98] disabled:opacity-50 dark:border-rose-900/50 dark:bg-rose-950/20 dark:text-rose-200 dark:hover:bg-rose-950/35"
                   >
                     <Trash2 className="h-4 w-4" />
-                    {busyAction === 'delete' ? 'Deleting...' : 'Delete'}
+                    {selectedPromptIsDraft ? 'Discard draft' : busyAction === 'delete' ? 'Deleting...' : 'Delete'}
                   </button>
                 </div>
               </div>
@@ -925,19 +979,19 @@ export default function AdminPromptsClient({
       <ConfirmDialog
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-        title="Delete this prompt?"
+        title={selectedPromptIsDraft ? "Discard this draft?" : "Delete this prompt?"}
         description={
           selectedPrompt ? (
             <>
               You are about to permanently delete{' '}
               <strong className="text-foreground">
-                {selectedPrompt.title || selectedPrompt.slug || 'this prompt'}
+                {selectedPromptIsDraft ? 'this unsaved draft' : selectedPrompt.title || selectedPrompt.slug || 'this prompt'}
               </strong>
-              . This removes it from Explore and its public detail page. This action cannot be undone.
+              . {selectedPromptIsDraft ? 'This only discards the local draft.' : 'This removes it from Explore and its public detail page. This action cannot be undone.'}
             </>
           ) : null
         }
-        confirmLabel="Yes, delete"
+        confirmLabel={selectedPromptIsDraft ? 'Discard draft' : 'Yes, delete'}
         cancelLabel="Cancel"
         tone="danger"
         loading={busyAction === 'delete'}

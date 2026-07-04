@@ -106,6 +106,27 @@ function normalizePromptBody(value: string) {
   return value.toLowerCase().replace(/\s+/g, ' ').trim()
 }
 
+export function validatePromptEntryInput(prompt: PromptEntry) {
+  const title = asString(prompt?.title).trim()
+  const rawSlug = asString(prompt?.slug).trim()
+  const slug = slugify(rawSlug || title)
+  const promptBody = normalizePromptBody(asString(prompt?.prompt))
+  const models = Array.isArray(prompt?.models) ? prompt.models.filter(Boolean) : []
+  const category = asString(prompt?.category)
+
+  if (!title) return 'Prompt title is required before saving.'
+  if (!slug) return 'Prompt slug is required before saving.'
+  if (!promptBody) return 'Main prompt text is required before saving.'
+  if (promptBody.length < 20) return 'Main prompt text is too short to publish.'
+  if (!PROMPT_CATEGORIES.some(entry => entry.id === category)) return 'Choose a valid prompt category before saving.'
+  if (models.length === 0) return 'Choose at least one AI model before saving.'
+  if (!isCloudflarePromptImageUrl(asString(prompt?.previewImage))) {
+    return 'Prompt preview image must be uploaded to Cloudflare R2 before saving.'
+  }
+
+  return ''
+}
+
 function normalizePreviewImageUrl(value: string) {
   return value
 }
@@ -368,6 +389,8 @@ export async function getRelatedPrompts(slug: string, limit = 4) {
 
 export async function savePrompt(input: PromptEntry) {
   assertWritableLocalPromptStore()
+  const validationError = validatePromptEntryInput(input)
+  if (validationError) throw new Error(validationError)
   const prompt = normalizePromptEntry(input)
   await saveLocalPrompt(prompt)
   resetPromptCache()

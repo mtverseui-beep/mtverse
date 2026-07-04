@@ -1,7 +1,7 @@
 ﻿import { NextRequest, NextResponse } from 'next/server'
 import { authorizeAdminRequest } from '@/lib/admin-request-auth'
 import { guardAdminWriteRequest } from '@/lib/admin-api-guard'
-import { deletePrompt, getAdminPrompts, savePrompt, savePrompts } from '@/lib/prompt-db'
+import { deletePrompt, getAdminPrompts, savePrompt, savePrompts, validatePromptEntryInput } from '@/lib/prompt-db'
 import { parsePromptImportPayload, type PromptImportSummary } from '@/lib/prompt-import'
 import type { PromptEntry } from '@/lib/prompt-library-data'
 import { isCloudflarePromptImageUrl } from '@/lib/prompt-image-hosts'
@@ -154,12 +154,9 @@ export async function POST(request: NextRequest) {
       return jsonError('Missing prompt payload', 400, 'missing_prompt_payload')
     }
 
-    if (!isCloudflarePromptImageUrl(prompt.previewImage)) {
-      return jsonError(
-        'Prompt preview image must be a Cloudflare R2 URL.',
-        400,
-        'invalid_prompt_preview_host'
-      )
+    const validationError = validatePromptEntryInput(prompt)
+    if (validationError) {
+      return jsonError(validationError, 400, 'invalid_prompt_payload')
     }
 
     const savedPrompt = await savePrompt(prompt)
