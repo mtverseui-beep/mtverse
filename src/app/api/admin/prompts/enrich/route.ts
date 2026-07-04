@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { guardAdminWriteRequest } from '@/lib/admin-api-guard'
-import { buildPromptSeoAutofill, type PromptSeoAutofillInsight } from '@/lib/prompt-seo-autofill'
+import { type PromptSeoAutofillInsight } from '@/lib/prompt-seo-autofill'
+import { buildAdminPromptAutofill } from '@/lib/admin-prompt-ai-autofill'
 import { getAdminPrompts } from '@/lib/prompt-db'
 import { PROMPT_CATEGORIES, type PromptEntry } from '@/lib/prompt-library-data'
 
@@ -45,7 +46,7 @@ export async function POST(request: NextRequest) {
     }
 
     const existingPrompts = await getAdminPrompts()
-    const result = buildPromptSeoAutofill({
+    const result = await buildAdminPromptAutofill({
       prompt: body.prompt,
       categories: PROMPT_CATEGORIES,
       existingPrompts,
@@ -53,7 +54,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'SEO fields generated for review. Save the prompt to publish these changes.',
+      message: result.provider === 'local'
+        ? 'Fields generated with local rules. Add GEMINI_API_KEY or OPENROUTER_API_KEY for AI image-aware autofill.'
+        : `AI fields generated with ${result.provider}. Review, then Save to publish.`,
       prompt: result.prompt,
       insights: result.insights,
     } satisfies AdminPromptEnrichResponse)

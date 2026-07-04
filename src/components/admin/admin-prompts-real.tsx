@@ -628,7 +628,7 @@ export default function AdminPromptsClient({
   }
 
   return (
-    <div className="space-y-5" data-admin-shell="true">
+    <div className="w-full min-w-0 space-y-5 overflow-x-hidden" data-admin-shell="true">
       <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           <div className="min-w-0">
             <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl">
@@ -639,10 +639,10 @@ export default function AdminPromptsClient({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-end">
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-end [&>button]:w-full sm:[&>button]:w-auto">
             <button type="button" onClick={createPromptDraft} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-zinc-900 px-4 text-sm font-semibold text-white transition hover:bg-zinc-800 active:scale-[0.98] dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"><Plus className="h-4 w-4" />New</button>
             <button type="button" onClick={duplicateSelectedPrompt} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800" disabled={!selectedPrompt}><Copy className="h-4 w-4" />Duplicate</button>
-            <button type="button" onClick={generateSeoDraft} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800" disabled={!selectedPrompt || isPending || busyAction === 'auto-seo'}><Sparkles className={cn('h-4 w-4', busyAction === 'auto-seo' && 'animate-pulse')} />{busyAction === 'auto-seo' ? 'Generating...' : 'Auto SEO'}</button>
+            <button type="button" onClick={generateSeoDraft} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800" disabled={!selectedPrompt || isPending || busyAction === 'auto-seo'}><Sparkles className={cn('h-4 w-4', busyAction === 'auto-seo' && 'animate-pulse')} />{busyAction === 'auto-seo' ? 'Filling...' : 'AI Fill'}</button>
             <button type="button" onClick={saveCurrentPrompt} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-zinc-900 px-4 text-sm font-semibold text-white transition hover:bg-zinc-800 active:scale-[0.98] disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200" disabled={!selectedPrompt || isPending || busyAction === 'save'}><Save className="h-4 w-4" />Save</button>
             <button type="button" onClick={requestDeleteSelectedPrompt} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-rose-200 bg-rose-50 px-4 text-sm font-semibold text-rose-700 transition hover:bg-rose-100 active:scale-[0.98] disabled:opacity-50 dark:border-rose-900/50 dark:bg-rose-950/20 dark:text-rose-200 dark:hover:bg-rose-950/35" disabled={!selectedPrompt || isPending || busyAction === 'delete'}><Trash2 className="h-4 w-4" />{selectedPromptIsDraft ? 'Discard draft' : 'Delete'}</button>
             <button type="button" onClick={refreshPrompts} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800" disabled={busyAction === 'refresh'}><RefreshCw className={cn('h-4 w-4', busyAction === 'refresh' && 'animate-spin')} />Refresh</button>
@@ -714,8 +714,8 @@ export default function AdminPromptsClient({
         </div>
       </section>
 
-      <div className="grid gap-5 lg:grid-cols-[360px_minmax(0,1fr)]">
-        <aside className="order-2 lg:order-1 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 lg:sticky lg:top-24 lg:max-h-[calc(100dvh-7rem)] lg:overflow-hidden">
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(300px,360px)_minmax(0,1fr)]">
+        <aside className="order-2 min-w-0 lg:order-1 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 lg:sticky lg:top-24 lg:max-h-[calc(100dvh-7rem)] lg:overflow-hidden">
           <div className="space-y-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
@@ -782,7 +782,7 @@ export default function AdminPromptsClient({
           ) : null}
         </aside>
 
-        <section className="order-1 lg:order-2 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-5">
+        <section className="order-1 min-w-0 overflow-hidden lg:order-2 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-5">
           {selectedPrompt ? (
             <div className="space-y-5">
               {selectedPromptIsDraft ? (
@@ -793,7 +793,7 @@ export default function AdminPromptsClient({
               ) : null}
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                  <h2 className="text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-50">{selectedPrompt.title || 'Untitled prompt'}</h2>
+                  <h2 className="break-words text-xl font-black tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-2xl">{selectedPrompt.title || 'Untitled prompt'}</h2>
                   <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{selectedPrompt.slug || 'Slug will be generated from the title.'}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -804,7 +804,7 @@ export default function AdminPromptsClient({
                     className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 text-sm font-semibold text-white transition hover:bg-zinc-800 active:scale-[0.98] disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
                   >
                     <Sparkles className={cn('h-4 w-4', busyAction === 'auto-seo' && 'animate-pulse')} />
-                    {busyAction === 'auto-seo' ? 'Generating...' : 'Auto SEO'}
+                    {busyAction === 'auto-seo' ? 'Filling...' : 'AI Fill'}
                   </button>
                   {selectedPrompt.slug && !selectedPromptIsDraft ? (
                     <Link href={`/prompts/${selectedPrompt.slug}`} target="_blank" className="inline-flex items-center rounded-lg border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 gap-2 px-4 py-2 text-sm"><Eye className="h-4 w-4" />Open Live Page</Link>
@@ -829,9 +829,9 @@ export default function AdminPromptsClient({
                         <Sparkles className="h-4 w-4" />
                       </span>
                       <div>
-                        <h3 className="text-sm font-black text-zinc-900 dark:text-zinc-50">Free SEO AutoFill</h3>
+                        <h3 className="text-sm font-black text-zinc-900 dark:text-zinc-50">AI Field Autofill</h3>
                         <p className="mt-0.5 text-xs leading-5 text-zinc-500 dark:text-zinc-400">
-                          Uses local rules only. No paid API, no public runtime cost. Review before saving.
+                          Uses Gemini/OpenRouter when configured, with local rules as a free fallback. Review before saving.
                         </p>
                       </div>
                     </div>
@@ -843,12 +843,12 @@ export default function AdminPromptsClient({
                     className="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-100 active:scale-[0.98] disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-900"
                   >
                     <Sparkles className={cn('h-4 w-4', busyAction === 'auto-seo' && 'animate-pulse')} />
-                    {busyAction === 'auto-seo' ? 'Building fields...' : 'Generate fields'}
+                    {busyAction === 'auto-seo' ? 'Filling fields...' : 'Fill fields'}
                   </button>
                 </div>
                 <div className="grid gap-px bg-zinc-200 dark:bg-zinc-800 sm:grid-cols-2 lg:grid-cols-4">
                   {(seoInsights.length ? seoInsights : [
-                    { label: 'Cost', value: 'Free local rules' },
+                    { label: 'Mode', value: 'AI or local fallback' },
                     { label: 'Input', value: 'Image + prompt ready' },
                     { label: 'Output', value: 'SEO JSON fields' },
                     { label: 'Publish', value: 'Click Save' },
@@ -861,7 +861,7 @@ export default function AdminPromptsClient({
                 </div>
               </div>
 
-              <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="space-y-2 text-sm"><span className="font-bold text-zinc-900 dark:text-zinc-50">Title</span><input value={selectedPrompt.title} onChange={event => updateSelectedPrompt({ title: event.target.value, slug: selectedPrompt.slug ? selectedPrompt.slug : slugify(event.target.value) })} className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 outline-none transition focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900 dark:focus:bg-zinc-900" /></label>
                   <label className="space-y-2 text-sm"><span className="font-bold text-zinc-900 dark:text-zinc-50">Slug</span><input value={selectedPrompt.slug} onChange={event => updateSelectedPrompt({ slug: slugify(event.target.value) })} className="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 outline-none transition focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900 dark:focus:bg-zinc-900" /></label>
@@ -961,12 +961,12 @@ export default function AdminPromptsClient({
 
               <label className="space-y-2 text-sm">
                 <span className="font-bold text-zinc-900 dark:text-zinc-50">Main prompt</span>
-                <textarea value={selectedPrompt.prompt} onChange={event => updateSelectedPrompt({ prompt: event.target.value })} className="h-72 w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 font-mono text-sm leading-7 outline-none transition focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900 dark:focus:bg-zinc-900" />
+                <textarea value={selectedPrompt.prompt} onChange={event => updateSelectedPrompt({ prompt: event.target.value })} className="h-60 w-full max-w-full rounded-2xl sm:h-72 border border-zinc-200 bg-zinc-50 px-4 py-3 font-mono text-sm leading-7 outline-none transition focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900 dark:focus:bg-zinc-900" />
               </label>
 
               <label className="space-y-2 text-sm">
                 <span className="font-bold text-zinc-900 dark:text-zinc-50">Advanced JSON editor</span>
-                <textarea value={jsonEditor} onChange={event => { setJsonEditorTouched(true); setJsonEditor(event.target.value) }} className="h-[28rem] w-full rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 font-mono text-xs leading-6 outline-none transition focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900 dark:focus:bg-zinc-900" />
+                <textarea value={jsonEditor} onChange={event => { setJsonEditorTouched(true); setJsonEditor(event.target.value) }} className="h-[22rem] w-full max-w-full rounded-2xl sm:h-[28rem] border border-zinc-200 bg-zinc-50 px-4 py-3 font-mono text-xs leading-6 outline-none transition focus:border-zinc-400 focus:bg-white focus:ring-4 focus:ring-zinc-900/5 dark:border-zinc-800 dark:bg-zinc-900 dark:focus:bg-zinc-900" />
               </label>
             </div>
           ) : (
