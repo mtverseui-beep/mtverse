@@ -1,7 +1,10 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@/lib/site-url";
+import { headers } from "next/headers";
+import { resolveSiteUrlFromRequestHeaders } from "@/lib/site-url";
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const siteUrl = resolveSiteUrlFromRequestHeaders(await headers());
+
   return {
     rules: [
       {
@@ -27,7 +30,7 @@ export default function robots(): MetadataRoute.Robots {
         crawlDelay: 1,
       },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
+    sitemap: `${siteUrl}/sitemap.xml`,
+    host: siteUrl,
   };
 }
