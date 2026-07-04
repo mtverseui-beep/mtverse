@@ -25,7 +25,7 @@ type Props = {
 
 function getCheckoutPackageId(template: Template) {
   if (template.isFree) return 'free-unlock' as const
-  if (template.slug === 'ooster') return 'ooster-pro' as const
+  if (['ooster', 'nova-rig-gaming-ecommerce-template', 'volthaus-streetwear-ecommerce-template'].includes(template.slug)) return 'ooster-pro' as const
   return template.pricingTier === 'pro' ? 'pro' as const : 'next' as const
 }
 

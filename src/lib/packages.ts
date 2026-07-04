@@ -32,8 +32,8 @@ export const PRODUCT_PACKAGES: Record<PackageId, ProductPackage> = {
   },
   'ooster-pro': {
     id: 'ooster-pro',
-    name: 'Ooster Pro Dashboard Template Package',
-    shortName: 'Ooster Pro',
+    name: 'Premium Pro Template Package',
+    shortName: 'Premium Pro',
     amountUsd: 52,
     currency: 'USD',
     accessPlan: 'pro',

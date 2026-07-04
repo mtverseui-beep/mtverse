@@ -1,6 +1,416 @@
 {
   "kits": [
     {
+      "id": "dashboard-kit-lumina-fragrance",
+      "slug": "lumina-fragrance",
+      "title": "Lumina Fragrance Premium Next.js Ecommerce Landing Template",
+      "shortTitle": "Lumina Fragrance",
+      "status": "available",
+      "category": "ecommerce",
+      "categoryTitle": "Ecommerce",
+      "subcategory": "Luxury Fragrance Storefront",
+      "summary": "Premium Next.js fragrance ecommerce landing template for perfume launches, beauty brands, product storytelling, and conversion-focused storefront pages.",
+      "description": "Lumina Fragrance is a polished ecommerce landing template for perfume, skincare, cosmetics, and luxury product brands. It combines editorial product storytelling, premium sections, smooth interactions, product presentation blocks, trust sections, responsive layouts, and a production-ready Next.js structure for launch pages and boutique storefronts.",
+      "seoTitle": "Lumina Fragrance Premium Next.js Ecommerce Landing Template",
+      "metaDescription": "Download Lumina Fragrance, a premium Next.js ecommerce landing template for perfume, beauty, luxury product launches, storefront sections, and responsive product storytelling.",
+      "priceUsd": 20,
+      "originalPriceUsd": 69,
+      "pricingTier": "pro",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js App Router",
+      "previewPath": "/dashboard-kits/lumina-fragrance",
+      "livePreviewUrl": "https://lumina-fragrance.vercel.app",
+      "packageFilename": "lumina-fragrance.zip",
+      "packageKey": "local:template-packages/lumina-fragrance/lumina-fragrance.zip",
+      "coverImage": "/template-previews/lumina-fragrance.png",
+      "screenshots": [
+        "/template-previews/lumina-fragrance.png"
+      ],
+      "tags": [
+        "fragrance ecommerce",
+        "perfume landing page",
+        "beauty storefront",
+        "luxury ecommerce",
+        "nextjs template",
+        "product landing page",
+        "premium template",
+        "responsive website"
+      ],
+      "keywords": [
+        "Next.js fragrance ecommerce template",
+        "perfume landing page template",
+        "beauty ecommerce website template",
+        "luxury product landing page",
+        "premium ecommerce landing template",
+        "cosmetics storefront template",
+        "responsive product launch template",
+        "Next.js App Router ecommerce"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "Framer Motion",
+        "shadcn/ui",
+        "Lucide React",
+        "Prisma-ready structure"
+      ],
+      "includedPages": [
+        "Home landing page",
+        "Product storytelling sections",
+        "Featured products",
+        "Benefits",
+        "Testimonials",
+        "FAQ",
+        "Newsletter",
+        "Footer",
+        "Responsive mobile layout"
+      ],
+      "features": [
+        "Premium fragrance and beauty product landing page",
+        "Luxury editorial layout for product storytelling",
+        "Conversion-focused CTA sections and trust blocks",
+        "Responsive Next.js App Router structure",
+        "Smooth motion-ready sections for launch pages",
+        "Reusable product, testimonial, FAQ, and newsletter blocks"
+      ],
+      "highlights": [
+        {
+          "label": "Tier",
+          "value": "Pro"
+        },
+        {
+          "label": "Focus",
+          "value": "Fragrance ecommerce"
+        },
+        {
+          "label": "Price",
+          "value": "$20"
+        },
+        {
+          "label": "Use",
+          "value": "Product launch"
+        }
+      ],
+      "useCases": [
+        "Perfume launch pages",
+        "Beauty ecommerce storefronts",
+        "Luxury product campaigns",
+        "Cosmetics brand websites",
+        "Boutique product landing pages"
+      ],
+      "updatedAt": "2026-07-04"
+    },
+    {
+      "id": "dashboard-kit-nova-rig-gaming-ecommerce-template",
+      "slug": "nova-rig-gaming-ecommerce-template",
+      "title": "Nova Rig Premium Gaming Ecommerce Template",
+      "shortTitle": "Nova Rig",
+      "status": "available",
+      "category": "ecommerce",
+      "categoryTitle": "Ecommerce",
+      "subcategory": "Gaming Storefront",
+      "summary": "Premium $52 Next.js gaming ecommerce template for PC builds, accessories, hardware drops, product showcases, and high-converting tech storefronts.",
+      "description": "Nova Rig is a premium gaming ecommerce template for PC hardware, gaming accessories, esports products, console gear, and tech retail brands. It includes a bold product-first storefront experience, high-energy landing sections, responsive ecommerce UI patterns, product showcase blocks, trust sections, and a production-ready Next.js structure for premium gaming stores.",
+      "seoTitle": "Nova Rig Premium Gaming Ecommerce Template",
+      "metaDescription": "Download Nova Rig, a $52 premium Next.js gaming ecommerce template for PC hardware stores, gaming accessories, product launches, and responsive storefront pages.",
+      "priceUsd": 52,
+      "originalPriceUsd": 129,
+      "pricingTier": "pro",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js App Router",
+      "previewPath": "/dashboard-kits/nova-rig-gaming-ecommerce-template",
+      "livePreviewUrl": "https://nova-rig-gaming-ecommerce-template.vercel.app",
+      "packageFilename": "nova-rig-gaming-ecommerce-template.zip",
+      "packageKey": "local:template-packages/nova-rig-gaming-ecommerce-template/nova-rig-gaming-ecommerce-template.zip",
+      "coverImage": "/template-previews/nova-rig-gaming-ecommerce-template.png",
+      "screenshots": [
+        "/template-previews/nova-rig-gaming-ecommerce-template.png"
+      ],
+      "tags": [
+        "gaming ecommerce",
+        "pc store template",
+        "gaming hardware",
+        "nextjs ecommerce",
+        "tech storefront",
+        "esports shop",
+        "premium pro template",
+        "product launch"
+      ],
+      "keywords": [
+        "Next.js gaming ecommerce template",
+        "PC hardware store template",
+        "gaming accessories website template",
+        "esports ecommerce template",
+        "tech product landing page",
+        "premium gaming storefront",
+        "responsive gaming shop template",
+        "Next.js App Router ecommerce"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "Framer Motion",
+        "Lenis",
+        "shadcn/ui",
+        "Lucide React"
+      ],
+      "includedPages": [
+        "Gaming storefront",
+        "Hero product launch",
+        "Product showcase",
+        "Feature sections",
+        "Trust blocks",
+        "FAQ",
+        "Newsletter",
+        "Footer",
+        "Responsive mobile layout"
+      ],
+      "features": [
+        "Premium gaming and hardware storefront UI",
+        "Bold product launch sections for PC rigs and accessories",
+        "Smooth scroll and motion-ready landing experience",
+        "Responsive ecommerce blocks for product marketing",
+        "Reusable feature, comparison, trust, FAQ, and CTA sections",
+        "Pro tier package with separate $52 checkout support"
+      ],
+      "highlights": [
+        {
+          "label": "Tier",
+          "value": "Pro"
+        },
+        {
+          "label": "Focus",
+          "value": "Gaming ecommerce"
+        },
+        {
+          "label": "Price",
+          "value": "$52"
+        },
+        {
+          "label": "Motion",
+          "value": "Smooth landing"
+        }
+      ],
+      "useCases": [
+        "Gaming PC stores",
+        "Tech product launches",
+        "Esports gear shops",
+        "Hardware ecommerce sites",
+        "Accessory storefronts"
+      ],
+      "updatedAt": "2026-07-04"
+    },
+    {
+      "id": "dashboard-kit-pagepulse",
+      "slug": "pagepulse",
+      "title": "PagePulse Premium SaaS Landing Template",
+      "shortTitle": "PagePulse",
+      "status": "available",
+      "category": "landing",
+      "categoryTitle": "Landing Pages",
+      "subcategory": "SaaS Performance Monitoring",
+      "summary": "Premium Next.js SaaS landing template for Core Web Vitals monitoring, frontend performance analytics, audits, reports, and developer tooling products.",
+      "description": "PagePulse is a premium SaaS landing template for frontend performance monitoring, Core Web Vitals platforms, website audit tools, analytics products, and developer-focused SaaS launches. It includes a clear product narrative, metrics-led sections, trust blocks, feature highlights, pricing-ready structure, FAQ, responsive layouts, and a production-ready Next.js foundation.",
+      "seoTitle": "PagePulse Premium SaaS Landing Template for Core Web Vitals Monitoring",
+      "metaDescription": "Download PagePulse, a premium Next.js SaaS landing template for Core Web Vitals monitoring, performance analytics, website audits, reports, and developer tools.",
+      "priceUsd": 20,
+      "originalPriceUsd": 69,
+      "pricingTier": "pro",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js App Router",
+      "previewPath": "/dashboard-kits/pagepulse",
+      "livePreviewUrl": "https://pagepulse.vercel.app",
+      "packageFilename": "pagepulse.zip",
+      "packageKey": "local:template-packages/pagepulse/pagepulse.zip",
+      "coverImage": "/template-previews/pagepulse.png",
+      "screenshots": [
+        "/template-previews/pagepulse.png"
+      ],
+      "tags": [
+        "saas landing page",
+        "performance monitoring",
+        "core web vitals",
+        "frontend analytics",
+        "developer tools",
+        "nextjs template",
+        "landing template",
+        "premium template"
+      ],
+      "keywords": [
+        "Next.js SaaS landing template",
+        "Core Web Vitals landing page",
+        "performance monitoring website template",
+        "frontend analytics SaaS template",
+        "developer tools landing page",
+        "website audit tool template",
+        "premium SaaS landing page",
+        "responsive Next.js landing template"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "Framer Motion",
+        "shadcn/ui",
+        "Lucide React",
+        "Prisma-ready structure"
+      ],
+      "includedPages": [
+        "SaaS landing page",
+        "Hero",
+        "Metrics section",
+        "Feature sections",
+        "How it works",
+        "Trust blocks",
+        "Pricing-ready CTA",
+        "FAQ",
+        "Footer",
+        "Responsive mobile layout"
+      ],
+      "features": [
+        "Premium SaaS landing page for performance monitoring tools",
+        "Core Web Vitals and analytics-focused messaging sections",
+        "Reusable metrics, feature, workflow, testimonial, FAQ, and CTA blocks",
+        "Responsive Next.js App Router structure",
+        "Developer-tool product positioning with polished visuals",
+        "Conversion-ready sections for paid SaaS launches"
+      ],
+      "highlights": [
+        {
+          "label": "Tier",
+          "value": "Pro"
+        },
+        {
+          "label": "Focus",
+          "value": "SaaS landing"
+        },
+        {
+          "label": "Price",
+          "value": "$20"
+        },
+        {
+          "label": "Use",
+          "value": "Performance tools"
+        }
+      ],
+      "useCases": [
+        "Core Web Vitals products",
+        "Performance monitoring SaaS",
+        "Website audit tools",
+        "Frontend analytics platforms",
+        "Developer tools landing pages"
+      ],
+      "updatedAt": "2026-07-04"
+    },
+    {
+      "id": "dashboard-kit-volthaus-streetwear-ecommerce-template",
+      "slug": "volthaus-streetwear-ecommerce-template",
+      "title": "VoltHaus Premium Streetwear Ecommerce Template",
+      "shortTitle": "VoltHaus",
+      "status": "available",
+      "category": "ecommerce",
+      "categoryTitle": "Ecommerce",
+      "subcategory": "Streetwear Storefront",
+      "summary": "Premium $52 Next.js streetwear ecommerce template for fashion drops, apparel brands, lookbooks, product launches, and modern retail storefronts.",
+      "description": "VoltHaus is a premium streetwear ecommerce template for fashion brands, apparel drops, sneaker collections, lookbooks, and lifestyle retail launches. It delivers a high-impact storefront experience with bold visuals, product-focused sections, smooth interactions, trust blocks, responsive layouts, and a production-ready Next.js structure for premium fashion ecommerce.",
+      "seoTitle": "VoltHaus Premium Streetwear Ecommerce Template",
+      "metaDescription": "Download VoltHaus, a $52 premium Next.js streetwear ecommerce template for fashion drops, apparel stores, lookbooks, product launches, and responsive storefronts.",
+      "priceUsd": 52,
+      "originalPriceUsd": 129,
+      "pricingTier": "pro",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js App Router",
+      "previewPath": "/dashboard-kits/volthaus-streetwear-ecommerce-template",
+      "livePreviewUrl": "https://volthaus-streetwear-ecommerce-template.vercel.app",
+      "packageFilename": "volthaus-streetwear-ecommerce-template.zip",
+      "packageKey": "local:template-packages/volthaus-streetwear-ecommerce-template/volthaus-streetwear-ecommerce-template.zip",
+      "coverImage": "/template-previews/volthaus-streetwear-ecommerce-template.png",
+      "screenshots": [
+        "/template-previews/volthaus-streetwear-ecommerce-template.png"
+      ],
+      "tags": [
+        "streetwear ecommerce",
+        "fashion ecommerce",
+        "apparel store template",
+        "nextjs ecommerce",
+        "lookbook website",
+        "fashion drop",
+        "premium pro template",
+        "responsive storefront"
+      ],
+      "keywords": [
+        "Next.js streetwear ecommerce template",
+        "fashion ecommerce website template",
+        "apparel store template",
+        "clothing brand landing page",
+        "lookbook ecommerce template",
+        "premium fashion storefront",
+        "streetwear product launch template",
+        "Next.js App Router ecommerce"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "Framer Motion",
+        "Lenis",
+        "shadcn/ui",
+        "Lucide React"
+      ],
+      "includedPages": [
+        "Streetwear storefront",
+        "Hero drop section",
+        "Product showcase",
+        "Lookbook sections",
+        "Feature blocks",
+        "Trust sections",
+        "FAQ",
+        "Newsletter",
+        "Footer",
+        "Responsive mobile layout"
+      ],
+      "features": [
+        "Premium streetwear and fashion ecommerce storefront",
+        "Drop-focused product launch sections and lookbook blocks",
+        "Smooth scroll and motion-ready landing experience",
+        "Responsive ecommerce UI for apparel and lifestyle brands",
+        "Reusable product, editorial, trust, FAQ, and CTA sections",
+        "Pro tier package with separate $52 checkout support"
+      ],
+      "highlights": [
+        {
+          "label": "Tier",
+          "value": "Pro"
+        },
+        {
+          "label": "Focus",
+          "value": "Streetwear ecommerce"
+        },
+        {
+          "label": "Price",
+          "value": "$52"
+        },
+        {
+          "label": "Use",
+          "value": "Fashion drops"
+        }
+      ],
+      "useCases": [
+        "Streetwear stores",
+        "Fashion ecommerce sites",
+        "Apparel product launches",
+        "Sneaker drops",
+        "Lifestyle brand storefronts"
+      ],
+      "updatedAt": "2026-07-04"
+    },
+    {
       "id": "dashboard-kit-pipeline-pilot-production",
       "slug": "pipeline-pilot-production",
       "title": "Pipeline Pilot Premium Sales Operations Dashboard Template",
@@ -15960,9 +16370,9 @@
     }
   ],
   "meta": {
-    "source": "dashboard-import",
-    "updatedAt": "2026-07-03T06:36:06.824Z",
-    "count": 119,
+    "source": "local-json-landing-import",
+    "updatedAt": "2026-07-04T05:55:22.911Z",
+    "count": 123,
     "htmlImportCount": 91
   }
 }
