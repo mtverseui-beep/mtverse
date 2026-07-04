@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 const ADMIN_SESSION_COOKIE = 'multiverse_admin_session'
-const CANONICAL_HOST = 'mtverse.dev'
+const CANONICAL_HOST = 'www.mtverse.dev'
 const LEGACY_GONE_PROMPT_SLUGS = new Set([
   'nano-banana-pro-0879-elegant-confidence-in-cinematic-light',
   'nano-banana-pro-0354-step-back-in-time-edo-castle-town-in-stunning-detail',
