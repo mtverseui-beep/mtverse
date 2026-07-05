@@ -13,8 +13,8 @@ type PromptSlugPageProps = {
   params: Promise<{ slug: string }>
 }
 
-// ISR: revalidate every 5 minutes
-export const revalidate = 300
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 export const dynamicParams = true
 
 export async function generateStaticParams() {
@@ -31,7 +31,7 @@ function safeDecodeSlug(slug: string) {
 }
 
 const getPromptPageData = cache(async (slug: string) => {
-  const prompts = await getPublishedPrompts()
+  const prompts = await getPublishedPrompts({ noStore: true })
   const normalizedSlug = slugify(safeDecodeSlug(slug))
   const prompt =
     prompts.find(entry => entry.slug === slug) ||

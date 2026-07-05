@@ -1,4 +1,4 @@
-﻿import 'server-only'
+import 'server-only'
 
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import path from 'path'
@@ -108,7 +108,7 @@ function getUpstashConfig() {
   }
 }
 
-async function callUpstashPipeline(commands: Array<Array<string | number>>, mode: 'read' | 'write') {
+async function callUpstashPipeline(commands: Array<Array<string | number>>, mode: 'read' | 'write', noStore = false) {
   const config = getUpstashConfig()
   if (!config) return null
   const init: RequestInit & { next?: { revalidate?: number; tags?: string[] } } = {
@@ -120,7 +120,9 @@ async function callUpstashPipeline(commands: Array<Array<string | number>>, mode
     body: JSON.stringify(commands),
   }
 
-  if (mode === 'read') {
+  if (mode === 'read' && noStore) {
+    init.cache = 'no-store'
+  } else if (mode === 'read') {
     init.next = {
       revalidate: 300,
       tags: ['prompts'],
@@ -231,7 +233,7 @@ function parsePromptRecord(record: string) {
   }
 }
 
-async function readUpstashStoreV2() {
+async function readUpstashStoreV2(noStore = false) {
   const prompts: PromptEntry[] = []
   let promptCursor = '0'
   let promptScans = 0
@@ -239,7 +241,8 @@ async function readUpstashStoreV2() {
   do {
     const result = await callUpstashPipeline(
       [['HSCAN', UPSTASH_PROMPT_STORE_HASH_KEY, promptCursor, 'COUNT', UPSTASH_SCAN_COUNT]],
-      'read'
+      'read',
+      noStore
     )
     const scan = parseHscanResult(result?.[0]?.result)
     promptCursor = scan.cursor
@@ -258,7 +261,8 @@ async function readUpstashStoreV2() {
   do {
     const result = await callUpstashPipeline(
       [['SSCAN', UPSTASH_PROMPT_DELETED_SET_KEY, deletedCursor, 'COUNT', UPSTASH_SCAN_COUNT]],
-      'read'
+      'read',
+      noStore
     )
     const scan = parseSscanResult(result?.[0]?.result)
     deletedCursor = scan.cursor
@@ -274,8 +278,8 @@ async function readUpstashStoreV2() {
   }
 }
 
-async function readUpstashLegacyStore() {
-  const result = await callUpstashPipeline([['GET', UPSTASH_PROMPT_STORE_LEGACY_KEY]], 'read')
+async function readUpstashLegacyStore(noStore = false) {
+  const result = await callUpstashPipeline([['GET', UPSTASH_PROMPT_STORE_LEGACY_KEY]], 'read', noStore)
   const raw = result?.[0]?.result
 
   if (typeof raw !== 'string' || !raw.trim()) return null
@@ -455,7 +459,7 @@ async function readBundledLocalStore() {
   }
 }
 
-async function readLocalStore() {
+async function readLocalStore(options: { noStore?: boolean } = {}) {
   const bundledStore = await readBundledLocalStore()
 
   if (process.env.NEXT_PHASE === 'phase-production-build') {
@@ -464,12 +468,12 @@ async function readLocalStore() {
 
   if (getUpstashConfig()) {
     try {
-      const upstashStoreV2 = await readUpstashStoreV2().catch(error => {
+      const upstashStoreV2 = await readUpstashStoreV2(options.noStore).catch(error => {
         console.error('Prompt Upstash v2 store read failed:', error)
         return null
       })
       const legacyStore = shouldReadLegacyUpstashPromptStore()
-        ? await readUpstashLegacyStore().catch(error => {
+        ? await readUpstashLegacyStore(options.noStore).catch(error => {
             console.error('Prompt Upstash legacy store read failed:', error)
             return null
           })
@@ -533,12 +537,12 @@ export async function loadLocalPromptOverrideStore() {
   return (await readLocalStore()).prompts
 }
 
-export async function loadLocalPromptStoreState() {
-  return readLocalStore()
+export async function loadLocalPromptStoreState(options: { noStore?: boolean } = {}) {
+  return readLocalStore(options)
 }
 
-export async function getMergedLocalPromptEntries() {
-  const store = await loadLocalPromptStoreState()
+export async function getMergedLocalPromptEntries(options: { noStore?: boolean } = {}) {
+  const store = await loadLocalPromptStoreState(options)
   return mergePromptEntries(
     filterDeletedPrompts(PROMPTS, store.deletedPromptKeys),
     filterDeletedPrompts(store.prompts, store.deletedPromptKeys)

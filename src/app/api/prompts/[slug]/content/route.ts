@@ -21,7 +21,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
     )
   }
 
-  const prompt = await getPromptBySlug(slug)
+  const prompt = await getPromptBySlug(slug, { noStore: true })
 
   if (!prompt) {
     return NextResponse.json({ error: 'Prompt not found' }, { status: 404 })

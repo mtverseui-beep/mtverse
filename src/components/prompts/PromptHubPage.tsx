@@ -100,6 +100,10 @@ const FALLBACK_PROMPT_CARD_RATIOS = [
   '6 / 7',
 ]
 
+function getNaturalAspectRatio(width: number, height: number) {
+  return `${Math.round(width)} / ${Math.round(height)}`
+}
+
 function getPromptCardAspectRatio(prompt: PromptHubEntry, index: number) {
   if (
     typeof prompt.previewWidth === 'number' &&
@@ -109,7 +113,7 @@ function getPromptCardAspectRatio(prompt: PromptHubEntry, index: number) {
     prompt.previewWidth > 0 &&
     prompt.previewHeight > 0
   ) {
-    return `${Math.round(prompt.previewWidth)} / ${Math.round(prompt.previewHeight)}`
+    return getNaturalAspectRatio(prompt.previewWidth, prompt.previewHeight)
   }
 
   return FALLBACK_PROMPT_CARD_RATIOS[index % FALLBACK_PROMPT_CARD_RATIOS.length]
@@ -124,8 +128,9 @@ const PromptCard = memo(function PromptCard({
   index?: number
   priority?: boolean
 }) {
+  const [loadedAspectRatio, setLoadedAspectRatio] = useState<string | null>(null)
   const previewStyle = {
-    aspectRatio: getPromptCardAspectRatio(prompt, index),
+    aspectRatio: loadedAspectRatio || getPromptCardAspectRatio(prompt, index),
   } satisfies CSSProperties
 
   return (
@@ -148,10 +153,11 @@ const PromptCard = memo(function PromptCard({
             src={prompt.previewImage}
             alt={prompt.previewAlt}
             category={prompt.category}
-            imageFit="contain"
+            imageFit="cover"
             imgClassName="transition-transform duration-500 ease-out group-hover:scale-[1.02] motion-reduce:transition-none"
             sizes="(max-width: 640px) 49vw, (max-width: 1024px) 32vw, (max-width: 1280px) 24vw, 16vw"
             priority={priority}
+            onNaturalSize={({ width, height }) => setLoadedAspectRatio(getNaturalAspectRatio(width, height))}
           />
           <div className="absolute inset-x-0 bottom-0 translate-y-3 bg-gradient-to-t from-black/75 via-black/40 to-transparent p-3 pt-12 opacity-0 transition-[opacity,transform] duration-200 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 motion-reduce:transition-none">
             <h3 className="line-clamp-2 text-sm font-bold leading-tight text-white drop-shadow-sm">

@@ -1,6 +1,6 @@
 'use client'
 
-import type { CSSProperties } from 'react'
+import { useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight, Bot, CheckCircle2, ListChecks, Sparkles } from 'lucide-react'
@@ -11,6 +11,10 @@ import type { PromptEntry } from '@/lib/prompt-library-data'
 const motionTransition = { duration: 0.42, ease: 'easeOut' } as const
 
 type PromptClientEntry = Omit<PromptEntry, 'prompt'>
+
+function getNaturalAspectRatio(width: number, height: number) {
+  return `${Math.round(width)} / ${Math.round(height)}`
+}
 
 function getPreviewAspectStyle(prompt: Pick<PromptEntry, 'previewWidth' | 'previewHeight'>, fallback = '4 / 5') {
   const width = prompt.previewWidth
@@ -30,6 +34,11 @@ function getPreviewAspectStyle(prompt: Pick<PromptEntry, 'previewWidth' | 'previ
 }
 
 function RelatedPromptCard({ prompt }: { prompt: PromptClientEntry }) {
+  const [loadedAspectRatio, setLoadedAspectRatio] = useState<string | null>(null)
+  const previewStyle = loadedAspectRatio
+    ? ({ aspectRatio: loadedAspectRatio } satisfies CSSProperties)
+    : getPreviewAspectStyle(prompt, '3 / 4')
+
   return (
     <Link
       href={`/prompts/${prompt.slug}`}
@@ -42,14 +51,15 @@ function RelatedPromptCard({ prompt }: { prompt: PromptClientEntry }) {
         transition={{ duration: 0.18, ease: 'easeOut' }}
         className="relative overflow-hidden rounded-md border border-border/80 bg-card shadow-sm shadow-slate-950/[0.03] transition duration-200 group-hover:border-primary/30 group-hover:shadow-md group-focus-visible:ring-2 group-focus-visible:ring-ring group-focus-visible:ring-offset-2 dark:shadow-black/10"
       >
-        <div className="relative overflow-hidden bg-muted" style={getPreviewAspectStyle(prompt, '3 / 4')}>
+        <div className="relative overflow-hidden bg-muted" style={previewStyle}>
           <PromptPreviewImage
             src={prompt.previewImage}
             alt={prompt.previewAlt}
             category={prompt.category}
-            imageFit="contain"
+            imageFit="cover"
             sizes="(max-width: 640px) 49vw, (max-width: 1024px) 32vw, 20vw"
             imgClassName="transition-transform duration-500 group-hover:scale-[1.018] group-focus-visible:scale-[1.018]"
+            onNaturalSize={({ width, height }) => setLoadedAspectRatio(getNaturalAspectRatio(width, height))}
           />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-3 bg-gradient-to-t from-black/70 to-transparent px-3 pb-3 pt-12 opacity-0 transition duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
             <h3 className="line-clamp-2 text-xs font-bold leading-4 text-white [text-shadow:0_2px_14px_rgba(0,0,0,0.7)] sm:text-[13px] sm:leading-5">
@@ -73,6 +83,10 @@ export default function PromptDetailPage({
   const bestFor = prompt.bestFor.slice(0, 5)
   const workflow = prompt.workflow.slice(0, 4)
   const relatedItems = relatedPrompts.slice(0, 24)
+  const [loadedMainAspectRatio, setLoadedMainAspectRatio] = useState<string | null>(null)
+  const mainPreviewStyle = loadedMainAspectRatio
+    ? ({ aspectRatio: loadedMainAspectRatio } satisfies CSSProperties)
+    : getPreviewAspectStyle(prompt, '4 / 5')
 
   return (
     <motion.div
@@ -95,15 +109,16 @@ export default function PromptDetailPage({
             className="mx-auto w-full max-w-[330px] sm:max-w-[360px] lg:sticky lg:top-24 lg:mx-0 lg:max-w-[380px]"
           >
             <div className="overflow-hidden rounded-md border border-border/80 bg-card p-2 shadow-sm shadow-slate-950/[0.04] dark:shadow-black/10">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-muted">
+              <div className="relative overflow-hidden rounded-md bg-muted" style={mainPreviewStyle}>
                 <PromptPreviewImage
                   src={prompt.previewImage}
                   alt={prompt.previewAlt}
                   category={prompt.category}
-                  imageFit="contain"
+                  imageFit="cover"
                   priority
                   className="bg-muted"
                   sizes="(max-width: 640px) 100vw, (max-width: 1280px) 38vw, 480px"
+                  onNaturalSize={({ width, height }) => setLoadedMainAspectRatio(getNaturalAspectRatio(width, height))}
                 />
               </div>
             </div>

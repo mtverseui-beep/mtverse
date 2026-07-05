@@ -12,7 +12,7 @@ type RouteContext = {
 }
 
 async function assertPromptExists(slug: string) {
-  const prompt = await getPromptBySlug(slug)
+  const prompt = await getPromptBySlug(slug, { noStore: true })
   return Boolean(prompt)
 }
 

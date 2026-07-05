@@ -65,6 +65,7 @@ export default function PromptPreviewImage({
   imageFit = 'cover',
   priority = false,
   sizes,
+  onNaturalSize,
 }: {
   src: string
   alt: string
@@ -74,6 +75,7 @@ export default function PromptPreviewImage({
   imageFit?: 'cover' | 'contain'
   priority?: boolean
   sizes?: string
+  onNaturalSize?: (size: { width: number; height: number }) => void
 }) {
   const fallbackSrc = useMemo(() => getPromptPreviewFallback(category), [category])
   const retryTimerRef = useRef<number | null>(null)
@@ -220,7 +222,11 @@ export default function PromptPreviewImage({
           fetchPriority={priority ? 'high' : 'auto'}
           unoptimized={unoptimized}
           sizes={sizes ?? '(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw'}
-          onLoad={() => {
+          onLoad={(event) => {
+            const { naturalWidth, naturalHeight } = event.currentTarget
+            if (naturalWidth > 0 && naturalHeight > 0) {
+              onNaturalSize?.({ width: naturalWidth, height: naturalHeight })
+            }
             if (retryTimerRef.current) {
               window.clearTimeout(retryTimerRef.current)
               retryTimerRef.current = null

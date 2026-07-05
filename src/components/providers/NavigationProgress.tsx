@@ -3,14 +3,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
+type ProgressDirection = "forward" | "reverse";
+
 export default function NavigationProgress() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(false);
   const [completing, setCompleting] = useState(false);
+  const [direction, setDirection] = useState<ProgressDirection>("forward");
   const routeKey = `${pathname ?? ""}?${searchParams?.toString() ?? ""}`;
   const prevRouteKey = useRef(routeKey);
+  const historyIndexRef = useRef<number | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -30,8 +34,9 @@ export default function NavigationProgress() {
     }, 400);
   }, [clearTimers]);
 
-  const start = useCallback(() => {
+  const start = useCallback((nextDirection: ProgressDirection = "forward") => {
     clearTimers();
+    setDirection(nextDirection);
     setVisible(true);
     setCompleting(false);
     setProgress(15);
@@ -48,15 +53,24 @@ export default function NavigationProgress() {
     }, 100);
   }, [clearTimers]);
 
+  const getHistoryIndex = useCallback((state: unknown) => {
+    if (!state || typeof state !== "object") return null;
+    const record = state as { idx?: unknown; index?: unknown };
+    const value = record.idx ?? record.index;
+
+    return typeof value === "number" && Number.isFinite(value) ? value : null;
+  }, []);
+
   useEffect(() => {
     if (routeKey !== prevRouteKey.current) {
       prevRouteKey.current = routeKey;
       complete();
+      historyIndexRef.current = getHistoryIndex(window.history.state);
       window.requestAnimationFrame(() => {
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       });
     }
-  }, [routeKey, complete]);
+  }, [routeKey, complete, getHistoryIndex]);
 
   // Listen for navigation start via link clicks
   useEffect(() => {
@@ -82,7 +96,7 @@ export default function NavigationProgress() {
         if (nextUrl.href === currentUrl.href) return;
         if (nextUrl.pathname === currentUrl.pathname && nextUrl.search === currentUrl.search) return;
 
-        start();
+        start("forward");
       } catch {
         return;
       }
@@ -92,6 +106,27 @@ export default function NavigationProgress() {
     return () =>
       document.removeEventListener("click", handleClick, { capture: true });
   }, [start]);
+
+  // Browser back/forward buttons, trackpad gestures, and Alt+Arrow navigation
+  // do not dispatch a link click, so start the loader from the history event.
+  useEffect(() => {
+    historyIndexRef.current = getHistoryIndex(window.history.state);
+
+    function handlePopState(event: PopStateEvent) {
+      const nextIndex = getHistoryIndex(event.state);
+      const previousIndex = historyIndexRef.current;
+      const nextDirection =
+        previousIndex !== null && nextIndex !== null && nextIndex > previousIndex
+          ? "forward"
+          : "reverse";
+
+      historyIndexRef.current = nextIndex;
+      start(nextDirection);
+    }
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [getHistoryIndex, start]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -109,12 +144,14 @@ export default function NavigationProgress() {
         className="h-full bg-[#465fff]"
         style={{
           width: `${progress}%`,
+          marginLeft: direction === "reverse" ? "auto" : undefined,
           transition: completing
             ? "width 0.2s ease-out"
             : "width 0.1s ease-out",
-          transformOrigin: "left center",
+          transformOrigin: direction === "reverse" ? "right center" : "left center",
         }}
       />
     </div>
   );
 }
+

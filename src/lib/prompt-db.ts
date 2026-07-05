@@ -323,24 +323,26 @@ function assertWritableLocalPromptStore() {
   }
 }
 
-export async function getPromptLibraryData(): Promise<PromptLibraryState> {
-  if (promptLibraryCache && promptLibraryCache.expiresAt > Date.now()) {
+export async function getPromptLibraryData(options: { noStore?: boolean } = {}): Promise<PromptLibraryState> {
+  if (!options.noStore && promptLibraryCache && promptLibraryCache.expiresAt > Date.now()) {
     return promptLibraryCache.state
   }
 
-  const entries = await getMergedLocalPromptEntries()
+  const entries = await getMergedLocalPromptEntries({ noStore: options.noStore })
   const state = buildPromptLibraryState(entries)
 
-  promptLibraryCache = {
-    state,
-    expiresAt: Date.now() + PROMPTS_MEMORY_CACHE_MS,
+  if (!options.noStore) {
+    promptLibraryCache = {
+      state,
+      expiresAt: Date.now() + PROMPTS_MEMORY_CACHE_MS,
+    }
   }
 
   return state
 }
 
-export async function getPublishedPrompts() {
-  return (await getPromptLibraryData()).prompts
+export async function getPublishedPrompts(options: { noStore?: boolean } = {}) {
+  return (await getPromptLibraryData(options)).prompts
 }
 
 export function isPromptIndexable(
@@ -355,12 +357,12 @@ export function isPromptIndexable(
   )
 }
 
-export async function getAdminPrompts() {
-  return (await getPromptLibraryData()).adminPrompts
+export async function getAdminPrompts(options: { noStore?: boolean } = {}) {
+  return (await getPromptLibraryData(options)).adminPrompts
 }
 
-export async function getPromptBySlug(slug: string) {
-  const prompts = await getPublishedPrompts()
+export async function getPromptBySlug(slug: string, options: { noStore?: boolean } = {}) {
+  const prompts = await getPublishedPrompts(options)
   return prompts.find(prompt => prompt.slug === slug) || null
 }
 
