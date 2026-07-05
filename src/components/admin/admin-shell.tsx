@@ -20,6 +20,7 @@ import {
   Moon,
   ChevronLeft,
   ExternalLink,
+  ShieldAlert,
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
@@ -47,6 +48,7 @@ const NAV_SECTIONS: Array<{
       { name: 'Orders', href: '/admin/orders', icon: Receipt },
       { name: 'Reviews', href: '/admin/reviews', icon: MessageSquare },
       { name: 'Users', href: '/admin/users', icon: Users },
+      { name: 'Auth logs', href: '/admin/auth-logs', icon: ShieldAlert },
     ],
   },
   {

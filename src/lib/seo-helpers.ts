@@ -153,9 +153,9 @@ export function generateProductWithOffersSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: 'mtverse Next.js Dashboard Kit Package',
+    name: 'mtverse Template Pricing',
     description:
-      'Lifetime access to the premium Next.js dashboard kit package. Public prompts remain free.',
+      'One-time pricing for premium templates, free prompts, and the all HTML templates bundle.',
     url: `${SITE_URL}/pricing`,
     brand: {
       '@type': 'Brand',
@@ -172,10 +172,18 @@ export function generateProductWithOffersSchema() {
       },
       {
         '@type': 'Offer',
-        name: 'Next.js Dashboard Kit Package',
+        name: 'Premium Templates',
         price: '12',
         priceCurrency: 'USD',
-        description: 'One-time lifetime package download',
+        description: 'Premium templates start at USD 12. Pro and Premium Pro templates use their displayed template price.',
+        availability: 'https://schema.org/InStock',
+      },
+      {
+        '@type': 'Offer',
+        name: 'All HTML Templates Bundle',
+        price: '5',
+        priceCurrency: 'USD',
+        description: 'One-time unlock for the all HTML templates ZIP.',
         availability: 'https://schema.org/InStock',
       },
     ],

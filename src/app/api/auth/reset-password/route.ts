@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit, getClientIp, getRateLimitRetryAfterSeconds } from '@/lib/rate-limit'
+import { createAuthErrorId, recordAuthEvent } from "@/lib/auth/auth-event-log";
 import { updateCustomerPassword } from "@/lib/auth/customer-store";
 import { consumePasswordResetToken, getPasswordResetEmail } from "@/lib/auth/password-reset-store";
 
@@ -11,45 +12,66 @@ function validatePassword(password: unknown) {
   return null;
 }
 
+function failureResponse(error: string, status: number, errorId: string, headers?: HeadersInit) {
+  return NextResponse.json({ error, errorId }, { status, headers })
+}
+
 export async function POST(request: NextRequest) {
-    const ip = getClientIp(request.headers)
-    const rateLimit = await checkRateLimit('reset-password:' + ip, {
-      max: 10,
-      windowMs: 3600000,
+  const ip = getClientIp(request.headers)
+  const rateLimit = await checkRateLimit('reset-password:' + ip, {
+    max: 10,
+    windowMs: 3600000,
+  })
+
+  if (!rateLimit.allowed) {
+    const errorId = createAuthErrorId()
+    await recordAuthEvent({ request, type: 'reset_password', status: 'blocked', provider: 'email', reason: 'rate_limited', message: 'Password reset confirmation blocked by rate limit.', errorId })
+    return failureResponse('Too many requests. Please try again later.', 429, errorId, {
+      'Retry-After': String(getRateLimitRetryAfterSeconds(rateLimit.resetAt)),
     })
-    if (!rateLimit.allowed) {
-      return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429, headers: { 'Retry-After': String(getRateLimitRetryAfterSeconds(rateLimit.resetAt)) } })
-    }
+  }
+
   try {
     const body = await request.json();
     const token = typeof body.token === "string" ? body.token.trim() : "";
     const passwordError = validatePassword(body.password);
 
     if (!token) {
-      return NextResponse.json({ error: "Reset token is required" }, { status: 400 });
+      const errorId = createAuthErrorId()
+      await recordAuthEvent({ request, type: 'reset_password', status: 'failure', provider: 'email', reason: 'token_required', message: 'Password reset confirmation failed because token was missing.', errorId })
+      return failureResponse("Reset token is required", 400, errorId);
     }
 
     if (passwordError) {
-      return NextResponse.json({ error: passwordError }, { status: 400 });
+      const errorId = createAuthErrorId()
+      await recordAuthEvent({ request, type: 'reset_password', status: 'failure', provider: 'email', reason: 'weak_password', message: passwordError, errorId })
+      return failureResponse(passwordError, 400, errorId);
     }
 
     const email = await getPasswordResetEmail(token);
     if (!email) {
-      return NextResponse.json({ error: "Reset link is invalid or expired" }, { status: 400 });
+      const errorId = createAuthErrorId()
+      await recordAuthEvent({ request, type: 'reset_password', status: 'failure', provider: 'email', reason: 'invalid_or_expired_token', message: 'Password reset confirmation failed because token was invalid or expired.', errorId })
+      return failureResponse("Reset link is invalid or expired", 400, errorId);
     }
 
     const updated = await updateCustomerPassword(email, body.password);
     if (!updated) {
-      return NextResponse.json({ error: "Account not found" }, { status: 404 });
+      const errorId = createAuthErrorId()
+      await recordAuthEvent({ request, type: 'reset_password', status: 'failure', provider: 'email', email, reason: 'account_not_found', message: 'Password reset confirmation failed because account was not found.', errorId })
+      return failureResponse("Account not found", 404, errorId);
     }
 
     await consumePasswordResetToken(token);
+    await recordAuthEvent({ request, type: 'reset_password', status: 'success', provider: 'email', email, reason: 'password_updated', message: 'Password updated successfully.' })
 
     return NextResponse.json({
       success: true,
       message: "Password updated successfully",
     });
   } catch {
-    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    const errorId = createAuthErrorId()
+    await recordAuthEvent({ request, type: 'reset_password', status: 'failure', provider: 'email', reason: 'invalid_request_body', message: 'Password reset confirmation failed because request body could not be parsed.', errorId })
+    return failureResponse("Invalid request body", 400, errorId);
   }
 }

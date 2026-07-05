@@ -28,8 +28,8 @@ type AuthState = {
 }
 
 type AuthContextValue = AuthState & {
-  signIn: (email: string, password: string, remember?: boolean) => Promise<{ success: boolean; error?: string }>
-  signUp: (name: string, email: string, password: string) => Promise<{ success: boolean; error?: string }>
+  signIn: (email: string, password: string, remember?: boolean) => Promise<{ success: boolean; error?: string; errorId?: string }>
+  signUp: (name: string, email: string, password: string) => Promise<{ success: boolean; error?: string; errorId?: string }>
   signOut: () => Promise<void>
   refresh: () => Promise<void>
 }
@@ -74,7 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Sign in
   const signIn = useCallback(
-    async (email: string, password: string, remember = false): Promise<{ success: boolean; error?: string }> => {
+    async (email: string, password: string, remember = false): Promise<{ success: boolean; error?: string; errorId?: string }> => {
       try {
         const res = await fetch('/api/auth/sign-in', {
           method: 'POST',
@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         })
         const data = await res.json()
         if (!res.ok || !data.success) {
-          return { success: false, error: data.error || data.message || 'Invalid email or password' }
+          return { success: false, error: data.error || data.message || 'Invalid email or password', errorId: data.errorId }
         }
         await refresh()
         return { success: true }
@@ -97,7 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Sign up
   const signUp = useCallback(
-    async (name: string, email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+    async (name: string, email: string, password: string): Promise<{ success: boolean; error?: string; errorId?: string }> => {
       try {
         const res = await fetch('/api/auth/sign-up', {
           method: 'POST',
@@ -107,7 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         })
         const data = await res.json()
         if (!res.ok || !data.success) {
-          return { success: false, error: data.error || data.message || 'Sign up failed' }
+          return { success: false, error: data.error || data.message || 'Sign up failed', errorId: data.errorId }
         }
         await refresh()
         return { success: true }

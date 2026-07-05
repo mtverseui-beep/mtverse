@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server'
-import { CUSTOMER_SESSION_COOKIE } from '@/lib/auth/customer-session'
+import { NextRequest, NextResponse } from 'next/server'
+import { CUSTOMER_SESSION_COOKIE, verifyCustomerSessionToken } from '@/lib/auth/customer-session'
+import { recordAuthEvent } from '@/lib/auth/auth-event-log'
 
 const NEXTAUTH_COOKIES = [
   'next-auth.session-token',
@@ -10,7 +11,8 @@ const NEXTAUTH_COOKIES = [
   '__Host-next-auth.csrf-token',
 ]
 
-export async function POST() {
+export async function POST(request: NextRequest) {
+  const session = verifyCustomerSessionToken(request.cookies.get(CUSTOMER_SESSION_COOKIE)?.value || '')
   const response = NextResponse.json({ success: true })
   const secure = process.env.NODE_ENV === 'production'
 
@@ -31,6 +33,16 @@ export async function POST() {
       path: '/',
     })
   }
+
+  await recordAuthEvent({
+    request,
+    type: 'sign_out',
+    status: 'success',
+    provider: session?.email ? 'email' : 'oauth',
+    email: session?.email || null,
+    reason: 'sign_out',
+    message: 'Customer signed out.',
+  })
 
   return response
 }

@@ -108,6 +108,10 @@ function getLoadingLabel(mode: AuthMode) {
   return 'Sending...'
 }
 
+function withErrorId(message: string, errorId?: string) {
+  return errorId ? `${message} (Error ID: ${errorId})` : message
+}
+
 export function AuthForm({ mode, resetToken = '' }: Props) {
   const copy = COPY[mode]
   const router = useRouter()
@@ -167,8 +171,9 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
       if (mode === 'sign-in') {
         const result = await signInWithPassword(form.email, form.password, rememberMe)
         if (!result.success) {
-          setError(result.error || 'Invalid email or password')
-          toast.error(result.error || 'Sign in failed')
+          const message = withErrorId(result.error || 'Invalid email or password', result.errorId)
+          setError(message)
+          toast.error(message)
           setLoading(false)
           return
         }
@@ -178,8 +183,9 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
       } else if (mode === 'sign-up') {
         const result = await signUp(form.name, form.email, form.password)
         if (!result.success) {
-          setError(result.error || 'Sign up failed')
-          toast.error(result.error || 'Sign up failed')
+          const message = withErrorId(result.error || 'Sign up failed', result.errorId)
+          setError(message)
+          toast.error(message)
           setLoading(false)
           return
         }
@@ -194,8 +200,9 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
         })
         const data = await res.json()
         if (!res.ok) {
-          setError(data.error || 'Failed to send reset email')
-          toast.error('Failed to send reset email. Try again later.')
+          const message = withErrorId(data.error || 'Failed to send reset email', data.errorId)
+          setError(message)
+          toast.error(message)
           setLoading(false)
           return
         }
@@ -210,8 +217,9 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
         })
         const data = await res.json()
         if (!res.ok) {
-          setError(data.error || 'Failed to reset password')
-          toast.error(data.error || 'Failed to reset password')
+          const message = withErrorId(data.error || 'Failed to reset password', data.errorId)
+          setError(message)
+          toast.error(message)
           setLoading(false)
           return
         }

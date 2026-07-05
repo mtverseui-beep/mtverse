@@ -1,6 +1,7 @@
 import type { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import GitHubProvider from 'next-auth/providers/github'
+import { recordAuthEvent } from '@/lib/auth/auth-event-log'
 
 // Auto-detect base URL for OAuth callbacks
 function getBaseUrl() {
@@ -89,6 +90,20 @@ export const authOptions: NextAuthOptions = {
       return callbackBaseUrl
     },
   },
+  events: {
+    async signIn({ user, account, isNewUser }) {
+      await recordAuthEvent({
+        type: 'oauth_sign_in',
+        status: 'success',
+        provider: account?.provider || 'oauth',
+        email: user.email || null,
+        reason: isNewUser ? 'oauth_new_user' : 'oauth_sign_in',
+        message: `${account?.provider || 'OAuth'} sign-in succeeded.`,
+      })
+    },
+  },
   // Enable debug in development
   debug: process.env.NODE_ENV === 'development',
 }
+
+void baseUrl

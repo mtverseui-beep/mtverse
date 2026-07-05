@@ -55,9 +55,11 @@ export default async function PricingPage() {
     image: SITE_URL + '/SiteLogo.png',
     brand: { '@type': 'Brand', name: 'mtverse' },
     offers: {
-      '@type': 'Offer',
-      price: '12',
+      '@type': 'AggregateOffer',
+      lowPrice: '5',
+      highPrice: '52',
       priceCurrency: 'USD',
+      offerCount: '4',
       availability: 'https://schema.org/InStock',
       url: SITE_URL + '/pricing',
       shippingDetails: {
@@ -76,6 +78,12 @@ export default async function PricingPage() {
       },
     },
   }
+
+  const premiumPricePoints = [
+    { label: 'Standard templates', price: '$12' },
+    { label: 'Pro templates', price: '$20' },
+    { label: 'Premium Pro templates', price: '$52' },
+  ]
 
   const premiumFeatures = [
     'Unlock only the template you purchase',
@@ -111,7 +119,7 @@ export default async function PricingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <main>
-        {/* ═══ Hero ═══ */}
+        {/* ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â Hero ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â */}
         <section className="ds-section-lg pt-20 relative overflow-hidden">
           <CtaBackground />
           <div className="ds-container relative text-center max-w-4xl">
@@ -132,11 +140,11 @@ export default async function PricingPage() {
           </div>
         </section>
 
-        {/* ═══ Pricing Cards ═══ */}
+        {/* ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â Pricing Cards ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â */}
         <section className="ds-section-sm">
           <div className="ds-container max-w-5xl">
             <div className={`grid gap-6 ${hasFreeTemplates ? 'lg:grid-cols-3' : 'max-w-lg mx-auto'}`}>
-              {/* Free Tier — only if free templates exist */}
+              {/* Free Tier ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â only if free templates exist */}
               {hasFreeTemplates && (
                 <Reveal>
                   <div className="h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-shadow hover:shadow-md sm:p-7">
@@ -165,7 +173,7 @@ export default async function PricingPage() {
                 </Reveal>
               )}
 
-              {/* Premium — highlighted */}
+              {/* Premium ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â highlighted */}
               <Reveal delay={hasFreeTemplates ? 0.08 : 0}>
                 <div className="relative h-full rounded-2xl border-2 border-primary/30 bg-card p-6 shadow-lg shadow-primary/[0.04] sm:p-7 lg:scale-[1.03]">
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
@@ -180,11 +188,17 @@ export default async function PricingPage() {
                     </div>
                     <h3 className="text-lg font-bold">Premium</h3>
                     <div className="mt-2 flex items-baseline gap-1.5">
-                      <span className="text-3xl font-bold">$12</span>
-                      <span className="text-sm text-muted-foreground line-through">$49</span>
-                      <span className="ml-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">76% off</span>
+                      <span className="text-3xl font-bold">From $12</span>
                     </div>
                     <p className="mt-1.5 text-sm text-muted-foreground">Per template · one-time payment</p>
+                    <div className="mt-4 grid gap-2 rounded-xl border border-border/70 bg-muted/30 p-3">
+                      {premiumPricePoints.map((point) => (
+                        <div key={point.label} className="flex items-center justify-between gap-3 text-sm">
+                          <span className="text-muted-foreground">{point.label}</span>
+                          <span className="font-bold text-foreground">{point.price}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   <Link href="/templates" className="ds-btn ds-btn-accent w-full mb-6">
@@ -208,7 +222,7 @@ export default async function PricingPage() {
                 </div>
               </Reveal>
 
-              {/* Free Unlock — only if free templates exist */}
+              {/* Free Unlock ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â only if free templates exist */}
               {hasFreeTemplates && (
                 <Reveal delay={0.16}>
                   <div className="h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-shadow hover:shadow-md sm:p-7">
@@ -240,7 +254,7 @@ export default async function PricingPage() {
           </div>
         </section>
 
-        {/* ═══ Payment Methods — compact strip ═══ */}
+        {/* ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â Payment Methods ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â compact strip ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â */}
         <section className="ds-section-sm ds-bg-section">
           <div className="ds-container max-w-4xl text-center">
             <Reveal>
@@ -259,7 +273,7 @@ export default async function PricingPage() {
           </div>
         </section>
 
-        {/* ═══ Benefits ═══ */}
+        {/* ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â Benefits ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â */}
         <section className="ds-section-sm">
           <div className="ds-container max-w-5xl">
             <Reveal className="text-center mb-8">
@@ -306,7 +320,7 @@ export default async function PricingPage() {
           </div>
         </section>
 
-        {/* ═══ FAQ ═══ */}
+        {/* ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â FAQ ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â */}
         <section className="ds-section-sm ds-bg-section">
           <div className="ds-container max-w-3xl">
             <Reveal className="text-center mb-8">
@@ -331,7 +345,7 @@ export default async function PricingPage() {
           </div>
         </section>
 
-        {/* ═══ CTA ═══ */}
+        {/* ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â CTA ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â */}
         <section className="ds-section-lg ds-bg-section relative overflow-hidden">
           <CtaBackground />
           <div className="ds-container relative text-center max-w-2xl">
@@ -340,7 +354,7 @@ export default async function PricingPage() {
             </Reveal>
             <Reveal delay={0.08}>
               <p className="ds-lead mb-6">
-                Browse premium Next.js templates and find the perfect fit for your project.
+                Browse premium templates and pay only for the exact template you choose.
               </p>
             </Reveal>
             <Reveal delay={0.16}>
