@@ -30,6 +30,20 @@ function safeDecodeSlug(slug: string) {
   }
 }
 
+function uniqueRelatedPrompts(currentSlug: string, prompts: PromptEntry[], limit = 24) {
+  const seenSlugs = new Set([currentSlug])
+  const selected: PromptEntry[] = []
+
+  for (const prompt of prompts) {
+    if (!prompt.slug || seenSlugs.has(prompt.slug)) continue
+    seenSlugs.add(prompt.slug)
+    selected.push(prompt)
+    if (selected.length >= limit) break
+  }
+
+  return selected
+}
+
 const getPromptPageData = cache(async (slug: string) => {
   const prompts = await getPublishedPrompts({ noStore: true })
   const normalizedSlug = slugify(safeDecodeSlug(slug))
@@ -55,12 +69,10 @@ const getPromptPageData = cache(async (slug: string) => {
     : await getRelatedPrompts(prompt.slug, 24)
 
   if (relatedPrompts.length < 24) {
-    const seenSlugs = new Set([prompt.slug, ...relatedPrompts.map(entry => entry.slug)])
     const fallbackRelatedPrompts = await getRelatedPrompts(prompt.slug, 36)
-    relatedPrompts = [
-      ...relatedPrompts,
-      ...fallbackRelatedPrompts.filter(entry => !seenSlugs.has(entry.slug)),
-    ].slice(0, 24)
+    relatedPrompts = uniqueRelatedPrompts(prompt.slug, [...relatedPrompts, ...fallbackRelatedPrompts], 24)
+  } else {
+    relatedPrompts = uniqueRelatedPrompts(prompt.slug, relatedPrompts, 24)
   }
 
   return {

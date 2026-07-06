@@ -285,21 +285,48 @@ function normalizePromptEntry(prompt: PromptEntry): PromptEntry {
   return withPromptSeoFallbacks(normalizedPrompt)
 }
 
+function stableRelatedHash(value: string) {
+  let hash = 2166136261
+
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index)
+    hash = Math.imul(hash, 16777619)
+  }
+
+  return hash >>> 0
+}
+
+function normalizeRelatedToken(value: string) {
+  return value.trim().toLowerCase()
+}
+
+function countSharedTokens(left: string[], right: string[]) {
+  if (!left.length || !right.length) return 0
+
+  const rightTokens = new Set(right.map(normalizeRelatedToken).filter(Boolean))
+  return left.reduce((count, token) => count + (rightTokens.has(normalizeRelatedToken(token)) ? 1 : 0), 0)
+}
+
 function buildRelatedSlugs(entry: PromptEntry, prompts: PromptEntry[], limit = 4) {
   return prompts
     .filter(candidate => candidate.slug !== entry.slug)
     .map(candidate => {
-      const sharedTags = candidate.tags.filter(tag => entry.tags.includes(tag)).length
-      const sameCategory = candidate.category === entry.category ? 3 : 0
-      const sameModel = candidate.models.some(model => entry.models.includes(model)) ? 1 : 0
+      const sharedTags = countSharedTokens(entry.tags, candidate.tags)
+      const sharedBestFor = countSharedTokens(entry.bestFor, candidate.bestFor)
+      const sameCategory = candidate.category === entry.category ? 4 : 0
+      const sameSubcategory = normalizeRelatedToken(candidate.subcategory) === normalizeRelatedToken(entry.subcategory) ? 5 : 0
+      const sameVisualStyle = normalizeRelatedToken(candidate.visualStyle) === normalizeRelatedToken(entry.visualStyle) ? 2 : 0
+      const sameAudience = normalizeRelatedToken(candidate.audience) === normalizeRelatedToken(entry.audience) ? 1 : 0
+      const sameModel = candidate.models.some(model => entry.models.includes(model)) ? 2 : 0
 
       return {
         slug: candidate.slug,
-        score: sharedTags + sameCategory + sameModel,
+        score: (sharedTags * 6) + (sharedBestFor * 3) + sameSubcategory + sameCategory + sameModel + sameVisualStyle + sameAudience,
+        rank: stableRelatedHash(`${entry.slug}:${candidate.slug}`),
         title: candidate.title,
       }
     })
-    .sort((left, right) => right.score - left.score || left.title.localeCompare(right.title))
+    .sort((left, right) => right.score - left.score || left.rank - right.rank || left.title.localeCompare(right.title))
     .slice(0, limit)
     .map(candidate => candidate.slug)
 }

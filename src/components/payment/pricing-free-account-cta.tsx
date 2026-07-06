@@ -25,7 +25,7 @@ export function PricingFreeAccountCta() {
   }
 
   return (
-    <Link href="/sign-up" className="ds-btn ds-btn-secondary w-full mb-6">
+    <Link href="/sign-up?next=/pricing" className="ds-btn ds-btn-secondary w-full mb-6">
       Create free account
     </Link>
   )

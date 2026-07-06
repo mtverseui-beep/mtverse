@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn as signInWithProvider } from 'next-auth/react'
 import { ArrowRight, Mail, Lock, Sparkles, Check, Loader2, Eye, EyeOff, AlertCircle, User } from 'lucide-react'
@@ -96,9 +96,30 @@ function validateEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-function getCallbackUrl() {
-  const rawNext = new URLSearchParams(window.location.search).get('next')
-  return rawNext && rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '/'
+const DEFAULT_AUTH_REDIRECT = '/account'
+const BLOCKED_NEXT_PATHS = ['/sign-in', '/sign-up', '/forgot-password', '/reset-password', '/admin-login', '/api']
+
+function getSafeNextPath(rawNext: string | null, fallback = DEFAULT_AUTH_REDIRECT) {
+  const nextPath = rawNext?.trim()
+
+  if (!nextPath || !nextPath.startsWith('/') || nextPath.startsWith('//')) {
+    return fallback
+  }
+
+  const pathname = nextPath.split('?')[0]?.split('#')[0]?.replace(/\/+$/, '') || '/'
+  const isBlocked = BLOCKED_NEXT_PATHS.some((path) => pathname === path || pathname.startsWith(`${path}/`))
+
+  return isBlocked ? fallback : nextPath
+}
+
+function getCallbackUrl(fallback = DEFAULT_AUTH_REDIRECT) {
+  if (typeof window === 'undefined') return fallback
+  return getSafeNextPath(new URLSearchParams(window.location.search).get('next'), fallback)
+}
+
+function getAuthSwitchHref(href: string, nextPath: string | null) {
+  if (!nextPath || nextPath === DEFAULT_AUTH_REDIRECT) return href
+  return `${href}?next=${encodeURIComponent(nextPath)}`
 }
 
 function getLoadingLabel(mode: AuthMode) {
@@ -110,6 +131,16 @@ function getLoadingLabel(mode: AuthMode) {
 
 function withErrorId(message: string, errorId?: string) {
   return errorId ? `${message} (Error ID: ${errorId})` : message
+}
+
+function queueAuthSuccessToast(kind: 'sign-in' | 'sign-up' | 'oauth') {
+  if (typeof window === 'undefined') return
+  window.sessionStorage.setItem('mtverse:auth-success-toast', kind)
+}
+
+function clearQueuedAuthSuccessToast() {
+  if (typeof window === 'undefined') return
+  window.sessionStorage.removeItem('mtverse:auth-success-toast')
 }
 
 export function AuthForm({ mode, resetToken = '' }: Props) {
@@ -125,7 +156,12 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
   const [success, setSuccess] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [rememberMe, setRememberMe] = useState(false)
+  const [nextPath, setNextPath] = useState<string | null>(null)
   const missingResetToken = mode === 'reset-password' && !resetToken.trim()
+
+  useEffect(() => {
+    setNextPath(getCallbackUrl())
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -177,8 +213,9 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
           setLoading(false)
           return
         }
-        toast.success('Welcome back!')
-        router.push(getCallbackUrl())
+        const callbackUrl = getCallbackUrl()
+        queueAuthSuccessToast('sign-in')
+        router.replace(callbackUrl)
         router.refresh()
       } else if (mode === 'sign-up') {
         const result = await signUp(form.name, form.email, form.password)
@@ -189,8 +226,9 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
           setLoading(false)
           return
         }
-        toast.success('Account created! Welcome to mtverse.')
-        router.push(getCallbackUrl())
+        const callbackUrl = getCallbackUrl()
+        queueAuthSuccessToast('sign-up')
+        router.replace(callbackUrl)
         router.refresh()
       } else if (mode === 'forgot-password') {
         const res = await fetch('/api/auth/forgot-password', {
@@ -441,7 +479,9 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
                       type="button"
                       onClick={() => {
                         setLoading(true)
+                        queueAuthSuccessToast('oauth')
                         signInWithProvider('github', { callbackUrl: getCallbackUrl() }).catch(() => {
+                          clearQueuedAuthSuccessToast()
                           setLoading(false)
                           toast.error('GitHub sign-in failed')
                         })
@@ -458,7 +498,9 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
                       type="button"
                       onClick={() => {
                         setLoading(true)
+                        queueAuthSuccessToast('oauth')
                         signInWithProvider('google', { callbackUrl: getCallbackUrl() }).catch(() => {
+                          clearQueuedAuthSuccessToast()
                           setLoading(false)
                           toast.error('Google sign-in failed')
                         })
@@ -483,7 +525,7 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
           <Reveal delay={0.16}>
             <p className="text-center text-xs text-muted-foreground mt-4">
               {copy.footer}{' '}
-              <Link href={copy.footerHref} className="font-medium text-primary-600 hover:underline inline-flex items-center gap-1">
+              <Link href={getAuthSwitchHref(copy.footerHref, nextPath)} className="font-medium text-primary-600 hover:underline inline-flex items-center gap-1">
                 {copy.footerLink}
                 <ArrowRight className="h-3 w-3" />
               </Link>
@@ -493,9 +535,9 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
           <Reveal delay={0.24}>
             <div className="flex items-center justify-center gap-3 mt-3 text-[11px] text-muted-foreground">
               <span>Free to start</span>
-              <span>·</span>
+              <span>&middot;</span>
               <span>No credit card</span>
-              <span>·</span>
+              <span>&middot;</span>
               <span>Cancel anytime</span>
             </div>
           </Reveal>

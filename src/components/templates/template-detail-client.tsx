@@ -213,6 +213,9 @@ export function TemplateDetailClient({ template }: Props) {
         }
         if (response.status === 401) {
           setAccessError('Please sign in again to continue downloading.')
+          toast.info('Please sign in again to download this template')
+          router.push(`/sign-in?next=/templates/${template.slug}`)
+          return
         }
         setDownloadError(data?.error || 'Download failed. Please try again.')
         return

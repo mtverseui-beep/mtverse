@@ -1,8 +1,9 @@
 'use client'
 
-import type { ComponentType } from 'react'
+import { useEffect, useState, type ComponentType } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { Github, Twitter, Mail, ArrowRight, LayoutGrid, PenTool, LayoutDashboard, ShoppingBag, Code2 } from 'lucide-react'
 import { SOCIAL_GITHUB, SOCIAL_TWITTER, SOCIAL_EMAIL } from '@/lib/site-social'
 
@@ -59,8 +60,32 @@ const SOCIAL_LINKS = [
   { name: 'Email', href: 'mailto:' + SOCIAL_EMAIL, icon: Mail },
 ]
 
+const AUTH_NEXT_BLOCKED_PATHS = ['/sign-in', '/sign-up', '/forgot-password', '/reset-password', '/admin-login', '/api']
+
+function getCurrentAuthNextPath() {
+  if (typeof window === 'undefined') return '/'
+
+  const pathname = window.location.pathname || '/'
+  const normalizedPathname = pathname.replace(/\/+$/, '') || '/'
+  const isBlocked = AUTH_NEXT_BLOCKED_PATHS.some((path) => normalizedPathname === path || normalizedPathname.startsWith(`${path}/`))
+
+  if (isBlocked) return '/account'
+  return `${pathname}${window.location.search}${window.location.hash}`
+}
+
+function getAuthHref(href: string, nextPath: string) {
+  if (href !== '/sign-in' && href !== '/sign-up') return href
+  return `${href}?next=${encodeURIComponent(nextPath || '/')}`
+}
+
 export default function Footer({ promptCount }: { promptCount?: number }) {
+  const pathname = usePathname()
   const year = new Date().getFullYear()
+  const [authNextPath, setAuthNextPath] = useState('/')
+
+  useEffect(() => {
+    setAuthNextPath(getCurrentAuthNextPath())
+  }, [pathname])
 
   return (
     <footer className="mt-auto border-t border-border/50 bg-[var(--ds-bg-sunken)]">
@@ -103,7 +128,7 @@ export default function Footer({ promptCount }: { promptCount?: number }) {
                   const Icon = link.icon
                   return (
                     <li key={link.name}>
-                      <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5">
+                      <Link href={getAuthHref(link.href, authNextPath)} className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5">
                         {Icon && <Icon className="h-3 w-3 opacity-60" />}
                         {link.name}
                       </Link>

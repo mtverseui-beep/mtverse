@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type CSSProperties } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight, Bot, CheckCircle2, Lightbulb, ListChecks, MessageSquareText, Sparkles, Target } from 'lucide-react'
@@ -60,6 +60,11 @@ function buildPromptFaqItems(prompt: PromptClientEntry) {
 
 function RelatedPromptCard({ prompt }: { prompt: PromptClientEntry }) {
   const [loadedAspectRatio, setLoadedAspectRatio] = useState<string | null>(null)
+
+  useEffect(() => {
+    setLoadedAspectRatio(null)
+  }, [prompt.slug, prompt.previewImage])
+
   const previewStyle = loadedAspectRatio
     ? ({ aspectRatio: loadedAspectRatio } satisfies CSSProperties)
     : getPreviewAspectStyle(prompt, '3 / 4')
@@ -115,14 +120,29 @@ export default function PromptDetailPage({
     { label: 'Visual style', value: prompt.visualStyle },
     { label: 'Category', value: prompt.categoryTitle },
   ].filter(item => item.value)
-  const relatedItems = relatedPrompts.slice(0, 24)
+  const relatedItems = useMemo(() => {
+    const seenSlugs = new Set([prompt.slug])
+
+    return relatedPrompts
+      .filter(related => {
+        if (!related.slug || seenSlugs.has(related.slug)) return false
+        seenSlugs.add(related.slug)
+        return true
+      })
+      .slice(0, 24)
+  }, [prompt.slug, relatedPrompts])
   const [loadedMainAspectRatio, setLoadedMainAspectRatio] = useState<string | null>(null)
   const mainPreviewStyle = loadedMainAspectRatio
     ? ({ aspectRatio: loadedMainAspectRatio } satisfies CSSProperties)
     : getPreviewAspectStyle(prompt, '4 / 5')
 
+  useEffect(() => {
+    setLoadedMainAspectRatio(null)
+  }, [prompt.slug, prompt.previewImage])
+
   return (
     <motion.div
+      key={prompt.slug}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.25 }}

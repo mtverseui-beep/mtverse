@@ -89,6 +89,23 @@ function UserAvatar({ user, size = 'sm' }: { user: NavUser; size?: 'sm' | 'md' |
   )
 }
 
+const AUTH_NEXT_BLOCKED_PATHS = ['/sign-in', '/sign-up', '/forgot-password', '/reset-password', '/admin-login', '/api']
+
+function getCurrentAuthNextPath() {
+  if (typeof window === 'undefined') return '/'
+
+  const pathname = window.location.pathname || '/'
+  const normalizedPathname = pathname.replace(/\/+$/, '') || '/'
+  const isBlocked = AUTH_NEXT_BLOCKED_PATHS.some((path) => normalizedPathname === path || normalizedPathname.startsWith(`${path}/`))
+
+  if (isBlocked) return '/account'
+  return `${pathname}${window.location.search}${window.location.hash}`
+}
+
+function getAuthHref(path: '/sign-in' | '/sign-up', nextPath: string) {
+  return `${path}?next=${encodeURIComponent(nextPath || '/')}`
+}
+
 export default function Navbar({ promptCount }: { promptCount?: number }) {
   const pathname = usePathname()
   const router = useRouter()
@@ -103,12 +120,37 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const [signingOut, setSigningOut] = useState(false)
+  const [authNextPath, setAuthNextPath] = useState('/')
   const searchInputRef = useRef<HTMLInputElement>(null)
   const userMenuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  useEffect(() => {
+    setAuthNextPath(getCurrentAuthNextPath())
+  }, [pathname])
+
+  useEffect(() => {
+    if (loading || !authenticated) return
+
+    const toastKind = window.sessionStorage.getItem('mtverse:auth-success-toast')
+    if (!toastKind) return
+
+    window.sessionStorage.removeItem('mtverse:auth-success-toast')
+
+    if (toastKind === 'sign-up') {
+      toast.success('Account created successfully', {
+        description: 'You are signed in now.',
+      })
+      return
+    }
+
+    toast.success('Logged in successfully', {
+      description: 'Welcome back to mtverse.',
+    })
+  }, [authenticated, loading])
 
   useEffect(() => {
     if (searchOpen) searchInputRef.current?.focus()
@@ -227,6 +269,8 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
   }
 
   const displayName = user ? getDisplayName(user) : ''
+  const signInHref = getAuthHref('/sign-in', authNextPath)
+  const signUpHref = getAuthHref('/sign-up', authNextPath)
 
   return (
     <>
@@ -448,16 +492,27 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
             ) : (
               <div className="hidden items-center gap-2 md:flex">
                 <Link
-                  href="/sign-in"
+                  href={signInHref}
                   className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Sign in
                 </Link>
-                <Link href="/sign-up" className="ds-btn ds-btn-primary ds-btn-sm">
+                <Link href={signUpHref} className="ds-btn ds-btn-primary ds-btn-sm">
                   Get started
                 </Link>
               </div>
             )}
+
+            {!loading && authenticated && user ? (
+              <Link
+                href="/account"
+                className="relative inline-flex h-9 w-9 items-center justify-center rounded-full md:hidden"
+                aria-label="Open account"
+              >
+                <UserAvatar user={user} />
+                <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-background bg-emerald-500" />
+              </Link>
+            ) : null}
 
             <Sheet>
               <SheetTrigger asChild>
@@ -565,12 +620,12 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
                   ) : (
                     <div className="space-y-2">
                       <SheetClose asChild>
-                        <Link href="/sign-in" className="ds-btn ds-btn-secondary w-full">
+                        <Link href={signInHref} className="ds-btn ds-btn-secondary w-full">
                           Sign in
                         </Link>
                       </SheetClose>
                       <SheetClose asChild>
-                        <Link href="/sign-up" className="ds-btn ds-btn-primary w-full">
+                        <Link href={signUpHref} className="ds-btn ds-btn-primary w-full">
                           <Sparkles className="h-4 w-4" />
                           Get started
                         </Link>
