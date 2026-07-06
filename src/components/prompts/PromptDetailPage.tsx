@@ -3,7 +3,7 @@
 import { useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowRight, Bot, CheckCircle2, ListChecks, Sparkles } from 'lucide-react'
+import { ArrowRight, Bot, CheckCircle2, Lightbulb, ListChecks, MessageSquareText, Sparkles, Target } from 'lucide-react'
 import PromptActions from '@/components/prompts/PromptActions'
 import PromptPreviewImage from '@/components/prompts/PromptPreviewImage'
 import type { PromptEntry } from '@/lib/prompt-library-data'
@@ -31,6 +31,31 @@ function getPreviewAspectStyle(prompt: Pick<PromptEntry, 'previewWidth' | 'previ
         ? `${Math.round(width)} / ${Math.round(height)}`
         : fallback,
   } satisfies CSSProperties
+}
+
+function compactList(items: string[], fallback: string) {
+  return items.length ? items.slice(0, 3).join(', ') : fallback
+}
+
+function buildPromptFaqItems(prompt: PromptClientEntry) {
+  const modelText = compactList(prompt.models, 'popular AI image and chat tools')
+  const useText = compactList(prompt.bestFor, prompt.categoryTitle.toLowerCase())
+  const tipText = prompt.tips[0] || 'Start with the prompt as written, then adjust subject, lighting, format, and constraints for your own result.'
+
+  return [
+    {
+      question: `What is ${prompt.title} best for?`,
+      answer: `${prompt.title} is best for ${useText}. It gives creators a copy-ready starting point with a clear visual direction and practical constraints.`,
+    },
+    {
+      question: `Which AI tools can use this prompt?`,
+      answer: `This prompt is structured for ${modelText}. You can also adapt it for similar image generation, photo editing, or creative workflow tools.`,
+    },
+    {
+      question: `How should I customize this prompt?`,
+      answer: tipText,
+    },
+  ]
 }
 
 function RelatedPromptCard({ prompt }: { prompt: PromptClientEntry }) {
@@ -82,6 +107,14 @@ export default function PromptDetailPage({
   const keywords = Array.from(new Set(prompt.tags)).slice(0, 10)
   const bestFor = prompt.bestFor.slice(0, 5)
   const workflow = prompt.workflow.slice(0, 4)
+  const tips = prompt.tips.slice(0, 4)
+  const examples = prompt.examples.filter(example => example.label && example.value).slice(0, 3)
+  const faqItems = buildPromptFaqItems(prompt)
+  const insightItems = [
+    { label: 'Audience', value: prompt.audience },
+    { label: 'Visual style', value: prompt.visualStyle },
+    { label: 'Category', value: prompt.categoryTitle },
+  ].filter(item => item.value)
   const relatedItems = relatedPrompts.slice(0, 24)
   const [loadedMainAspectRatio, setLoadedMainAspectRatio] = useState<string | null>(null)
   const mainPreviewStyle = loadedMainAspectRatio
@@ -213,6 +246,71 @@ export default function PromptDetailPage({
             <p className="mt-2 max-w-5xl text-[13px] leading-6 text-muted-foreground sm:text-sm sm:leading-7">
               {prompt.description}
             </p>
+          </section>
+
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.72fr)]">
+            {tips.length > 0 ? (
+              <section className="rounded-md border border-border/80 bg-card p-3.5 shadow-sm shadow-slate-950/[0.03] sm:p-5 dark:shadow-black/10">
+                <h2 className="flex items-center gap-2 text-[13px] font-black text-foreground sm:text-sm">
+                  <Lightbulb className="h-4 w-4 text-primary" />
+                  Quality tips
+                </h2>
+                <ul className="mt-3 space-y-2">
+                  {tips.map(item => (
+                    <li key={item} className="flex gap-2 text-[13px] leading-5 text-muted-foreground sm:text-sm sm:leading-6">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            {insightItems.length > 0 ? (
+              <section className="rounded-md border border-border/80 bg-card p-3.5 shadow-sm shadow-slate-950/[0.03] sm:p-5 dark:shadow-black/10">
+                <h2 className="flex items-center gap-2 text-[13px] font-black text-foreground sm:text-sm">
+                  <Target className="h-4 w-4 text-primary" />
+                  Prompt profile
+                </h2>
+                <dl className="mt-3 space-y-3">
+                  {insightItems.map(item => (
+                    <div key={item.label}>
+                      <dt className="text-[10px] font-black uppercase tracking-[0.14em] text-muted-foreground">{item.label}</dt>
+                      <dd className="mt-1 text-[13px] leading-5 text-foreground sm:text-sm sm:leading-6">{item.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+            ) : null}
+          </div>
+
+          {examples.length > 0 ? (
+            <section className="rounded-md border border-border/80 bg-card p-3.5 shadow-sm shadow-slate-950/[0.03] sm:p-5 dark:shadow-black/10">
+              <h2 className="flex items-center gap-2 text-[13px] font-black text-foreground sm:text-sm">
+                <MessageSquareText className="h-4 w-4 text-primary" />
+                Expected result examples
+              </h2>
+              <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                {examples.map(example => (
+                  <div key={`${example.label}-${example.value}`} className="rounded-md border border-border bg-[var(--surface-sunken)] p-3">
+                    <div className="text-[11px] font-black uppercase tracking-[0.12em] text-primary">{example.label}</div>
+                    <p className="mt-1 text-[13px] leading-5 text-muted-foreground sm:text-sm sm:leading-6">{example.value}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
+          <section className="rounded-md border border-border/80 bg-card p-3.5 shadow-sm shadow-slate-950/[0.03] sm:p-5 dark:shadow-black/10">
+            <h2 className="text-[13px] font-black text-foreground sm:text-sm">Prompt FAQ</h2>
+            <div className="mt-3 grid gap-3 md:grid-cols-3">
+              {faqItems.map(item => (
+                <div key={item.question} className="rounded-md border border-border bg-[var(--surface-sunken)] p-3">
+                  <h3 className="text-[13px] font-black leading-5 text-foreground">{item.question}</h3>
+                  <p className="mt-2 text-[12px] leading-5 text-muted-foreground sm:text-[13px]">{item.answer}</p>
+                </div>
+              ))}
+            </div>
           </section>
 
           {keywords.length > 0 ? (

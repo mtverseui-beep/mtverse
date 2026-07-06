@@ -6,6 +6,7 @@ import {
   PROMPT_MODELS,
   type PromptCategory,
   type PromptEntry,
+  type PromptExample,
   type PromptModelId,
 } from '@/lib/prompt-library-data'
 import { getPromptPreviewDefault, isPromptPlaceholderPreview } from '@/lib/prompt-preview-images'
@@ -17,6 +18,7 @@ import {
   saveLocalPrompts,
   type PromptDeleteTarget,
 } from '@/lib/prompt-local-store'
+import { buildPromptSeoAutofill } from '@/lib/prompt-seo-autofill'
 import { isCloudflarePromptImageUrl } from '@/lib/prompt-image-hosts'
 import { slugify } from '@/lib/utils'
 
@@ -87,6 +89,21 @@ function asStringArray(value: unknown) {
   return Array.isArray(value) ? value.filter((entry): entry is string => typeof entry === 'string') : []
 }
 
+function asPromptExamples(value: unknown): PromptExample[] {
+  if (!Array.isArray(value)) return []
+
+  return value.flatMap(entry => {
+    if (!entry || typeof entry !== 'object') return []
+    const record = entry as Record<string, unknown>
+    const label = asString(record.label) || asString(record.title)
+    const exampleValue = asString(record.value) || asString(record.prompt) || asString(record.output)
+
+    if (!label || !exampleValue) return []
+
+    return [{ label, value: exampleValue }]
+  })
+}
+
 function asPositiveInteger(value: unknown) {
   const numberValue = typeof value === 'number'
     ? value
@@ -104,6 +121,15 @@ function normalizeTopic(value: string) {
 
 function normalizePromptBody(value: string) {
   return value.toLowerCase().replace(/\s+/g, ' ').trim()
+}
+
+function countWords(value: string) {
+  return normalizePromptBody(value).split(/\s+/).filter(Boolean).length
+}
+
+function isUsefulText(value: string, minLength = 1) {
+  const normalized = normalizePromptBody(value)
+  return normalized.length >= minLength && normalized !== 'premium prompt entry.'
 }
 
 export function validatePromptEntryInput(prompt: PromptEntry) {
@@ -164,6 +190,49 @@ function sortAdminPrompts(prompts: PromptEntry[]) {
   })
 }
 
+function withPromptSeoFallbacks(prompt: PromptEntry): PromptEntry {
+  const needsAutofill =
+    !isUsefulText(prompt.seoTitle, 24) ||
+    !isUsefulText(prompt.metaDescription, 90) ||
+    !isUsefulText(prompt.summary, 80) ||
+    !isUsefulText(prompt.description, 140) ||
+    !isUsefulText(prompt.audience, 20) ||
+    !isUsefulText(prompt.visualStyle, 20) ||
+    prompt.tags.length < 5 ||
+    prompt.bestFor.length < 3 ||
+    prompt.workflow.length < 3 ||
+    prompt.tips.length < 2 ||
+    prompt.examples.length < 2
+
+  if (!needsAutofill || !isUsefulText(prompt.prompt, 20)) return prompt
+
+  try {
+    const generated = buildPromptSeoAutofill({
+      prompt,
+      categories: PROMPT_CATEGORIES,
+      existingPrompts: [],
+    }).prompt
+
+    return {
+      ...prompt,
+      seoTitle: isUsefulText(prompt.seoTitle, 24) ? prompt.seoTitle : generated.seoTitle,
+      metaDescription: isUsefulText(prompt.metaDescription, 90) ? prompt.metaDescription : generated.metaDescription,
+      summary: isUsefulText(prompt.summary, 80) ? prompt.summary : generated.summary,
+      description: isUsefulText(prompt.description, 140) ? prompt.description : generated.description,
+      tags: prompt.tags.length >= 5 ? prompt.tags : generated.tags,
+      audience: isUsefulText(prompt.audience, 20) ? prompt.audience : generated.audience,
+      visualStyle: isUsefulText(prompt.visualStyle, 20) ? prompt.visualStyle : generated.visualStyle,
+      previewAlt: isUsefulText(prompt.previewAlt, 20) ? prompt.previewAlt : generated.previewAlt,
+      bestFor: prompt.bestFor.length >= 3 ? prompt.bestFor : generated.bestFor,
+      workflow: prompt.workflow.length >= 3 ? prompt.workflow : generated.workflow,
+      tips: prompt.tips.length >= 2 ? prompt.tips : generated.tips,
+      examples: prompt.examples.length >= 2 ? prompt.examples : generated.examples,
+    }
+  } catch {
+    return prompt
+  }
+}
+
 function normalizePromptEntry(prompt: PromptEntry): PromptEntry {
   const fallbackPreview = getPromptPreviewDefault(prompt.category)
   const previewImage = normalizePreviewImageUrl(asString(prompt.previewImage))
@@ -179,7 +248,7 @@ function normalizePromptEntry(prompt: PromptEntry): PromptEntry {
   const forcedDetails = FORCED_PROMPT_DETAILS[slug]
   const resolvedTitle = forcedDetails?.title || title
 
-  return {
+  const normalizedPrompt = {
     ...prompt,
     id: asString(prompt.id) || `prompt-${slug}`,
     slug,
@@ -208,10 +277,12 @@ function normalizePromptEntry(prompt: PromptEntry): PromptEntry {
     bestFor: asStringArray(prompt.bestFor),
     workflow: asStringArray(prompt.workflow),
     tips: asStringArray(prompt.tips),
-    examples: Array.isArray(prompt.examples) ? prompt.examples : [],
+    examples: asPromptExamples(prompt.examples),
     relatedSlugs: asStringArray(prompt.relatedSlugs),
     updatedAt: asString(prompt.updatedAt) || new Date().toISOString().slice(0, 10),
   }
+
+  return withPromptSeoFallbacks(normalizedPrompt)
 }
 
 function buildRelatedSlugs(entry: PromptEntry, prompts: PromptEntry[], limit = 4) {
@@ -346,13 +417,36 @@ export async function getPublishedPrompts(options: { noStore?: boolean } = {}) {
 }
 
 export function isPromptIndexable(
-  prompt: Pick<PromptEntry, 'slug' | 'title' | 'metaDescription' | 'prompt' | 'previewImage'>
+  prompt: Pick<
+    PromptEntry,
+    | 'slug'
+    | 'title'
+    | 'metaDescription'
+    | 'summary'
+    | 'description'
+    | 'prompt'
+    | 'previewImage'
+    | 'previewAlt'
+    | 'models'
+    | 'tags'
+    | 'bestFor'
+    | 'workflow'
+    | 'tips'
+  >
 ) {
   return Boolean(
     prompt.slug &&
     prompt.title &&
-    prompt.metaDescription &&
-    prompt.prompt &&
+    isUsefulText(prompt.metaDescription, 90) &&
+    isUsefulText(prompt.summary, 80) &&
+    isUsefulText(prompt.description, 140) &&
+    countWords(prompt.prompt) >= 8 &&
+    isUsefulText(prompt.previewAlt, 16) &&
+    prompt.models.length >= 1 &&
+    prompt.tags.length >= 4 &&
+    prompt.bestFor.length >= 3 &&
+    prompt.workflow.length >= 3 &&
+    prompt.tips.length >= 2 &&
     hasPublicPromptPreview(prompt.previewImage)
   )
 }

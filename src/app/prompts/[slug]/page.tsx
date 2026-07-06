@@ -70,10 +70,36 @@ const getPromptPageData = cache(async (slug: string) => {
   }
 })
 
+function compactList(items: string[], fallback: string) {
+  return items.length ? items.slice(0, 3).join(', ') : fallback
+}
+
+function buildPromptFaqItems(prompt: PromptEntry) {
+  const modelText = compactList(prompt.models, 'popular AI image and chat tools')
+  const useText = compactList(prompt.bestFor, prompt.categoryTitle.toLowerCase())
+  const tipText = prompt.tips[0] || 'Start with the prompt as written, then adjust subject, lighting, format, and constraints for your own result.'
+
+  return [
+    {
+      question: `What is ${prompt.title} best for?`,
+      answer: `${prompt.title} is best for ${useText}. It gives creators a copy-ready starting point with a clear visual direction and practical constraints.`,
+    },
+    {
+      question: `Which AI tools can use this prompt?`,
+      answer: `This prompt is structured for ${modelText}. You can also adapt it for similar image generation, photo editing, or creative workflow tools.`,
+    },
+    {
+      question: `How should I customize this prompt?`,
+      answer: tipText,
+    },
+  ]
+}
+
 function buildPromptStructuredData(baseUrl: string, prompt: PromptEntry) {
   const pageUrl = `${baseUrl}/prompts/${prompt.slug}`
   const promptKeywords = buildPromptSeoKeywords(prompt)
   const promptDescription = buildPromptSeoDescription(prompt)
+  const promptFaqItems = buildPromptFaqItems(prompt)
 
   return {
     '@context': 'https://schema.org',
@@ -117,6 +143,17 @@ function buildPromptStructuredData(baseUrl: string, prompt: PromptEntry) {
           name: 'mtverse',
           logo: { '@type': 'ImageObject', url: `${baseUrl}/SiteLogo.png` },
         },
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: promptFaqItems.map(item => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
       },
     ],
   }
