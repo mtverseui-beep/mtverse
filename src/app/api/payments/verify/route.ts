@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPlanByProviderTransactionId, setPlan } from '@/lib/plan-store'
 import { isMockPaymentAllowed, verifyPaymentFromSearchParams } from '@/lib/payments'
+import { getVerifiedPaddleTransaction } from '@/lib/paddle-transaction'
 import { recordTemplatePurchase, setFreeUnlocked } from '@/lib/template-social-store'
 
 function shouldRecordTemplatePurchase(packageId: string | null | undefined, kitSlug: string | null) {
@@ -51,6 +52,34 @@ export async function GET(request: NextRequest) {
         plan: record.plan,
         packageId: record.packageId || result.packageId,
         email: record.email,
+        mock: false,
+      })
+    }
+
+    const verifiedTransaction = await getVerifiedPaddleTransaction(transactionId)
+    if (verifiedTransaction) {
+      if (verifiedTransaction.packageId === 'free-unlock') {
+        await setFreeUnlocked(verifiedTransaction.email)
+      } else if (verifiedTransaction.kitSlug) {
+        await recordTemplatePurchase(verifiedTransaction.kitSlug, verifiedTransaction.email)
+      }
+
+      const createdRecord = await setPlan(
+        verifiedTransaction.email,
+        verifiedTransaction.plan,
+        undefined,
+        verifiedTransaction.transactionId,
+        verifiedTransaction.customerId,
+        'paddle',
+        verifiedTransaction.packageId
+      )
+
+      return NextResponse.json({
+        ...result,
+        valid: true,
+        plan: createdRecord.plan,
+        packageId: verifiedTransaction.packageId,
+        email: createdRecord.email,
         mock: false,
       })
     }

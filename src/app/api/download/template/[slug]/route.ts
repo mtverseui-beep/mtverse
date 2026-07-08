@@ -122,7 +122,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
       hasTemplatePurchase(slug, email),
     ])
 
-    if (!canDownloadTemplate(planRecord) || !purchased) {
+    if (!purchased) {
       return NextResponse.json({ error: 'This template is not included in your purchase.' }, { status: 403 })
     }
   }
@@ -204,3 +204,4 @@ export async function GET(request: NextRequest, context: RouteContext) {
     return NextResponse.json({ error: 'Template download failed.' }, { status: 502 })
   }
 }
+

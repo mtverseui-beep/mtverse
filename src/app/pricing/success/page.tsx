@@ -1,10 +1,11 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { AlertTriangle, ArrowRight, CheckCircle2 } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { PackageDownloadButton } from '@/components/payment/package-download-button'
 import { getPlanByProviderTransactionId, setPlan } from '@/lib/plan-store'
 import { isMockPaymentAllowed, verifyPaymentFromSearchParams } from '@/lib/payments'
+import { getVerifiedPaddleTransaction } from '@/lib/paddle-transaction'
 import { recordTemplatePurchase, setFreeUnlocked } from '@/lib/template-social-store'
 
 export const dynamic = 'force-dynamic'
@@ -58,11 +59,39 @@ async function verifySuccess(searchParams: URLSearchParams) {
 
     const record = await getPlanByProviderTransactionId(transactionId)
     if (!record) {
+      const verifiedTransaction = await getVerifiedPaddleTransaction(transactionId)
+      if (!verifiedTransaction) {
+        return {
+          ...result,
+          valid: false,
+          pending: true,
+          error: 'Paddle payment confirmation is still processing.',
+        }
+      }
+
+      if (verifiedTransaction.packageId === 'free-unlock') {
+        await setFreeUnlocked(verifiedTransaction.email)
+      } else if (verifiedTransaction.kitSlug) {
+        await recordTemplatePurchase(verifiedTransaction.kitSlug, verifiedTransaction.email)
+      }
+
+      const createdRecord = await setPlan(
+        verifiedTransaction.email,
+        verifiedTransaction.plan,
+        undefined,
+        verifiedTransaction.transactionId,
+        verifiedTransaction.customerId,
+        'paddle',
+        verifiedTransaction.packageId
+      )
+
       return {
         ...result,
-        valid: false,
-        pending: true,
-        error: 'Paddle payment confirmation is still processing.',
+        valid: true,
+        plan: createdRecord.plan,
+        packageId: verifiedTransaction.packageId,
+        email: createdRecord.email,
+        mock: false,
       }
     }
 

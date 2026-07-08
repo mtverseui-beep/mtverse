@@ -59,7 +59,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
     })
   }
 
-  // Paid template flow (unchanged)
+  // Paid template flow
   const [planRecord, purchased] = await Promise.all([
     getPlan(email),
     hasTemplatePurchase(slug, email),
@@ -67,7 +67,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
   return NextResponse.json({
     authenticated: true,
-    canDownload: canDownloadTemplate(planRecord) && purchased,
+    canDownload: purchased,
     isFree: false,
   })
 }
+
