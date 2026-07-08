@@ -251,6 +251,14 @@ export type AdminTemplateReview = TemplateReview & {
   slug: string
 }
 
+export type AdminTemplatePurchase = {
+  email: string
+  slug: string
+  count: number
+  firstPurchasedAt: string
+  lastPurchasedAt: string
+}
+
 function nowIso() {
   return new Date().toISOString()
 }
@@ -684,6 +692,25 @@ export async function hasTemplatePurchase(slug: string, emailInput: string | nul
 
   const store = await readStore()
   return Boolean(store.users[email]?.purchases[normalizeSlug(slug)])
+}
+
+export async function getAllTemplatePurchases(): Promise<AdminTemplatePurchase[]> {
+  const store = await readStore()
+  const purchases: AdminTemplatePurchase[] = []
+
+  for (const userRecord of Object.values(store.users)) {
+    for (const [slug, purchase] of Object.entries(userRecord.purchases || {})) {
+      purchases.push({
+        email: userRecord.email,
+        slug,
+        count: purchase.count,
+        firstPurchasedAt: purchase.firstPurchasedAt,
+        lastPurchasedAt: purchase.lastPurchasedAt,
+      })
+    }
+  }
+
+  return purchases.sort((left, right) => right.lastPurchasedAt.localeCompare(left.lastPurchasedAt))
 }
 
 export async function isTemplateSaved(slug: string, emailInput: string | null | undefined) {
