@@ -14,6 +14,7 @@ import {
   hasFreeDownload,
   hasTemplatePurchase,
   recordFreeDownload,
+  recordTemplateDownload,
 } from '@/lib/template-social-store'
 
 export const runtime = 'nodejs'
@@ -139,6 +140,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
     const freeDownloadError = await recordFreeDownloadIfNeeded(shouldRecordFreeDownload, slug, email)
     if (freeDownloadError) return freeDownloadError
+    if (!kit.isFree) await recordTemplateDownload(slug, email)
 
     const fileStats = await stat(localPackagePath)
     const headers = new Headers({
@@ -182,6 +184,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
     const freeDownloadError = await recordFreeDownloadIfNeeded(shouldRecordFreeDownload, slug, email)
     if (freeDownloadError) return freeDownloadError
+    if (!kit.isFree) await recordTemplateDownload(slug, email)
 
     const headers = new Headers({
       'Content-Type': object.ContentType || 'application/zip',

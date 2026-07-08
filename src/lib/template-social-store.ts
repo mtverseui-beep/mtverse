@@ -200,6 +200,12 @@ type UserTemplatePurchase = {
   lastPurchasedAt: string
 }
 
+type UserTemplateDownload = {
+  count: number
+  firstDownloadedAt: string
+  lastDownloadedAt: string
+}
+
 type SavedTemplateRecord = {
   savedAt: string
 }
@@ -223,6 +229,7 @@ type TemplateUserRecord = {
   purchases: Record<string, UserTemplatePurchase>
   reviews: Record<string, string[]>
   savedTemplates: Record<string, SavedTemplateRecord>
+  downloadedTemplates: Record<string, UserTemplateDownload>
   freeDownloads: FreeDownloadRecord
   updatedAt: string
 }
@@ -257,6 +264,24 @@ export type AdminTemplatePurchase = {
   count: number
   firstPurchasedAt: string
   lastPurchasedAt: string
+}
+
+export type AdminTemplateDownload = {
+  slug: string
+  count: number
+  firstDownloadedAt: string
+  lastDownloadedAt: string
+}
+
+export type AdminTemplateUserSummary = {
+  email: string
+  purchases: AdminTemplatePurchase[]
+  downloads: AdminTemplateDownload[]
+  freeDownloadSlugs: string[]
+  freeDownloadCount: number
+  freeUnlocked: boolean
+  savedTemplateSlugs: string[]
+  updatedAt: string
 }
 
 function nowIso() {
@@ -380,11 +405,21 @@ function normalizePurchase(purchase: UserTemplatePurchase | undefined): UserTemp
   }
 }
 
+function normalizeDownload(download: UserTemplateDownload | undefined): UserTemplateDownload | null {
+  if (!download) return null
+  const count = Math.max(1, Math.floor(Number(download.count) || 1))
+  return {
+    count,
+    firstDownloadedAt: sanitizeText(download.firstDownloadedAt, 40) || nowIso(),
+    lastDownloadedAt: sanitizeText(download.lastDownloadedAt, 40) || nowIso(),
+  }
+}
 function normalizeUserRecord(emailKey: string, record: Partial<TemplateUserRecord> | undefined): TemplateUserRecord {
   const email = normalizeEmail(record?.email || emailKey)
   const purchases: Record<string, UserTemplatePurchase> = {}
   const reviews: Record<string, string[]> = {}
   const savedTemplates: Record<string, SavedTemplateRecord> = {}
+  const downloadedTemplates: Record<string, UserTemplateDownload> = {}
 
   for (const [slug, purchase] of Object.entries(record?.purchases || {})) {
     const normalized = normalizePurchase(purchase)
@@ -405,11 +440,17 @@ function normalizeUserRecord(emailKey: string, record: Partial<TemplateUserRecor
     }
   }
 
+  for (const [slug, download] of Object.entries(record?.downloadedTemplates || {})) {
+    const normalized = normalizeDownload(download)
+    if (normalized) downloadedTemplates[normalizeSlug(slug)] = normalized
+  }
+
   return {
     email,
     purchases,
     reviews,
     savedTemplates,
+    downloadedTemplates,
     freeDownloads: {
       count: Math.max(0, Math.floor(Number(record?.freeDownloads?.count) || 0)),
       slugs: Array.isArray(record?.freeDownloads?.slugs)
@@ -529,6 +570,7 @@ function getUserRecord(store: TemplateSocialStoreData, email: string) {
       purchases: {},
       reviews: {},
       savedTemplates: {},
+      downloadedTemplates: {},
       updatedAt: nowIso(),
     })
   }
@@ -711,6 +753,65 @@ export async function getAllTemplatePurchases(): Promise<AdminTemplatePurchase[]
   }
 
   return purchases.sort((left, right) => right.lastPurchasedAt.localeCompare(left.lastPurchasedAt))
+}
+
+export async function getTemplateUserSummariesForAdmin(): Promise<AdminTemplateUserSummary[]> {
+  const store = await readStore()
+
+  return Object.values(store.users)
+    .map((userRecord) => ({
+      email: userRecord.email,
+      purchases: Object.entries(userRecord.purchases || {}).map(([slug, purchase]) => ({
+        email: userRecord.email,
+        slug,
+        count: purchase.count,
+        firstPurchasedAt: purchase.firstPurchasedAt,
+        lastPurchasedAt: purchase.lastPurchasedAt,
+      })),
+      downloads: Object.entries(userRecord.downloadedTemplates || {}).map(([slug, download]) => ({
+        slug,
+        count: download.count,
+        firstDownloadedAt: download.firstDownloadedAt,
+        lastDownloadedAt: download.lastDownloadedAt,
+      })),
+      freeDownloadSlugs: userRecord.freeDownloads?.slugs || [],
+      freeDownloadCount: userRecord.freeDownloads?.count || 0,
+      freeUnlocked: Boolean(userRecord.freeDownloads?.unlockedAt),
+      savedTemplateSlugs: Object.keys(userRecord.savedTemplates || {}),
+      updatedAt: userRecord.updatedAt,
+    }))
+    .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt))
+}
+
+export async function recordTemplateDownload(slug: string, emailInput: string) {
+  const safeSlug = normalizeSlug(slug)
+  const email = normalizeEmail(emailInput)
+  if (!safeSlug || !email) return null
+
+  const store = await readStore()
+  const userRecord = getUserRecord(store, email)
+  const now = nowIso()
+  const existingDownload = userRecord.downloadedTemplates[safeSlug]
+
+  if (existingDownload) {
+    userRecord.downloadedTemplates[safeSlug] = {
+      ...existingDownload,
+      count: Math.max(1, existingDownload.count) + 1,
+      lastDownloadedAt: now,
+    }
+  } else {
+    userRecord.downloadedTemplates[safeSlug] = {
+      count: 1,
+      firstDownloadedAt: now,
+      lastDownloadedAt: now,
+    }
+  }
+
+  userRecord.updatedAt = now
+  store.users[email] = userRecord
+  await writeStore(store)
+
+  return userRecord.downloadedTemplates[safeSlug]
 }
 
 export async function isTemplateSaved(slug: string, emailInput: string | null | undefined) {
