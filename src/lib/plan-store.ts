@@ -20,6 +20,7 @@ interface PlanRecord {
   providerTransactionId?: string
   providerCustomerId?: string
   packageId?: string
+  purchases?: string[]
   createdAt: string
   updatedAt: string
 }
@@ -31,6 +32,50 @@ interface PlanStoreData {
 
 function emptyStore(): PlanStoreData {
   return { plans: {}, licenses: {} }
+}
+
+const PLAN_RANK: Record<PlanLevel, number> = {
+  free: 0,
+  pro: 1,
+  business: 2,
+  extended: 3,
+}
+
+function resolvePlanLevel(incoming: PlanLevel, existing?: PlanLevel): PlanLevel {
+  if (!existing) return incoming
+  return PLAN_RANK[incoming] >= PLAN_RANK[existing] ? incoming : existing
+}
+
+function normalizePackageId(value: string | undefined) {
+  return value?.trim() || undefined
+}
+
+function mergePurchaseIds(existing: PlanRecord | undefined, incomingPackageId: string | undefined) {
+  const purchases = new Set<string>()
+  for (const value of existing?.purchases || []) {
+    const normalized = normalizePackageId(value)
+    if (normalized) purchases.add(normalized)
+  }
+  const existingPackageId = normalizePackageId(existing?.packageId)
+  if (existingPackageId) purchases.add(existingPackageId)
+  const incoming = normalizePackageId(incomingPackageId)
+  if (incoming) purchases.add(incoming)
+  return Array.from(purchases)
+}
+
+function resolvePackageId(existing: PlanRecord | undefined, incomingPackageId: string | undefined) {
+  const existingPackageId = normalizePackageId(existing?.packageId)
+  const incoming = normalizePackageId(incomingPackageId)
+  if (existingPackageId === 'all-paid') return existingPackageId
+  if (incoming === 'all-paid') return incoming
+  return incoming || existingPackageId
+}
+
+export function hasPlanPackageAccess(record: PlanRecord | null | undefined, packageId: string) {
+  if (!record || record.status === 'revoked') return false
+  if (record.packageId === 'all-paid') return true
+  if (record.packageId === packageId) return true
+  return Boolean(record.purchases?.includes(packageId))
 }
 
 async function ensureStoreFile(): Promise<void> {
@@ -133,13 +178,14 @@ export async function setPlan(
 
   const record: PlanRecord = {
     email: normalizedEmail,
-    plan,
+    plan: resolvePlanLevel(plan, existing?.plan),
     licenseKey: key,
     status: 'active',
     provider: provider || existing?.provider,
     providerTransactionId: providerTransactionId || existing?.providerTransactionId,
     providerCustomerId: providerCustomerId || existing?.providerCustomerId,
-    packageId: packageId || existing?.packageId,
+    packageId: resolvePackageId(existing, packageId),
+    purchases: mergePurchaseIds(existing, packageId),
     createdAt: existing?.createdAt || now,
     updatedAt: now,
   }

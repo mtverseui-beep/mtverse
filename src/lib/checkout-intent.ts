@@ -17,7 +17,6 @@ function readSigningSecret() {
   return (
     process.env.CUSTOMER_SESSION_SECRET?.trim() ||
     process.env.NEXTAUTH_SECRET?.trim() ||
-    process.env.ADMIN_SESSION_SECRET?.trim() ||
     ''
   )
 }

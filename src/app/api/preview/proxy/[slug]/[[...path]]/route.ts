@@ -38,6 +38,28 @@ function getOrigin(urlStr: string) {
   }
 }
 
+function isAllowedPreviewUrl(value: string) {
+  try {
+    const url = new URL(value)
+    const hostname = url.hostname.toLowerCase()
+
+    if (url.protocol !== 'https:' && !(process.env.NODE_ENV !== 'production' && url.protocol === 'http:')) {
+      return false
+    }
+
+    if (process.env.NODE_ENV !== 'production' && ['localhost', '127.0.0.1', '::1'].includes(hostname)) {
+      return true
+    }
+
+    if (hostname === 'mtverse.dev' || hostname === 'www.mtverse.dev' || hostname.endsWith('.mtverse.dev')) {
+      return true
+    }
+
+    return hostname.endsWith('.vercel.app')
+  } catch {
+    return false
+  }
+}
 function injectBaseTag(html: string, baseUrl: string): string {
   // Inject <base href="..."> into <head> so all relative URLs resolve against the origin
   const baseTag = `<base href="${baseUrl}/">`
@@ -63,6 +85,10 @@ async function proxyRequest(request: NextRequest, context: RouteContext) {
   }
 
   const previewUrl = getPreviewUrl(kit)
+  if (!isAllowedPreviewUrl(previewUrl)) {
+    return NextResponse.json({ error: 'Preview domain is not allowed.' }, { status: 403 })
+  }
+
   const targetUrl = appendPath(previewUrl, path)
   targetUrl.search = request.nextUrl.search
 

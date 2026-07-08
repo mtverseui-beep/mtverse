@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentCustomerEmail } from '@/lib/auth/current-customer'
 import { getCloudflareR2Config, isCloudflareR2Configured } from '@/lib/cloudflare-r2'
 import { getDashboardKit } from '@/lib/dashboard-kit-store'
-import { getPlan } from '@/lib/plan-store'
+import { getPlan, hasPlanPackageAccess } from '@/lib/plan-store'
 import {
   FreeDownloadLimitError,
   getFreeDownloadStatus,
@@ -29,13 +29,8 @@ type RouteContext = {
 const LOCAL_TEMPLATE_PACKAGE_ROOT = resolve(join(process.cwd(), 'data'))
 const ALL_PAID_BUNDLE_PACKAGE_ID = 'all-paid'
 
-function canDownloadTemplate(record: Awaited<ReturnType<typeof getPlan>>) {
-  if (!record) return false
-  return record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'
-}
-
 function hasAllPaidTemplatesAccess(record: Awaited<ReturnType<typeof getPlan>>) {
-  return Boolean(record?.packageId === ALL_PAID_BUNDLE_PACKAGE_ID)
+  return hasPlanPackageAccess(record, ALL_PAID_BUNDLE_PACKAGE_ID)
 }
 
 function resolveLocalTemplatePackagePath(packageKey: string | undefined) {
@@ -111,8 +106,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
       getFreeDownloadStatus(email),
     ])
 
-    const hasPaidPlan = canDownloadTemplate(planRecord)
-    const canDl = hasPaidPlan || freeStatus.unlocked || alreadyDownloaded || !freeStatus.limitReached
+    const canDl = freeStatus.unlocked || alreadyDownloaded || !freeStatus.limitReached
 
     if (!canDl) {
       return NextResponse.json(
@@ -121,7 +115,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
       )
     }
 
-    shouldRecordFreeDownload = !alreadyDownloaded && !hasPaidPlan
+    shouldRecordFreeDownload = !alreadyDownloaded && !freeStatus.unlocked
   } else {
     const [planRecord, purchased] = await Promise.all([
       getPlan(email),

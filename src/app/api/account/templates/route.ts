@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentCustomerEmail } from '@/lib/auth/current-customer'
-import { getPlan } from '@/lib/plan-store'
+import { getPlan, hasPlanPackageAccess } from '@/lib/plan-store'
 import { getPublishedPrompts } from '@/lib/prompt-db'
 import { getSavedPromptRecords } from '@/lib/prompt-social-store'
 import { getAllTemplatesFromStore } from '@/lib/templates-data'
@@ -8,13 +8,8 @@ import { getFreeDownloadStatus, getSavedTemplateSlugs, hasTemplatePurchase } fro
 
 export const dynamic = 'force-dynamic'
 
-function canDownloadTemplate(record: Awaited<ReturnType<typeof getPlan>>) {
-  if (!record) return false
-  return record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'
-}
-
 function hasAllPaidBundleAccess(record: Awaited<ReturnType<typeof getPlan>>) {
-  return record?.packageId === 'all-paid'
+  return hasPlanPackageAccess(record, 'all-paid')
 }
 
 export async function GET(request: NextRequest) {
@@ -33,8 +28,6 @@ export async function GET(request: NextRequest) {
     getSavedPromptRecords(email),
   ])
   const purchasedFlags = await Promise.all(templates.map((template) => hasTemplatePurchase(template.slug, email)))
-
-  const paidTemplateAccess = canDownloadTemplate(planRecord)
   const allPaidBundleAccess = hasAllPaidBundleAccess(planRecord)
   const savedSet = new Set(savedSlugs)
   const freeDownloadedSet = new Set(freeStatus.slugs)
@@ -62,7 +55,6 @@ export async function GET(request: NextRequest) {
       const purchased = !template.isFree && (purchasedFlags[index] || allPaidBundleAccess)
       const freeDownloaded = template.isFree && freeDownloadedSet.has(template.slug)
       const canDownloadFreeTemplate = template.isFree && (
-        paidTemplateAccess ||
         freeStatus.unlocked ||
         freeDownloaded ||
         !freeStatus.limitReached

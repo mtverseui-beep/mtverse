@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentCustomerEmail } from '@/lib/auth/current-customer'
-import { getPlan } from '@/lib/plan-store'
+import { getPlan, hasPlanPackageAccess } from '@/lib/plan-store'
 import { getTemplateBySlugFromStore } from '@/lib/templates-data'
 import { hasTemplatePurchase, getFreeDownloadStatus, hasFreeDownload } from '@/lib/template-social-store'
 
@@ -12,13 +12,8 @@ type RouteContext = {
   }>
 }
 
-function canDownloadTemplate(record: Awaited<ReturnType<typeof getPlan>>) {
-  if (!record) return false
-  return record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'
-}
-
 function hasAllPaidBundleAccess(record: Awaited<ReturnType<typeof getPlan>>) {
-  return record?.packageId === 'all-paid'
+  return hasPlanPackageAccess(record, 'all-paid')
 }
 
 export async function GET(request: NextRequest, context: RouteContext) {
@@ -46,19 +41,15 @@ export async function GET(request: NextRequest, context: RouteContext) {
       hasFreeDownload(slug, email),
     ])
 
-    // Paid plan users get unlimited free downloads
-    const hasPaidPlan = canDownloadTemplate(planRecord)
-
-    // Can download if: has paid plan, free unlocked, already downloaded, or still has remaining
-    const canDl = hasPaidPlan || freeStatus.unlocked || alreadyDownloaded || !freeStatus.limitReached
+    const canDl = freeStatus.unlocked || alreadyDownloaded || !freeStatus.limitReached
 
     return NextResponse.json({
       authenticated: true,
       canDownload: canDl,
       isFree: true,
-      freeRemaining: hasPaidPlan || freeStatus.unlocked ? 999 : freeStatus.remaining,
-      freeLimitReached: !hasPaidPlan && !freeStatus.unlocked && !alreadyDownloaded && freeStatus.limitReached,
-      freeUnlocked: hasPaidPlan || freeStatus.unlocked,
+      freeRemaining: freeStatus.unlocked ? 999 : freeStatus.remaining,
+      freeLimitReached: !freeStatus.unlocked && !alreadyDownloaded && freeStatus.limitReached,
+      freeUnlocked: freeStatus.unlocked,
       alreadyDownloaded,
     })
   }

@@ -1,4 +1,4 @@
-﻿import 'server-only'
+import 'server-only'
 
 import { createPaddleCheckoutPayload, type PaddleCheckoutPayload } from './paddle'
 import { getProductPackage, isPackageId, type PackageId } from './packages'
@@ -38,7 +38,7 @@ export function getPaymentProvider(): PaymentProvider {
 }
 
 export function isMockPaymentAllowed() {
-  return process.env.NODE_ENV !== 'production' || process.env.ALLOW_MOCK_PAYMENTS === 'true'
+  return process.env.NODE_ENV === 'development'
 }
 
 function buildMockSuccessUrl(packageId: PackageId, email?: string, kitSlug?: string) {
@@ -98,6 +98,19 @@ export function verifyPaymentFromSearchParams(searchParams: URLSearchParams): Ve
   const safePackage = isPackageId(packageParam) ? packageParam : null
   const product = safePackage ? getProductPackage(safePackage) : null
   const email = searchParams.get('email')
+  const isMock = provider === 'mock' || searchParams.get('mock') === 'true'
+
+  if (isMock && !isMockPaymentAllowed()) {
+    return {
+      valid: false,
+      provider,
+      plan: null,
+      packageId: null,
+      email: null,
+      mock: true,
+      error: 'Mock payments are disabled.',
+    }
+  }
 
   if (!product) {
     return {
@@ -117,7 +130,7 @@ export function verifyPaymentFromSearchParams(searchParams: URLSearchParams): Ve
     plan: product.accessPlan,
     packageId: product.id,
     email: email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email.toLowerCase().trim() : null,
-    mock: provider === 'mock' || searchParams.get('mock') === 'true',
+    mock: isMock,
   }
 }
 

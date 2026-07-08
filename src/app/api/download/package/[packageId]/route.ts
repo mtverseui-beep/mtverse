@@ -9,7 +9,7 @@ import { getCurrentCustomerEmail } from '@/lib/auth/current-customer'
 import { getCloudflareR2Config, isCloudflareR2Configured } from '@/lib/cloudflare-r2'
 import { getDashboardKits } from '@/lib/dashboard-kit-store'
 import { getPackageDownloadFilename, getPackageDownloadKey } from '@/lib/package-downloads'
-import { getPlan } from '@/lib/plan-store'
+import { getPlan, hasPlanPackageAccess } from '@/lib/plan-store'
 import { getFreeDownloadStatus, recordHtmlBundleDownload } from '@/lib/template-social-store'
 import { isPackageId, type PackageId } from '@/lib/packages'
 
@@ -27,18 +27,13 @@ const HTML_PACKAGE_PREFIX = 'templates/html/'
 const HTML_BUNDLE_PACKAGE_ID: PackageId = 'free-unlock'
 const ALL_PAID_BUNDLE_PACKAGE_ID: PackageId = 'all-paid'
 
-function hasPaidTemplateAccess(record: Awaited<ReturnType<typeof getPlan>>) {
-  if (!record) return false
-  return record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'
-}
-
 function canDownloadStaticPackage(record: Awaited<ReturnType<typeof getPlan>>, packageId: PackageId) {
-  if (packageId !== 'next' && packageId !== 'pro') return false
-  return hasPaidTemplateAccess(record)
+  if (packageId !== 'next' && packageId !== 'pro' && packageId !== 'ooster-pro') return false
+  return hasPlanPackageAccess(record, packageId)
 }
 
 function hasAllPaidTemplatesAccess(record: Awaited<ReturnType<typeof getPlan>>) {
-  return Boolean(record?.packageId === ALL_PAID_BUNDLE_PACKAGE_ID)
+  return hasPlanPackageAccess(record, ALL_PAID_BUNDLE_PACKAGE_ID)
 }
 
 function isR2ZipPackageKey(packageKey: string | undefined): packageKey is string {
@@ -134,11 +129,10 @@ function createR2Client() {
   }
 }
 
-async function createHtmlBundleResponse(email: string, planRecord: Awaited<ReturnType<typeof getPlan>>) {
+async function createHtmlBundleResponse(email: string, _planRecord: Awaited<ReturnType<typeof getPlan>>) {
   const freeStatus = await getFreeDownloadStatus(email)
-  const hasPaidPlan = hasPaidTemplateAccess(planRecord)
 
-  if (!hasPaidPlan && !freeStatus.unlocked) {
+  if (!freeStatus.unlocked) {
     return NextResponse.json({ error: 'Unlock the all HTML templates bundle for $5 before downloading.' }, { status: 403 })
   }
 
