@@ -271,6 +271,7 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
   const displayName = user ? getDisplayName(user) : ''
   const signInHref = getAuthHref('/sign-in', authNextPath)
   const signUpHref = getAuthHref('/sign-up', authNextPath)
+  const authPending = !mounted || loading
 
   return (
     <>
@@ -416,7 +417,7 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
               {mounted && theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
 
-            {loading ? (
+            {authPending ? (
               <div className="hidden items-center gap-2 md:flex">
                 <div className="h-9 w-24 animate-pulse rounded-full bg-muted/70" />
               </div>
@@ -503,7 +504,7 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
               </div>
             )}
 
-            {!loading && authenticated && user ? (
+            {!authPending && authenticated && user ? (
               <Link
                 href="/account"
                 className="relative inline-flex h-9 w-9 items-center justify-center rounded-full md:hidden"
@@ -582,7 +583,7 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
                 </div>
 
                 <div className="mt-auto border-t border-border px-4 pb-6 pt-4">
-                  {loading ? (
+                  {authPending ? (
                     <div className="flex items-center justify-center py-4">
                       <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
                     </div>
