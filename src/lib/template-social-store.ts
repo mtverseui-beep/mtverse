@@ -222,6 +222,7 @@ type FreeDownloadRecord = {
   count: number
   slugs: string[]
   unlockedAt: string | null
+  bundleDownloads: UserTemplateDownload | null
 }
 
 type TemplateUserRecord = {
@@ -280,6 +281,8 @@ export type AdminTemplateUserSummary = {
   freeDownloadSlugs: string[]
   freeDownloadCount: number
   freeUnlocked: boolean
+  freeUnlockedAt: string | null
+  htmlBundleDownloads: AdminTemplateDownload | null
   savedTemplateSlugs: string[]
   updatedAt: string
 }
@@ -405,7 +408,7 @@ function normalizePurchase(purchase: UserTemplatePurchase | undefined): UserTemp
   }
 }
 
-function normalizeDownload(download: UserTemplateDownload | undefined): UserTemplateDownload | null {
+function normalizeDownload(download: UserTemplateDownload | null | undefined): UserTemplateDownload | null {
   if (!download) return null
   const count = Math.max(1, Math.floor(Number(download.count) || 1))
   return {
@@ -420,6 +423,7 @@ function normalizeUserRecord(emailKey: string, record: Partial<TemplateUserRecor
   const reviews: Record<string, string[]> = {}
   const savedTemplates: Record<string, SavedTemplateRecord> = {}
   const downloadedTemplates: Record<string, UserTemplateDownload> = {}
+  const htmlBundleDownloads = normalizeDownload(record?.freeDownloads?.bundleDownloads)
 
   for (const [slug, purchase] of Object.entries(record?.purchases || {})) {
     const normalized = normalizePurchase(purchase)
@@ -457,6 +461,7 @@ function normalizeUserRecord(emailKey: string, record: Partial<TemplateUserRecor
         ? record.freeDownloads.slugs.map((s) => normalizeSlug(String(s))).filter(Boolean)
         : [],
       unlockedAt: record?.freeDownloads?.unlockedAt ? sanitizeText(record.freeDownloads.unlockedAt, 40) : null,
+      bundleDownloads: htmlBundleDownloads,
     },
     updatedAt: sanitizeText(record?.updatedAt, 40) || nowIso(),
   }
@@ -777,6 +782,15 @@ export async function getTemplateUserSummariesForAdmin(): Promise<AdminTemplateU
       freeDownloadSlugs: userRecord.freeDownloads?.slugs || [],
       freeDownloadCount: userRecord.freeDownloads?.count || 0,
       freeUnlocked: Boolean(userRecord.freeDownloads?.unlockedAt),
+      freeUnlockedAt: userRecord.freeDownloads?.unlockedAt || null,
+      htmlBundleDownloads: userRecord.freeDownloads?.bundleDownloads
+        ? {
+          slug: 'all-html-templates-bundle',
+          count: userRecord.freeDownloads.bundleDownloads.count,
+          firstDownloadedAt: userRecord.freeDownloads.bundleDownloads.firstDownloadedAt,
+          lastDownloadedAt: userRecord.freeDownloads.bundleDownloads.lastDownloadedAt,
+        }
+        : null,
       savedTemplateSlugs: Object.keys(userRecord.savedTemplates || {}),
       updatedAt: userRecord.updatedAt,
     }))
@@ -812,6 +826,34 @@ export async function recordTemplateDownload(slug: string, emailInput: string) {
   await writeStore(store)
 
   return userRecord.downloadedTemplates[safeSlug]
+}
+
+export async function recordHtmlBundleDownload(emailInput: string) {
+  const email = normalizeEmail(emailInput)
+  if (!email) return null
+
+  const store = await readStore()
+  const userRecord = getUserRecord(store, email)
+  const now = nowIso()
+  const existingDownload = userRecord.freeDownloads.bundleDownloads
+
+  userRecord.freeDownloads.bundleDownloads = existingDownload
+    ? {
+      ...existingDownload,
+      count: Math.max(1, existingDownload.count) + 1,
+      lastDownloadedAt: now,
+    }
+    : {
+      count: 1,
+      firstDownloadedAt: now,
+      lastDownloadedAt: now,
+    }
+
+  userRecord.updatedAt = now
+  store.users[email] = userRecord
+  await writeStore(store)
+
+  return userRecord.freeDownloads.bundleDownloads
 }
 
 export async function isTemplateSaved(slug: string, emailInput: string | null | undefined) {

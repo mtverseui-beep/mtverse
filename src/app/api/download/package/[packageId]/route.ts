@@ -1,4 +1,4 @@
-﻿import { Readable } from 'node:stream'
+import { Readable } from 'node:stream'
 import JSZip from 'jszip'
 import { GetObjectCommand, NoSuchKey, S3Client, type GetObjectCommandOutput } from '@aws-sdk/client-s3'
 import { NextRequest, NextResponse } from 'next/server'
@@ -7,7 +7,7 @@ import { getCloudflareR2Config, isCloudflareR2Configured } from '@/lib/cloudflar
 import { getDashboardKits } from '@/lib/dashboard-kit-store'
 import { getPackageDownloadFilename, getPackageDownloadKey } from '@/lib/package-downloads'
 import { getPlan } from '@/lib/plan-store'
-import { getFreeDownloadStatus } from '@/lib/template-social-store'
+import { getFreeDownloadStatus, recordHtmlBundleDownload } from '@/lib/template-social-store'
 import { isPackageId, type PackageId } from '@/lib/packages'
 
 export const runtime = 'nodejs'
@@ -159,6 +159,8 @@ async function createHtmlBundleResponse(email: string, planRecord: Awaited<Retur
     compression: 'DEFLATE',
     compressionOptions: { level: 6 },
   })
+
+  await recordHtmlBundleDownload(email)
 
   const filename = getPackageDownloadFilename(HTML_BUNDLE_PACKAGE_ID)
   const headers = new Headers({
