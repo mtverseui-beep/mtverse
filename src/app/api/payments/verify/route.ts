@@ -5,7 +5,7 @@ import { getVerifiedPaddleTransaction } from '@/lib/paddle-transaction'
 import { recordTemplatePurchase, setFreeUnlocked } from '@/lib/template-social-store'
 
 function shouldRecordTemplatePurchase(packageId: string | null | undefined, kitSlug: string | null) {
-  return Boolean(kitSlug && packageId !== 'free-unlock')
+  return Boolean(kitSlug && packageId !== 'free-unlock' && packageId !== 'all-paid')
 }
 
 export async function GET(request: NextRequest) {
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
       const verifiedTransaction = await getVerifiedPaddleTransaction(transactionId)
       if (verifiedTransaction?.packageId === 'free-unlock') {
         await setFreeUnlocked(verifiedTransaction.email)
-      } else if (verifiedTransaction?.kitSlug) {
+      } else if (verifiedTransaction?.kitSlug && verifiedTransaction.packageId !== 'all-paid') {
         await recordTemplatePurchase(verifiedTransaction.kitSlug, verifiedTransaction.email)
       }
 
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
     if (verifiedTransaction) {
       if (verifiedTransaction.packageId === 'free-unlock') {
         await setFreeUnlocked(verifiedTransaction.email)
-      } else if (verifiedTransaction.kitSlug) {
+      } else if (verifiedTransaction.kitSlug && verifiedTransaction.packageId !== 'all-paid') {
         await recordTemplatePurchase(verifiedTransaction.kitSlug, verifiedTransaction.email)
       }
 

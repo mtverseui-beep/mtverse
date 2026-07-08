@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         )
       }
-    } else if (requestedPackage !== 'free-unlock') {
+    } else if (requestedPackage !== 'free-unlock' && requestedPackage !== 'all-paid') {
       return NextResponse.json(
         { error: 'Template checkout requires a template slug.' },
         { status: 400 }

@@ -21,7 +21,7 @@
       "previewPath": "/dashboard-kits/lumina-fragrance",
       "livePreviewUrl": "https://mt-lumina.vercel.app",
       "packageFilename": "lumina-fragrance.zip",
-      "packageKey": "local:template-packages/lumina-fragrance/lumina-fragrance.zip",
+      "packageKey": "templates/dashboards/lumina-fragrance/lumina-fragrance-8316073487.zip",
       "coverImage": "/template-previews/lumina-fragrance.png",
       "screenshots": [
         "/template-previews/lumina-fragrance.png"
@@ -123,7 +123,7 @@
       "previewPath": "/dashboard-kits/nova-rig-gaming-ecommerce-template",
       "livePreviewUrl": "https://mt-nova-ig.vercel.app",
       "packageFilename": "nova-rig-gaming-ecommerce-template.zip",
-      "packageKey": "local:template-packages/nova-rig-gaming-ecommerce-template/nova-rig-gaming-ecommerce-template.zip",
+      "packageKey": "templates/dashboards/nova-rig-gaming-ecommerce-template/nova-rig-gaming-ecommerce-template-2531427572.zip",
       "coverImage": "/template-previews/nova-rig-gaming-ecommerce-template.png",
       "screenshots": [
         "/template-previews/nova-rig-gaming-ecommerce-template.png"
@@ -225,7 +225,7 @@
       "previewPath": "/dashboard-kits/pagepulse",
       "livePreviewUrl": "https://mt-pagepulse0.vercel.app",
       "packageFilename": "pagepulse.zip",
-      "packageKey": "local:template-packages/pagepulse/pagepulse.zip",
+      "packageKey": "templates/dashboards/pagepulse/pagepulse-4654877344.zip",
       "coverImage": "/template-previews/pagepulse.png",
       "screenshots": [
         "/template-previews/pagepulse.png"
@@ -328,7 +328,7 @@
       "previewPath": "/dashboard-kits/volthaus-streetwear-ecommerce-template",
       "livePreviewUrl": "https://mt-volthaus.vercel.app",
       "packageFilename": "volthaus-streetwear-ecommerce-template.zip",
-      "packageKey": "local:template-packages/volthaus-streetwear-ecommerce-template/volthaus-streetwear-ecommerce-template.zip",
+      "packageKey": "templates/dashboards/volthaus-streetwear-ecommerce-template/volthaus-streetwear-ecommerce-template-9876429704.zip",
       "coverImage": "/template-previews/volthaus-streetwear-ecommerce-template.png",
       "screenshots": [
         "/template-previews/volthaus-streetwear-ecommerce-template.png"
@@ -431,7 +431,7 @@
       "previewPath": "/dashboard-kits/pipeline-pilot-production",
       "livePreviewUrl": "https://mt-dashboards-zlei.vercel.app/",
       "packageFilename": "pipeline-pilot-production.zip",
-      "packageKey": "local:template-packages/pipeline-pilot-production/pipeline-pilot-production.zip",
+      "packageKey": "templates/dashboards/pipeline-pilot-production/pipeline-pilot-production-8713249468.zip",
       "coverImage": "/template-previews/pipeline-pilot-production.png",
       "screenshots": [
         "/template-previews/pipeline-pilot-production.png"
@@ -600,7 +600,7 @@
       "previewPath": "/dashboard-kits/sentinelgrid",
       "livePreviewUrl": "https://mt-sentinelgrid-zw5j.vercel.app",
       "packageFilename": "sentinelgrid.zip",
-      "packageKey": "local:template-packages/sentinelgrid/sentinelgrid.zip",
+      "packageKey": "templates/dashboards/sentinelgrid/sentinelgrid-2455706558.zip",
       "coverImage": "/template-previews/sentinelgrid.png",
       "screenshots": [
         "/template-previews/sentinelgrid.png"
@@ -746,7 +746,7 @@
       "previewPath": "/dashboard-kits/planna-dashboard",
       "livePreviewUrl": "https://mt-planna-z3pv.vercel.app",
       "packageFilename": "planna-dashboard.zip",
-      "packageKey": "local:template-packages/planna-dashboard/planna-dashboard.zip",
+      "packageKey": "templates/dashboards/planna-dashboard/planna-dashboard-1989047950.zip",
       "coverImage": "/template-previews/planna-dashboard.png",
       "screenshots": [
         "/template-previews/planna-dashboard.png"
@@ -879,7 +879,7 @@
       "previewPath": "/dashboard-kits/ooster",
       "livePreviewUrl": "https://mt-ooster-dxb4.vercel.app",
       "packageFilename": "ooster.zip",
-      "packageKey": "local:template-packages/ooster/ooster.zip",
+      "packageKey": "templates/dashboards/ooster/ooster-9234537771.zip",
       "coverImage": "/template-previews/ooster.png",
       "screenshots": [
         "/template-previews/ooster.png"
@@ -1010,7 +1010,7 @@
       "previewPath": "/dashboard-kits/nexusgrid-premium-admin-dashboard",
       "livePreviewUrl": "https://mt-nexusgrid.vercel.app",
       "packageFilename": "nexusgrid-premium-admin-dashboard.zip",
-      "packageKey": "local:template-packages/nexusgrid-premium-admin-dashboard/nexusgrid-premium-admin-dashboard.zip",
+      "packageKey": "templates/dashboards/nexusgrid-premium-admin-dashboard/nexusgrid-premium-admin-dashboard-8881687116.zip",
       "coverImage": "/template-previews/nexusgrid-premium-admin-dashboard.png",
       "screenshots": [
         "/template-previews/nexusgrid-premium-admin-dashboard.png"
@@ -16371,7 +16371,7 @@
   ],
   "meta": {
     "source": "local-json-landing-import",
-    "updatedAt": "2026-07-04T06:09:09.357Z",
+    "updatedAt": "2026-07-08T08:38:49.290Z",
     "count": 123,
     "htmlImportCount": 91
   }

@@ -1,21 +1,28 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Check, Sparkles, Zap, Shield, Download, Eye, Infinity } from 'lucide-react'
+import { Check, Sparkles, Zap, Shield, Download, Eye, Infinity, PackageCheck } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { SITE_URL } from '@/lib/site-url'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
 import { CtaBackground } from '@/components/design-system/backgrounds'
-import { AmexIcon, ApplePayIcon, GooglePayIcon, MastercardIcon, PaddleIcon, PayPalIcon, VisaIcon } from '@/components/payment/payment-icons'
+import { AmexIcon, ApplePayIcon, GooglePayIcon, MastercardIcon, PayPalIcon, VisaIcon } from '@/components/payment/payment-icons'
+import { AllPaidBundleButton } from '@/components/payment/all-paid-bundle-button'
 import { FreeUnlockButton } from '@/components/payment/free-unlock-button'
 import { PricingFreeAccountCta } from '@/components/payment/pricing-free-account-cta'
 import { getAllTemplatesFromStore } from '@/lib/templates-data'
+import { getPricingCtaSettings } from '@/lib/pricing-settings-store'
 
 export const metadata: Metadata = {
-  title: 'Pricing - Premium Templates and $5 HTML Bundle | mtverse',
-  description: 'One-time pricing for premium Next.js templates and a $5 all HTML templates bundle. Unlock 100+ responsive HTML, portfolio, SaaS, ecommerce, agency, restaurant, healthcare, education, fitness, crypto, and real estate website templates in one ZIP.',
+  title: 'Pricing - Premium Templates, $149 Paid Bundle and $5 HTML Bundle | mtverse',
+  description: 'One-time pricing for individual premium Next.js templates, the $149 all paid templates bundle with future paid updates included, and the $5 all HTML templates bundle.',
   keywords: [
     'HTML templates bundle',
     'all HTML templates zip',
+    'all paid templates bundle',
+    'paid Next.js templates bundle',
+    'dashboard templates bundle',
+    'ecommerce templates bundle',
+    'landing page templates bundle',
     'free HTML templates',
     'website templates bundle',
     'portfolio templates',
@@ -33,7 +40,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/pricing' },
   openGraph: {
     title: 'Pricing - mtverse',
-    description: 'One-time access to premium templates and the $5 all HTML website templates ZIP.',
+    description: 'One-time access to individual premium templates, the $149 all paid templates bundle, and the $5 all HTML website templates ZIP.',
     url: SITE_URL + '/pricing',
     type: 'website',
   },
@@ -42,24 +49,31 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function PricingPage() {
-  const templates = await getAllTemplatesFromStore()
+  const [templates, pricingCta] = await Promise.all([
+    getAllTemplatesFromStore(),
+    getPricingCtaSettings(),
+  ])
   const hasFreeTemplates = templates.some((t) => t.isFree)
   const htmlTemplateCount = templates.filter((t) => t.category === 'html').length
+  const paidTemplates = templates.filter((t) => !t.isFree && Number(t.price || 0) > 0)
+  const bundlePrice = 149
+  const bundleRetailTotal = paidTemplates.reduce((total, template) => total + Number(template.price || 0), 0)
+  const bundleSavings = Math.max(0, bundleRetailTotal - bundlePrice)
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: 'mtverse UI Framework Packages',
-    description: 'One-time template packages for premium dashboards and the all HTML website templates bundle.',
+    description: 'One-time template packages for individual premium templates, the all paid templates bundle, and the all HTML website templates bundle.',
     url: SITE_URL + '/pricing',
     image: SITE_URL + '/SiteLogo.png',
     brand: { '@type': 'Brand', name: 'mtverse' },
     offers: {
       '@type': 'AggregateOffer',
       lowPrice: '5',
-      highPrice: '52',
+      highPrice: '149',
       priceCurrency: 'USD',
-      offerCount: '4',
+      offerCount: '5',
       availability: 'https://schema.org/InStock',
       url: SITE_URL + '/pricing',
       shippingDetails: {
@@ -87,13 +101,23 @@ export default async function PricingPage() {
 
   const premiumFeatures = [
     'Unlock only the template you purchase',
-    'Lifetime access & free updates',
+    'Lifetime access for purchased template',
     'Full source code',
     'Commercial use license',
     'Live preview before purchase',
     'Instant download after payment',
     'Email support included',
     '14-day money-back guarantee',
+  ]
+
+  const allPaidFeatures = [
+    'All paid templates in one generated ZIP',
+    'Future paid template updates included',
+    'Individual paid downloads stay unlocked',
+    'Dashboard, ecommerce, and landing templates',
+    'Commercial project use',
+    'Lifetime account access',
+    'Secure download after purchase',
   ]
 
   const paymentMethods = [
@@ -107,10 +131,10 @@ export default async function PricingPage() {
 
   const faqs = [
     { q: 'What payment methods do you accept?', a: 'All major credit cards, Google Pay, Apple Pay, PayPal, and local payment methods through Paddle. Payments are processed with industry-standard encryption.' },
-    { q: 'Is it a one-time payment or subscription?', a: 'One-time payment only. No recurring charges, no hidden fees. You get lifetime access including all future updates.' },
-    { q: 'What happens after I purchase?', a: 'After payment, you get instant access to download your template. For the $5 HTML unlock, the server prepares one ZIP containing all HTML template packages.' },
+    { q: 'Is it a one-time payment or subscription?', a: 'One-time payment only. No recurring charges, no hidden fees. Individual purchases unlock that template. The all-paid bundle unlocks current paid templates and future paid template updates.' },
+    { q: 'What happens after I purchase?', a: 'After payment, you get instant access to download your purchased template. For generated bundles, the server prepares one ZIP archive and the download starts when it is ready.' },
     { q: 'Do you offer refunds?', a: 'Yes. We offer a 14-day money-back guarantee. Contact us within 14 days for a full refund, no questions asked.' },
-    { q: 'What about the HTML templates?', a: 'HTML templates can be downloaded individually up to 5 times with a free account. A one-time $5 unlock enables unlimited free downloads and the all HTML templates bundle ZIP.' },
+    { q: 'What about the HTML templates?', a: 'HTML templates can be downloaded individually up to 5 times with a free account. A one-time $5 unlock enables unlimited free HTML downloads and the all HTML templates bundle ZIP.' },
     { q: 'Is the payment secure?', a: 'All payments are processed through Paddle, a trusted payment processor. We never store your card information. Fully PCI-DSS compliant.' },
   ]
 
@@ -119,7 +143,7 @@ export default async function PricingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <main>
-        {/* ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â Hero ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â */}
+        {/* Hero */}
         <section className="ds-section-lg pt-20 relative overflow-hidden">
           <CtaBackground />
           <div className="ds-container relative text-center max-w-4xl">
@@ -134,20 +158,19 @@ export default async function PricingPage() {
             </Reveal>
             <Reveal delay={0.2}>
               <p className="ds-lead ds-text-pretty mb-8 max-w-2xl mx-auto">
-                No subscriptions. No hidden fees. Pay once for premium templates, or unlock every HTML website template in one ZIP for $5.
+                No subscriptions. No hidden fees. Pay once for the exact premium template you need, get every paid template in one $149 bundle, or unlock every HTML website template in one ZIP for $5.
               </p>
             </Reveal>
           </div>
         </section>
 
-        {/* ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â Pricing Cards ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â */}
+        {/* Pricing cards */}
         <section className="ds-section-sm">
-          <div className="ds-container max-w-5xl">
-            <div className={`grid gap-6 ${hasFreeTemplates ? 'lg:grid-cols-3' : 'max-w-lg mx-auto'}`}>
-              {/* Free Tier ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â only if free templates exist */}
+          <div className="ds-container max-w-[1380px]">
+            <div className={`grid gap-6 ${hasFreeTemplates ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-2 max-w-5xl mx-auto'}`}>
               {hasFreeTemplates && (
                 <Reveal>
-                  <div className="h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-shadow hover:shadow-md sm:p-7">
+                  <div className="h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-shadow hover:shadow-md sm:p-8">
                     <div className="mb-6">
                       <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 mb-3">
                         <Download className="h-5 w-5" />
@@ -173,9 +196,8 @@ export default async function PricingPage() {
                 </Reveal>
               )}
 
-              {/* Premium ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â highlighted */}
               <Reveal delay={hasFreeTemplates ? 0.08 : 0}>
-                <div className="relative h-full rounded-2xl border-2 border-primary/30 bg-card p-6 shadow-lg shadow-primary/[0.04] sm:p-7 lg:scale-[1.03]">
+                <div className="relative h-full rounded-2xl border-2 border-primary/30 bg-card p-6 shadow-lg shadow-primary/[0.04] sm:p-8">
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
                     <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground shadow-sm">
                       Most popular
@@ -190,7 +212,7 @@ export default async function PricingPage() {
                     <div className="mt-2 flex items-baseline gap-1.5">
                       <span className="text-3xl font-bold">From $12</span>
                     </div>
-                    <p className="mt-1.5 text-sm text-muted-foreground">Per template · one-time payment</p>
+                    <p className="mt-1.5 text-sm text-muted-foreground">Per template - one-time payment</p>
                     <div className="mt-4 grid gap-2 rounded-xl border border-border/70 bg-muted/30 p-3">
                       {premiumPricePoints.map((point) => (
                         <div key={point.label} className="flex items-center justify-between gap-3 text-sm">
@@ -222,10 +244,51 @@ export default async function PricingPage() {
                 </div>
               </Reveal>
 
-              {/* Free Unlock ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â only if free templates exist */}
+              <Reveal delay={0.12}>
+                <div className="relative h-full rounded-2xl border-2 border-violet-300/70 bg-gradient-to-b from-violet-50 via-card to-card p-6 shadow-lg shadow-violet-500/[0.08] dark:border-violet-700/50 dark:from-violet-950/30 sm:p-8">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                    <span className="rounded-full bg-violet-600 px-3 py-1 text-xs font-bold text-white shadow-sm">
+                      {pricingCta.badge}
+                    </span>
+                  </div>
+
+                  <div className="mb-6">
+                    <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-200">
+                      <PackageCheck className="h-5 w-5" />
+                    </div>
+                    <h3 className="text-lg font-black leading-tight">{pricingCta.title}</h3>
+                    <div className="mt-2 flex items-end gap-1.5">
+                      <span className="text-3xl font-black tracking-normal">${bundlePrice}</span>
+                      <span className="pb-1 text-xs font-semibold text-muted-foreground">one-time</span>
+                    </div>
+                    <p className="mt-2 text-sm leading-5 text-muted-foreground">
+                      ${bundleRetailTotal} individual value. Save ${bundleSavings} compared with buying one by one.
+                    </p>
+                  </div>
+
+                  <div className="mb-5 rounded-2xl border border-violet-200/70 bg-background/75 p-3 text-sm leading-5 text-muted-foreground dark:border-violet-800/50">
+                    Current paid templates, future paid updates, and individual downloads stay available in your account.
+                  </div>
+
+                  <AllPaidBundleButton label={pricingCta.buttonLabel} />
+                  <Link href="/templates" className="mt-2 flex h-10 items-center justify-center rounded-xl text-sm font-bold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
+                    {pricingCta.secondaryLabel}
+                  </Link>
+
+                  <ul className="mt-5 space-y-2.5">
+                    {allPaidFeatures.map((f) => (
+                      <li key={f} className="flex items-start gap-2.5 text-sm">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+
               {hasFreeTemplates && (
-                <Reveal delay={0.16}>
-                  <div className="h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-shadow hover:shadow-md sm:p-7">
+                <Reveal delay={0.18}>
+                  <div className="h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-shadow hover:shadow-md sm:p-8">
                     <div className="mb-6">
                       <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400 mb-3">
                         <Infinity className="h-5 w-5" />
@@ -254,7 +317,7 @@ export default async function PricingPage() {
           </div>
         </section>
 
-        {/* ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â Payment Methods ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â compact strip ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â */}
+        {/* Payment methods */}
         <section className="ds-section-sm ds-bg-section">
           <div className="ds-container max-w-4xl text-center">
             <Reveal>
@@ -273,7 +336,7 @@ export default async function PricingPage() {
           </div>
         </section>
 
-        {/* ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â Benefits ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â */}
+        {/* Benefits */}
         <section className="ds-section-sm">
           <div className="ds-container max-w-5xl">
             <Reveal className="text-center mb-8">
@@ -300,7 +363,7 @@ export default async function PricingPage() {
                   </div>
                   <h3 className="font-semibold mb-2">Instant access</h3>
                   <p className="text-sm text-muted-foreground">
-                    Download immediately after payment. No waiting, no approval process.
+                    Download immediately after payment. Bundle ZIPs are prepared by the server and start when ready.
                   </p>
                 </div>
               </StaggerItem>
@@ -310,9 +373,9 @@ export default async function PricingPage() {
                   <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-300">
                     <Sparkles className="h-6 w-6" />
                   </div>
-                  <h3 className="font-semibold mb-2">Lifetime updates</h3>
+                  <h3 className="font-semibold mb-2">Lifetime access</h3>
                   <p className="text-sm text-muted-foreground">
-                    All future updates and improvements included. One purchase, forever access.
+                    Individual purchases include updates for that template. The all-paid bundle also includes future paid template updates.
                   </p>
                 </div>
               </StaggerItem>
@@ -320,7 +383,7 @@ export default async function PricingPage() {
           </div>
         </section>
 
-        {/* ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â FAQ ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â */}
+        {/* FAQ */}
         <section className="ds-section-sm ds-bg-section">
           <div className="ds-container max-w-3xl">
             <Reveal className="text-center mb-8">
@@ -345,7 +408,7 @@ export default async function PricingPage() {
           </div>
         </section>
 
-        {/* ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â CTA ÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚ÂÃƒÂ¢Ã¢â‚¬Â¢Ã‚Â */}
+        {/* CTA */}
         <section className="ds-section-lg ds-bg-section relative overflow-hidden">
           <CtaBackground />
           <div className="ds-container relative text-center max-w-2xl">
@@ -357,7 +420,7 @@ export default async function PricingPage() {
                 Browse premium templates and pay only for the exact template you choose.
               </p>
             </Reveal>
-            <Reveal delay={0.16}>
+            <Reveal delay={0.18}>
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <Link href="/templates" className="ds-btn ds-btn-accent ds-btn-lg">
                   <Sparkles className="h-4 w-4" />

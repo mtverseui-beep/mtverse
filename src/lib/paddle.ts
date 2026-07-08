@@ -10,6 +10,7 @@ const PADDLE_PRICE_ENV: Record<PackageId, string> = {
   pro: 'PADDLE_PRO_PRICE_ID',
   'ooster-pro': 'PADDLE_OOSTER_PRO_PRICE_ID',
   'free-unlock': 'PADDLE_FREE_UNLOCK_PRICE_ID',
+  'all-paid': 'PADDLE_ALL_PAID_PRICE_ID',
 }
 
 function readEnv(name: string) {

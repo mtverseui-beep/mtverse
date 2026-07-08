@@ -27,10 +27,15 @@ type RouteContext = {
 }
 
 const LOCAL_TEMPLATE_PACKAGE_ROOT = resolve(join(process.cwd(), 'data'))
+const ALL_PAID_BUNDLE_PACKAGE_ID = 'all-paid'
 
 function canDownloadTemplate(record: Awaited<ReturnType<typeof getPlan>>) {
   if (!record) return false
   return record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'
+}
+
+function hasAllPaidTemplatesAccess(record: Awaited<ReturnType<typeof getPlan>>) {
+  return Boolean(record?.packageId === ALL_PAID_BUNDLE_PACKAGE_ID)
 }
 
 function resolveLocalTemplatePackagePath(packageKey: string | undefined) {
@@ -123,7 +128,9 @@ export async function GET(request: NextRequest, context: RouteContext) {
       hasTemplatePurchase(slug, email),
     ])
 
-    if (!purchased) {
+    const hasBundleAccess = hasAllPaidTemplatesAccess(planRecord)
+
+    if (!purchased && !hasBundleAccess) {
       return NextResponse.json({ error: 'This template is not included in your purchase.' }, { status: 403 })
     }
   }

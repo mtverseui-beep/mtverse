@@ -1,6 +1,6 @@
 import type { PlanLevel } from './plan-access'
 
-export const PACKAGE_IDS = ['next', 'pro', 'ooster-pro', 'free-unlock'] as const
+export const PACKAGE_IDS = ['next', 'pro', 'ooster-pro', 'free-unlock', 'all-paid'] as const
 
 export type PackageId = (typeof PACKAGE_IDS)[number]
 
@@ -45,6 +45,14 @@ export const PRODUCT_PACKAGES: Record<PackageId, ProductPackage> = {
     amountUsd: 5,
     currency: 'USD',
     accessPlan: 'free',  // keeps account on free plan; unlock flag is handled separately
+  },
+  'all-paid': {
+    id: 'all-paid',
+    name: 'All Paid Templates Bundle',
+    shortName: 'All Paid Bundle',
+    amountUsd: 149,
+    currency: 'USD',
+    accessPlan: 'pro',
   },
 }
 

@@ -13,6 +13,10 @@ function canDownloadTemplate(record: Awaited<ReturnType<typeof getPlan>>) {
   return record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'
 }
 
+function hasAllPaidBundleAccess(record: Awaited<ReturnType<typeof getPlan>>) {
+  return record?.packageId === 'all-paid'
+}
+
 export async function GET(request: NextRequest) {
   const email = await getCurrentCustomerEmail(request)
 
@@ -31,6 +35,7 @@ export async function GET(request: NextRequest) {
   const purchasedFlags = await Promise.all(templates.map((template) => hasTemplatePurchase(template.slug, email)))
 
   const paidTemplateAccess = canDownloadTemplate(planRecord)
+  const allPaidBundleAccess = hasAllPaidBundleAccess(planRecord)
   const savedSet = new Set(savedSlugs)
   const freeDownloadedSet = new Set(freeStatus.slugs)
   const promptMap = new Map(prompts.map((prompt) => [prompt.slug, prompt]))
@@ -54,7 +59,7 @@ export async function GET(request: NextRequest) {
       })
       .filter(Boolean),
     templates: templates.map((template, index) => {
-      const purchased = !template.isFree && purchasedFlags[index]
+      const purchased = !template.isFree && (purchasedFlags[index] || allPaidBundleAccess)
       const freeDownloaded = template.isFree && freeDownloadedSet.has(template.slug)
       const canDownloadFreeTemplate = template.isFree && (
         paidTemplateAccess ||
@@ -72,7 +77,7 @@ export async function GET(request: NextRequest) {
         purchased,
         saved: savedSet.has(template.slug),
         freeDownloaded,
-        canDownload: (paidTemplateAccess && purchased) || canDownloadFreeTemplate,
+        canDownload: (!template.isFree && purchased) || canDownloadFreeTemplate,
       }
     }),
   })

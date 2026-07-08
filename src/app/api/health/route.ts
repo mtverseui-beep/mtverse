@@ -59,7 +59,8 @@ export async function GET(request: NextRequest) {
         process.env.PADDLE_NEXT_PRICE_ID &&
         process.env.PADDLE_PRO_PRICE_ID &&
         process.env.PADDLE_OOSTER_PRO_PRICE_ID &&
-        process.env.PADDLE_FREE_UNLOCK_PRICE_ID
+        process.env.PADDLE_FREE_UNLOCK_PRICE_ID &&
+        process.env.PADDLE_ALL_PAID_PRICE_ID
       )
     : process.env.NODE_ENV !== 'production'
 

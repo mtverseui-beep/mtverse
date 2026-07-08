@@ -1,3 +1,6 @@
+import { existsSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
+import { join, resolve, sep } from 'node:path'
 import { Readable } from 'node:stream'
 import JSZip from 'jszip'
 import { GetObjectCommand, NoSuchKey, S3Client, type GetObjectCommandOutput } from '@aws-sdk/client-s3'
@@ -19,8 +22,10 @@ type RouteContext = {
   }>
 }
 
+const LOCAL_TEMPLATE_PACKAGE_ROOT = resolve(join(process.cwd(), 'data'))
 const HTML_PACKAGE_PREFIX = 'templates/html/'
 const HTML_BUNDLE_PACKAGE_ID: PackageId = 'free-unlock'
+const ALL_PAID_BUNDLE_PACKAGE_ID: PackageId = 'all-paid'
 
 function hasPaidTemplateAccess(record: Awaited<ReturnType<typeof getPlan>>) {
   if (!record) return false
@@ -32,6 +37,41 @@ function canDownloadStaticPackage(record: Awaited<ReturnType<typeof getPlan>>, p
   return hasPaidTemplateAccess(record)
 }
 
+function hasAllPaidTemplatesAccess(record: Awaited<ReturnType<typeof getPlan>>) {
+  return Boolean(record?.packageId === ALL_PAID_BUNDLE_PACKAGE_ID)
+}
+
+function isR2ZipPackageKey(packageKey: string | undefined): packageKey is string {
+  return Boolean(packageKey && !packageKey.startsWith('local:') && packageKey.endsWith('.zip'))
+}
+
+function hasBundlePackageKey(packageKey: string | undefined): packageKey is string {
+  return Boolean(packageKey && (packageKey.startsWith('local:') || isR2ZipPackageKey(packageKey)))
+}
+
+function safeBundleFilename(value: string | undefined, fallback: string) {
+  return (value || fallback)
+    .trim()
+    .replace(/[\\/:*?"<>|]+/g, '-')
+    .replace(/\s+/g, ' ') || fallback
+}
+
+
+function resolveLocalTemplatePackagePath(packageKey: string | undefined) {
+  if (!packageKey?.startsWith('local:')) return null
+
+  const relativePath = packageKey.slice('local:'.length).replace(/^[/\\]+/, '')
+  if (!relativePath) return null
+
+  const resolvedPath = resolve(LOCAL_TEMPLATE_PACKAGE_ROOT, relativePath)
+  const safePrefix = `${LOCAL_TEMPLATE_PACKAGE_ROOT}${sep}`
+
+  if (resolvedPath !== LOCAL_TEMPLATE_PACKAGE_ROOT && !resolvedPath.startsWith(safePrefix)) {
+    return null
+  }
+
+  return resolvedPath
+}
 function toWebStream(body: GetObjectCommandOutput['Body']) {
   if (!body) return null
 
@@ -174,6 +214,104 @@ async function createHtmlBundleResponse(email: string, planRecord: Awaited<Retur
   return new Response(new Uint8Array(archive), { headers })
 }
 
+
+async function createAllPaidBundleResponse(email: string, planRecord: Awaited<ReturnType<typeof getPlan>>) {
+  if (!hasAllPaidTemplatesAccess(planRecord)) {
+    return NextResponse.json({ error: 'Purchase the all paid templates bundle before downloading this archive.' }, { status: 403 })
+  }
+
+  const kits = await getDashboardKits()
+  const paidKits = kits
+    .filter((kit) => kit.status === 'available' && !kit.isFree && hasBundlePackageKey(kit.packageKey))
+    .sort((left, right) => {
+      const category = (left.categoryTitle || left.category || '').localeCompare(right.categoryTitle || right.category || '')
+      return category || left.title.localeCompare(right.title)
+    })
+
+  if (!paidKits.length) {
+    return NextResponse.json({ error: 'Paid template packages are not available yet.' }, { status: 404 })
+  }
+
+  const needsR2 = paidKits.some((kit) => isR2ZipPackageKey(kit.packageKey))
+  if (needsR2 && !isCloudflareR2Configured()) {
+    return NextResponse.json({ error: 'All paid bundle downloads are not configured yet.' }, { status: 503 })
+  }
+
+  const r2 = needsR2 ? createR2Client() : null
+  const bundle = new JSZip()
+  const manifest = paidKits.map((kit) => ({
+    slug: kit.slug,
+    title: kit.title,
+    category: kit.categoryTitle || kit.category || 'Paid Templates',
+    subcategory: kit.subcategory || null,
+    priceUsd: kit.priceUsd,
+    filename: kit.packageFilename || `${kit.slug}.zip`,
+    livePreviewUrl: kit.livePreviewUrl || null,
+  }))
+
+  bundle.file('README.txt', [
+    'mtverse All Paid Templates Bundle',
+    '',
+    `Generated: ${new Date().toISOString()}`,
+    `Templates included: ${paidKits.length}`,
+    '',
+    'This archive contains the current paid template ZIP packages available in mtverse.',
+    'Future paid template updates are included through your mtverse account.',
+    'Use manifest.json for template titles, categories, and live preview links.',
+  ].join('\n'))
+  bundle.file('manifest.json', JSON.stringify(manifest, null, 2))
+
+  let added = 0
+  for (const kit of paidKits) {
+    const key = kit.packageKey
+    if (!hasBundlePackageKey(key)) continue
+
+    try {
+      let buffer: Buffer | null = null
+      const localPackagePath = resolveLocalTemplatePackagePath(key)
+
+      if (localPackagePath) {
+        if (!existsSync(localPackagePath)) continue
+        buffer = await readFile(localPackagePath)
+      } else if (isR2ZipPackageKey(key) && r2) {
+        const object = await r2.s3Client.send(new GetObjectCommand({ Bucket: r2.config.bucket, Key: key }))
+        buffer = await toBuffer(object.Body)
+      }
+
+      if (!buffer?.length) continue
+
+      const categoryFolder = safeBundleSegment(kit.categoryTitle || kit.category || 'paid-templates')
+      const templateFolder = safeBundleSegment(kit.slug)
+      const filename = safeBundleFilename(kit.packageFilename, `${kit.slug}.zip`)
+      bundle.file(`${categoryFolder}/${templateFolder}/${filename}`, buffer)
+      added += 1
+    } catch (error) {
+      if (isMissingR2Object(error)) continue
+      throw error
+    }
+  }
+
+  if (!added) {
+    return NextResponse.json({ error: 'Paid template ZIP files are missing in storage.' }, { status: 404 })
+  }
+
+  const archive = await bundle.generateAsync({
+    type: 'nodebuffer',
+    compression: 'DEFLATE',
+    compressionOptions: { level: 6 },
+  })
+
+  const filename = getPackageDownloadFilename(ALL_PAID_BUNDLE_PACKAGE_ID)
+  const headers = new Headers({
+    'Content-Type': 'application/zip',
+    'Content-Disposition': `attachment; filename="${filename}"`,
+    'Cache-Control': 'private, no-store',
+    'X-Content-Type-Options': 'nosniff',
+    'Content-Length': String(archive.length),
+  })
+
+  return new Response(new Uint8Array(archive), { headers })
+}
 export async function GET(request: NextRequest, context: RouteContext) {
   const { packageId: rawPackageId } = await context.params
 
@@ -215,6 +353,15 @@ export async function GET(request: NextRequest, context: RouteContext) {
     } catch (error) {
       console.error('[HTML Bundle Download] R2 zip generation failed:', error)
       return NextResponse.json({ error: 'HTML bundle generation failed.' }, { status: 502 })
+    }
+  }
+
+  if (rawPackageId === ALL_PAID_BUNDLE_PACKAGE_ID) {
+    try {
+      return await createAllPaidBundleResponse(email, planRecord)
+    } catch (error) {
+      console.error('[All Paid Bundle Download] R2 zip generation failed:', error)
+      return NextResponse.json({ error: 'All paid templates bundle generation failed.' }, { status: 502 })
     }
   }
 

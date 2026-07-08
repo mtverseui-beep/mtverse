@@ -17,6 +17,10 @@ function canDownloadTemplate(record: Awaited<ReturnType<typeof getPlan>>) {
   return record.plan === 'pro' || record.plan === 'business' || record.plan === 'extended'
 }
 
+function hasAllPaidBundleAccess(record: Awaited<ReturnType<typeof getPlan>>) {
+  return record?.packageId === 'all-paid'
+}
+
 export async function GET(request: NextRequest, context: RouteContext) {
   const { slug } = await context.params
   const template = await getTemplateBySlugFromStore(slug)
@@ -65,9 +69,11 @@ export async function GET(request: NextRequest, context: RouteContext) {
     hasTemplatePurchase(slug, email),
   ])
 
+  const hasBundleAccess = hasAllPaidBundleAccess(planRecord)
+
   return NextResponse.json({
     authenticated: true,
-    canDownload: purchased,
+    canDownload: purchased || hasBundleAccess,
     isFree: false,
   })
 }

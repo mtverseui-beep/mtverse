@@ -1,4 +1,4 @@
-﻿import 'server-only'
+import 'server-only'
 
 import type { PackageId } from '@/lib/packages'
 import { buildR2PackageKey } from '@/lib/cloudflare-r2'
@@ -8,6 +8,7 @@ export const PACKAGE_DOWNLOAD_FILENAMES: Record<PackageId, string> = {
   pro: 'mtverse-pro-package.zip',
   'ooster-pro': 'ooster.zip',
   'free-unlock': 'mtverse-all-html-templates.zip',
+  'all-paid': 'mtverse-all-paid-templates.zip',
 }
 
 export function getPackageDownloadFilename(packageId: PackageId) {

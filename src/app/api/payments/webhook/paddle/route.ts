@@ -171,7 +171,7 @@ export async function POST(request: NextRequest) {
         packageId
       )
 
-      if (kitSlug) {
+      if (kitSlug && packageId !== 'all-paid') {
         await recordTemplatePurchase(kitSlug, email)
       }
     }

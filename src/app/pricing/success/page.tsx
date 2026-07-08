@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { AlertTriangle, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, CheckCircle2, Clock3, PackageCheck } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { PackageDownloadButton } from '@/components/payment/package-download-button'
 import { getPlanByProviderTransactionId, setPlan } from '@/lib/plan-store'
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 type SearchParams = Promise<Record<string, string | string[] | undefined>>
 
 function shouldRecordTemplatePurchase(packageId: string | null | undefined, kitSlug: string | null) {
-  return Boolean(kitSlug && packageId !== 'free-unlock')
+  return Boolean(kitSlug && packageId !== 'free-unlock' && packageId !== 'all-paid')
 }
 
 function toUrlSearchParams(input: Record<string, string | string[] | undefined>) {
@@ -146,9 +146,11 @@ export default async function PricingSuccessPage({ searchParams }: { searchParam
   const result = await verifySuccess(params)
   const kitSlug = params.get('kit')
   const isHtmlBundle = result.packageId === 'free-unlock'
+  const isAllPaidBundle = result.packageId === 'all-paid'
   const templateAccessReady = Boolean(
     !kitSlug ||
     isHtmlBundle ||
+    isAllPaidBundle ||
     (result.email && await hasTemplatePurchase(kitSlug, result.email))
   )
   const valid = Boolean(result.valid && result.packageId && templateAccessReady)
@@ -158,39 +160,76 @@ export default async function PricingSuccessPage({ searchParams }: { searchParam
     : `/api/download/package/${encodeURIComponent(result.packageId || 'next')}`
   const successCopy = isHtmlBundle
     ? 'Your all HTML templates bundle access is active. The server will prepare one ZIP with every HTML template package.'
-    : 'Your mtverse template package access is active. You can download the package now.'
+    : isAllPaidBundle
+      ? 'Your all paid templates bundle is active. The server will prepare one ZIP with every paid template package and future updates stay included in your account.'
+      : 'Your mtverse template package access is active. You can download the package now.'
   const waitingCopy = 'Payment confirmed. Your template access is still being prepared. Refresh this page in a few seconds; if it does not unlock, send the transaction ID to support.'
 
   return (
     <PublicLayout>
-      <main className="ds-section min-h-[70vh]">
-        <div className="ds-container max-w-2xl">
-          <div className="ds-card p-8 text-center">
-            <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
-              {valid ? <CheckCircle2 className="h-7 w-7" /> : <AlertTriangle className="h-7 w-7" />}
+      <main className="ds-section min-h-[70vh] bg-gradient-to-b from-background via-muted/20 to-background">
+        <div className="ds-container max-w-3xl">
+          <div className="ds-card overflow-hidden p-0 text-center">
+            <div className="border-b border-border/70 bg-muted/20 px-5 py-4 text-left sm:px-8">
+              <Link href="/templates" className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">
+                <ArrowLeft className="h-4 w-4" />
+                Back to templates
+              </Link>
             </div>
 
-            <h1 className="ds-h1 mb-3">{valid ? 'Payment confirmed' : 'Payment not confirmed yet'}</h1>
-            <p className="ds-muted mx-auto max-w-md">
-              {valid
-                ? successCopy
-                : paymentConfirmedWaitingForAccess
-                  ? waitingCopy
-                  : result.error || 'We could not verify this payment. Please refresh after a moment or contact support if the charge completed.'}
-            </p>
+            <div className="p-6 sm:p-8 lg:p-10">
+              <div className={`mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl ${valid ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' : 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'}`}>
+                {valid ? <CheckCircle2 className="h-7 w-7" /> : <AlertTriangle className="h-7 w-7" />}
+              </div>
 
-            <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-              {valid ? (
-                <PackageDownloadButton
-                  href={downloadHref}
-                  label={isHtmlBundle ? 'Download all HTML ZIP' : 'Download package'}
-                  loadingLabel={isHtmlBundle ? 'Preparing all HTML ZIP...' : 'Preparing ZIP...'}
-                />
+              <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1 text-xs font-bold text-muted-foreground shadow-sm">
+                {valid ? <PackageCheck className="h-3.5 w-3.5 text-emerald-600" /> : <Clock3 className="h-3.5 w-3.5 text-amber-600" />}
+                {valid ? 'Access active' : 'Verification pending'}
+              </div>
+
+              <h1 className="text-3xl font-black tracking-normal text-foreground sm:text-4xl">
+                {valid ? 'Payment confirmed' : 'Payment not confirmed yet'}
+              </h1>
+              <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-muted-foreground sm:text-base">
+                {valid
+                  ? successCopy
+                  : paymentConfirmedWaitingForAccess
+                    ? waitingCopy
+                    : result.error || 'We could not verify this payment. Please refresh after a moment or contact support if the charge completed.'}
+              </p>
+
+              {valid && (isHtmlBundle || isAllPaidBundle) ? (
+                <div className="mx-auto mt-6 grid max-w-xl gap-3 rounded-2xl border border-border/70 bg-muted/25 p-4 text-left sm:grid-cols-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Bundle</p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">{isAllPaidBundle ? 'All paid templates' : 'All HTML templates'}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Delivery</p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">Generated ZIP</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Access</p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">Lifetime</p>
+                  </div>
+                </div>
               ) : null}
-              <Link href="/templates" className="ds-btn ds-btn-secondary">
-                Back to templates
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+
+              <div className="mx-auto mt-7 grid max-w-xl gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+                {valid ? (
+                  <PackageDownloadButton
+                    href={downloadHref}
+                    label={isHtmlBundle ? 'Download all HTML ZIP' : isAllPaidBundle ? 'Download all paid ZIP' : 'Download package'}
+                    loadingLabel={isHtmlBundle ? 'Preparing all HTML ZIP...' : isAllPaidBundle ? 'Preparing all paid ZIP...' : 'Preparing ZIP...'}
+                    detail={isHtmlBundle || isAllPaidBundle ? 'The server is collecting template packages and creating one ZIP. Keep this tab open; the download starts automatically when the archive is ready.' : undefined}
+                    resetMs={isHtmlBundle || isAllPaidBundle ? 45000 : 12000}
+                    className="min-w-0"
+                  />
+                ) : null}
+                <Link href="/templates" className="ds-btn ds-btn-secondary h-12 self-start px-5 text-sm">
+                  Browse templates
+                </Link>
+              </div>
             </div>
           </div>
         </div>

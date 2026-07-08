@@ -22,6 +22,7 @@ import {
   ChevronLeft,
   ExternalLink,
   ShieldAlert,
+  BadgeDollarSign,
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
@@ -47,6 +48,7 @@ const NAV_SECTIONS: Array<{
     title: 'Business',
     items: [
       { name: 'Orders', href: '/admin/orders', icon: Receipt },
+      { name: 'Pricing', href: '/admin/pricing', icon: BadgeDollarSign },
       { name: 'Downloads', href: '/admin/downloads', icon: Download },
       { name: 'Reviews', href: '/admin/reviews', icon: MessageSquare },
       { name: 'Users', href: '/admin/users', icon: Users },
