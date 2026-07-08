@@ -9,6 +9,7 @@ import {
   MessageSquare,
   LayoutGrid,
   Receipt,
+  Download,
   Users,
   Settings,
   LogOut,
@@ -46,6 +47,7 @@ const NAV_SECTIONS: Array<{
     title: 'Business',
     items: [
       { name: 'Orders', href: '/admin/orders', icon: Receipt },
+      { name: 'Downloads', href: '/admin/downloads', icon: Download },
       { name: 'Reviews', href: '/admin/reviews', icon: MessageSquare },
       { name: 'Users', href: '/admin/users', icon: Users },
       { name: 'Auth logs', href: '/admin/auth-logs', icon: ShieldAlert },
