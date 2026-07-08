@@ -1,5 +1,6 @@
 import 'server-only'
 
+import { createCheckoutIntentData } from './checkout-intent'
 import { getProductPackage, type PackageId } from './packages'
 import type { PaddleCheckoutPayload, PaddleEnvironment } from '@/lib/paddle-types'
 export type { PaddleCheckoutPayload, PaddleEnvironment } from '@/lib/paddle-types'
@@ -38,6 +39,9 @@ export function createPaddleCheckoutPayload(packageId: PackageId, email?: string
 
   const customerEmail = email?.trim().toLowerCase()
   const safeKitSlug = kitSlug?.trim()
+  const checkoutIntent = customerEmail
+    ? createCheckoutIntentData({ email: customerEmail, packageId, kitSlug: safeKitSlug || null })
+    : null
 
   return {
     environment: getPaddleEnvironment(),
@@ -54,6 +58,7 @@ export function createPaddleCheckoutPayload(packageId: PackageId, email?: string
       source: 'mtverse-pricing',
       ...(safeKitSlug ? { kitSlug: safeKitSlug } : {}),
       ...(customerEmail ? { email: customerEmail } : {}),
+      ...(checkoutIntent || {}),
     },
   }
 }

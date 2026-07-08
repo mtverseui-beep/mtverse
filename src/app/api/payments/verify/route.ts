@@ -42,8 +42,11 @@ export async function GET(request: NextRequest) {
         })
       }
 
-      if (shouldRecordTemplatePurchase(record.packageId || result.packageId, kitSlug)) {
-        await recordTemplatePurchase(kitSlug, record.email)
+      const verifiedTransaction = await getVerifiedPaddleTransaction(transactionId)
+      if (verifiedTransaction?.packageId === 'free-unlock') {
+        await setFreeUnlocked(verifiedTransaction.email)
+      } else if (verifiedTransaction?.kitSlug) {
+        await recordTemplatePurchase(verifiedTransaction.kitSlug, verifiedTransaction.email)
       }
 
       return NextResponse.json({

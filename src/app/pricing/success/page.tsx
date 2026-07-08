@@ -6,7 +6,7 @@ import { PackageDownloadButton } from '@/components/payment/package-download-but
 import { getPlanByProviderTransactionId, setPlan } from '@/lib/plan-store'
 import { isMockPaymentAllowed, verifyPaymentFromSearchParams } from '@/lib/payments'
 import { getVerifiedPaddleTransaction } from '@/lib/paddle-transaction'
-import { recordTemplatePurchase, setFreeUnlocked } from '@/lib/template-social-store'
+import { hasTemplatePurchase, recordTemplatePurchase, setFreeUnlocked } from '@/lib/template-social-store'
 
 export const dynamic = 'force-dynamic'
 
@@ -95,12 +95,18 @@ async function verifySuccess(searchParams: URLSearchParams) {
       }
     }
 
+    const verifiedTransaction = record.status !== 'revoked'
+      ? await getVerifiedPaddleTransaction(transactionId)
+      : null
+
     if (record.status !== 'revoked' && record.packageId === 'free-unlock') {
       await setFreeUnlocked(record.email)
     }
 
-    if (record.status !== 'revoked' && shouldRecordTemplatePurchase(record.packageId || result.packageId, kitSlug)) {
-      await recordTemplatePurchase(kitSlug, record.email)
+    if (verifiedTransaction?.packageId === 'free-unlock') {
+      await setFreeUnlocked(verifiedTransaction.email)
+    } else if (verifiedTransaction?.kitSlug) {
+      await recordTemplatePurchase(verifiedTransaction.kitSlug, verifiedTransaction.email)
     }
 
     return {
@@ -138,15 +144,22 @@ async function verifySuccess(searchParams: URLSearchParams) {
 export default async function PricingSuccessPage({ searchParams }: { searchParams: SearchParams }) {
   const params = toUrlSearchParams(await searchParams)
   const result = await verifySuccess(params)
-  const valid = Boolean(result.valid && result.packageId)
   const kitSlug = params.get('kit')
   const isHtmlBundle = result.packageId === 'free-unlock'
+  const templateAccessReady = Boolean(
+    !kitSlug ||
+    isHtmlBundle ||
+    (result.email && await hasTemplatePurchase(kitSlug, result.email))
+  )
+  const valid = Boolean(result.valid && result.packageId && templateAccessReady)
+  const paymentConfirmedWaitingForAccess = Boolean(result.valid && result.packageId && kitSlug && !templateAccessReady)
   const downloadHref = kitSlug
     ? `/api/download/template/${encodeURIComponent(kitSlug)}`
     : `/api/download/package/${encodeURIComponent(result.packageId || 'next')}`
   const successCopy = isHtmlBundle
     ? 'Your all HTML templates bundle access is active. The server will prepare one ZIP with every HTML template package.'
     : 'Your mtverse template package access is active. You can download the package now.'
+  const waitingCopy = 'Payment confirmed. Your template access is still being prepared. Refresh this page in a few seconds; if it does not unlock, send the transaction ID to support.'
 
   return (
     <PublicLayout>
@@ -161,7 +174,9 @@ export default async function PricingSuccessPage({ searchParams }: { searchParam
             <p className="ds-muted mx-auto max-w-md">
               {valid
                 ? successCopy
-                : result.error || 'We could not verify this payment. Please refresh after a moment or contact support if the charge completed.'}
+                : paymentConfirmedWaitingForAccess
+                  ? waitingCopy
+                  : result.error || 'We could not verify this payment. Please refresh after a moment or contact support if the charge completed.'}
             </p>
 
             <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">

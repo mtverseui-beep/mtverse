@@ -14,6 +14,7 @@ import {
   Loader2,
 } from 'lucide-react'
 import { toast } from 'sonner'
+import { getTemplateCheckoutPackageId } from '@/lib/template-checkout'
 import type { Template } from '@/lib/templates-catalog'
 import { useAuth } from '@/hooks/use-auth'
 import { openPaddleCheckout } from '@/lib/paddle-client'
@@ -23,11 +24,6 @@ type Props = {
   template: Template
 }
 
-function getCheckoutPackageId(template: Template) {
-  if (template.isFree) return 'free-unlock' as const
-  if (['ooster', 'nova-rig-gaming-ecommerce-template', 'volthaus-streetwear-ecommerce-template'].includes(template.slug)) return 'ooster-pro' as const
-  return template.pricingTier === 'pro' ? 'pro' as const : 'next' as const
-}
 
 export function TemplateDetailClient({ template }: Props) {
   const { authenticated, loading: authLoading } = useAuth()
@@ -112,7 +108,7 @@ export function TemplateDetailClient({ template }: Props) {
         return
       }
 
-      const packageId = getCheckoutPackageId(template)
+      const packageId = getTemplateCheckoutPackageId(template)
       const response = await fetch('/api/payments/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -300,7 +296,7 @@ export function TemplateDetailClient({ template }: Props) {
           )}
         </button>
       ) : freeLimitReached && template.isFree ? (
-        /* Free limit reached — show unlock CTA */
+        /* Free limit reached â€” show unlock CTA */
         <button
           onClick={handleBuy}
           disabled={buying || authLoading || checkingAccess}

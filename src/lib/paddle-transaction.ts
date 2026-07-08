@@ -1,6 +1,7 @@
 import 'server-only'
 
-import { getProductPackage, isPackageId, type PackageId } from '@/lib/packages'
+import { verifyCheckoutIntentData } from '@/lib/checkout-intent'
+import { getProductPackage, type PackageId } from '@/lib/packages'
 import { getPaddleEnvironment } from '@/lib/paddle'
 
 type PaddleTransactionResponse = {
@@ -29,10 +30,6 @@ function stringFromUnknown(value: unknown) {
   return typeof value === 'string' ? value.trim() : ''
 }
 
-function normalizeEmail(value: unknown) {
-  const email = stringFromUnknown(value).toLowerCase()
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : ''
-}
 
 function getPaddleApiBaseUrl() {
   return getPaddleEnvironment() === 'production'
@@ -63,20 +60,18 @@ export async function getVerifiedPaddleTransaction(transactionId: string): Promi
   if (status !== 'completed' && status !== 'paid') return null
 
   const customData = transaction.custom_data || {}
-  const packageId = stringFromUnknown(customData.packageId)
-  const email = normalizeEmail(customData.email)
-  if (!isPackageId(packageId) || !email) return null
+  const intent = verifyCheckoutIntentData(customData)
+  if (!intent) return null
 
-  const product = getProductPackage(packageId)
-  const kitSlug = stringFromUnknown(customData.kitSlug) || null
+  const product = getProductPackage(intent.packageId)
   const customerId = stringFromUnknown(transaction.customer_id) || undefined
 
   return {
     transactionId: safeTransactionId,
-    packageId,
+    packageId: intent.packageId,
     plan: product.accessPlan,
-    email,
-    kitSlug,
+    email: intent.email,
+    kitSlug: intent.kitSlug,
     customerId,
   }
 }

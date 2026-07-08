@@ -1,7 +1,8 @@
 import { createHmac, timingSafeEqual } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
+import { verifyCheckoutIntentData } from '@/lib/checkout-intent'
 import { getPlan, setPlan } from '@/lib/plan-store'
-import { getProductPackage, isPackageId } from '@/lib/packages'
+import { getProductPackage } from '@/lib/packages'
 import { recordTemplatePurchase } from '@/lib/template-social-store'
 import { hasRuntimeKvStore, getRedisClient } from '@/lib/runtime-kv'
 
@@ -128,17 +129,20 @@ export async function POST(request: NextRequest) {
     }
 
     const customData = event.data?.custom_data || {}
-    const packageId = stringFromUnknown(customData.packageId)
-    const kitSlug = stringFromUnknown(customData.kitSlug)
-    const email = extractWebhookEmail(event)
+    const intent = verifyCheckoutIntentData(customData)
 
-    if (!isPackageId(packageId)) {
-      return NextResponse.json({ error: 'Missing or invalid packageId in Paddle custom_data' }, { status: 400 })
+    if (!intent) {
+      return NextResponse.json({ error: 'Missing or invalid signed checkout intent in Paddle custom_data' }, { status: 400 })
     }
 
-    if (!email) {
-      return NextResponse.json({ error: 'Missing customer email in Paddle webhook' }, { status: 400 })
+    const webhookEmail = extractWebhookEmail(event)
+    if (webhookEmail && webhookEmail !== intent.email) {
+      return NextResponse.json({ error: 'Paddle customer email does not match signed checkout intent.' }, { status: 400 })
     }
+
+    const packageId = intent.packageId
+    const kitSlug = intent.kitSlug || ''
+    const email = intent.email
 
     if (packageId === 'free-unlock') {
       // HTML bundle unlock payment: keep the existing plan tier and set the unlock flag.
