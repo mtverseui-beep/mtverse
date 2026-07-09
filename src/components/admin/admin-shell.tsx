@@ -23,6 +23,7 @@ import {
   ExternalLink,
   ShieldAlert,
   BadgeDollarSign,
+  Inbox,
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
@@ -50,6 +51,7 @@ const NAV_SECTIONS: Array<{
       { name: 'Orders', href: '/admin/orders', icon: Receipt },
       { name: 'Pricing', href: '/admin/pricing', icon: BadgeDollarSign },
       { name: 'Downloads', href: '/admin/downloads', icon: Download },
+      { name: 'Requests', href: '/admin/requests', icon: Inbox },
       { name: 'Reviews', href: '/admin/reviews', icon: MessageSquare },
       { name: 'Users', href: '/admin/users', icon: Users },
       { name: 'Auth logs', href: '/admin/auth-logs', icon: ShieldAlert },
@@ -63,7 +65,7 @@ const NAV_SECTIONS: Array<{
   },
 ]
 
-export function AdminShell({ children, userEmail }: { children: React.ReactNode; userEmail: string }) {
+export function AdminShell({ children, userEmail, requestCount = 0 }: { children: React.ReactNode; userEmail: string; requestCount?: number }) {
   const pathname = usePathname()
   const router = useRouter()
   const { theme, setTheme } = useTheme()
@@ -153,6 +155,9 @@ export function AdminShell({ children, userEmail }: { children: React.ReactNode;
                       >
                         <Icon className="h-4 w-4 shrink-0" />
                         <span className="truncate">{item.name}</span>
+                        {item.href === '/admin/requests' && requestCount > 0 ? (
+                          <span className="ml-auto rounded-full bg-accent-500 px-1.5 py-0.5 text-[10px] font-bold text-white">{requestCount > 99 ? '99+' : requestCount}</span>
+                        ) : null}
                       </Link>
                     </li>
                   )
@@ -213,14 +218,18 @@ export function AdminShell({ children, userEmail }: { children: React.ReactNode;
               {mounted && theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
 
-            {/* Notifications (decorative) */}
-            <button
+            <Link
+              href="/admin/requests"
               className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-input bg-background/60 text-muted-foreground hover:text-foreground"
-              aria-label="Notifications"
+              aria-label="Template requests"
             >
               <Bell className="h-4 w-4" />
-              <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-accent-500" />
-            </button>
+              {requestCount > 0 ? (
+                <span className="absolute -right-1 -top-1 inline-flex min-w-5 items-center justify-center rounded-full bg-accent-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow-sm">
+                  {requestCount > 99 ? '99+' : requestCount}
+                </span>
+              ) : null}
+            </Link>
 
             {/* User menu */}
             <div className="relative">

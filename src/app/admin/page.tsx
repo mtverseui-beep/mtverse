@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowUpRight, DollarSign, LayoutGrid, MessageSquare, Receipt, Settings, Star } from 'lucide-react'
+import { ArrowUpRight, DollarSign, Inbox, LayoutGrid, MessageSquare, Receipt, Settings, Star } from 'lucide-react'
 import { getPromptLibraryData } from '@/lib/prompt-db'
 import { getDashboardKits } from '@/lib/dashboard-kit-store'
 import { getAllPlans } from '@/lib/plan-store'
 import { getRecentTemplateReviews } from '@/lib/template-social-store'
+import { getTemplateFrameworkRequests, getTemplateFrameworkRequestStats } from '@/lib/template-framework-request-store'
 
 export const metadata: Metadata = {
   title: 'Dashboard - Admin',
@@ -14,11 +15,13 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function AdminDashboard() {
-  const [library, kits, plans, reviews] = await Promise.all([
+  const [library, kits, plans, reviews, templateRequests, requestStats] = await Promise.all([
     getPromptLibraryData().catch(() => null),
     getDashboardKits().catch(() => []),
     getAllPlans().catch(() => []),
     getRecentTemplateReviews(6).catch(() => []),
+    getTemplateFrameworkRequests(4).catch(() => []),
+    getTemplateFrameworkRequestStats().catch(() => ({ total: 0, newCount: 0, customCount: 0, uniqueTemplates: 0, lastSevenDays: 0, frameworkCounts: [], stylingCounts: [] })),
   ])
 
   const promptCount = library?.stats?.totalPrompts ?? 0
@@ -36,6 +39,7 @@ export default async function AdminDashboard() {
     { label: 'Templates', value: templateCount, change: `${kits.filter((k) => k.status === 'available').length} available`, icon: LayoutGrid, color: 'accent' },
     { label: 'Active licenses', value: activeLicenses, change: `${plans.length} total`, icon: Receipt, color: 'emerald' },
     { label: 'Customer reviews', value: reviews.length, change: 'real submissions', icon: Star, color: 'accent' },
+    { label: 'Stack requests', value: requestStats.newCount, change: `${requestStats.total} total`, icon: Inbox, color: 'primary' },
     { label: 'Est. revenue', value: `$${totalRevenue.toLocaleString()}`, change: 'from template sales', icon: DollarSign, color: 'emerald' },
   ]
 
@@ -66,7 +70,7 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
         {stats.map((stat) => {
           const Icon = stat.icon
           return (
@@ -90,7 +94,7 @@ export default async function AdminDashboard() {
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="ds-card">
           <div className="flex items-center justify-between mb-4">
             <h2 className="ds-h3">Recent licenses</h2>
@@ -122,6 +126,33 @@ export default async function AdminDashboard() {
           )}
         </div>
 
+        <div className="ds-card">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="ds-h3">Request inbox</h2>
+            <Link href="/admin/requests" className="text-xs text-primary-600 hover:underline">View all</Link>
+          </div>
+          {templateRequests.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-8 text-center">
+              No stack requests yet. Requests from paid template pages will appear here.
+            </p>
+          ) : (
+            <ul className="space-y-3">
+              {templateRequests.map((request) => (
+                <li key={request.id} className="rounded-lg border p-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="truncate text-sm font-medium">{request.framework === 'Custom' ? request.customFramework || 'Custom' : request.framework}</div>
+                      <div className="truncate text-xs text-muted-foreground">{request.templateTitle}</div>
+                    </div>
+                    <span className="text-xs text-muted-foreground shrink-0">
+                      {new Date(request.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <div className="ds-card">
           <div className="flex items-center justify-between mb-4">
             <h2 className="ds-h3">Review inbox</h2>

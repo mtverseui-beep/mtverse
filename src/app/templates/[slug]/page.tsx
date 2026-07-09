@@ -24,6 +24,7 @@ import { withAllTemplateSocial, withTemplateSocial } from '@/lib/template-social
 import { TemplateCard } from '@/components/templates/template-card'
 import { TemplateDetailClient } from '@/components/templates/template-detail-client'
 import { TemplateTabs } from '@/components/templates/template-tabs'
+import { TemplateFrameworkRequest } from '@/components/templates/template-framework-request'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
 import { SectionBackground, CtaBackground } from '@/components/design-system/backgrounds'
 
@@ -296,6 +297,12 @@ export default async function TemplateDetailPage({ params }: { params: Params })
                 <TemplateDetailClient template={template} />
               </Reveal>
             </div>
+
+            {!template.isFree ? (
+              <Reveal delay={0.14}>
+                <TemplateFrameworkRequest slug={template.slug} title={template.title} />
+              </Reveal>
+            ) : null}
           </div>
         </section>
 
