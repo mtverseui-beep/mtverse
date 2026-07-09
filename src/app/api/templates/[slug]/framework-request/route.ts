@@ -81,8 +81,8 @@ export async function POST(request: NextRequest, context: RouteContext) {
       duplicate: result.duplicate,
       request: result.request,
       message: result.duplicate
-        ? 'You already requested this version recently. We kept your request in the admin inbox.'
-        : 'Request sent. We will review this template version.',
+        ? 'You already requested this version recently. We kept it in the admin inbox and will email you after review.'
+        : 'Request sent. We will review it and email you with the next step.',
     })
   } catch (error) {
     return jsonError(error instanceof Error ? error.message : 'Failed to save request.', 500)

@@ -156,7 +156,7 @@ export function AdminShell({ children, userEmail, requestCount = 0 }: { children
                         <Icon className="h-4 w-4 shrink-0" />
                         <span className="truncate">{item.name}</span>
                         {item.href === '/admin/requests' && requestCount > 0 ? (
-                          <span className="ml-auto rounded-full bg-accent-500 px-1.5 py-0.5 text-[10px] font-bold text-white">{requestCount > 99 ? '99+' : requestCount}</span>
+                          <span className="ml-auto inline-flex min-w-5 items-center justify-center rounded-full bg-rose-600 px-1.5 py-0.5 text-[10px] font-black leading-none !text-white shadow-sm dark:bg-rose-500 dark:!text-white">{requestCount > 99 ? '99+' : requestCount}</span>
                         ) : null}
                       </Link>
                     </li>
@@ -225,7 +225,7 @@ export function AdminShell({ children, userEmail, requestCount = 0 }: { children
             >
               <Bell className="h-4 w-4" />
               {requestCount > 0 ? (
-                <span className="absolute -right-1 -top-1 inline-flex min-w-5 items-center justify-center rounded-full bg-accent-500 px-1.5 py-0.5 text-[10px] font-black text-white shadow-sm">
+                <span className="absolute -right-1.5 -top-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-600 px-1.5 text-[10px] font-black leading-none !text-white shadow-sm ring-2 ring-[var(--ds-bg-raised)] dark:bg-rose-500 dark:!text-white">
                   {requestCount > 99 ? '99+' : requestCount}
                 </span>
               ) : null}

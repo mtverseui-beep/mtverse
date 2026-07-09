@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
-import { Check, Code2, Loader2, Send, Sparkles } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { Check, ChevronDown, Code2, Loader2, Palette, Send, Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/use-auth'
@@ -29,14 +29,31 @@ export function TemplateFrameworkRequest({ slug, title }: Props) {
   const [message, setMessage] = useState('')
   const [submitState, setSubmitState] = useState<SubmitState>('idle')
   const [error, setError] = useState('')
+  const [stylingMenuOpen, setStylingMenuOpen] = useState(false)
+  const stylingMenuRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (authenticated && user?.email) setEmail(user.email)
   }, [authenticated, user?.email])
 
-  const selectedFrameworkLabel = useMemo(() => {
-    return framework === 'Custom' ? customFramework.trim() || 'your custom stack' : framework
-  }, [customFramework, framework])
+  useEffect(() => {
+    function handlePointerDown(event: MouseEvent) {
+      if (!stylingMenuRef.current?.contains(event.target as Node)) setStylingMenuOpen(false)
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') setStylingMenuOpen(false)
+    }
+
+    document.addEventListener('mousedown', handlePointerDown)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+
+
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -82,7 +99,7 @@ export function TemplateFrameworkRequest({ slug, title }: Props) {
 
       setSubmitState('sent')
       toast.success(data.duplicate ? 'Request already in admin inbox' : 'Request sent', {
-        description: data.message || `We will review a ${selectedFrameworkLabel} version.`,
+        description: data.message || `We will review your request and email you with the next step.`,
       })
     } catch (requestError) {
       const messageText = requestError instanceof Error ? requestError.message : 'Request failed. Please try again.'
@@ -98,16 +115,16 @@ export function TemplateFrameworkRequest({ slug, title }: Props) {
         <div className="space-y-3">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background/80 px-3 py-1 text-xs font-bold text-primary-700 shadow-sm dark:text-primary-300">
             <Sparkles className="h-3.5 w-3.5" />
-            Stack request
+            Custom stack request
           </span>
           <div>
             <h2 className="text-lg font-bold tracking-tight sm:text-xl">Need this template in another stack?</h2>
             <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-              Request {title} in HTML, React, Vue, Laravel, or your own custom stack. We review demand from paid-template pages and prioritize the most requested versions.
+              Request {title} in HTML, React, Vue, Laravel, or your own custom stack. If we build your requested version, it stays at the same template price.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
-            {['Admin reviewed', 'No purchase needed', 'Custom stack supported'].map((item) => (
+            {['Admin reviewed', 'Same template price', 'Custom build request'].map((item) => (
               <div key={item} className="flex items-center gap-1.5 rounded-xl border border-border/70 bg-background/70 px-2.5 py-2 font-medium text-muted-foreground">
                 <Check className="h-3.5 w-3.5 text-emerald-600" />
                 {item}
@@ -168,14 +185,50 @@ export function TemplateFrameworkRequest({ slug, title }: Props) {
               </div>
               <div>
                 <label className="mb-1.5 block text-sm font-medium" htmlFor={`request-styling-${slug}`}>Styling preference</label>
-                <select
-                  id={`request-styling-${slug}`}
-                  value={styling}
-                  onChange={(event) => setStyling(event.target.value as StylingOption)}
-                  className="ds-input"
-                >
-                  {STYLING_OPTIONS.map((option) => <option key={option} value={option}>{option}</option>)}
-                </select>
+                <div ref={stylingMenuRef} className="relative">
+                  <button
+                    id={`request-styling-${slug}`}
+                    type="button"
+                    onClick={() => setStylingMenuOpen((open) => !open)}
+                    className="flex h-11 w-full items-center justify-between gap-3 rounded-xl border border-border bg-background px-3 text-left text-sm font-medium text-foreground shadow-sm transition-all hover:border-primary/40 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10"
+                    aria-haspopup="listbox"
+                    aria-expanded={stylingMenuOpen}
+                  >
+                    <span className="flex min-w-0 items-center gap-2">
+                      <Palette className="h-4 w-4 shrink-0 text-primary-600" />
+                      <span className="truncate">{styling}</span>
+                    </span>
+                    <ChevronDown className={cn('h-4 w-4 shrink-0 text-muted-foreground transition-transform', stylingMenuOpen && 'rotate-180')} />
+                  </button>
+                  {stylingMenuOpen ? (
+                    <div role="listbox" className="absolute left-0 right-0 z-30 mt-2 max-h-72 overflow-y-auto rounded-2xl border border-border/70 bg-popover p-1.5 shadow-xl ring-1 ring-black/5">
+                      {STYLING_OPTIONS.map((option) => {
+                        const active = styling === option
+                        return (
+                          <button
+                            key={option}
+                            type="button"
+                            role="option"
+                            aria-selected={active}
+                            onClick={() => {
+                              setStyling(option)
+                              setStylingMenuOpen(false)
+                            }}
+                            className={cn(
+                              'flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-colors',
+                              active
+                                ? 'bg-primary text-primary-foreground shadow-sm'
+                                : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                            )}
+                          >
+                            <span>{option}</span>
+                            {active ? <Check className="h-4 w-4" /> : null}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  ) : null}
+                </div>
               </div>
             </div>
 
