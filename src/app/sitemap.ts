@@ -5,6 +5,7 @@ import { getPromptCollectionHref, PROMPT_COLLECTIONS } from "@/lib/prompt-collec
 import { getPublishedPrompts, isPromptIndexable } from "@/lib/prompt-db";
 import { generateHreflangMap } from "@/lib/seo-languages";
 import { resolveSiteUrlFromRequestHeaders } from "@/lib/site-url";
+import { TEMPLATE_SEO_HUBS } from "@/lib/template-seo-hubs";
 import { getAllTemplatesFromStore, getTemplateCategoriesFor, TEMPLATES } from "@/lib/templates-data";
 
 const MAX_PROMPT_SITEMAP_URLS = 300;
@@ -55,6 +56,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: categoryId === "dashboards" ? 0.98 : categoryId === "ecommerce" ? 0.97 : categoryId === "landing" ? 0.96 : categoryId === "html" ? 0.95 : 0.93,
   }));
 
+  const templateHubRoutes: MetadataRoute.Sitemap = TEMPLATE_SEO_HUBS.map((hub) => ({
+    url: baseUrl + "/template-hubs/" + hub.slug,
+    lastModified: contentDate,
+    changeFrequency: "weekly" as const,
+    priority: hub.slug === "nextjs-dashboard-templates" ? 0.98 : hub.slug === "react-admin-dashboard-templates" ? 0.97 : 0.94,
+  }));
+
   const templateRoutes: MetadataRoute.Sitemap = templates.map((template) => ({
     url: baseUrl + "/templates/" + template.slug,
     lastModified: safeDate(template.lastUpdated, contentDate),
@@ -87,7 +95,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.68,
   }));
 
-  return [...staticRoutes, ...templateCategoryRoutes, ...templateRoutes, ...promptCollectionRoutes, ...promptRoutes, ...blogRoutes].map((route) => ({
+  return [...staticRoutes, ...templateCategoryRoutes, ...templateHubRoutes, ...templateRoutes, ...promptCollectionRoutes, ...promptRoutes, ...blogRoutes].map((route) => ({
     ...route,
     alternates: {
       languages: generateHreflangMap(route.url.replace(baseUrl, ""), baseUrl),

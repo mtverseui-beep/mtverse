@@ -7,6 +7,7 @@ import PublicLayout from '@/components/layout/PublicLayout'
 import { TemplatesHubClient } from '@/components/templates/templates-hub-client'
 import { getAllTemplatesFromStore, getTemplateCategoriesFor, getTemplateStatsFor } from '@/lib/templates-data'
 import { withAllTemplateSocial } from '@/lib/template-social-store'
+import { TEMPLATE_SEO_HUBS } from '@/lib/template-seo-hubs'
 
 export const metadata: Metadata = {
   title: {
@@ -196,6 +197,19 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
                 {categoryOptions.filter((category) => category.id !== 'all').map((category) => (
                   <Link key={category.id} href={`/template-categories/${category.id}`} className="ds-btn ds-btn-secondary ds-btn-sm">
                     {category.label} templates
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4 rounded-2xl border border-border/70 bg-background p-4 sm:p-5">
+              <h2 className="text-sm font-bold text-foreground">Popular template searches</h2>
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                Focused guides for buyers comparing dashboard, ecommerce, landing, SaaS, agency, and HTML template options.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {TEMPLATE_SEO_HUBS.map((hub) => (
+                  <Link key={hub.slug} href={`/template-hubs/${hub.slug}`} className="ds-btn ds-btn-secondary ds-btn-sm">
+                    {hub.title}
                   </Link>
                 ))}
               </div>
