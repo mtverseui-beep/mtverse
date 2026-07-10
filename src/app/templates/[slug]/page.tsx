@@ -211,7 +211,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
             <ChevronRight className="h-3.5 w-3.5" />
             {category && (
               <>
-                <Link href={`/templates?category=${category.id}`} className="hover:text-foreground">{category.label}</Link>
+                <Link href={`/template-categories/${category.id}`} className="hover:text-foreground">{category.label}</Link>
                 <ChevronRight className="h-3.5 w-3.5" />
               </>
             )}
@@ -498,7 +498,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
             <div className="ds-container">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="ds-h2">More in {category?.label}</h2>
-                <Link href={`/templates?category=${template.category}`} className="text-sm font-medium text-primary-600 hover:underline">
+                <Link href={`/template-categories/${template.category}`} className="text-sm font-medium text-primary-600 hover:underline">
                   View all
                 </Link>
               </div>

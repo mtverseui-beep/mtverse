@@ -190,6 +190,16 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
               ))}
             </div>
 
+            <div className="mt-8 rounded-2xl border border-border/70 bg-background p-4 sm:p-5">
+              <h2 className="text-sm font-bold text-foreground">Explore template categories</h2>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {categoryOptions.filter((category) => category.id !== 'all').map((category) => (
+                  <Link key={category.id} href={`/template-categories/${category.id}`} className="ds-btn ds-btn-secondary ds-btn-sm">
+                    {category.label} templates
+                  </Link>
+                ))}
+              </div>
+            </div>
             {/* Footer links */}
             <div className="mt-8 flex flex-wrap gap-2 text-sm">
               <Link href="/prompts" className="ds-btn ds-btn-ghost ds-btn-sm">Free AI prompts</Link>
