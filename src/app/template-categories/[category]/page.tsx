@@ -13,6 +13,15 @@ type Params = Promise<{ category: string }>
 
 export const dynamic = 'force-dynamic'
 
+type CategoryPageInfo = { id: string; label: string; description: string; icon: string }
+
+const PRIORITY_CATEGORY_LABELS: Record<string, string> = {
+  dashboards: 'Dashboards',
+  ecommerce: 'Ecommerce',
+  landing: 'Landing Pages',
+  html: 'HTML',
+}
+
 const CATEGORY_SEO: Record<string, { title: string; description: string; keywords: string[] }> = {
   dashboards: {
     title: 'Next.js Dashboard Templates & Admin UI Kits',
@@ -41,6 +50,19 @@ const CATEGORY_SEO: Record<string, { title: string; description: string; keyword
       'checkout template',
     ],
   },
+  landing: {
+    title: 'Landing Page Templates for SaaS, Apps & Products',
+    description: 'Browse landing page templates for SaaS products, mobile apps, product launches, agencies, creators, ecommerce campaigns, and conversion-focused marketing pages.',
+    keywords: [
+      'landing page templates',
+      'SaaS landing page template',
+      'product landing page template',
+      'app landing page template',
+      'marketing landing page template',
+      'conversion landing page UI',
+      'startup landing page template',
+    ],
+  },
   html: {
     title: 'Free HTML Website Templates',
     description: 'Browse responsive HTML website templates for portfolios, SaaS sites, ecommerce pages, agencies, restaurants, healthcare, education, fitness, crypto, and real estate.',
@@ -63,6 +85,25 @@ function fallbackTitle(categoryLabel: string) {
 function fallbackDescription(categoryLabel: string) {
   return `Browse ${categoryLabel.toLowerCase()} templates with live previews, screenshots, reusable pages, secure ZIP delivery, and source-code access from mtverse.`
 }
+function resolveCategoryInfo(category: string, categories: CategoryPageInfo[]) {
+  return categories.find((item) => item.id === category) || (
+    PRIORITY_CATEGORY_LABELS[category]
+      ? {
+          id: category,
+          label: PRIORITY_CATEGORY_LABELS[category],
+          description: fallbackDescription(PRIORITY_CATEGORY_LABELS[category]),
+          icon: category === 'dashboards' ? 'LayoutDashboard' : category === 'html' ? 'Code2' : 'LayoutGrid',
+        }
+      : null
+  )
+}
+
+function templateMatchesCategory(templateCategory: string, category: string) {
+  if (templateCategory === category) return true
+  if (category === 'landing') return ['landing', 'landings', 'landing-pages'].includes(templateCategory)
+  if (category === 'dashboards') return ['dashboards', 'dashboard-kits', 'dashboard-kit'].includes(templateCategory)
+  return false
+}
 
 function categoryIcon(category: string) {
   if (category === 'dashboards') return LayoutDashboard
@@ -74,7 +115,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { category } = await params
   const templates = await getAllTemplatesFromStore().catch(() => [])
   const categories = getTemplateCategoriesFor(templates).filter((item) => item.id !== 'all')
-  const selected = categories.find((item) => item.id === category)
+  const selected = resolveCategoryInfo(category, categories)
 
   if (!selected) return { title: 'Template category not found', robots: { index: false, follow: false } }
 
@@ -116,10 +157,10 @@ export default async function TemplateCategoryPage({ params }: { params: Params 
   const { category } = await params
   const baseTemplates = await getAllTemplatesFromStore()
   const categories = getTemplateCategoriesFor(baseTemplates).filter((item) => item.id !== 'all')
-  const selected = categories.find((item) => item.id === category)
+  const selected = resolveCategoryInfo(category, categories)
   if (!selected) notFound()
 
-  const templates = await withAllTemplateSocial(baseTemplates.filter((template) => template.category === category))
+  const templates = await withAllTemplateSocial(baseTemplates.filter((template) => templateMatchesCategory(template.category, category)))
   const Icon = categoryIcon(category)
   const seo = CATEGORY_SEO[category]
   const title = seo?.title || fallbackTitle(selected.label)

@@ -8,6 +8,7 @@ import { resolveSiteUrlFromRequestHeaders } from "@/lib/site-url";
 import { getAllTemplatesFromStore, getTemplateCategoriesFor, TEMPLATES } from "@/lib/templates-data";
 
 const MAX_PROMPT_SITEMAP_URLS = 300;
+const PRIORITY_TEMPLATE_CATEGORY_IDS = ["dashboards", "ecommerce", "landing", "html"] as const;
 
 function safeDate(value: Date | string, fallback: Date) {
   const resolved = value instanceof Date ? value : new Date(value);
@@ -42,14 +43,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: baseUrl + "/refund-policy", lastModified: staticDate, changeFrequency: "yearly", priority: 0.25 },
   ];
 
-  const templateCategoryRoutes: MetadataRoute.Sitemap = getTemplateCategoriesFor(templates)
-    .filter((category) => category.id !== "all")
-    .map((category) => ({
-      url: baseUrl + "/template-categories/" + category.id,
-      lastModified: contentDate,
-      changeFrequency: "daily" as const,
-      priority: category.id === "dashboards" ? 0.98 : category.id === "html" ? 0.95 : 0.93,
-    }));
+  const templateCategoryIds = Array.from(new Set([
+    ...PRIORITY_TEMPLATE_CATEGORY_IDS,
+    ...getTemplateCategoriesFor(templates).filter((category) => category.id !== "all").map((category) => category.id),
+  ]));
+
+  const templateCategoryRoutes: MetadataRoute.Sitemap = templateCategoryIds.map((categoryId) => ({
+    url: baseUrl + "/template-categories/" + categoryId,
+    lastModified: contentDate,
+    changeFrequency: "daily" as const,
+    priority: categoryId === "dashboards" ? 0.98 : categoryId === "ecommerce" ? 0.97 : categoryId === "landing" ? 0.96 : categoryId === "html" ? 0.95 : 0.93,
+  }));
 
   const templateRoutes: MetadataRoute.Sitemap = templates.map((template) => ({
     url: baseUrl + "/templates/" + template.slug,
