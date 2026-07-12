@@ -79,7 +79,6 @@ function AnimatedPromptCard({ images, intervalMs = 3000 }: CardProps) {
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
           className="object-cover transition-opacity duration-700"
           style={{ opacity: i === currentIndex ? 1 : 0 }}
-          unoptimized
           priority={i === 0 && currentIndex === 0}
         />
       ))}

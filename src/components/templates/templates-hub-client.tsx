@@ -544,7 +544,7 @@ export function TemplatesHubClient({
             ) : (
               <div id="templates-grid" className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {visibleTemplates.map((t, i) => (
-                  <TemplateCard key={t.id} template={t} priority={i < 6} />
+                  <TemplateCard key={t.id} template={t} priority={i === 0} />
                 ))}
               </div>
             )}

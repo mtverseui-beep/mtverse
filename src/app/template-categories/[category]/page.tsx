@@ -233,7 +233,7 @@ export default async function TemplateCategoryPage({ params }: { params: Params 
             <Stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {templates.map((template, index) => (
                 <StaggerItem key={template.id}>
-                  <TemplateCard template={template} priority={index < 6} />
+                  <TemplateCard template={template} priority={index === 0} />
                 </StaggerItem>
               ))}
             </Stagger>

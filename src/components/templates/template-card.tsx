@@ -32,10 +32,10 @@ export function TemplateCard({ template, priority = false }: Props) {
               alt={template.title}
               width={1900}
               height={900}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+              quality={72}
               className="block h-auto w-full object-contain transition-transform duration-500 ease-out group-hover:scale-[1.03]"
               priority={priority}
-              unoptimized
             />
 
             {/* Hover overlay */}

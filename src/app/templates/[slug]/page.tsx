@@ -255,9 +255,9 @@ export default async function TemplateDetailPage({ params }: { params: Params })
                         width={1900}
                         height={900}
                         sizes="(max-width: 1024px) 100vw, 760px"
+                        quality={80}
                         className="block h-auto w-full object-contain transition duration-500 group-hover:scale-[1.01]"
                         priority
-                        unoptimized
                       />
                       <Link
                         href={`/preview/${template.slug}`}
