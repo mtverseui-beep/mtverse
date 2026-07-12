@@ -234,7 +234,7 @@
       "framework": "nextjs",
       "frameworkLabel": "Next.js 14 App Router",
       "previewPath": "/dashboard-kits/nexus-cms-basic-dashboard-template",
-      "livePreviewUrl": "https://mt-nexuscms-basic.vercel.app",
+      "livePreviewUrl": "https://mt-nexuxcms-basic.vercel.app",
       "packageFilename": "nexus-cms-basic-dashboard-template.zip",
       "packageKey": "templates/dashboards/nexus-cms-basic-dashboard-template/nexus-cms-basic-dashboard-template-2751946083.zip",
       "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/nexus-cms-basic-dashboard-template/nexus-cms-basic-dashboard-template-4168092357.png",
