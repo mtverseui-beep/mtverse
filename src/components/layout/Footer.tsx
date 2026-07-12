@@ -50,6 +50,7 @@ const FOOTER_COLUMNS: Array<{
       { name: 'Disclaimer', href: '/disclaimer' },
       { name: 'DMCA', href: '/dmca' },
       { name: 'Refund Policy', href: '/refund-policy' },
+      { name: 'Editorial Standards', href: '/editorial-policy' },
     ],
   },
 ]

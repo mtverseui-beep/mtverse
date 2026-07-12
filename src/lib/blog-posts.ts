@@ -16,6 +16,243 @@ export type BlogPost = {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'how-to-evaluate-nextjs-dashboard-template',
+    title: 'How to Evaluate a Next.js Dashboard Template Before You Buy',
+    excerpt:
+      'A practical buyer checklist for architecture, responsive behavior, accessibility, data states, dependencies, licensing, and long-term maintainability.',
+    date: 'July 12, 2026',
+    isoDate: '2026-07-12',
+    readTime: '11 min read',
+    category: 'Template Guides',
+    intro:
+      'A dashboard screenshot can look excellent while the source is difficult to extend. The useful question is not whether the demo looks polished; it is whether the template gives your team a dependable starting point for a real product.',
+    sections: [
+      {
+        heading: 'Check The Application Structure First',
+        body: [
+          'Start by identifying where routes, layouts, reusable components, data adapters, styles, and shared utilities live. A good template makes these boundaries easy to discover. You should be able to find the navigation definition, add a route, replace a chart data source, and change a design token without tracing unrelated files.',
+          'Look for a clear distinction between server-rendered content and interactive client components. Templates that mark most of the application as client-side often ship more JavaScript than necessary and make permissions, metadata, and data fetching harder to reason about.',
+        ],
+        bullets: [
+          'Routes and layouts follow a predictable folder structure',
+          'Shared UI is separated from page-specific composition',
+          'Navigation and permissions are defined centrally',
+          'Environment variables are documented without committing secrets',
+        ],
+      },
+      {
+        heading: 'Inspect Real Interface States',
+        body: [
+          'Production dashboards spend a surprising amount of time outside the perfect demo state. Tables can be empty, requests can fail, permissions can hide actions, and long labels can wrap. Evaluate whether the template includes loading, empty, error, disabled, and overflow behavior rather than only populated cards.',
+          'Try the narrowest supported mobile width and zoom the browser to 200 percent. Navigation should remain reachable, tables should have an intentional small-screen strategy, and buttons should keep readable labels and usable touch targets.',
+        ],
+      },
+      {
+        heading: 'Review Dependencies And Upgrade Risk',
+        body: [
+          'Open the package manifest and separate essential dependencies from decorative ones. A proven charting or accessibility library can save months of work. Several overlapping UI libraries, abandoned packages, or unnecessary animation dependencies increase bundle size and make upgrades harder.',
+          'Check the framework and React versions, then run the production build. Warnings hidden during development often become deployment failures later. A trustworthy package should type-check without suppressing errors across the project.',
+        ],
+      },
+      {
+        heading: 'Verify Accessibility And Interaction',
+        body: [
+          'Use only the keyboard for a short test. You should be able to open navigation, reach form controls, close dialogs, and identify the current focus position. Icon buttons need accessible names, inputs need labels, and status changes should not depend on color alone.',
+          'Accessibility is also a maintainability signal. Components built with semantic HTML and established primitives are usually easier to test and less fragile when product requirements change.',
+        ],
+      },
+      {
+        heading: 'Understand What The License Includes',
+        body: [
+          'Confirm whether the license covers one client project, multiple products, redistribution, or internal team use. Source access, future updates, documentation, design files, and support are separate benefits and should be stated clearly before checkout.',
+          'Keep the purchase receipt and license text with the project documentation. This avoids uncertainty when a different developer or client takes ownership months later.',
+        ],
+      },
+      {
+        heading: 'Run A Thirty-Minute Technical Trial',
+        body: [
+          'Before committing a project to the template, change the brand color, add one route, replace one data set, test the mobile navigation, and run a production build. Those five actions reveal more about source quality than a long feature list.',
+          'mtverse template pages provide screenshots, live previews, included pages, framework details, and package information so buyers can compare the visible experience with the implementation they actually need.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'nextjs-template-production-checklist',
+    title: 'Next.js Template Production Checklist: From Download to Deployment',
+    excerpt:
+      'A deployment-focused checklist covering secrets, authentication, payments, metadata, performance, error handling, testing, and operational monitoring.',
+    date: 'July 10, 2026',
+    isoDate: '2026-07-10',
+    readTime: '12 min read',
+    category: 'Engineering',
+    intro:
+      'Downloading a template solves the first layout problem, not the production problem. Before launch, every external service, protected action, error path, and public page needs an explicit owner and a test that reflects the deployed environment.',
+    sections: [
+      {
+        heading: 'Separate Local And Production Configuration',
+        body: [
+          'Keep local development values in an ignored environment file and configure production secrets in the hosting provider. Public browser variables must never contain API secrets, webhook signing keys, storage credentials, or admin passwords.',
+          'Document each required variable with its purpose and expected format, but leave the value blank in committed examples. Validate critical variables at startup so a missing payment or storage key fails clearly instead of causing a vague customer-facing error.',
+        ],
+      },
+      {
+        heading: 'Protect Authentication And Return Paths',
+        body: [
+          'Authentication should preserve the page or action the customer intended to use. After sign-in or account creation, return the user to the selected template, download, or checkout rather than sending everyone to a generic dashboard.',
+          'Test expired sessions, invalid passwords, OAuth callback errors, password resets, sign-out, and multiple browser tabs. Server-side authorization must protect private routes even when the corresponding button is hidden in the interface.',
+        ],
+      },
+      {
+        heading: 'Verify Payment Fulfillment End To End',
+        body: [
+          'A successful checkout screen is not proof of entitlement. Verify the transaction with the payment provider, match the signed purchase intent, customer, product, and price, then record access idempotently. Webhooks provide recovery when the browser closes before the success page finishes.',
+          'Run tests for a valid purchase, an incorrect price ID, a replayed webhook, a repeated success-page refresh, and an account trying to download a different product. Private files should be served only through short-lived authorized responses, never predictable public object URLs.',
+        ],
+      },
+      {
+        heading: 'Prepare Public Pages For Search And Sharing',
+        body: [
+          'Give each valuable public page a unique title, description, canonical URL, heading, and useful body content. Noindex account, admin, checkout result, filtered search, duplicate, and thin generated pages. A sitemap should contain only canonical pages that you genuinely want search engines to index.',
+          'Open Graph images, structured data, and keywords help describe a page, but they cannot replace original visible content. Search crawlers and human visitors should reach the same useful explanation without signing in.',
+        ],
+      },
+      {
+        heading: 'Measure Performance And Failure Modes',
+        body: [
+          'Run a production build, inspect client bundle warnings, and test slow network behavior. Reserve image and advertising dimensions to prevent layout shift. Avoid loading large libraries or third-party scripts on routes that do not use them.',
+          'Add structured logs for authentication, checkout verification, webhooks, downloads, and storage failures. Logs should include a safe request or error identifier, not passwords, tokens, or full payment data. A health endpoint can verify required integrations without revealing credentials.',
+        ],
+      },
+      {
+        heading: 'Complete A Release Rehearsal',
+        body: [
+          'Use a staging or sandbox environment to rehearse account creation, checkout, purchase recovery, download, refund handling, contact forms, and mobile navigation. Then repeat a smaller smoke test against the production domain after deployment.',
+          'Treat the checklist as living documentation. When a real incident exposes a missing case, add the test to the release process so the same failure becomes less likely on the next update.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'ai-image-prompt-workflow-brief-to-final',
+    title: 'A Repeatable AI Image Prompt Workflow: From Brief to Final Selection',
+    excerpt:
+      'Turn a visual idea into a controlled prompt, useful variations, a review grid, and a reusable production recipe instead of generating at random.',
+    date: 'July 8, 2026',
+    isoDate: '2026-07-08',
+    readTime: '10 min read',
+    category: 'AI Prompts',
+    intro:
+      'Consistent AI image work comes from a repeatable decision process. The prompt matters, but the brief, variation plan, evaluation criteria, and record of what changed are what turn an isolated result into a usable creative workflow.',
+    sections: [
+      {
+        heading: 'Write A One-Sentence Visual Brief',
+        body: [
+          'Describe the communication job before describing aesthetics. State the subject, audience, use case, and desired response. A beverage launch image for a social advertisement has different composition needs from a product catalog image, even when both show the same can.',
+          'A strong brief gives you a reason to reject attractive images that do not solve the actual job. It also keeps collaborators aligned before model-specific syntax enters the conversation.',
+        ],
+      },
+      {
+        heading: 'Build The Prompt In Ordered Layers',
+        body: [
+          'Start with subject identity and action, then add environment, composition, camera, lighting, materials, color, and output constraints. Put the most important facts early and avoid several style directions that compete with each other.',
+          'Use variables for details that should change across a campaign, such as product name, colorway, location, aspect ratio, or audience. Keep fixed art direction separate so the visual family remains recognizable.',
+        ],
+        bullets: [
+          'Subject and required product details',
+          'Scene, action, and supporting objects',
+          'Framing, camera angle, lens, and aspect ratio',
+          'Lighting direction, contrast, palette, and material behavior',
+          'Constraints such as readable label, empty copy space, or excluded objects',
+        ],
+      },
+      {
+        heading: 'Plan Variations Before Generating',
+        body: [
+          'Generate a small matrix instead of many unrelated images. Keep the subject constant while testing three compositions, or keep composition constant while testing three lighting directions. This makes the differences easy to interpret.',
+          'When every variable changes at once, a good result teaches you very little. Controlled variation helps you identify which instruction improved the outcome and which phrase had no useful effect.',
+        ],
+      },
+      {
+        heading: 'Review With A Practical Scorecard',
+        body: [
+          'Score results against the brief: subject accuracy, composition, brand fit, physical realism, text or logo integrity, editability, and final-channel suitability. A clear scorecard reduces the tendency to select only the most dramatic image.',
+          'Inspect details at full resolution. Hands, reflections, packaging edges, typography, repeated objects, and inconsistent shadows frequently reveal problems that are easy to miss in a thumbnail grid.',
+        ],
+      },
+      {
+        heading: 'Revise One Failure At A Time',
+        body: [
+          'Name the failure in concrete language: label is distorted, rim light is too harsh, background competes with the product, or camera angle hides the silhouette. Update the smallest relevant instruction and generate the next comparison set.',
+          'Negative direction is useful for recurring failures, but it should remain shorter than the positive art direction. The model needs a clear picture of what to create, not only a long list of what to avoid.',
+        ],
+      },
+      {
+        heading: 'Save The Recipe With The Result',
+        body: [
+          'Store the final prompt, model, aspect ratio, seed or reference settings, selected output, and a note about the winning change. This record lets a team reproduce the visual language for the next product or campaign.',
+          'The mtverse prompt library is most useful as a starting structure. Replace variables, run controlled tests, and save the version that worked for your own brief rather than treating any copied prompt as a guaranteed final result.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'html-template-launch-checklist',
+    title: 'Static HTML Template Launch Checklist for Fast, Reliable Websites',
+    excerpt:
+      'A focused checklist for editing, accessibility, forms, metadata, performance, hosting, redirects, analytics, and post-launch verification.',
+    date: 'July 5, 2026',
+    isoDate: '2026-07-05',
+    readTime: '9 min read',
+    category: 'Template Guides',
+    intro:
+      'Static HTML sites can be extremely fast and inexpensive to host, but a template still needs deliberate content, form, search, accessibility, and deployment work before it represents a real business well.',
+    sections: [
+      {
+        heading: 'Replace Every Piece Of Demo Content',
+        body: [
+          'Search the project for placeholder company names, sample email addresses, stock links, lorem ipsum, generic testimonials, and template credits. Update page titles, headings, navigation labels, footer details, copyright text, and image alternative text together so the site tells one coherent story.',
+          'Remove sections the business cannot support. A shorter page with real services, evidence, and contact information is more credible than a large template filled with invented metrics and testimonials.',
+        ],
+      },
+      {
+        heading: 'Test Navigation And Forms Without Assumptions',
+        body: [
+          'Click every navigation, footer, social, telephone, email, and call-to-action link. Confirm that internal anchors account for sticky headers and that the browser back button returns visitors to a sensible position.',
+          'Static contact forms need a real endpoint or trusted form service. Validate required fields in the browser and on the receiving service, show a clear success state, and test failures such as an offline connection or rejected submission.',
+        ],
+      },
+      {
+        heading: 'Add Page-Specific Search Metadata',
+        body: [
+          'Each indexable page needs a unique title, description, canonical URL, primary heading, and useful visible content. Add an Open Graph image for link sharing and a favicon that remains recognizable at small sizes.',
+          'Create robots.txt and a sitemap only for canonical public pages. Exclude duplicate demos, thank-you pages, internal search results, and unfinished routes. Keyword lists do not compensate for thin or repeated page copy.',
+        ],
+      },
+      {
+        heading: 'Optimize Images And Fonts',
+        body: [
+          'Export images near their rendered dimensions, use modern formats where appropriate, and set width and height to reduce layout shift. The hero image deserves early loading; below-the-fold galleries usually benefit from lazy loading.',
+          'Limit font families and weights, preload only resources required for the first viewport, and provide system fallbacks. Test on a slower mobile connection because a fast desktop can hide several megabytes of unnecessary media.',
+        ],
+      },
+      {
+        heading: 'Review Accessibility At Mobile Width',
+        body: [
+          'Use semantic headings, landmarks, buttons, and links. Ensure every form input has a label, every meaningful image has useful alternative text, and decorative images are ignored by assistive technology. Check contrast and visible focus states.',
+          'Test at 320 pixels wide and with large text. Long words, navigation menus, pricing labels, and buttons should wrap without overlapping. Keyboard users must be able to open and close the mobile menu and reach every interactive element.',
+        ],
+      },
+      {
+        heading: 'Deploy, Redirect, And Verify',
+        body: [
+          'Configure HTTPS, the preferred www or non-www hostname, and redirects from old URLs before announcing the site. Add a custom 404 page, verify cache headers, and make sure case differences or trailing slashes do not create duplicate pages.',
+          'After deployment, test the live domain on a second device, submit the sitemap to Search Console, confirm analytics consent behavior, and monitor form delivery. Keep the source and deployment instructions in version control so the next update is repeatable.',
+        ],
+      },
+    ],
+  },
+  {
     slug: 'best-midjourney-prompts-2026',
     title: 'The Best Midjourney Prompts for Stunning AI Art in 2026',
     excerpt:

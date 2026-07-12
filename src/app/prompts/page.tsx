@@ -88,24 +88,15 @@ export async function generateMetadata({
   searchParams?: Promise<Record<string, string | string[] | undefined>>
 }): Promise<Metadata> {
   const resolvedSearchParams = await searchParams
-  const hasFilterParams = Object.values(resolvedSearchParams || {}).some(value => {
-    if (Array.isArray(value)) return value.some(Boolean)
-    return Boolean(value)
-  })
+  void resolvedSearchParams
 
   return {
     ...promptsPageMetadata,
-    robots: hasFilterParams
-      ? {
-          index: false,
-          follow: true,
-          googleBot: { index: false, follow: true },
-        }
-      : {
-          index: true,
-          follow: true,
-          googleBot: { index: true, follow: true },
-        },
+    robots: {
+      index: false,
+      follow: true,
+      googleBot: { index: false, follow: true },
+    },
   }
 }
 

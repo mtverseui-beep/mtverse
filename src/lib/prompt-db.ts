@@ -443,6 +443,10 @@ export async function getPublishedPrompts(options: { noStore?: boolean } = {}) {
   return (await getPromptLibraryData(options)).prompts
 }
 
+const INDEXABLE_PROMPT_SLUGS = new Set([
+  'royal-blue-velvet-saree-vogue-portrait',
+])
+
 export function isPromptIndexable(
   prompt: Pick<
     PromptEntry,
@@ -462,6 +466,7 @@ export function isPromptIndexable(
   >
 ) {
   return Boolean(
+    INDEXABLE_PROMPT_SLUGS.has(prompt.slug) &&
     prompt.slug &&
     prompt.title &&
     isUsefulText(prompt.metaDescription, 90) &&

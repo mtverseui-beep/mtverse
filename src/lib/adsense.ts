@@ -51,8 +51,6 @@ const ALLOWED_AD_PATTERNS = [
   /^\/$/,
   /^\/blog$/,
   /^\/blog\//,
-  /^\/prompts$/,
-  /^\/prompts\//,
   /^\/templates$/,
   /^\/templates\//,
 ]

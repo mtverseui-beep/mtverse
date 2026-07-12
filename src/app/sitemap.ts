@@ -1,14 +1,12 @@
 import { MetadataRoute } from "next";
 import { headers } from "next/headers";
 import { BLOG_POSTS } from "@/lib/blog-posts";
-import { getPromptCollectionHref, PROMPT_COLLECTIONS } from "@/lib/prompt-collections";
 import { getPublishedPrompts, isPromptIndexable } from "@/lib/prompt-db";
 import { generateHreflangMap } from "@/lib/seo-languages";
 import { resolveSiteUrlFromRequestHeaders } from "@/lib/site-url";
 import { TEMPLATE_SEO_HUBS } from "@/lib/template-seo-hubs";
 import { getAllTemplatesFromStore, getTemplateCategoriesFor, TEMPLATES } from "@/lib/templates-data";
 
-const MAX_PROMPT_SITEMAP_URLS = 300;
 const PRIORITY_TEMPLATE_CATEGORY_IDS = ["dashboards", "ecommerce", "landing", "html"] as const;
 
 function safeDate(value: Date | string, fallback: Date) {
@@ -29,10 +27,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: baseUrl + "/templates", lastModified: contentDate, changeFrequency: "daily", priority: 1.0 },
     { url: baseUrl + "/html-templates", lastModified: contentDate, changeFrequency: "daily", priority: 0.96 },
     { url: baseUrl + "/pricing", lastModified: contentDate, changeFrequency: "weekly", priority: 0.88 },
-    { url: baseUrl + "/prompts", lastModified: contentDate, changeFrequency: "weekly", priority: 0.55 },
     { url: baseUrl + "/blog", lastModified: contentDate, changeFrequency: "weekly", priority: 0.72 },
     { url: baseUrl + "/faq", lastModified: contentDate, changeFrequency: "monthly", priority: 0.7 },
     { url: baseUrl + "/about", lastModified: contentDate, changeFrequency: "monthly", priority: 0.66 },
+    { url: baseUrl + "/editorial-policy", lastModified: contentDate, changeFrequency: "monthly", priority: 0.64 },
     { url: baseUrl + "/support", lastModified: staticDate, changeFrequency: "monthly", priority: 0.58 },
     { url: baseUrl + "/contact", lastModified: staticDate, changeFrequency: "yearly", priority: 0.55 },
     { url: baseUrl + "/changelog", lastModified: contentDate, changeFrequency: "weekly", priority: 0.45 },
@@ -70,17 +68,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: !template.isFree ? (template.pricingTier === "pro" ? 0.99 : 0.97) : template.category === "html" ? 0.9 : 0.86,
   }));
 
-  const promptCollectionRoutes: MetadataRoute.Sitemap = PROMPT_COLLECTIONS.map((collection) => ({
-    url: baseUrl + getPromptCollectionHref(collection.slug),
-    lastModified: contentDate,
-    changeFrequency: "monthly" as const,
-    priority: 0.5,
-  }));
-
   const promptRoutes: MetadataRoute.Sitemap = prompts
     .filter(isPromptIndexable)
     .sort((left, right) => Number(right.featured) - Number(left.featured) || safeDate(right.updatedAt, contentDate).getTime() - safeDate(left.updatedAt, contentDate).getTime())
-    .slice(0, MAX_PROMPT_SITEMAP_URLS)
     .map((prompt) => ({
       url: baseUrl + "/prompts/" + prompt.slug,
       lastModified: safeDate(prompt.updatedAt, contentDate),
@@ -95,7 +85,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.68,
   }));
 
-  return [...staticRoutes, ...templateCategoryRoutes, ...templateHubRoutes, ...templateRoutes, ...promptCollectionRoutes, ...promptRoutes, ...blogRoutes].map((route) => ({
+  return [...staticRoutes, ...templateCategoryRoutes, ...templateHubRoutes, ...templateRoutes, ...promptRoutes, ...blogRoutes].map((route) => ({
     ...route,
     alternates: {
       languages: generateHreflangMap(route.url.replace(baseUrl, ""), baseUrl),
