@@ -7,7 +7,6 @@ type PaddleEvent = {
   data?: {
     transaction_id?: string
     transactionId?: string
-    id?: string
   }
 }
 
@@ -31,7 +30,6 @@ type PaddleGlobal = {
         displayMode?: 'overlay' | 'inline'
         theme?: 'light' | 'dark'
         locale?: string
-        successUrl?: string
       }
     }) => void
   }
@@ -107,6 +105,11 @@ function buildSuccessUrl(baseSuccessUrl: string, transactionId?: string) {
   return url.toString()
 }
 
+function getTransactionId(event: PaddleEvent) {
+  const transactionId = event.data?.transaction_id || event.data?.transactionId
+  return transactionId?.startsWith('txn_') ? transactionId : undefined
+}
+
 export async function openPaddleCheckout(payload: PaddleCheckoutPayload, successUrl: string) {
   const paddle = await getInitializedPaddle(payload, (event) => {
     if (event.name === 'checkout.loaded') {
@@ -121,7 +124,13 @@ export async function openPaddleCheckout(payload: PaddleCheckoutPayload, success
 
     if (event.name !== 'checkout.completed') return
 
-    const transactionId = event.data?.transaction_id || event.data?.transactionId || event.data?.id
+    document.body.style.overflow = ''
+    const transactionId = getTransactionId(event)
+    if (!transactionId) {
+      console.error('Paddle checkout completed without a transaction ID.')
+      return
+    }
+
     window.location.assign(buildSuccessUrl(successUrl, transactionId))
   })
 
@@ -133,7 +142,6 @@ export async function openPaddleCheckout(payload: PaddleCheckoutPayload, success
       displayMode: 'overlay',
       theme: 'light',
       locale: 'en',
-      successUrl,
     },
   })
 }
