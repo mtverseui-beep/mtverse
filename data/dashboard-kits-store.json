@@ -1,6 +1,435 @@
 {
   "kits": [
     {
+      "id": "dashboard-kit-aurora-admin-dashboard-template",
+      "slug": "aurora-admin-dashboard-template",
+      "title": "Aurora Free Vite Admin Dashboard Template",
+      "shortTitle": "Aurora",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "subcategory": "Free Multi-Purpose Admin Dashboard",
+      "summary": "Free Vite admin dashboard template with 85 HTML pages, SaaS dashboards, AI tools, CRM, ecommerce, HR, billing, charts, forms, tables, dark mode, and responsive layouts.",
+      "description": "Aurora is a free multi-purpose admin dashboard template built with Vite 8, vanilla JavaScript, modular SCSS, ECharts, DataTables, and Leaflet. It includes 85 production pages for SaaS analytics, AI workflows, CRM pipelines, ecommerce operations, projects, HR, billing, security, forms, tables, charts, authentication, and error states. The source includes reusable layouts, dark mode, command patterns, responsive navigation, documentation, and production-ready assets without Bootstrap or jQuery.",
+      "seoTitle": "Aurora Free Admin Dashboard Template - Vite HTML UI Kit",
+      "metaDescription": "Download Aurora, a free Vite admin dashboard template with 85 HTML pages, AI, CRM, ecommerce, HR, billing, charts, forms, tables, and dark mode.",
+      "priceUsd": 0,
+      "originalPriceUsd": 39,
+      "pricingTier": "normal",
+      "framework": "html",
+      "frameworkLabel": "Vite 8 + Vanilla JavaScript",
+      "previewPath": "/dashboard-kits/aurora-admin-dashboard-template",
+      "livePreviewUrl": "https://mt-aurora.vercel.app",
+      "packageFilename": "aurora-admin-dashboard-template.zip",
+      "packageKey": "templates/dashboards/aurora-admin-dashboard-template/aurora-admin-dashboard-template-5629031748.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/aurora-admin-dashboard-template/aurora-admin-dashboard-template-7084162953.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/aurora-admin-dashboard-template/aurora-admin-dashboard-template-7084162953.png"
+      ],
+      "tags": [
+        "free admin dashboard",
+        "vite admin template",
+        "html dashboard",
+        "vanilla javascript",
+        "saas dashboard",
+        "crm admin",
+        "ecommerce dashboard",
+        "dark mode"
+      ],
+      "keywords": [
+        "free admin dashboard template",
+        "free HTML admin template",
+        "Vite dashboard template",
+        "vanilla JavaScript admin dashboard",
+        "free SaaS dashboard UI",
+        "CRM admin template",
+        "ecommerce admin dashboard",
+        "responsive admin panel",
+        "dark mode dashboard template"
+      ],
+      "techStack": [
+        "Vite 8",
+        "Vanilla JavaScript",
+        "SCSS",
+        "ECharts",
+        "DataTables",
+        "Leaflet",
+        "HTML5",
+        "CSS variables"
+      ],
+      "includedPages": [
+        "SaaS dashboards",
+        "AI dashboard and assistant",
+        "CRM pipeline and leads",
+        "Ecommerce products and orders",
+        "Projects and kanban",
+        "HR, payroll, and recruitment",
+        "Billing and subscriptions",
+        "Forms and validation",
+        "Tables and charts",
+        "Auth and error pages"
+      ],
+      "features": [
+        "85 production HTML pages",
+        "Four dashboard home variants",
+        "AI, CRM, ecommerce, project, HR, and billing workflows",
+        "ECharts and DataTables integrations",
+        "Dark mode and responsive navigation",
+        "No Bootstrap or jQuery dependency",
+        "Documented Vite source and production build"
+      ],
+      "highlights": [
+        {
+          "label": "Pages",
+          "value": "85"
+        },
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Stack",
+          "value": "Vite + vanilla JS"
+        },
+        {
+          "label": "Dependencies",
+          "value": "No Bootstrap or jQuery"
+        }
+      ],
+      "useCases": [
+        "Free admin starters",
+        "SaaS dashboards",
+        "CRM back offices",
+        "Ecommerce operations",
+        "Internal tools",
+        "Learning and prototypes"
+      ],
+      "updatedAt": "2026-07-12",
+      "isFree": true
+    },
+    {
+      "id": "dashboard-kit-velora-admin-dashboard-template",
+      "slug": "velora-admin-dashboard-template",
+      "title": "Velora Pro Next.js Admin Dashboard Template",
+      "shortTitle": "Velora",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "subcategory": "Multi-Purpose Next.js Admin Dashboard",
+      "summary": "Pro Next.js admin dashboard template with 129 pages, 10 dashboards, ecommerce, apps, account, forms, tables, charts, UI components, auth flows, command palette, and theme customizer.",
+      "description": "Velora is a polished multi-purpose Next.js admin dashboard template for SaaS products, ecommerce back offices, CRM tools, analytics platforms, finance teams, project operations, marketing, support, and logistics. It includes 129 route pages across 11 categories, a searchable collapsible navigation, command palette, advanced data tables, ApexCharts, reusable UI primitives, responsive mobile layouts, light and dark modes, five color palettes, and comfortable or compact density controls.",
+      "seoTitle": "Velora Pro Next.js Admin Dashboard Template - 129 Pages",
+      "metaDescription": "Download Velora Pro, a Next.js admin dashboard template with 129 pages, 10 dashboards, ecommerce, apps, charts, tables, dark mode, and command palette.",
+      "priceUsd": 20,
+      "originalPriceUsd": 69,
+      "pricingTier": "pro",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js 16 App Router",
+      "previewPath": "/dashboard-kits/velora-admin-dashboard-template",
+      "livePreviewUrl": "https://mt-velora-admin.vercel.app",
+      "packageFilename": "velora-admin-dashboard-template.zip",
+      "packageKey": "templates/dashboards/velora-admin-dashboard-template/velora-admin-dashboard-template-9306418275.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/velora-admin-dashboard-template/velora-admin-dashboard-template-1842759603.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/velora-admin-dashboard-template/velora-admin-dashboard-template-1842759603.png"
+      ],
+      "tags": [
+        "nextjs admin dashboard",
+        "react admin template",
+        "tailwind dashboard",
+        "apexcharts",
+        "ecommerce admin",
+        "saas dashboard",
+        "dark mode",
+        "pro template"
+      ],
+      "keywords": [
+        "Next.js admin dashboard template",
+        "React admin dashboard UI kit",
+        "Tailwind CSS admin template",
+        "premium SaaS dashboard",
+        "ecommerce admin dashboard",
+        "CRM dashboard template",
+        "ApexCharts dashboard",
+        "dark mode admin panel",
+        "Next.js App Router template"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "ApexCharts",
+        "Lucide React",
+        "CSS variables",
+        "App Router"
+      ],
+      "includedPages": [
+        "10 dashboard variants",
+        "15 application pages",
+        "13 ecommerce pages",
+        "10 account pages",
+        "12 form pages",
+        "11 table pages",
+        "10 chart pages",
+        "21 UI component pages",
+        "10 public pages",
+        "10 auth pages",
+        "6 error pages"
+      ],
+      "features": [
+        "129 handcrafted route pages",
+        "Ten dashboard variants for SaaS and operations",
+        "Command palette with keyboard navigation",
+        "Theme customizer with five color palettes",
+        "Advanced sortable and selectable data tables",
+        "ApexCharts wrappers and report pages",
+        "Responsive sidebar, mobile drawer, and polished dark mode"
+      ],
+      "highlights": [
+        {
+          "label": "Pages",
+          "value": "129"
+        },
+        {
+          "label": "Dashboards",
+          "value": "10"
+        },
+        {
+          "label": "Categories",
+          "value": "11"
+        },
+        {
+          "label": "Themes",
+          "value": "Light + dark"
+        }
+      ],
+      "useCases": [
+        "SaaS admin products",
+        "Ecommerce back offices",
+        "CRM and analytics dashboards",
+        "Finance and logistics tools",
+        "Support platforms",
+        "Internal business applications"
+      ],
+      "updatedAt": "2026-07-12",
+      "isFree": false
+    },
+    {
+      "id": "dashboard-kit-nexus-cms-basic-dashboard-template",
+      "slug": "nexus-cms-basic-dashboard-template",
+      "title": "Nexus CMS Basic Free Next.js Dashboard Template",
+      "shortTitle": "Nexus CMS Basic",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "subcategory": "Free CMS Admin Starter",
+      "summary": "Free Next.js CMS admin dashboard starter with three dashboard variants, plugin settings, account settings, authentication screens, SEO metadata, dark mode, and theme customization.",
+      "description": "Nexus CMS Basic is a free Next.js CMS dashboard starter for content platforms, lightweight SaaS admin products, plugin managers, and internal tools. It includes main, CMS, and SaaS dashboards, plugin listings and settings, profile and security settings, authentication pages, loading and empty states, responsive layouts, dark mode, a live color customizer, sitemap, robots, Open Graph metadata, JSON-LD, and a documented App Router codebase.",
+      "seoTitle": "Nexus CMS Basic Free Next.js Admin Dashboard Template",
+      "metaDescription": "Download Nexus CMS Basic, a free Next.js admin dashboard template with CMS and SaaS dashboards, plugins, settings, auth pages, dark mode, and SEO setup.",
+      "priceUsd": 0,
+      "originalPriceUsd": 29,
+      "pricingTier": "normal",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js 14 App Router",
+      "previewPath": "/dashboard-kits/nexus-cms-basic-dashboard-template",
+      "livePreviewUrl": "https://mt-nexuscms-basic.vercel.app",
+      "packageFilename": "nexus-cms-basic-dashboard-template.zip",
+      "packageKey": "templates/dashboards/nexus-cms-basic-dashboard-template/nexus-cms-basic-dashboard-template-2751946083.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/nexus-cms-basic-dashboard-template/nexus-cms-basic-dashboard-template-4168092357.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/nexus-cms-basic-dashboard-template/nexus-cms-basic-dashboard-template-4168092357.png"
+      ],
+      "tags": [
+        "free nextjs dashboard",
+        "cms admin template",
+        "saas dashboard",
+        "plugin dashboard",
+        "tailwind css",
+        "shadcn ui",
+        "dark mode",
+        "free template"
+      ],
+      "keywords": [
+        "free Next.js admin dashboard",
+        "free CMS dashboard template",
+        "Next.js CMS admin template",
+        "SaaS dashboard starter",
+        "plugin management dashboard",
+        "Tailwind admin template",
+        "free React dashboard",
+        "dark mode admin UI"
+      ],
+      "techStack": [
+        "Next.js 14",
+        "React 18",
+        "TypeScript 5",
+        "Tailwind CSS 3",
+        "shadcn/ui",
+        "Radix UI",
+        "Recharts",
+        "Chart.js",
+        "next-themes"
+      ],
+      "includedPages": [
+        "Main dashboard",
+        "CMS dashboard",
+        "SaaS dashboard",
+        "Plugin marketplace",
+        "Plugin settings",
+        "Account settings",
+        "Login and registration",
+        "Password recovery",
+        "Blank and error pages"
+      ],
+      "features": [
+        "Three dashboard variants",
+        "CMS and plugin management screens",
+        "Account, security, and notification settings",
+        "Responsive App Router layouts",
+        "Dark mode and live color customizer",
+        "Sitemap, robots, Open Graph, and JSON-LD",
+        "Free source ZIP with documented setup"
+      ],
+      "highlights": [
+        {
+          "label": "Edition",
+          "value": "Basic"
+        },
+        {
+          "label": "Price",
+          "value": "Free"
+        },
+        {
+          "label": "Dashboards",
+          "value": "3"
+        },
+        {
+          "label": "Stack",
+          "value": "Next.js + Tailwind"
+        }
+      ],
+      "useCases": [
+        "CMS admin starters",
+        "Plugin dashboards",
+        "Small SaaS products",
+        "Content operations",
+        "Internal tools",
+        "Next.js learning projects"
+      ],
+      "updatedAt": "2026-07-12",
+      "isFree": true
+    },
+    {
+      "id": "dashboard-kit-nexus-cms-premium-dashboard-template",
+      "slug": "nexus-cms-premium-dashboard-template",
+      "title": "Nexus CMS Premium Next.js Admin Dashboard Template",
+      "shortTitle": "Nexus CMS Premium",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "subcategory": "CMS and SaaS Admin Dashboard",
+      "summary": "Premium Next.js CMS and SaaS dashboard template with 80+ pages for content, AI, projects, ecommerce, subscriptions, plugins, communications, admin security, and analytics.",
+      "description": "Nexus CMS Premium is an advanced Next.js admin dashboard template for CMS products, SaaS platforms, editorial teams, plugin ecosystems, ecommerce operations, and internal admin portals. It expands the Basic edition into an 80+ page suite with CMS publishing, AI assistance, subscription management, project planning, communication tools, commerce, plugin operations, admin security, localization, audit logs, analytics dashboards, responsive layouts, dark mode, and reusable animated UI components.",
+      "seoTitle": "Nexus CMS Premium Next.js Admin Dashboard Template",
+      "metaDescription": "Download Nexus CMS Premium, a Next.js admin dashboard with 80+ pages for CMS, SaaS, AI, ecommerce, projects, plugins, analytics, security, and dark mode.",
+      "priceUsd": 12,
+      "originalPriceUsd": 49,
+      "pricingTier": "normal",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js 14 App Router",
+      "previewPath": "/dashboard-kits/nexus-cms-premium-dashboard-template",
+      "livePreviewUrl": "https://mt-nexuscms-premium.vercel.app",
+      "packageFilename": "nexus-cms-premium-dashboard-template.zip",
+      "packageKey": "templates/dashboards/nexus-cms-premium-dashboard-template/nexus-cms-premium-dashboard-template-6492083175.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/nexus-cms-premium-dashboard-template/nexus-cms-premium-dashboard-template-8610357249.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/nexus-cms-premium-dashboard-template/nexus-cms-premium-dashboard-template-8610357249.png"
+      ],
+      "tags": [
+        "nextjs cms dashboard",
+        "saas admin template",
+        "ai dashboard",
+        "ecommerce admin",
+        "project management",
+        "plugin marketplace",
+        "tailwind css",
+        "premium template"
+      ],
+      "keywords": [
+        "Next.js CMS dashboard template",
+        "premium admin dashboard template",
+        "SaaS admin UI kit",
+        "AI dashboard template",
+        "ecommerce admin template",
+        "project management dashboard",
+        "plugin marketplace dashboard",
+        "content management admin UI",
+        "Next.js App Router dashboard"
+      ],
+      "techStack": [
+        "Next.js 14",
+        "React 18",
+        "TypeScript 5",
+        "Tailwind CSS 3",
+        "shadcn/ui",
+        "Radix UI",
+        "Recharts",
+        "Chart.js",
+        "next-themes"
+      ],
+      "includedPages": [
+        "Seven dashboard variants",
+        "CMS publishing suite",
+        "SaaS subscriptions and billing",
+        "AI assistant and content tools",
+        "Project management suite",
+        "Chat, inbox, tickets, and notifications",
+        "Commerce operations",
+        "Plugin marketplace and health",
+        "Admin users, roles, security, and audit logs",
+        "System and utility pages"
+      ],
+      "features": [
+        "80+ production-ready route pages",
+        "CMS posts, editor, taxonomy, media, SEO, and publishing calendar",
+        "SaaS customers, plans, subscriptions, billing, usage, and churn",
+        "AI assistant, writer, prompt, analytics, and knowledge screens",
+        "Projects, commerce, communications, plugins, and admin security",
+        "Responsive dark mode design with reusable animated components",
+        "Commercial source package with documented setup"
+      ],
+      "highlights": [
+        {
+          "label": "Pages",
+          "value": "80+"
+        },
+        {
+          "label": "Edition",
+          "value": "Premium"
+        },
+        {
+          "label": "Suites",
+          "value": "CMS + SaaS + AI"
+        },
+        {
+          "label": "Theme",
+          "value": "Light + dark"
+        }
+      ],
+      "useCases": [
+        "CMS SaaS products",
+        "Editorial platforms",
+        "Plugin marketplaces",
+        "AI content tools",
+        "Subscription dashboards",
+        "Multi-team admin portals"
+      ],
+      "updatedAt": "2026-07-12",
+      "isFree": false
+    },
+    {
       "id": "dashboard-kit-lumina-fragrance",
       "slug": "lumina-fragrance",
       "title": "Lumina Fragrance Premium Next.js Ecommerce Landing Template",
@@ -21,7 +450,7 @@
       "previewPath": "/dashboard-kits/lumina-fragrance",
       "livePreviewUrl": "https://mt-lumina.vercel.app",
       "packageFilename": "lumina-fragrance.zip",
-      "packageKey": "templates/dashboards/lumina-fragrance/lumina-fragrance-8316073487.zip",
+      "packageKey": "local:template-packages/lumina-fragrance/lumina-fragrance.zip",
       "coverImage": "/template-previews/lumina-fragrance.png",
       "screenshots": [
         "/template-previews/lumina-fragrance.png"
@@ -123,7 +552,7 @@
       "previewPath": "/dashboard-kits/nova-rig-gaming-ecommerce-template",
       "livePreviewUrl": "https://mt-nova-ig.vercel.app",
       "packageFilename": "nova-rig-gaming-ecommerce-template.zip",
-      "packageKey": "templates/dashboards/nova-rig-gaming-ecommerce-template/nova-rig-gaming-ecommerce-template-2531427572.zip",
+      "packageKey": "local:template-packages/nova-rig-gaming-ecommerce-template/nova-rig-gaming-ecommerce-template.zip",
       "coverImage": "/template-previews/nova-rig-gaming-ecommerce-template.png",
       "screenshots": [
         "/template-previews/nova-rig-gaming-ecommerce-template.png"
@@ -225,7 +654,7 @@
       "previewPath": "/dashboard-kits/pagepulse",
       "livePreviewUrl": "https://mt-pagepulse0.vercel.app",
       "packageFilename": "pagepulse.zip",
-      "packageKey": "templates/dashboards/pagepulse/pagepulse-4654877344.zip",
+      "packageKey": "local:template-packages/pagepulse/pagepulse.zip",
       "coverImage": "/template-previews/pagepulse.png",
       "screenshots": [
         "/template-previews/pagepulse.png"
@@ -328,7 +757,7 @@
       "previewPath": "/dashboard-kits/volthaus-streetwear-ecommerce-template",
       "livePreviewUrl": "https://mt-volthaus.vercel.app",
       "packageFilename": "volthaus-streetwear-ecommerce-template.zip",
-      "packageKey": "templates/dashboards/volthaus-streetwear-ecommerce-template/volthaus-streetwear-ecommerce-template-9876429704.zip",
+      "packageKey": "local:template-packages/volthaus-streetwear-ecommerce-template/volthaus-streetwear-ecommerce-template.zip",
       "coverImage": "/template-previews/volthaus-streetwear-ecommerce-template.png",
       "screenshots": [
         "/template-previews/volthaus-streetwear-ecommerce-template.png"
@@ -431,7 +860,7 @@
       "previewPath": "/dashboard-kits/pipeline-pilot-production",
       "livePreviewUrl": "https://mt-dashboards-zlei.vercel.app/",
       "packageFilename": "pipeline-pilot-production.zip",
-      "packageKey": "templates/dashboards/pipeline-pilot-production/pipeline-pilot-production-8713249468.zip",
+      "packageKey": "local:template-packages/pipeline-pilot-production/pipeline-pilot-production.zip",
       "coverImage": "/template-previews/pipeline-pilot-production.png",
       "screenshots": [
         "/template-previews/pipeline-pilot-production.png"
@@ -600,7 +1029,7 @@
       "previewPath": "/dashboard-kits/sentinelgrid",
       "livePreviewUrl": "https://mt-sentinelgrid-zw5j.vercel.app",
       "packageFilename": "sentinelgrid.zip",
-      "packageKey": "templates/dashboards/sentinelgrid/sentinelgrid-2455706558.zip",
+      "packageKey": "local:template-packages/sentinelgrid/sentinelgrid.zip",
       "coverImage": "/template-previews/sentinelgrid.png",
       "screenshots": [
         "/template-previews/sentinelgrid.png"
@@ -746,7 +1175,7 @@
       "previewPath": "/dashboard-kits/planna-dashboard",
       "livePreviewUrl": "https://mt-planna-z3pv.vercel.app",
       "packageFilename": "planna-dashboard.zip",
-      "packageKey": "templates/dashboards/planna-dashboard/planna-dashboard-1989047950.zip",
+      "packageKey": "local:template-packages/planna-dashboard/planna-dashboard.zip",
       "coverImage": "/template-previews/planna-dashboard.png",
       "screenshots": [
         "/template-previews/planna-dashboard.png"
@@ -879,7 +1308,7 @@
       "previewPath": "/dashboard-kits/ooster",
       "livePreviewUrl": "https://mt-ooster-dxb4.vercel.app",
       "packageFilename": "ooster.zip",
-      "packageKey": "templates/dashboards/ooster/ooster-9234537771.zip",
+      "packageKey": "local:template-packages/ooster/ooster.zip",
       "coverImage": "/template-previews/ooster.png",
       "screenshots": [
         "/template-previews/ooster.png"
@@ -1010,7 +1439,7 @@
       "previewPath": "/dashboard-kits/nexusgrid-premium-admin-dashboard",
       "livePreviewUrl": "https://mt-nexusgrid.vercel.app",
       "packageFilename": "nexusgrid-premium-admin-dashboard.zip",
-      "packageKey": "templates/dashboards/nexusgrid-premium-admin-dashboard/nexusgrid-premium-admin-dashboard-8881687116.zip",
+      "packageKey": "local:template-packages/nexusgrid-premium-admin-dashboard/nexusgrid-premium-admin-dashboard.zip",
       "coverImage": "/template-previews/nexusgrid-premium-admin-dashboard.png",
       "screenshots": [
         "/template-previews/nexusgrid-premium-admin-dashboard.png"
@@ -16370,9 +16799,9 @@
     }
   ],
   "meta": {
-    "source": "local-json-landing-import",
-    "updatedAt": "2026-07-08T08:38:49.290Z",
-    "count": 123,
+    "source": "dashboard-r2-import",
+    "updatedAt": "2026-07-12T17:09:53.264Z",
+    "count": 127,
     "htmlImportCount": 91
   }
 }
