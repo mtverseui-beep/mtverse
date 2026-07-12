@@ -116,8 +116,8 @@ export default async function AboutPage() {
               </StaggerItem>
               <StaggerItem>
                 <div className="text-center">
-                  <div className="ds-stat-number">12k+</div>
-                  <div className="ds-stat-label">Active creators</div>
+                  <div className="ds-stat-number">Live</div>
+                  <div className="ds-stat-label">Template previews</div>
                 </div>
               </StaggerItem>
             </Stagger>

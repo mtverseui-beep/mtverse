@@ -6,6 +6,7 @@ export type CloudflareR2Config = {
   accessKeyId: string
   secretAccessKey: string
   bucket: string
+  packageBucket: string
   publicUrl: string
   promptPreviewPrefix: string
   packagePrefix: string
@@ -68,6 +69,7 @@ export function getCloudflareR2Config(): CloudflareR2Config {
     accessKeyId: readEnv(process.env.CLOUDFLARE_R2_ACCESS_KEY_ID),
     secretAccessKey: readEnv(process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY),
     bucket,
+    packageBucket: readEnv(process.env.CLOUDFLARE_R2_PACKAGE_BUCKET),
     publicUrl: readEnv(process.env.CLOUDFLARE_R2_PUBLIC_URL),
     promptPreviewPrefix: readEnv(process.env.CLOUDFLARE_R2_PROMPT_PREVIEW_PREFIX) || 'prompt-previews',
     packagePrefix: readEnv(process.env.CLOUDFLARE_R2_PACKAGE_PREFIX) || 'packages',
@@ -85,6 +87,18 @@ export function isCloudflareR2Configured() {
     config.secretAccessKey &&
     config.bucket &&
     config.publicUrl
+  )
+}
+
+export function isCloudflareR2PackageStorageConfigured() {
+  const config = getCloudflareR2Config()
+  return Boolean(
+    config.accountId &&
+    config.endpoint &&
+    config.accessKeyId &&
+    config.secretAccessKey &&
+    config.packageBucket &&
+    config.packageBucket !== config.bucket
   )
 }
 

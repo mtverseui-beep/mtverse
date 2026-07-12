@@ -1,0 +1,38 @@
+# mtverse
+
+mtverse is a catalog of curated AI prompts, free responsive HTML website templates, and premium Next.js dashboard, ecommerce, and landing page templates. Template pages include screenshots, technology details, licensing information, and live previews where available. Paid ZIP downloads require a signed-in account with the matching purchase entitlement.
+
+## Primary pages
+
+- https://www.mtverse.dev/
+- https://www.mtverse.dev/templates
+- https://www.mtverse.dev/html-templates
+- https://www.mtverse.dev/prompts
+- https://www.mtverse.dev/pricing
+
+## Template guides
+
+- https://www.mtverse.dev/template-hubs/nextjs-dashboard-templates
+- https://www.mtverse.dev/template-hubs/react-admin-dashboard-templates
+- https://www.mtverse.dev/template-hubs/ecommerce-website-templates
+- https://www.mtverse.dev/template-hubs/landing-page-templates
+- https://www.mtverse.dev/template-hubs/free-html-templates
+- https://www.mtverse.dev/template-hubs/portfolio-html-templates
+- https://www.mtverse.dev/template-hubs/saas-templates
+- https://www.mtverse.dev/template-hubs/agency-website-templates
+
+## Company and policies
+
+- https://www.mtverse.dev/about
+- https://www.mtverse.dev/faq
+- https://www.mtverse.dev/contact
+- https://www.mtverse.dev/terms
+- https://www.mtverse.dev/privacy
+- https://www.mtverse.dev/refund-policy
+
+## Usage notes
+
+- AI prompts are free to browse; sign-in is required to reveal, copy, and save prompt text.
+- Free template download limits and paid template access are described on the pricing page.
+- A single-template purchase unlocks only that purchased template.
+- Bundle purchases include only the catalog and future updates described for that bundle.

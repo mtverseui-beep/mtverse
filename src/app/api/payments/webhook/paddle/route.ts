@@ -1,10 +1,11 @@
-import { createHmac, timingSafeEqual } from 'crypto'
+import { createHmac, randomUUID, timingSafeEqual } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyCheckoutIntentData } from '@/lib/checkout-intent'
 import { getPlan, setPlan } from '@/lib/plan-store'
 import { getProductPackage } from '@/lib/packages'
 import { recordTemplatePurchase } from '@/lib/template-social-store'
 import { hasRuntimeKvStore, getRedisClient } from '@/lib/runtime-kv'
+import { hasExpectedPaddlePrice } from '@/lib/paddle-transaction'
 
 export const runtime = 'nodejs'
 
@@ -22,6 +23,12 @@ type PaddleWebhookEvent = {
       email_address?: string | null
     } | null
     customer_email?: string | null
+    details?: {
+      line_items?: Array<{
+        price_id?: string
+        quantity?: number
+      }>
+    } | null
   }
 }
 
@@ -87,6 +94,7 @@ function extractWebhookEmail(event: PaddleWebhookEvent) {
 
 export async function POST(request: NextRequest) {
   const rawBody = await request.text()
+  let eventClaim: { key: string; value: string } | null = null
 
   try {
     if (!verifyPaddleSignature(rawBody, request.headers.get('paddle-signature'))) {
@@ -102,29 +110,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing event_id in webhook payload' }, { status: 400 })
     }
 
-    // Check if already processed (using Redis if available)
-    if (hasRuntimeKvStore()) {
-      const redis = getRedisClient()
-      const alreadyProcessed = await redis.get(`webhook:paddle:${eventId}`)
-      
-      if (alreadyProcessed) {
-        return NextResponse.json({ 
-          received: true, 
-          ignored: true, 
-          reason: 'duplicate event_id',
-          eventId 
-        })
-      }
-    }
-
     if (eventType !== 'transaction.completed') {
-      // Mark as processed even for ignored events
       if (hasRuntimeKvStore()) {
         const redis = getRedisClient()
-        // 30-day TTL for event deduplication
-        await redis.setex(`webhook:paddle:${eventId}`, 30 * 24 * 60 * 60, 'processed')
+        await redis.setex('webhook:paddle:' + eventId, 30 * 24 * 60 * 60, 'processed')
       }
-      
       return NextResponse.json({ received: true, ignored: true, eventType })
     }
 
@@ -135,9 +125,36 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing or invalid signed checkout intent in Paddle custom_data' }, { status: 400 })
     }
 
+    const transactionId = stringFromUnknown(event.data?.id)
+    if (!transactionId.startsWith('txn_')) {
+      return NextResponse.json({ error: 'Missing or invalid Paddle transaction ID.' }, { status: 400 })
+    }
+
+    if (!hasExpectedPaddlePrice(event.data, intent.packageId)) {
+      return NextResponse.json({ error: 'Paddle transaction price does not match the signed checkout package.' }, { status: 400 })
+    }
+
     const webhookEmail = extractWebhookEmail(event)
     if (webhookEmail && webhookEmail !== intent.email) {
       return NextResponse.json({ error: 'Paddle customer email does not match signed checkout intent.' }, { status: 400 })
+    }
+
+    if (hasRuntimeKvStore()) {
+      const redis = getRedisClient()
+      const key = 'webhook:paddle:' + eventId
+      const value = 'processing:' + randomUUID()
+      const claimed = await redis.setNx(key, value, 10 * 60)
+
+      if (!claimed) {
+        return NextResponse.json({
+          received: true,
+          ignored: true,
+          reason: 'duplicate event_id',
+          eventId,
+        })
+      }
+
+      eventClaim = { key, value }
     }
 
     const packageId = intent.packageId
@@ -153,7 +170,7 @@ export async function POST(request: NextRequest) {
         email,
         existingPlan?.plan || 'free',
         existingPlan?.licenseKey,
-        event.data?.id,
+        transactionId,
         event.data?.customer_id || event.data?.customer?.id || undefined,
         'paddle',
         packageId
@@ -165,7 +182,7 @@ export async function POST(request: NextRequest) {
         email,
         product.accessPlan as 'pro',
         undefined,
-        event.data?.id,
+        transactionId,
         event.data?.customer_id || event.data?.customer?.id || undefined,
         'paddle',
         packageId
@@ -176,11 +193,10 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Mark as successfully processed
     if (hasRuntimeKvStore()) {
       const redis = getRedisClient()
-      // 30-day TTL for event deduplication
-      await redis.setex(`webhook:paddle:${eventId}`, 30 * 24 * 60 * 60, 'processed')
+      await redis.setex('webhook:paddle:' + eventId, 30 * 24 * 60 * 60, 'processed')
+      eventClaim = null
     }
 
     return NextResponse.json({
@@ -192,6 +208,10 @@ export async function POST(request: NextRequest) {
       email,
     })
   } catch (error) {
+    if (eventClaim && hasRuntimeKvStore()) {
+      const redis = getRedisClient()
+      await redis.compareAndDelete(eventClaim.key, eventClaim.value).catch(() => false)
+    }
     console.error('[Paddle Webhook] Error:', error)
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Failed to process Paddle webhook' },

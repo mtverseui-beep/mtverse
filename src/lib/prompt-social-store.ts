@@ -3,11 +3,12 @@ import 'server-only'
 import { existsSync } from 'fs'
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
-import { hasRuntimeKvStore, readRuntimeJsonNoStore, writeRuntimeJson } from '@/lib/runtime-kv'
+import { hasRuntimeKvStore, readRuntimeJsonNoStore, withRuntimeLock, writeRuntimeJson } from '@/lib/runtime-kv'
 
 const DATA_DIR = join(process.cwd(), 'data')
 const STORE_FILE = join(DATA_DIR, 'prompt-social-store.json')
 const RUNTIME_STORE_KEY = 'mtverse:prompt-social-store:v1'
+const RUNTIME_STORE_LOCK_KEY = 'mtverse:lock:prompt-social-store:v1'
 
 type SavedPromptRecord = {
   savedAt: string
@@ -175,21 +176,23 @@ export async function isPromptSaved(slug: string, emailInput: string | null | un
 export async function setPromptSaved(slug: string, emailInput: string, saved: boolean) {
   const safeSlug = normalizeSlug(slug)
   const email = normalizeEmail(emailInput)
-  const store = await readStore()
-  const userRecord = getUserRecord(store, email)
+  return withRuntimeLock(RUNTIME_STORE_LOCK_KEY, async () => {
+    const store = await readStore()
+    const userRecord = getUserRecord(store, email)
 
-  if (saved) {
-    userRecord.savedPrompts[safeSlug] = {
-      savedAt: userRecord.savedPrompts[safeSlug]?.savedAt || nowIso(),
+    if (saved) {
+      userRecord.savedPrompts[safeSlug] = {
+        savedAt: userRecord.savedPrompts[safeSlug]?.savedAt || nowIso(),
+      }
+    } else {
+      delete userRecord.savedPrompts[safeSlug]
     }
-  } else {
-    delete userRecord.savedPrompts[safeSlug]
-  }
 
-  userRecord.updatedAt = nowIso()
-  store.users[email] = userRecord
-  await writeStore(store)
-  return Boolean(userRecord.savedPrompts[safeSlug])
+    userRecord.updatedAt = nowIso()
+    store.users[email] = userRecord
+    await writeStore(store)
+    return Boolean(userRecord.savedPrompts[safeSlug])
+  })
 }
 
 export async function getSavedPromptRecords(emailInput: string | null | undefined): Promise<SavedPromptSummary[]> {

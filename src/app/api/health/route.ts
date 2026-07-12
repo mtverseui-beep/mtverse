@@ -1,8 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { authorizeAdminRequest } from '@/lib/admin-request-auth'
 import { isGoogleAdsenseConfigured } from '@/lib/adsense'
+import { getPaddleConfigurationStatus } from '@/lib/paddle'
+import { getRedisClient, hasRuntimeKvStore } from '@/lib/runtime-kv'
+import { isCloudflareR2PackageStorageConfigured } from '@/lib/cloudflare-r2'
 
 export const runtime = 'nodejs'
+
+let redisHealthCache: { healthy: boolean; expiresAt: number } | null = null
+
+async function checkRuntimeStore() {
+  if (!hasRuntimeKvStore()) return false
+  if (redisHealthCache && redisHealthCache.expiresAt > Date.now()) return redisHealthCache.healthy
+
+  let healthy = false
+  try {
+    await getRedisClient().get('mtverse:health:probe')
+    healthy = true
+  } catch (error) {
+    console.error('[Health] Upstash connectivity check failed.', error)
+  }
+
+  redisHealthCache = { healthy, expiresAt: Date.now() + 30_000 }
+  return healthy
+}
 
 function hasHealthcheckToken(request: NextRequest) {
   const expectedToken = process.env.HEALTHCHECK_TOKEN?.trim()
@@ -25,6 +46,7 @@ async function canSeeHealthDetails(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  const paddle = getPaddleConfigurationStatus()
   const checks: Record<string, boolean> = {
     server: true,
   }
@@ -34,11 +56,9 @@ export async function GET(request: NextRequest) {
     process.env.CLOUDFLARE_R2_BUCKET &&
     process.env.CLOUDFLARE_R2_ACCESS_KEY_ID
   )
+  checks.privatePackages = isCloudflareR2PackageStorageConfigured()
 
-  checks.upstash = Boolean(
-    process.env.UPSTASH_REDIS_REST_URL &&
-    process.env.UPSTASH_REDIS_REST_TOKEN
-  )
+  checks.upstash = await checkRuntimeStore()
 
   checks.adminAuth = Boolean(
     process.env.ADMIN_EMAIL &&
@@ -52,16 +72,7 @@ export async function GET(request: NextRequest) {
   )
 
   checks.payments = process.env.PAYMENT_PROVIDER === 'paddle'
-    ? Boolean(
-        process.env.PADDLE_CLIENT_TOKEN &&
-        process.env.PADDLE_API_KEY &&
-        process.env.PADDLE_WEBHOOK_SECRET &&
-        process.env.PADDLE_NEXT_PRICE_ID &&
-        process.env.PADDLE_PRO_PRICE_ID &&
-        process.env.PADDLE_OOSTER_PRO_PRICE_ID &&
-        process.env.PADDLE_FREE_UNLOCK_PRICE_ID &&
-        process.env.PADDLE_ALL_PAID_PRICE_ID
-      )
+    ? paddle.ready
     : process.env.NODE_ENV !== 'production'
 
   checks.adsense = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ENABLED === 'true'
@@ -71,7 +82,17 @@ export async function GET(request: NextRequest) {
   const allHealthy = Object.values(checks).every(Boolean)
   const status = allHealthy ? 'ok' : 'degraded'
   const body = await canSeeHealthDetails(request)
-    ? { status, timestamp: new Date().toISOString(), checks }
+    ? {
+      status,
+      timestamp: new Date().toISOString(),
+      checks,
+      payments: {
+        provider: paddle.provider,
+        environment: paddle.environment,
+        ready: paddle.ready,
+        issues: paddle.issues,
+      },
+    }
     : { status, timestamp: new Date().toISOString() }
 
   return NextResponse.json(body, {

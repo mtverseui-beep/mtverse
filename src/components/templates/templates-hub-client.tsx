@@ -243,11 +243,11 @@ export function TemplatesHubClient({
     triggerLoading()
   }, [triggerLoading])
 
-  const goToPage = useCallback((page: number) => {
+  function goToPage(page: number) {
     const nextPage = clampPage(page, totalPages)
     if (nextPage === currentPage) return
     updateParams({ page: nextPage === 1 ? undefined : String(nextPage) })
-  }, [currentPage, totalPages, updateParams])
+  }
 
   const sortOptions = isHtmlCategory
     ? [

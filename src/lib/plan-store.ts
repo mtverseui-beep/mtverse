@@ -3,11 +3,12 @@ import crypto from 'crypto'
 import { existsSync } from 'fs'
 import { join } from 'path'
 import type { PlanLevel } from './plan-access'
-import { hasRuntimeKvStore, readRuntimeJsonNoStore, writeRuntimeJson } from '@/lib/runtime-kv'
+import { hasRuntimeKvStore, readRuntimeJsonNoStore, withRuntimeLock, writeRuntimeJson } from '@/lib/runtime-kv'
 
 const DATA_DIR = join(process.cwd(), 'data')
 const STORE_FILE = join(DATA_DIR, 'plan-store.json')
 const RUNTIME_STORE_KEY = 'mtverse:plan-store:v1'
+const RUNTIME_STORE_LOCK_KEY = 'mtverse:lock:plan-store:v1'
 
 export type PlanStatus = 'active' | 'revoked'
 
@@ -18,6 +19,7 @@ interface PlanRecord {
   status?: PlanStatus
   provider?: string
   providerTransactionId?: string
+  providerTransactionIds?: string[]
   providerCustomerId?: string
   packageId?: string
   purchases?: string[]
@@ -61,6 +63,17 @@ function mergePurchaseIds(existing: PlanRecord | undefined, incomingPackageId: s
   const incoming = normalizePackageId(incomingPackageId)
   if (incoming) purchases.add(incoming)
   return Array.from(purchases)
+}
+
+function mergeTransactionIds(existing: PlanRecord | undefined, incomingTransactionId: string | undefined) {
+  const transactionIds = new Set<string>()
+  for (const value of existing?.providerTransactionIds || []) {
+    const normalized = value.trim()
+    if (normalized) transactionIds.add(normalized)
+  }
+  if (existing?.providerTransactionId?.trim()) transactionIds.add(existing.providerTransactionId.trim())
+  if (incomingTransactionId?.trim()) transactionIds.add(incomingTransactionId.trim())
+  return Array.from(transactionIds)
 }
 
 function resolvePackageId(existing: PlanRecord | undefined, incomingPackageId: string | undefined) {
@@ -115,6 +128,15 @@ async function writeStore(data: PlanStoreData): Promise<void> {
   await writeFile(STORE_FILE, JSON.stringify(data, null, 2), 'utf-8')
 }
 
+async function mutateStore<T>(mutator: (store: PlanStoreData) => T | Promise<T>): Promise<T> {
+  return withRuntimeLock(RUNTIME_STORE_LOCK_KEY, async () => {
+    const store = await readStore()
+    const result = await mutator(store)
+    await writeStore(store)
+    return result
+  })
+}
+
 /**
  * Generate a simple license key
  */
@@ -154,7 +176,10 @@ export async function getPlanByProviderTransactionId(transactionId: string): Pro
   const safeTransactionId = transactionId.trim()
   if (!safeTransactionId) return null
 
-  return Object.values(store.plans).find(record => record.providerTransactionId === safeTransactionId) ?? null
+  return Object.values(store.plans).find((record) =>
+    record.providerTransactionId === safeTransactionId ||
+    record.providerTransactionIds?.includes(safeTransactionId)
+  ) ?? null
 }
 
 /**
@@ -169,66 +194,62 @@ export async function setPlan(
   provider?: string,
   packageId?: string
 ): Promise<PlanRecord> {
-  const store = await readStore()
   const normalizedEmail = email.toLowerCase().trim()
-  const existing = store.plans[normalizedEmail]
 
-  const key = licenseKey || existing?.licenseKey || generateLicenseKey()
-  const now = new Date().toISOString()
+  return mutateStore((store) => {
+    const existing = store.plans[normalizedEmail]
+    const key = licenseKey || existing?.licenseKey || generateLicenseKey()
+    const now = new Date().toISOString()
 
-  const record: PlanRecord = {
-    email: normalizedEmail,
-    plan: resolvePlanLevel(plan, existing?.plan),
-    licenseKey: key,
-    status: 'active',
-    provider: provider || existing?.provider,
-    providerTransactionId: providerTransactionId || existing?.providerTransactionId,
-    providerCustomerId: providerCustomerId || existing?.providerCustomerId,
-    packageId: resolvePackageId(existing, packageId),
-    purchases: mergePurchaseIds(existing, packageId),
-    createdAt: existing?.createdAt || now,
-    updatedAt: now,
-  }
+    const record: PlanRecord = {
+      email: normalizedEmail,
+      plan: resolvePlanLevel(plan, existing?.plan),
+      licenseKey: key,
+      status: 'active',
+      provider: provider || existing?.provider,
+      providerTransactionId: providerTransactionId || existing?.providerTransactionId,
+      providerTransactionIds: mergeTransactionIds(existing, providerTransactionId),
+      providerCustomerId: providerCustomerId || existing?.providerCustomerId,
+      packageId: resolvePackageId(existing, packageId),
+      purchases: mergePurchaseIds(existing, packageId),
+      createdAt: existing?.createdAt || now,
+      updatedAt: now,
+    }
 
-  store.plans[normalizedEmail] = record
-  store.licenses[key] = normalizedEmail
-
-  await writeStore(store)
-  return record
+    store.plans[normalizedEmail] = record
+    store.licenses[key] = normalizedEmail
+    return record
+  })
 }
 
 /**
  * Revoke the plan for a given email
  */
 export async function revokePlan(email: string): Promise<boolean> {
-  const store = await readStore()
   const normalizedEmail = email.toLowerCase().trim()
-  const existing = store.plans[normalizedEmail]
+  return mutateStore((store) => {
+    const existing = store.plans[normalizedEmail]
+    if (!existing) return false
 
-  if (!existing) return false
-
-  existing.status = 'revoked'
-  existing.updatedAt = new Date().toISOString()
-  store.plans[normalizedEmail] = existing
-
-  await writeStore(store)
-  return true
+    existing.status = 'revoked'
+    existing.updatedAt = new Date().toISOString()
+    store.plans[normalizedEmail] = existing
+    return true
+  })
 }
 
 export async function restorePlan(email: string): Promise<boolean> {
-  const store = await readStore()
   const normalizedEmail = email.toLowerCase().trim()
-  const existing = store.plans[normalizedEmail]
+  return mutateStore((store) => {
+    const existing = store.plans[normalizedEmail]
+    if (!existing) return false
 
-  if (!existing) return false
-
-  existing.status = 'active'
-  existing.updatedAt = new Date().toISOString()
-  store.plans[normalizedEmail] = existing
-  store.licenses[existing.licenseKey] = normalizedEmail
-
-  await writeStore(store)
-  return true
+    existing.status = 'active'
+    existing.updatedAt = new Date().toISOString()
+    store.plans[normalizedEmail] = existing
+    store.licenses[existing.licenseKey] = normalizedEmail
+    return true
+  })
 }
 
 /**
@@ -248,37 +269,22 @@ export async function activateLicense(
   licenseKey: string,
   email: string
 ): Promise<{ success: boolean; plan?: PlanLevel; error?: string }> {
-  const store = await readStore()
-  const linkedEmail = store.licenses[licenseKey]
-
-  if (!linkedEmail) {
-    return { success: false, error: 'Invalid license key' }
-  }
-
-  const record = store.plans[linkedEmail]
-  if (!record) {
-    return { success: false, error: 'License record not found' }
-  }
-
-  if (record.status === 'revoked') {
-    return { success: false, error: 'License has been revoked' }
-  }
-
-  // Allow activation if the license is associated with this email
-  // or if it's a new activation (link the license to the provided email)
   const normalizedEmail = email.toLowerCase().trim()
 
-  if (linkedEmail === normalizedEmail) {
+  return mutateStore((store) => {
+    const linkedEmail = store.licenses[licenseKey]
+    if (!linkedEmail) return { success: false, error: 'Invalid license key' }
+
+    const record = store.plans[linkedEmail]
+    if (!record) return { success: false, error: 'License record not found' }
+    if (record.status === 'revoked') return { success: false, error: 'License has been revoked' }
+    if (linkedEmail === normalizedEmail) return { success: true, plan: record.plan }
+
+    delete store.plans[linkedEmail]
+    record.email = normalizedEmail
+    record.updatedAt = new Date().toISOString()
+    store.plans[normalizedEmail] = record
+    store.licenses[licenseKey] = normalizedEmail
     return { success: true, plan: record.plan }
-  }
-
-  // Transfer license to new email
-  delete store.plans[linkedEmail]
-  record.email = normalizedEmail
-  record.updatedAt = new Date().toISOString()
-  store.plans[normalizedEmail] = record
-  store.licenses[licenseKey] = normalizedEmail
-
-  await writeStore(store)
-  return { success: true, plan: record.plan }
+  })
 }

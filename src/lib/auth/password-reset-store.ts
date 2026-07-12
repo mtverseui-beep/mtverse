@@ -4,11 +4,12 @@ import { createHash, randomBytes } from 'crypto'
 import { existsSync } from 'fs'
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
-import { hasRuntimeKvStore, readRuntimeJsonNoStore, writeRuntimeJson } from '@/lib/runtime-kv'
+import { hasRuntimeKvStore, readRuntimeJsonNoStore, withRuntimeLock, writeRuntimeJson } from '@/lib/runtime-kv'
 
 const DATA_DIR = join(process.cwd(), 'data')
 const STORE_FILE = join(DATA_DIR, 'password-reset-store.json')
 const RUNTIME_STORE_KEY = 'mtverse:password-reset-store:v1'
+const RUNTIME_STORE_LOCK_KEY = 'mtverse:lock:password-reset-store:v1'
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000
 
 type PasswordResetRecord = {
@@ -73,6 +74,15 @@ async function writeStore(data: PasswordResetStoreData) {
   await writeFile(STORE_FILE, JSON.stringify(data, null, 2), 'utf-8')
 }
 
+async function mutateStore<T>(mutator: (store: PasswordResetStoreData) => T | Promise<T>) {
+  return withRuntimeLock(RUNTIME_STORE_LOCK_KEY, async () => {
+    const store = await readStore()
+    const result = await mutator(store)
+    await writeStore(store)
+    return result
+  })
+}
+
 function pruneExpired(store: PasswordResetStoreData) {
   const now = Date.now()
   for (const [hash, record] of Object.entries(store.tokens)) {
@@ -83,29 +93,27 @@ function pruneExpired(store: PasswordResetStoreData) {
 }
 
 export async function createPasswordResetToken(emailInput: string) {
-  const store = await readStore()
   const email = normalizeEmail(emailInput)
   const token = randomBytes(32).toString('base64url')
   const tokenHash = hashToken(token)
   const now = new Date()
   const expiresAt = new Date(now.getTime() + RESET_TOKEN_TTL_MS)
 
-  pruneExpired(store)
-
-  for (const [hash, record] of Object.entries(store.tokens)) {
-    if (record.email === email) {
-      delete store.tokens[hash]
+  await mutateStore((store) => {
+    pruneExpired(store)
+    for (const [hash, record] of Object.entries(store.tokens)) {
+      if (record.email === email) {
+        delete store.tokens[hash]
+      }
     }
-  }
 
-  store.tokens[tokenHash] = {
-    email,
-    tokenHash,
-    createdAt: now.toISOString(),
-    expiresAt: expiresAt.toISOString(),
-  }
-
-  await writeStore(store)
+    store.tokens[tokenHash] = {
+      email,
+      tokenHash,
+      createdAt: now.toISOString(),
+      expiresAt: expiresAt.toISOString(),
+    }
+  })
 
   return {
     token,
@@ -113,31 +121,13 @@ export async function createPasswordResetToken(emailInput: string) {
   }
 }
 
-export async function getPasswordResetEmail(token: string) {
-  const store = await readStore()
-  const tokenHash = hashToken(token)
-  const record = store.tokens[tokenHash]
-
-  if (!record) return null
-
-  if (Date.parse(record.expiresAt) <= Date.now()) {
-    delete store.tokens[tokenHash]
-    await writeStore(store)
-    return null
-  }
-
-  return record.email
-}
-
 export async function consumePasswordResetToken(token: string) {
-  const store = await readStore()
   const tokenHash = hashToken(token)
-  const record = store.tokens[tokenHash]
+  return mutateStore((store) => {
+    const record = store.tokens[tokenHash]
+    if (!record) return null
 
-  if (!record) return false
-
-  delete store.tokens[tokenHash]
-  await writeStore(store)
-
-  return Date.parse(record.expiresAt) > Date.now()
+    delete store.tokens[tokenHash]
+    return Date.parse(record.expiresAt) > Date.now() ? record.email : null
+  })
 }

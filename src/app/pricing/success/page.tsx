@@ -7,6 +7,7 @@ import { getPlanByProviderTransactionId, setPlan } from '@/lib/plan-store'
 import { isMockPaymentAllowed, verifyPaymentFromSearchParams } from '@/lib/payments'
 import { getVerifiedPaddleTransaction } from '@/lib/paddle-transaction'
 import { hasTemplatePurchase, recordTemplatePurchase, setFreeUnlocked } from '@/lib/template-social-store'
+import { getCurrentCustomer } from '@/lib/auth/current-customer'
 
 export const dynamic = 'force-dynamic'
 
@@ -39,10 +40,18 @@ function toUrlSearchParams(input: Record<string, string | string[] | undefined>)
   return params
 }
 
-async function verifySuccess(searchParams: URLSearchParams) {
+async function verifySuccess(searchParams: URLSearchParams, currentEmail: string | null) {
   const result = verifyPaymentFromSearchParams(searchParams)
   const transactionId = searchParams.get('transaction_id') || searchParams.get('_ptxn') || searchParams.get('transactionId')
   const kitSlug = searchParams.get('kit')
+
+  if (!currentEmail) {
+    return { ...result, valid: false, email: null, error: 'Please sign in to verify this payment.' }
+  }
+
+  if (result.email && result.email !== currentEmail) {
+    return { ...result, valid: false, email: null, error: 'Payment email does not match the signed-in account.' }
+  }
 
   if (result.mock && !isMockPaymentAllowed()) {
     return {
@@ -58,6 +67,10 @@ async function verifySuccess(searchParams: URLSearchParams) {
     }
 
     const record = await getPlanByProviderTransactionId(transactionId)
+    if (record && (record.provider !== 'paddle' || record.email !== currentEmail)) {
+      return { ...result, valid: false, email: null, mock: false, error: 'Payment does not belong to this account.' }
+    }
+
     if (!record) {
       const verifiedTransaction = await getVerifiedPaddleTransaction(transactionId)
       if (!verifiedTransaction) {
@@ -67,6 +80,10 @@ async function verifySuccess(searchParams: URLSearchParams) {
           pending: true,
           error: 'Paddle payment confirmation is still processing.',
         }
+      }
+
+      if (verifiedTransaction.email !== currentEmail) {
+        return { ...result, valid: false, email: null, mock: false, error: 'Payment does not belong to this account.' }
       }
 
       if (verifiedTransaction.packageId === 'free-unlock') {
@@ -120,11 +137,11 @@ async function verifySuccess(searchParams: URLSearchParams) {
     }
   }
 
-  if (result.valid && result.email && result.packageId === 'free-unlock') {
-    await setFreeUnlocked(result.email)
-  } else if (result.valid && result.email && result.plan) {
+  if (result.valid && result.packageId === 'free-unlock') {
+    await setFreeUnlocked(currentEmail)
+  } else if (result.valid && result.plan) {
     await setPlan(
-      result.email,
+      currentEmail,
       result.plan,
       undefined,
       searchParams.get('session_id') || undefined,
@@ -134,16 +151,17 @@ async function verifySuccess(searchParams: URLSearchParams) {
     )
 
     if (shouldRecordTemplatePurchase(result.packageId, kitSlug)) {
-      await recordTemplatePurchase(kitSlug, result.email)
+      await recordTemplatePurchase(kitSlug, currentEmail)
     }
   }
 
-  return result
+  return { ...result, email: currentEmail }
 }
 
 export default async function PricingSuccessPage({ searchParams }: { searchParams: SearchParams }) {
   const params = toUrlSearchParams(await searchParams)
-  const result = await verifySuccess(params)
+  const customer = await getCurrentCustomer()
+  const result = await verifySuccess(params, customer.email)
   const kitSlug = params.get('kit')
   const isHtmlBundle = result.packageId === 'free-unlock'
   const isAllPaidBundle = result.packageId === 'all-paid'

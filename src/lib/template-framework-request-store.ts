@@ -4,11 +4,12 @@ import { randomBytes } from 'node:crypto'
 import { existsSync } from 'fs'
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
-import { hasRuntimeKvStore, readRuntimeJsonNoStore, writeRuntimeJson } from '@/lib/runtime-kv'
+import { hasRuntimeKvStore, readRuntimeJsonNoStore, withRuntimeLock, writeRuntimeJson } from '@/lib/runtime-kv'
 
 const DATA_DIR = join(process.cwd(), 'data')
 const STORE_FILE = join(DATA_DIR, 'template-framework-requests.json')
 const RUNTIME_STORE_KEY = 'mtverse:template-framework-requests:v1'
+const RUNTIME_STORE_LOCK_KEY = 'mtverse:lock:template-framework-requests:v1'
 const MAX_REQUESTS = 1000
 
 export const FRAMEWORK_OPTIONS = ['HTML', 'React', 'Next.js', 'Vue.js', 'Angular', 'Laravel', 'Custom'] as const
@@ -230,19 +231,21 @@ export async function addTemplateFrameworkRequest(input: {
     throw new Error('A valid email and requested framework are required.')
   }
 
-  const store = await readStore()
-  const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000
-  const duplicate = store.requests.find((item) => {
-    if (item.email !== request.email || item.slug !== request.slug) return false
-    if (labelForRequest(item).toLowerCase() !== labelForRequest(request).toLowerCase()) return false
-    return Date.parse(item.createdAt) >= oneDayAgo
+  return withRuntimeLock(RUNTIME_STORE_LOCK_KEY, async () => {
+    const store = await readStore()
+    const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000
+    const duplicate = store.requests.find((item) => {
+      if (item.email !== request.email || item.slug !== request.slug) return false
+      if (labelForRequest(item).toLowerCase() !== labelForRequest(request).toLowerCase()) return false
+      return Date.parse(item.createdAt) >= oneDayAgo
+    })
+
+    if (duplicate) return { request: duplicate, duplicate: true }
+
+    store.requests = [request, ...store.requests].slice(0, MAX_REQUESTS)
+    await writeStore(store)
+    return { request, duplicate: false }
   })
-
-  if (duplicate) return { request: duplicate, duplicate: true }
-
-  store.requests = [request, ...store.requests].slice(0, MAX_REQUESTS)
-  await writeStore(store)
-  return { request, duplicate: false }
 }
 
 export async function getTemplateFrameworkRequests(limit = 100) {

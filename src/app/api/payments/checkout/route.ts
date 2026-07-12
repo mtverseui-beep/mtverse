@@ -7,6 +7,20 @@ import { isPackageId } from '@/lib/packages'
 
 export async function POST(request: NextRequest) {
   try {
+    const origin = request.headers.get('origin')
+    if (origin) {
+      try {
+        if (new URL(origin).origin !== request.nextUrl.origin) {
+          return NextResponse.json(
+            { error: 'Cross-origin checkout requests are not allowed.' },
+            { status: 403 }
+          )
+        }
+      } catch {
+        return NextResponse.json({ error: 'Invalid checkout origin.' }, { status: 403 })
+      }
+    }
+
     let body: { packageId?: unknown; plan?: unknown; email?: unknown; kit?: unknown; kitSlug?: unknown }
 
     try {
@@ -23,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     if (!isPackageId(requestedPackage)) {
       return NextResponse.json(
-        { error: 'Invalid package. mtverse currently sells the Next.js package only.' },
+        { error: 'Invalid checkout package.' },
         { status: 400 }
       )
     }
@@ -46,6 +60,13 @@ export async function POST(request: NextRequest) {
         )
       }
 
+      if (template.isFree) {
+        return NextResponse.json(
+          { error: 'This template is free and does not require checkout.' },
+          { status: 400 }
+        )
+      }
+
       const expectedPackage = getTemplateCheckoutPackageId(template)
       if (requestedPackage !== expectedPackage) {
         return NextResponse.json(
@@ -65,10 +86,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(checkout)
   } catch (error) {
     console.error('[Payments Checkout] Error:', error)
+    const message = error instanceof Error ? error.message : ''
+    const configurationError = message.startsWith('Paddle checkout configuration is incomplete:')
     return NextResponse.json(
-      { error: 'Failed to create checkout session' },
-      { status: 500 }
+      {
+        error: configurationError
+          ? 'Checkout is temporarily unavailable while payment configuration is being updated.'
+          : 'Failed to create checkout session.',
+        code: configurationError ? 'checkout_configuration_error' : 'checkout_error',
+      },
+      { status: configurationError ? 503 : 500 }
     )
   }
 }
-

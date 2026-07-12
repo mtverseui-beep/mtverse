@@ -95,9 +95,11 @@ export default async function AdminDownloadsPage() {
       const customer = customerByEmail.get(summary.email)
       const purchaseSlugs = summary.purchases.map((purchase) => purchase.slug)
       const paidDownloadCount = summary.downloads.reduce((sum, download) => sum + download.count, 0)
+      const paidBundleDownloadCount = summary.paidBundleDownloads?.count || 0
       const htmlBundleDownloadCount = summary.htmlBundleDownloads?.count || 0
       const latestDownloadAt = latestDate([
         ...summary.downloads.map((download) => download.lastDownloadedAt),
+        summary.paidBundleDownloads?.lastDownloadedAt,
         summary.htmlBundleDownloads?.lastDownloadedAt,
         summary.freeUnlockedAt,
         summary.freeDownloadSlugs.length ? summary.updatedAt : null,
@@ -110,15 +112,16 @@ export default async function AdminDownloadsPage() {
         summary,
         purchaseSlugs,
         paidDownloadCount,
+        paidBundleDownloadCount,
         htmlBundleDownloadCount,
         latestDownloadAt,
-        hasDownloadActivity: paidDownloadCount > 0 || summary.freeDownloadSlugs.length > 0 || htmlBundleDownloadCount > 0 || summary.freeUnlocked,
+        hasDownloadActivity: paidDownloadCount > 0 || paidBundleDownloadCount > 0 || summary.freeDownloadSlugs.length > 0 || htmlBundleDownloadCount > 0 || summary.freeUnlocked,
       }
     })
     .filter((row) => row.hasDownloadActivity)
     .sort((left, right) => (right.latestDownloadAt || '').localeCompare(left.latestDownloadAt || ''))
 
-  const paidZipDownloadCount = rows.reduce((sum, row) => sum + row.paidDownloadCount, 0)
+  const paidZipDownloadCount = rows.reduce((sum, row) => sum + row.paidDownloadCount + row.paidBundleDownloadCount, 0)
   const freeTemplateDownloadCount = rows.reduce((sum, row) => sum + row.summary.freeDownloadSlugs.length, 0)
   const htmlUnlockedCount = rows.filter((row) => row.summary.freeUnlocked).length
   const htmlBundleDownloadCount = rows.reduce((sum, row) => sum + row.htmlBundleDownloadCount, 0)
@@ -201,6 +204,12 @@ export default async function AdminDownloadsPage() {
                           <Download className="h-3.5 w-3.5" />
                           {user.paidDownloadCount} ZIP download{user.paidDownloadCount === 1 ? '' : 's'}
                         </div>
+                        {user.paidBundleDownloadCount > 0 ? (
+                          <div className={'inline-flex items-center gap-1.5 rounded-full bg-violet-50 px-2.5 py-1 text-xs font-semibold text-violet-700 dark:bg-violet-900/30 dark:text-violet-300'}>
+                            <Archive className={'h-3.5 w-3.5'} />
+                            All-paid bundle x{user.paidBundleDownloadCount}
+                          </div>
+                        ) : null}
                         <CompactDownloadList downloads={user.summary.downloads} titles={kitTitles} empty="No paid downloads" />
                       </div>
                     </td>

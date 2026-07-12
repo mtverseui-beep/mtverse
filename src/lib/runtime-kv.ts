@@ -1,5 +1,7 @@
 import 'server-only'
 
+import { randomUUID } from 'node:crypto'
+
 type PipelineMode = 'read' | 'write'
 
 type PipelineValue = string | number
@@ -122,8 +124,73 @@ export function getRedisClient() {
       await callUpstashPipeline([['SET', key, value, 'EX', ttlSeconds]], 'write')
     },
 
+    async setNx(key: string, value: string, ttlSeconds: number): Promise<boolean> {
+      const result = await callUpstashPipeline(
+        [['SET', key, value, 'NX', 'EX', ttlSeconds]],
+        'write'
+      )
+      return result?.[0]?.result === 'OK'
+    },
+
+    async compareAndDelete(key: string, expectedValue: string): Promise<boolean> {
+      const script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end"
+      const result = await callUpstashPipeline(
+        [['EVAL', script, 1, key, expectedValue]],
+        'write'
+      )
+      return Number(result?.[0]?.result || 0) > 0
+    },
+
     async del(key: string): Promise<void> {
       await callUpstashPipeline([['DEL', key]], 'write')
     },
   }
+}
+
+const localLockQueues = new Map<string, Promise<void>>()
+
+async function withLocalLock<T>(key: string, callback: () => Promise<T>): Promise<T> {
+  const previous = localLockQueues.get(key) || Promise.resolve()
+  let release!: () => void
+  const current = new Promise<void>((resolve) => {
+    release = resolve
+  })
+  const queued = previous.then(() => current)
+  localLockQueues.set(key, queued)
+
+  await previous
+  try {
+    return await callback()
+  } finally {
+    release()
+    if (localLockQueues.get(key) === queued) localLockQueues.delete(key)
+  }
+}
+
+export async function withRuntimeLock<T>(
+  key: string,
+  callback: () => Promise<T>,
+  options: { ttlSeconds?: number; waitMs?: number } = {},
+): Promise<T> {
+  if (!hasRuntimeKvStore()) return withLocalLock(key, callback)
+
+  const redis = getRedisClient()
+  const owner = randomUUID()
+  const ttlSeconds = Math.max(5, options.ttlSeconds || 20)
+  const waitMs = Math.max(500, options.waitMs || 12_000)
+  const deadline = Date.now() + waitMs
+
+  while (Date.now() < deadline) {
+    if (await redis.setNx(key, owner, ttlSeconds)) {
+      try {
+        return await callback()
+      } finally {
+        await redis.compareAndDelete(key, owner).catch(() => false)
+      }
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 40 + Math.floor(Math.random() * 60)))
+  }
+
+  throw new Error('Runtime store is busy for ' + key + '. Please retry.')
 }

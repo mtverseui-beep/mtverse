@@ -19,6 +19,9 @@ const BLOCKED_HEADERS = [
   'content-encoding',
   'content-length',
   'transfer-encoding',
+  'access-control-allow-origin',
+  'access-control-allow-methods',
+  'access-control-allow-headers',
 ]
 
 function appendPath(base: string, path: string[]) {
@@ -60,6 +63,36 @@ function isAllowedPreviewUrl(value: string) {
     return false
   }
 }
+
+async function fetchPreview(targetUrl: URL) {
+  const expectedOrigin = targetUrl.origin
+  let currentUrl = targetUrl
+
+  for (let redirectCount = 0; redirectCount <= 5; redirectCount += 1) {
+    const response = await fetch(currentUrl, {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'mtverse-preview-proxy/1.0',
+        'Accept-Encoding': 'identity',
+      },
+      redirect: 'manual',
+    })
+
+    if (response.status < 300 || response.status >= 400) return response
+
+    const location = response.headers.get('location')
+    if (!location) throw new Error('Preview redirect is missing a location header.')
+
+    const nextUrl = new URL(location, currentUrl)
+    if (nextUrl.origin !== expectedOrigin) {
+      throw new Error('Preview redirect left the approved origin.')
+    }
+    currentUrl = nextUrl
+  }
+
+  throw new Error('Preview redirect limit exceeded.')
+}
+
 function injectBaseTag(html: string, baseUrl: string): string {
   // Inject <base href="..."> into <head> so all relative URLs resolve against the origin
   const baseTag = `<base href="${baseUrl}/">`
@@ -93,14 +126,7 @@ async function proxyRequest(request: NextRequest, context: RouteContext) {
   targetUrl.search = request.nextUrl.search
 
   try {
-    const response = await fetch(targetUrl.toString(), {
-      method: request.method,
-      headers: {
-        'User-Agent': 'mtverse-preview-proxy/1.0',
-        'Accept-Encoding': 'identity',
-      },
-      redirect: 'follow',
-    })
+    const response = await fetchPreview(targetUrl)
 
     // Read the full body
     const bodyBuffer = await response.arrayBuffer()
@@ -113,11 +139,6 @@ async function proxyRequest(request: NextRequest, context: RouteContext) {
         headers.set(key, value)
       }
     })
-
-    // Add CORS headers to allow iframe embedding
-    headers.set('Access-Control-Allow-Origin', '*')
-    headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-    headers.set('Access-Control-Allow-Headers', 'Content-Type')
 
     // For HTML responses, inject <base> tag so relative assets load from the origin
     if (contentType.includes('text/html')) {
@@ -157,6 +178,9 @@ export async function GET(request: NextRequest, context: RouteContext) {
   return proxyRequest(request, context)
 }
 
-export async function POST(request: NextRequest, context: RouteContext) {
-  return proxyRequest(request, context)
+export async function POST() {
+  return NextResponse.json(
+    { error: 'Preview proxy accepts read-only requests.' },
+    { status: 405, headers: { Allow: 'GET' } }
+  )
 }

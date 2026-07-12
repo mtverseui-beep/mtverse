@@ -1,4 +1,17 @@
-{
-  "plans": {},
-  "licenses": {}
+﻿{
+    "plans":  {
+                  "mymultiversehub00@gmail.com":  {
+                                                      "email":  "mymultiversehub00@gmail.com",
+                                                      "plan":  "pro",
+                                                      "licenseKey":  "MTV-TIMB-BDWK-0VZC-5QPZ",
+                                                      "status":  "active",
+                                                      "provider":  "mock",
+                                                      "packageId":  "next",
+                                                      "createdAt":  "2026-06-29T17:01:34.210Z",
+                                                      "updatedAt":  "2026-06-30T06:39:39.548Z"
+                                                  }
+              },
+    "licenses":  {
+                     "MTV-TIMB-BDWK-0VZC-5QPZ":  "mymultiversehub00@gmail.com"
+                 }
 }

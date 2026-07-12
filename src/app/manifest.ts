@@ -2,10 +2,10 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'mtverse - AI Prompts & Premium UI Components',
+    name: 'mtverse - AI Prompts & Website Templates',
     short_name: 'mtverse',
     description:
-      'Free AI prompts for image generation, ChatGPT, Midjourney, and creative workflows. Plus production-ready React UI components with Tailwind CSS and shadcn/ui.',
+      'Browse curated AI prompts, free HTML website templates, and premium Next.js dashboard, ecommerce, and landing page templates.',
     start_url: '/',
     scope: '/',
     display: 'standalone',

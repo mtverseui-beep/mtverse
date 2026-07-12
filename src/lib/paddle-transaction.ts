@@ -1,16 +1,25 @@
 import 'server-only'
 
 import { verifyCheckoutIntentData } from '@/lib/checkout-intent'
-import { getProductPackage, type PackageId } from '@/lib/packages'
-import { getPaddleEnvironment } from '@/lib/paddle'
+import { getProductPackage, isPackageId, type PackageId } from '@/lib/packages'
+import { getPaddleEnvironment, getPaddlePriceId } from '@/lib/paddle'
+import { getRedisClient, hasRuntimeKvStore } from '@/lib/runtime-kv'
 
 type PaddleTransactionResponse = {
-  data?: {
-    id?: string
-    status?: string
-    customer_id?: string | null
-    custom_data?: Record<string, unknown> | null
-  }
+  data?: PaddleTransactionLike
+}
+
+export type PaddleTransactionLike = {
+  id?: string
+  status?: string
+  customer_id?: string | null
+  custom_data?: Record<string, unknown> | null
+  details?: {
+    line_items?: Array<{
+      price_id?: string
+      quantity?: number
+    }>
+  } | null
 }
 
 export type VerifiedPaddleTransaction = {
@@ -37,10 +46,53 @@ function getPaddleApiBaseUrl() {
     : 'https://sandbox-api.paddle.com'
 }
 
+export function hasExpectedPaddlePrice(
+  transaction: PaddleTransactionLike | null | undefined,
+  packageId: PackageId,
+) {
+  const expectedPriceId = getPaddlePriceId(packageId)
+  const lineItems = transaction?.details?.line_items
+
+  return Boolean(
+    expectedPriceId &&
+    Array.isArray(lineItems) &&
+    lineItems.length === 1 &&
+    lineItems[0]?.price_id === expectedPriceId &&
+    lineItems[0]?.quantity === 1
+  )
+}
+
 export async function getVerifiedPaddleTransaction(transactionId: string): Promise<VerifiedPaddleTransaction | null> {
   const safeTransactionId = transactionId.trim()
   const apiKey = readEnv('PADDLE_API_KEY')
   if (!safeTransactionId || !apiKey) return null
+  const cacheKey = 'paddle:verified-transaction:' + safeTransactionId
+
+  if (hasRuntimeKvStore()) {
+    try {
+      const cached = await getRedisClient().get(cacheKey)
+      if (cached) {
+        const value = JSON.parse(cached) as Partial<VerifiedPaddleTransaction>
+        if (
+          value.transactionId === safeTransactionId &&
+          isPackageId(value.packageId) &&
+          typeof value.email === 'string' &&
+          value.email.includes('@')
+        ) {
+          return {
+            transactionId: safeTransactionId,
+            packageId: value.packageId,
+            plan: getProductPackage(value.packageId).accessPlan,
+            email: value.email.toLowerCase().trim(),
+            kitSlug: typeof value.kitSlug === 'string' ? value.kitSlug : null,
+            customerId: typeof value.customerId === 'string' ? value.customerId : undefined,
+          }
+        }
+      }
+    } catch (error) {
+      console.warn('[Paddle] Verified transaction cache read failed.', error)
+    }
+  }
 
   const response = await fetch(`${getPaddleApiBaseUrl()}/transactions/${encodeURIComponent(safeTransactionId)}`, {
     headers: {
@@ -62,11 +114,12 @@ export async function getVerifiedPaddleTransaction(transactionId: string): Promi
   const customData = transaction.custom_data || {}
   const intent = verifyCheckoutIntentData(customData)
   if (!intent) return null
+  if (!hasExpectedPaddlePrice(transaction, intent.packageId)) return null
 
   const product = getProductPackage(intent.packageId)
   const customerId = stringFromUnknown(transaction.customer_id) || undefined
 
-  return {
+  const verified: VerifiedPaddleTransaction = {
     transactionId: safeTransactionId,
     packageId: intent.packageId,
     plan: product.accessPlan,
@@ -74,4 +127,12 @@ export async function getVerifiedPaddleTransaction(transactionId: string): Promi
     kitSlug: intent.kitSlug,
     customerId,
   }
+
+  if (hasRuntimeKvStore()) {
+    await getRedisClient().setex(cacheKey, 5 * 60, JSON.stringify(verified)).catch((error) => {
+      console.warn('[Paddle] Verified transaction cache write failed.', error)
+    })
+  }
+
+  return verified
 }

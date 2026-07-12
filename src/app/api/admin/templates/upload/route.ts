@@ -7,6 +7,7 @@ import {
   buildR2TemplatePreviewKey,
   getCloudflareR2Config,
   isCloudflareR2Configured,
+  isCloudflareR2PackageStorageConfigured,
 } from '@/lib/cloudflare-r2'
 import { slugify } from '@/lib/utils'
 
@@ -37,7 +38,7 @@ function isZipFile(file: File) {
   return file.type === 'application/zip' || file.type === 'application/x-zip-compressed' || file.name.toLowerCase().endsWith('.zip')
 }
 
-async function uploadToR2(file: File, key: string, contentType: string) {
+async function uploadToR2(file: File, key: string, contentType: string, bucket: string) {
   const config = getCloudflareR2Config()
   const s3Client = new S3Client({
     region: 'auto',
@@ -51,7 +52,7 @@ async function uploadToR2(file: File, key: string, contentType: string) {
 
   await s3Client.send(
     new PutObjectCommand({
-      Bucket: config.bucket,
+      Bucket: bucket,
       Key: key,
       Body: Buffer.from(await file.arrayBuffer()),
       ContentType: contentType,
@@ -69,10 +70,6 @@ export async function POST(request: NextRequest) {
 
     if (blocked) return blocked
 
-    if (!isCloudflareR2Configured()) {
-      return jsonError('Template uploads are not configured. Add Cloudflare R2 credentials.', 400, 'template_upload_not_configured')
-    }
-
     const formData = await request.formData()
     const file = formData.get('file')
     const type = String(formData.get('type') || 'screenshot').trim()
@@ -84,11 +81,15 @@ export async function POST(request: NextRequest) {
     }
 
     if (type === 'package') {
+      if (!isCloudflareR2PackageStorageConfigured()) {
+        return jsonError('Private template package storage is not configured.', 400, 'template_package_storage_not_configured')
+      }
       if (!isZipFile(file)) return jsonError('Only ZIP files are supported for package uploads.', 400, 'invalid_package_type')
       if (file.size > 250 * 1024 * 1024) return jsonError('Package is too large. Upload a ZIP under 250 MB.', 413, 'package_too_large')
 
       const key = buildR2TemplatePackageKey(slug, file.name || 'mtverse-next-package.zip')
-      await uploadToR2(file, key, file.type || 'application/zip')
+      const config = getCloudflareR2Config()
+      await uploadToR2(file, key, file.type || 'application/zip', config.packageBucket)
 
       return NextResponse.json({
         success: true,
@@ -100,6 +101,10 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    if (!isCloudflareR2Configured()) {
+      return jsonError('Template screenshot storage is not configured.', 400, 'template_preview_storage_not_configured')
+    }
+
     if (!file.type.startsWith('image/')) {
       return jsonError('Only image uploads are supported for screenshots.', 400, 'invalid_image_type')
     }
@@ -109,7 +114,8 @@ export async function POST(request: NextRequest) {
     if (file.size > 15 * 1024 * 1024) return jsonError('Screenshot is too large. Upload an image under 15 MB.', 413, 'image_too_large')
 
     const key = buildR2TemplatePreviewKey(slug, file.name || 'screenshot', extension)
-    await uploadToR2(file, key, file.type || 'image/jpeg')
+    const config = getCloudflareR2Config()
+    await uploadToR2(file, key, file.type || 'image/jpeg', config.bucket)
 
     return NextResponse.json({
       success: true,

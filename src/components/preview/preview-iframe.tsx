@@ -25,13 +25,13 @@ export function PreviewIframe({ url, directUrl, title }: PreviewIframeProps) {
   useEffect(() => {
     loadedRef.current = false
     const timer = setTimeout(() => {
-      if (!loadedRef.current && loading) {
+      if (!loadedRef.current) {
         setLoading(false)
         setError(true)
       }
     }, 15000)
     return () => clearTimeout(timer)
-  }, [retryCount]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [retryCount])
 
   const handleLoad = useCallback(() => {
     loadedRef.current = true

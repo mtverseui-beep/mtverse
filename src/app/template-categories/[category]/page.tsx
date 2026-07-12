@@ -105,11 +105,10 @@ function templateMatchesCategory(templateCategory: string, category: string) {
   return false
 }
 
-function categoryIcon(category: string) {
-  if (category === 'dashboards') return LayoutDashboard
-  if (category === 'html') return Code2
-  return LayoutGrid
-}
+const CATEGORY_ICONS = {
+  dashboards: LayoutDashboard,
+  html: Code2,
+} as const
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { category } = await params
@@ -161,7 +160,7 @@ export default async function TemplateCategoryPage({ params }: { params: Params 
   if (!selected) notFound()
 
   const templates = await withAllTemplateSocial(baseTemplates.filter((template) => templateMatchesCategory(template.category, category)))
-  const Icon = categoryIcon(category)
+  const Icon = CATEGORY_ICONS[category as keyof typeof CATEGORY_ICONS] || LayoutGrid
   const seo = CATEGORY_SEO[category]
   const title = seo?.title || fallbackTitle(selected.label)
   const description = seo?.description || fallbackDescription(selected.label)

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit, getClientIp, getRateLimitRetryAfterSeconds } from '@/lib/rate-limit'
 import { createAuthErrorId, recordAuthEvent } from "@/lib/auth/auth-event-log";
 import { updateCustomerPassword } from "@/lib/auth/customer-store";
-import { consumePasswordResetToken, getPasswordResetEmail } from "@/lib/auth/password-reset-store";
+import { consumePasswordResetToken } from "@/lib/auth/password-reset-store";
 
 function validatePassword(password: unknown) {
   if (typeof password !== "string") return "Password is required";
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       return failureResponse(passwordError, 400, errorId);
     }
 
-    const email = await getPasswordResetEmail(token);
+    const email = await consumePasswordResetToken(token);
     if (!email) {
       const errorId = createAuthErrorId()
       await recordAuthEvent({ request, type: 'reset_password', status: 'failure', provider: 'email', reason: 'invalid_or_expired_token', message: 'Password reset confirmation failed because token was invalid or expired.', errorId })
@@ -62,7 +62,6 @@ export async function POST(request: NextRequest) {
       return failureResponse("Account not found", 404, errorId);
     }
 
-    await consumePasswordResetToken(token);
     await recordAuthEvent({ request, type: 'reset_password', status: 'success', provider: 'email', email, reason: 'password_updated', message: 'Password updated successfully.' })
 
     return NextResponse.json({

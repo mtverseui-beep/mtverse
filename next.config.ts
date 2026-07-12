@@ -10,7 +10,7 @@ const securityHeaders = [
 const frameDenyHeaders = [{ key: "X-Frame-Options", value: "DENY" }];
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
   reactStrictMode: true,
   images: {
     formats: ["image/avif", "image/webp"],

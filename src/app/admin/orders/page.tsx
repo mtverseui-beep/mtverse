@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Download, Receipt, ShoppingBag } from 'lucide-react'
+import { Receipt, ShoppingBag } from 'lucide-react'
 import { getDashboardKits } from '@/lib/dashboard-kit-store'
 import { getAllPlans } from '@/lib/plan-store'
 import { getAllTemplatePurchases } from '@/lib/template-social-store'
@@ -36,7 +36,7 @@ export default async function AdminOrdersPage() {
         <div>
           <h1 className="ds-h1">Orders &amp; Access</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {totalRecords} total records Â· {directTemplateCount} direct template purchases Â· {activeCount} active licenses
+            {totalRecords} total records / {directTemplateCount} direct template purchases / {activeCount} active licenses
           </p>
         </div>
       </div>

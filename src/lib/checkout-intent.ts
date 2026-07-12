@@ -14,11 +14,10 @@ export type VerifiedCheckoutIntent = {
 }
 
 function readSigningSecret() {
-  return (
-    process.env.CUSTOMER_SESSION_SECRET?.trim() ||
-    process.env.NEXTAUTH_SECRET?.trim() ||
-    ''
-  )
+  const customerSecret = process.env.CUSTOMER_SESSION_SECRET?.trim()
+  if (customerSecret) return customerSecret
+  if (process.env.NODE_ENV !== 'production') return process.env.NEXTAUTH_SECRET?.trim() || ''
+  return ''
 }
 
 function normalizeEmail(value: unknown) {

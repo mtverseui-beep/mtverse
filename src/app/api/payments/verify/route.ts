@@ -3,6 +3,7 @@ import { getPlanByProviderTransactionId, setPlan } from '@/lib/plan-store'
 import { isMockPaymentAllowed, verifyPaymentFromSearchParams } from '@/lib/payments'
 import { getVerifiedPaddleTransaction } from '@/lib/paddle-transaction'
 import { recordTemplatePurchase, setFreeUnlocked } from '@/lib/template-social-store'
+import { getCurrentCustomerEmail } from '@/lib/auth/current-customer'
 
 function shouldRecordTemplatePurchase(packageId: string | null | undefined, kitSlug: string | null) {
   return Boolean(kitSlug && packageId !== 'free-unlock' && packageId !== 'all-paid')
@@ -12,6 +13,21 @@ export async function GET(request: NextRequest) {
   const result = verifyPaymentFromSearchParams(request.nextUrl.searchParams)
   const transactionId = request.nextUrl.searchParams.get('transaction_id') || request.nextUrl.searchParams.get('_ptxn') || request.nextUrl.searchParams.get('transactionId')
   const kitSlug = request.nextUrl.searchParams.get('kit')
+  const currentEmail = await getCurrentCustomerEmail(request)
+
+  if (!currentEmail) {
+    return NextResponse.json(
+      { valid: false, error: 'Please sign in to verify this payment.' },
+      { status: 401 }
+    )
+  }
+
+  if (result.email && result.email !== currentEmail) {
+    return NextResponse.json(
+      { valid: false, error: 'Payment email does not match the signed-in account.' },
+      { status: 403 }
+    )
+  }
 
   if (result.mock && !isMockPaymentAllowed()) {
     return NextResponse.json(
@@ -31,6 +47,13 @@ export async function GET(request: NextRequest) {
   if (result.provider === 'paddle' && transactionId) {
     const record = await getPlanByProviderTransactionId(transactionId)
     if (record) {
+      if (record.provider !== 'paddle' || record.email !== currentEmail) {
+        return NextResponse.json(
+          { ...result, valid: false, email: null, mock: false, error: 'Payment does not belong to this account.' },
+          { status: 403 }
+        )
+      }
+
       if (record.status === 'revoked') {
         return NextResponse.json({
           ...result,
@@ -61,6 +84,13 @@ export async function GET(request: NextRequest) {
 
     const verifiedTransaction = await getVerifiedPaddleTransaction(transactionId)
     if (verifiedTransaction) {
+      if (verifiedTransaction.email !== currentEmail) {
+        return NextResponse.json(
+          { ...result, valid: false, email: null, mock: false, error: 'Payment does not belong to this account.' },
+          { status: 403 }
+        )
+      }
+
       if (verifiedTransaction.packageId === 'free-unlock') {
         await setFreeUnlocked(verifiedTransaction.email)
       } else if (verifiedTransaction.kitSlug && verifiedTransaction.packageId !== 'all-paid') {
@@ -105,11 +135,11 @@ export async function GET(request: NextRequest) {
     })
   }
 
-  if (result.valid && result.email && result.packageId === 'free-unlock') {
-    await setFreeUnlocked(result.email)
-  } else if (result.valid && result.email && result.plan) {
+  if (result.valid && result.packageId === 'free-unlock') {
+    await setFreeUnlocked(currentEmail)
+  } else if (result.valid && result.plan) {
     await setPlan(
-      result.email,
+      currentEmail,
       result.plan,
       undefined,
       request.nextUrl.searchParams.get('session_id') || undefined,
@@ -119,9 +149,9 @@ export async function GET(request: NextRequest) {
     )
 
     if (shouldRecordTemplatePurchase(result.packageId, kitSlug)) {
-      await recordTemplatePurchase(kitSlug, result.email)
+      await recordTemplatePurchase(kitSlug, currentEmail)
     }
   }
 
-  return NextResponse.json(result)
+  return NextResponse.json({ ...result, email: currentEmail })
 }

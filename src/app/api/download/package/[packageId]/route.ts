@@ -1,16 +1,17 @@
 import { existsSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
 import { join, resolve, sep } from 'node:path'
 import { Readable } from 'node:stream'
 import JSZip from 'jszip'
-import { GetObjectCommand, NoSuchKey, S3Client, type GetObjectCommandOutput } from '@aws-sdk/client-s3'
+import { GetObjectCommand, NoSuchKey, PutObjectCommand, S3Client, type GetObjectCommandOutput } from '@aws-sdk/client-s3'
 import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentCustomerEmail } from '@/lib/auth/current-customer'
-import { getCloudflareR2Config, isCloudflareR2Configured } from '@/lib/cloudflare-r2'
+import { getCloudflareR2Config, isCloudflareR2PackageStorageConfigured } from '@/lib/cloudflare-r2'
 import { getDashboardKits } from '@/lib/dashboard-kit-store'
 import { getPackageDownloadFilename, getPackageDownloadKey } from '@/lib/package-downloads'
 import { getPlan, hasPlanPackageAccess } from '@/lib/plan-store'
-import { getFreeDownloadStatus, recordHtmlBundleDownload } from '@/lib/template-social-store'
+import { getFreeDownloadStatus, recordHtmlBundleDownload, recordPaidBundleDownload } from '@/lib/template-social-store'
 import { isPackageId, type PackageId } from '@/lib/packages'
 
 export const runtime = 'nodejs'
@@ -26,6 +27,13 @@ const LOCAL_TEMPLATE_PACKAGE_ROOT = resolve(join(process.cwd(), 'data'))
 const HTML_PACKAGE_PREFIX = 'templates/html/'
 const HTML_BUNDLE_PACKAGE_ID: PackageId = 'free-unlock'
 const ALL_PAID_BUNDLE_PACKAGE_ID: PackageId = 'all-paid'
+
+class BundleSourceError extends Error {
+  constructor(public readonly missingSlugs: string[]) {
+    super('Bundle source packages are missing: ' + missingSlugs.join(', '))
+    this.name = 'BundleSourceError'
+  }
+}
 
 function canDownloadStaticPackage(record: Awaited<ReturnType<typeof getPlan>>, packageId: PackageId) {
   if (packageId !== 'next' && packageId !== 'pro' && packageId !== 'ooster-pro') return false
@@ -129,6 +137,81 @@ function createR2Client() {
   }
 }
 
+async function mapWithConcurrency<T, R>(
+  values: T[],
+  concurrency: number,
+  mapper: (value: T) => Promise<R>,
+) {
+  const results = new Array<R>(values.length)
+  let cursor = 0
+
+  async function worker() {
+    while (true) {
+      const index = cursor
+      cursor += 1
+      if (index >= values.length) return
+      results[index] = await mapper(values[index])
+    }
+  }
+
+  await Promise.all(Array.from({ length: Math.min(concurrency, values.length) }, () => worker()))
+  return results
+}
+
+function buildGeneratedBundleKey(packageId: PackageId, kits: Array<{ slug: string; packageKey?: string; updatedAt?: string }>) {
+  const fingerprint = createHash('sha256')
+    .update(kits.map((kit) => [kit.slug, kit.packageKey || '', kit.updatedAt || ''].join(':')).join('\n'))
+    .digest('hex')
+    .slice(0, 16)
+  return getPackageDownloadKey(packageId).replace(/\.zip$/i, '-' + fingerprint + '.zip')
+}
+
+async function getOptionalR2Object(
+  s3Client: S3Client,
+  bucket: string,
+  key: string,
+): Promise<GetObjectCommandOutput | null> {
+  try {
+    return await s3Client.send(new GetObjectCommand({ Bucket: bucket, Key: key }))
+  } catch (error) {
+    if (isMissingR2Object(error)) return null
+    throw error
+  }
+}
+
+function createZipStreamResponse(object: GetObjectCommandOutput, filename: string) {
+  const stream = toWebStream(object.Body)
+  if (!stream) return NextResponse.json({ error: 'Bundle package file is empty.' }, { status: 502 })
+
+  const headers = new Headers({
+    'Content-Type': object.ContentType || 'application/zip',
+    'Content-Disposition': 'attachment; filename=' + filename,
+    'Cache-Control': 'private, no-store',
+    'X-Content-Type-Options': 'nosniff',
+  })
+  if (object.ContentLength) headers.set('Content-Length', String(object.ContentLength))
+  return new Response(stream, { headers })
+}
+
+async function cacheGeneratedBundle(
+  s3Client: S3Client,
+  bucket: string,
+  key: string,
+  archive: Buffer,
+) {
+  try {
+    await s3Client.send(new PutObjectCommand({
+      Bucket: bucket,
+      Key: key,
+      Body: archive,
+      ContentType: 'application/zip',
+      CacheControl: 'private, no-store',
+    }))
+  } catch (error) {
+    console.warn('[Bundle Cache] ZIP upload failed; delivering the generated archive without cache.', error)
+  }
+}
+
 async function createHtmlBundleResponse(email: string, _planRecord: Awaited<ReturnType<typeof getPlan>>) {
   const freeStatus = await getFreeDownloadStatus(email)
 
@@ -136,13 +219,13 @@ async function createHtmlBundleResponse(email: string, _planRecord: Awaited<Retu
     return NextResponse.json({ error: 'Unlock the all HTML templates bundle for $5 before downloading.' }, { status: 403 })
   }
 
-  if (!isCloudflareR2Configured()) {
-    return NextResponse.json({ error: 'HTML bundle downloads are not configured yet.' }, { status: 503 })
+  if (!isCloudflareR2PackageStorageConfigured()) {
+    return NextResponse.json({ error: 'Private HTML package storage is not configured yet.' }, { status: 503 })
   }
 
   const kits = await getDashboardKits()
   const htmlKits = kits
-    .filter((kit) => kit.status === 'available' && kit.category === 'html' && kit.packageKey?.startsWith(HTML_PACKAGE_PREFIX) && kit.packageKey.endsWith('.zip'))
+    .filter((kit) => kit.status === 'available' && kit.category === 'html')
     .sort((left, right) => {
       const category = (left.subcategory || '').localeCompare(right.subcategory || '')
       return category || left.title.localeCompare(right.title)
@@ -153,6 +236,14 @@ async function createHtmlBundleResponse(email: string, _planRecord: Awaited<Retu
   }
 
   const { config, s3Client } = createR2Client()
+  const downloadFilename = getPackageDownloadFilename(HTML_BUNDLE_PACKAGE_ID)
+  const cacheKey = buildGeneratedBundleKey(HTML_BUNDLE_PACKAGE_ID, htmlKits)
+  const cachedBundle = await getOptionalR2Object(s3Client, config.packageBucket, cacheKey)
+  if (cachedBundle) {
+    await recordHtmlBundleDownload(email)
+    return createZipStreamResponse(cachedBundle, downloadFilename)
+  }
+
   const bundle = new JSZip()
   const manifest = htmlKits.map((kit) => ({
     slug: kit.slug,
@@ -173,19 +264,29 @@ async function createHtmlBundleResponse(email: string, _planRecord: Awaited<Retu
   ].join('\n'))
   bundle.file('manifest.json', JSON.stringify(manifest, null, 2))
 
-  for (const kit of htmlKits) {
-    try {
-      const object = await s3Client.send(new GetObjectCommand({ Bucket: config.bucket, Key: kit.packageKey }))
-      const buffer = await toBuffer(object.Body)
-      if (!buffer.length) continue
-
-      const categoryFolder = safeBundleSegment(kit.subcategory)
-      const filename = kit.packageFilename || `${kit.slug}.zip`
-      bundle.file(`${categoryFolder}/${filename}`, buffer)
-    } catch (error) {
-      if (isMissingR2Object(error)) continue
-      throw error
+  const sources = await mapWithConcurrency(htmlKits, 12, async (kit) => {
+    const key = kit.packageKey
+    if (!key?.startsWith(HTML_PACKAGE_PREFIX) || !key.endsWith('.zip')) {
+      return { kit, buffer: Buffer.alloc(0), missing: true }
     }
+
+    try {
+      const object = await s3Client.send(new GetObjectCommand({ Bucket: config.packageBucket, Key: key }))
+      const buffer = await toBuffer(object.Body)
+      return { kit, buffer, missing: !buffer.length }
+    } catch (error) {
+      console.error('[HTML Bundle] Source fetch failed for ' + kit.slug, error)
+      return { kit, buffer: Buffer.alloc(0), missing: true }
+    }
+  })
+
+  const missingSlugs = sources.filter((source) => source.missing).map((source) => source.kit.slug)
+  if (missingSlugs.length) throw new BundleSourceError(missingSlugs)
+
+  for (const { kit, buffer } of sources) {
+    const categoryFolder = safeBundleSegment(kit.subcategory)
+    const filename = safeBundleFilename(kit.packageFilename, `${kit.slug}.zip`)
+    bundle.file(`${categoryFolder}/${filename}`, buffer)
   }
 
   const archive = await bundle.generateAsync({
@@ -194,6 +295,7 @@ async function createHtmlBundleResponse(email: string, _planRecord: Awaited<Retu
     compressionOptions: { level: 6 },
   })
 
+  await cacheGeneratedBundle(s3Client, config.packageBucket, cacheKey, archive)
   await recordHtmlBundleDownload(email)
 
   const filename = getPackageDownloadFilename(HTML_BUNDLE_PACKAGE_ID)
@@ -216,7 +318,7 @@ async function createAllPaidBundleResponse(email: string, planRecord: Awaited<Re
 
   const kits = await getDashboardKits()
   const paidKits = kits
-    .filter((kit) => kit.status === 'available' && !kit.isFree && hasBundlePackageKey(kit.packageKey))
+    .filter((kit) => kit.status === 'available' && !kit.isFree)
     .sort((left, right) => {
       const category = (left.categoryTitle || left.category || '').localeCompare(right.categoryTitle || right.category || '')
       return category || left.title.localeCompare(right.title)
@@ -227,11 +329,21 @@ async function createAllPaidBundleResponse(email: string, planRecord: Awaited<Re
   }
 
   const needsR2 = paidKits.some((kit) => isR2ZipPackageKey(kit.packageKey))
-  if (needsR2 && !isCloudflareR2Configured()) {
+  if (needsR2 && !isCloudflareR2PackageStorageConfigured()) {
     return NextResponse.json({ error: 'All paid bundle downloads are not configured yet.' }, { status: 503 })
   }
 
-  const r2 = needsR2 ? createR2Client() : null
+  const r2 = isCloudflareR2PackageStorageConfigured() ? createR2Client() : null
+  const downloadFilename = getPackageDownloadFilename(ALL_PAID_BUNDLE_PACKAGE_ID)
+  const cacheKey = buildGeneratedBundleKey(ALL_PAID_BUNDLE_PACKAGE_ID, paidKits)
+  const cachedBundle = r2
+    ? await getOptionalR2Object(r2.s3Client, r2.config.packageBucket, cacheKey)
+    : null
+  if (cachedBundle) {
+    await recordPaidBundleDownload(email)
+    return createZipStreamResponse(cachedBundle, downloadFilename)
+  }
+
   const bundle = new JSZip()
   const manifest = paidKits.map((kit) => ({
     slug: kit.slug,
@@ -255,38 +367,41 @@ async function createAllPaidBundleResponse(email: string, planRecord: Awaited<Re
   ].join('\n'))
   bundle.file('manifest.json', JSON.stringify(manifest, null, 2))
 
-  let added = 0
-  for (const kit of paidKits) {
+  const sources = await mapWithConcurrency(paidKits, 8, async (kit) => {
     const key = kit.packageKey
-    if (!hasBundlePackageKey(key)) continue
+    if (!hasBundlePackageKey(key)) {
+      return { kit, buffer: Buffer.alloc(0), missing: true }
+    }
 
     try {
       let buffer: Buffer | null = null
       const localPackagePath = resolveLocalTemplatePackagePath(key)
 
       if (localPackagePath) {
-        if (!existsSync(localPackagePath)) continue
+        if (!existsSync(localPackagePath)) {
+          return { kit, buffer: Buffer.alloc(0), missing: true }
+        }
         buffer = await readFile(localPackagePath)
       } else if (isR2ZipPackageKey(key) && r2) {
-        const object = await r2.s3Client.send(new GetObjectCommand({ Bucket: r2.config.bucket, Key: key }))
+        const object = await r2.s3Client.send(new GetObjectCommand({ Bucket: r2.config.packageBucket, Key: key }))
         buffer = await toBuffer(object.Body)
       }
 
-      if (!buffer?.length) continue
-
-      const categoryFolder = safeBundleSegment(kit.categoryTitle || kit.category || 'paid-templates')
-      const templateFolder = safeBundleSegment(kit.slug)
-      const filename = safeBundleFilename(kit.packageFilename, `${kit.slug}.zip`)
-      bundle.file(`${categoryFolder}/${templateFolder}/${filename}`, buffer)
-      added += 1
+      return { kit, buffer: buffer || Buffer.alloc(0), missing: !buffer?.length }
     } catch (error) {
-      if (isMissingR2Object(error)) continue
-      throw error
+      console.error('[All Paid Bundle] Source fetch failed for ' + kit.slug, error)
+      return { kit, buffer: Buffer.alloc(0), missing: true }
     }
-  }
+  })
 
-  if (!added) {
-    return NextResponse.json({ error: 'Paid template ZIP files are missing in storage.' }, { status: 404 })
+  const missingSlugs = sources.filter((source) => source.missing).map((source) => source.kit.slug)
+  if (missingSlugs.length) throw new BundleSourceError(missingSlugs)
+
+  for (const { kit, buffer } of sources) {
+    const categoryFolder = safeBundleSegment(kit.categoryTitle || kit.category || 'paid-templates')
+    const templateFolder = safeBundleSegment(kit.slug)
+    const filename = safeBundleFilename(kit.packageFilename, `${kit.slug}.zip`)
+    bundle.file(`${categoryFolder}/${templateFolder}/${filename}`, buffer)
   }
 
   const archive = await bundle.generateAsync({
@@ -294,6 +409,9 @@ async function createAllPaidBundleResponse(email: string, planRecord: Awaited<Re
     compression: 'DEFLATE',
     compressionOptions: { level: 6 },
   })
+
+  if (r2) await cacheGeneratedBundle(r2.s3Client, r2.config.packageBucket, cacheKey, archive)
+  await recordPaidBundleDownload(email)
 
   const filename = getPackageDownloadFilename(ALL_PAID_BUNDLE_PACKAGE_ID)
   const headers = new Headers({
@@ -346,6 +464,12 @@ export async function GET(request: NextRequest, context: RouteContext) {
       return await createHtmlBundleResponse(email, planRecord)
     } catch (error) {
       console.error('[HTML Bundle Download] R2 zip generation failed:', error)
+      if (error instanceof BundleSourceError) {
+        return NextResponse.json(
+          { error: 'HTML bundle is temporarily unavailable because one or more source ZIPs are missing.' },
+          { status: 503 }
+        )
+      }
       return NextResponse.json({ error: 'HTML bundle generation failed.' }, { status: 502 })
     }
   }
@@ -355,6 +479,12 @@ export async function GET(request: NextRequest, context: RouteContext) {
       return await createAllPaidBundleResponse(email, planRecord)
     } catch (error) {
       console.error('[All Paid Bundle Download] R2 zip generation failed:', error)
+      if (error instanceof BundleSourceError) {
+        return NextResponse.json(
+          { error: 'All paid bundle is temporarily unavailable because one or more source ZIPs are missing.' },
+          { status: 503 }
+        )
+      }
       return NextResponse.json({ error: 'All paid templates bundle generation failed.' }, { status: 502 })
     }
   }
@@ -363,8 +493,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
     return NextResponse.json({ error: 'This package is not included in your purchase.' }, { status: 403 })
   }
 
-  if (!isCloudflareR2Configured()) {
-    return NextResponse.json({ error: 'Package downloads are not configured yet.' }, { status: 503 })
+  if (!isCloudflareR2PackageStorageConfigured()) {
+    return NextResponse.json({ error: 'Private package storage is not configured yet.' }, { status: 503 })
   }
 
   const { config, s3Client } = createR2Client()
@@ -372,7 +502,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
   const filename = getPackageDownloadFilename(rawPackageId)
 
   try {
-    const object = await s3Client.send(new GetObjectCommand({ Bucket: config.bucket, Key: key }))
+    const object = await s3Client.send(new GetObjectCommand({ Bucket: config.packageBucket, Key: key }))
     const stream = toWebStream(object.Body)
 
     if (!stream) {

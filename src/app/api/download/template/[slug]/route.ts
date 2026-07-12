@@ -5,7 +5,7 @@ import { Readable } from 'node:stream'
 import { GetObjectCommand, NoSuchKey, S3Client, type GetObjectCommandOutput } from '@aws-sdk/client-s3'
 import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentCustomerEmail } from '@/lib/auth/current-customer'
-import { getCloudflareR2Config, isCloudflareR2Configured } from '@/lib/cloudflare-r2'
+import { getCloudflareR2Config, isCloudflareR2PackageStorageConfigured } from '@/lib/cloudflare-r2'
 import { getDashboardKit } from '@/lib/dashboard-kit-store'
 import { getPlan, hasPlanPackageAccess } from '@/lib/plan-store'
 import {
@@ -155,8 +155,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
     return new Response(Readable.toWeb(createReadStream(localPackagePath)) as ReadableStream, { headers })
   }
 
-  if (!isCloudflareR2Configured()) {
-    return NextResponse.json({ error: 'Template downloads are not configured yet.' }, { status: 503 })
+  if (!isCloudflareR2PackageStorageConfigured()) {
+    return NextResponse.json({ error: 'Private template package storage is not configured yet.' }, { status: 503 })
   }
 
   const config = getCloudflareR2Config()
@@ -173,7 +173,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
   try {
     const object = await s3Client.send(
       new GetObjectCommand({
-        Bucket: config.bucket,
+        Bucket: config.packageBucket,
         Key: kit.packageKey,
       })
     )

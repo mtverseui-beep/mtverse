@@ -4,12 +4,13 @@ import { existsSync } from 'fs'
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
 import type { NextRequest } from 'next/server'
-import { hasRuntimeKvStore, readRuntimeJsonNoStore, writeRuntimeJson } from '@/lib/runtime-kv'
+import { hasRuntimeKvStore, readRuntimeJsonNoStore, withRuntimeLock, writeRuntimeJson } from '@/lib/runtime-kv'
 import { getClientIp } from '@/lib/rate-limit'
 
 const DATA_DIR = join(process.cwd(), 'data')
 const STORE_FILE = join(DATA_DIR, 'auth-event-log.json')
 const RUNTIME_STORE_KEY = 'mtverse:auth-event-log:v1'
+const RUNTIME_STORE_LOCK_KEY = 'mtverse:lock:auth-event-log:v1'
 const MAX_AUTH_EVENTS = 500
 
 export type AuthEventType =
@@ -204,9 +205,11 @@ export async function recordAuthEvent(input: RecordAuthEventInput) {
   })
 
   try {
-    const store = await readStore()
-    await writeStore({
-      events: [event, ...store.events].slice(0, MAX_AUTH_EVENTS),
+    await withRuntimeLock(RUNTIME_STORE_LOCK_KEY, async () => {
+      const store = await readStore()
+      await writeStore({
+        events: [event, ...store.events].slice(0, MAX_AUTH_EVENTS),
+      })
     })
   } catch (error) {
     console.warn('Auth event logging failed:', error)

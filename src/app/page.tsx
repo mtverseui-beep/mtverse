@@ -7,7 +7,6 @@ import {
   Tag,
   Zap,
   Heart,
-  Star,
   TrendingUp,
   Users,
   Image as ImageIcon,
@@ -36,6 +35,7 @@ import { HomeHero3D } from '@/components/design-system/hero-3d'
 import { AI_TOOL_ICONS } from '@/components/design-system/ai-icons'
 import { Reveal, Stagger, StaggerItem, Magnetic, Marquee } from '@/components/design-system/animations'
 import { AnimatedPromptsShowcase } from '@/components/home/animated-prompts-showcase'
+import { SOCIAL_EMAIL, SOCIAL_GITHUB, SOCIAL_TWITTER } from '@/lib/site-social'
 
 export const dynamic = 'force-static'
 export const revalidate = 60
@@ -162,6 +162,12 @@ export default async function Home() {
         name: 'mtverse',
         url: `${SITE_URL}`,
         logo: `${SITE_URL}/SiteLogo.png`,
+        sameAs: [SOCIAL_GITHUB, SOCIAL_TWITTER],
+        contactPoint: {
+          '@type': 'ContactPoint',
+          email: SOCIAL_EMAIL,
+          contactType: 'customer support',
+        },
       },
       {
         '@type': 'FAQPage',
@@ -451,56 +457,46 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* =============== TESTIMONIALS =============== */}
+        {/* =============== PRODUCT ASSURANCES =============== */}
         <section className="ds-section ds-bg-section relative overflow-hidden">
           <SectionBackground />
           <div className="ds-container relative">
             <Reveal className="ds-section-head">
               <span className="ds-eyebrow">
-                <Star className="h-3.5 w-3.5" />
-                Built for creators
+                <Check className="h-3.5 w-3.5" />
+                Clear before you download
               </span>
-              <h2 className="ds-h1 ds-text-balance">Why mtverse</h2>
+              <h2 className="ds-h1 ds-text-balance">What mtverse makes easy</h2>
             </Reveal>
 
             <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 {
-                  quote: 'mtverse cut my ideation time in half. The preview images alone are worth it.',
-                  name: 'Aria Chen',
-                  role: 'AI Artist',
+                  icon: <Eye className="h-5 w-5" />,
+                  title: 'Inspect before choosing',
+                  description: 'Open the live preview and review screenshots, framework details, and included pages before you decide.',
                   color: 'blue',
                 },
                 {
-                  quote: 'The templates are worth every penny. Saved me 3 weeks of dev time on my SaaS launch.',
-                  name: 'Marcus Vale',
-                  role: 'Founder, Lumi',
-                  color: 'yellow',
-                },
-                {
-                  quote: 'I find better prompts here in 5 minutes than I did in an hour of trial and error.',
-                  name: 'Priya Nair',
-                  role: 'Creative Director',
+                  icon: <Shield className="h-5 w-5" />,
+                  title: 'Protected account delivery',
+                  description: 'Paid files are available only to the signed-in account that owns the template or bundle entitlement.',
                   color: 'mint',
                 },
-              ].map((t, i) => (
-                <StaggerItem key={i}>
-                  <div className={`ds-card-pastel ds-card-pastel-${t.color} h-full flex flex-col`}>
-                    <div className="flex gap-1 mb-4">
-                      {Array.from({ length: 5 }).map((_, j) => (
-                        <Star key={j} className="h-4 w-4 fill-current text-foreground/60" />
-                      ))}
+                {
+                  icon: <Check className="h-5 w-5" />,
+                  title: 'Straightforward access',
+                  description: 'One-time purchases unlock the selected template. Bundle purchases include the catalog described on the pricing page.',
+                  color: 'yellow',
+                },
+              ].map((item) => (
+                <StaggerItem key={item.title}>
+                  <div className={`ds-card-pastel ds-card-pastel-${item.color} h-full`}>
+                    <div className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/70 text-foreground/75">
+                      {item.icon}
                     </div>
-                    <p className="text-base leading-relaxed mb-6 flex-1">"{t.quote}"</p>
-                    <div className="flex items-center gap-3 pt-4 border-t border-white/40">
-                      <div className="h-10 w-10 rounded-full bg-white/70 flex items-center justify-center font-bold text-foreground/70">
-                        {t.name[0]}
-                      </div>
-                      <div>
-                        <div className="text-sm font-semibold text-foreground/80">{t.name}</div>
-                        <div className="text-xs text-foreground/60">{t.role}</div>
-                      </div>
-                    </div>
+                    <h3 className="mb-2 text-lg font-semibold text-foreground/85">{item.title}</h3>
+                    <p className="text-sm leading-relaxed text-foreground/65">{item.description}</p>
                   </div>
                 </StaggerItem>
               ))}

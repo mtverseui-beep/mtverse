@@ -1,815 +1,1278 @@
-{
-  "templates": {
-    "pipeline-pilot-production": {
-      "slug": "pipeline-pilot-production",
-      "basePurchaseCount": 134,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "auric-premium-headphones-ecommerce-template": {
-      "slug": "auric-premium-headphones-ecommerce-template",
-      "basePurchaseCount": 119,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "nimbus-pro": {
-      "slug": "nimbus-pro",
-      "basePurchaseCount": 147,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "aurelia-ecommerce": {
-      "slug": "aurelia-ecommerce",
-      "basePurchaseCount": 71,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "helios-pro": {
-      "slug": "helios-pro",
-      "basePurchaseCount": 283,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "lumiere-ecommerce": {
-      "slug": "lumiere-ecommerce",
-      "basePurchaseCount": 137,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "mtverse-modular-nextjs-dashboard-template": {
-      "slug": "mtverse-modular-nextjs-dashboard-template",
-      "basePurchaseCount": 57,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "mt-box-enterprise-nextjs-dashboard-template": {
-      "slug": "mt-box-enterprise-nextjs-dashboard-template",
-      "basePurchaseCount": 78,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "mat-dash-nextjs-admin-dashboard-template": {
-      "slug": "mat-dash-nextjs-admin-dashboard-template",
-      "basePurchaseCount": 81,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "3d-interactive-portfolio": {
-      "slug": "3d-interactive-portfolio",
-      "basePurchaseCount": 342,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "alex-chen-developer-terminal-portfolio": {
-      "slug": "alex-chen-developer-terminal-portfolio",
-      "basePurchaseCount": 157,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "alex-morgan-dark-minimal-portfolio": {
-      "slug": "alex-morgan-dark-minimal-portfolio",
-      "basePurchaseCount": 290,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "architect-studio-portfolio": {
-      "slug": "architect-studio-portfolio",
-      "basePurchaseCount": 96,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "brutalist-portfolio": {
-      "slug": "brutalist-portfolio",
-      "basePurchaseCount": 122,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "bug-hunter-developer-portfolio": {
-      "slug": "bug-hunter-developer-portfolio",
-      "basePurchaseCount": 252,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "creative-agency-bold-portfolio": {
-      "slug": "creative-agency-bold-portfolio",
-      "basePurchaseCount": 109,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "designer-folio-editorial-portfolio": {
-      "slug": "designer-folio-editorial-portfolio",
-      "basePurchaseCount": 221,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "elena-voss-photographer-portfolio": {
-      "slug": "elena-voss-photographer-portfolio",
-      "basePurchaseCount": 117,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "macos-desktop-portfolio-experience": {
-      "slug": "macos-desktop-portfolio-experience",
-      "basePurchaseCount": 281,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "neon-cyberpunk-portfolio": {
-      "slug": "neon-cyberpunk-portfolio",
-      "basePurchaseCount": 101,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "purple-wave-creative-portfolio": {
-      "slug": "purple-wave-creative-portfolio",
-      "basePurchaseCount": 144,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "retro-terminal-portfolio": {
-      "slug": "retro-terminal-portfolio",
-      "basePurchaseCount": 225,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "swiss-design-portfolio": {
-      "slug": "swiss-design-portfolio",
-      "basePurchaseCount": 187,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "valentine-fashion-editorial-portfolio": {
-      "slug": "valentine-fashion-editorial-portfolio",
-      "basePurchaseCount": 147,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "analyticshub-real-time-analytics-insights-platform": {
-      "slug": "analyticshub-real-time-analytics-insights-platform",
-      "basePurchaseCount": 179,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "blockforge-build-deploy-defi-protocols": {
-      "slug": "blockforge-build-deploy-defi-protocols",
-      "basePurchaseCount": 250,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "bookvault-online-bookstore-media": {
-      "slug": "bookvault-online-bookstore-media",
-      "basePurchaseCount": 319,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "boxmaster-boxing-combat-fitness": {
-      "slug": "boxmaster-boxing-combat-fitness",
-      "basePurchaseCount": 237,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "braincode-ai-powered-code-generation": {
-      "slug": "braincode-ai-powered-code-generation",
-      "basePurchaseCount": 341,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "brandforge-full-service-marketing-agency": {
-      "slug": "brandforge-full-service-marketing-agency",
-      "basePurchaseCount": 243,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "businessrealty-commercial-real-estate-solutions": {
-      "slug": "businessrealty-commercial-real-estate-solutions",
-      "basePurchaseCount": 159,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "carelync-coordinate-patient-care": {
-      "slug": "carelync-coordinate-patient-care",
-      "basePurchaseCount": 387,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "chainswap-swap-across-any-blockchain": {
-      "slug": "chainswap-swap-across-any-blockchain",
-      "basePurchaseCount": 376,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "cloudflow-workflow-automation-for-modern-teams": {
-      "slug": "cloudflow-workflow-automation-for-modern-teams",
-      "basePurchaseCount": 160,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "coastal-catch-fresh-seafood": {
-      "slug": "coastal-catch-fresh-seafood",
-      "basePurchaseCount": 346,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "codeworks-web-development-agency": {
-      "slug": "codeworks-web-development-agency",
-      "basePurchaseCount": 375,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "contentworks-content-marketing-agency": {
-      "slug": "contentworks-content-marketing-agency",
-      "basePurchaseCount": 93,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "corevault-corporate-wellness-programs": {
-      "slug": "corevault-corporate-wellness-programs",
-      "basePurchaseCount": 305,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "creativehub-design-digital-art-academy": {
-      "slug": "creativehub-design-digital-art-academy",
-      "basePurchaseCount": 409,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "creativestudio-branding-design-agency": {
-      "slug": "creativestudio-branding-design-agency",
-      "basePurchaseCount": 328,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "crossflex-functional-fitness-anywhere": {
-      "slug": "crossflex-functional-fitness-anywhere",
-      "basePurchaseCount": 201,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "cryptolearn-academy-master-blockchain": {
-      "slug": "cryptolearn-academy-master-blockchain",
-      "basePurchaseCount": 165,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "cryptoshield-protect-your-digital-assets": {
-      "slug": "cryptoshield-protect-your-digital-assets",
-      "basePurchaseCount": 394,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "cryptovault-secure-cryptocurrency-management-platform": {
-      "slug": "cryptovault-secure-cryptocurrency-management-platform",
-      "basePurchaseCount": 377,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "curveai-ai-customer-experience-platform": {
-      "slug": "curveai-ai-customer-experience-platform",
-      "basePurchaseCount": 406,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "daohub-build-govern-your-dao": {
-      "slug": "daohub-build-govern-your-dao",
-      "basePurchaseCount": 176,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "datasync-enterprise-data-synchronization-platform": {
-      "slug": "datasync-enterprise-data-synchronization-platform",
-      "basePurchaseCount": 313,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "designstudio-creative-digital-agency": {
-      "slug": "designstudio-creative-digital-agency",
-      "basePurchaseCount": 267,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "doctorhub-book-doctor-appointments": {
-      "slug": "doctorhub-book-doctor-appointments",
-      "basePurchaseCount": 200,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "el-fuego-mexican-restaurant": {
-      "slug": "el-fuego-mexican-restaurant",
-      "basePurchaseCount": 104,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "elevatehomes-luxury-real-estate": {
-      "slug": "elevatehomes-luxury-real-estate",
-      "basePurchaseCount": 137,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "elite-realty-group-top-real-estate-brokerage": {
-      "slug": "elite-realty-group-top-real-estate-brokerage",
-      "basePurchaseCount": 240,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "eliteflow-personal-training-fitness-coaching": {
-      "slug": "eliteflow-personal-training-fitness-coaching",
-      "basePurchaseCount": 180,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "ember-oak-bbq-smokehouse": {
-      "slug": "ember-oak-bbq-smokehouse",
-      "basePurchaseCount": 292,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "eventflow-event-marketing-management": {
-      "slug": "eventflow-event-marketing-management",
-      "basePurchaseCount": 123,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "fashionhub-trendy-fashion-store": {
-      "slug": "fashionhub-trendy-fashion-store",
-      "basePurchaseCount": 265,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "fitlife-365-your-personal-ai-fitness-coach": {
-      "slug": "fitlife-365-your-personal-ai-fitness-coach",
-      "basePurchaseCount": 112,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "fitlife-your-fitness-companion": {
-      "slug": "fitlife-your-fitness-companion",
-      "basePurchaseCount": 214,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "fitmax-sports-fitness-equipment": {
-      "slug": "fitmax-sports-fitness-equipment",
-      "basePurchaseCount": 297,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "fitnessacademy-trainer-certification": {
-      "slug": "fitnessacademy-trainer-certification",
-      "basePurchaseCount": 280,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "flowhub-simple-project-management-for-teams": {
-      "slug": "flowhub-simple-project-management-for-teams",
-      "basePurchaseCount": 374,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "flowspace-dance-movement-studios": {
-      "slug": "flowspace-dance-movement-studios",
-      "basePurchaseCount": 235,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "freshbite-farm-to-table-dining": {
-      "slug": "freshbite-farm-to-table-dining",
-      "basePurchaseCount": 274,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "greenhomes-sustainable-real-estate": {
-      "slug": "greenhomes-sustainable-real-estate",
-      "basePurchaseCount": 417,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "greenscape-home-garden-store": {
-      "slug": "greenscape-home-garden-store",
-      "basePurchaseCount": 262,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "growthlab-growth-marketing-agency": {
-      "slug": "growthlab-growth-marketing-agency",
-      "basePurchaseCount": 275,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "healthcare-premium-health-insurance": {
-      "slug": "healthcare-premium-health-insurance",
-      "basePurchaseCount": 98,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "homefinder-find-your-community": {
-      "slug": "homefinder-find-your-community",
-      "basePurchaseCount": 203,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "investrealty-real-estate-investment-platform": {
-      "slug": "investrealty-real-estate-investment-platform",
-      "basePurchaseCount": 75,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "ironhub-professional-strength-training-bodybuilding": {
-      "slug": "ironhub-professional-strength-training-bodybuilding",
-      "basePurchaseCount": 217,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "le-petit-bistro-french-cuisine": {
-      "slug": "le-petit-bistro-french-cuisine",
-      "basePurchaseCount": 166,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "learnhub-online-learning-platform": {
-      "slug": "learnhub-online-learning-platform",
-      "basePurchaseCount": 304,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "linguaflow-learn-languages-fast": {
-      "slug": "linguaflow-learn-languages-fast",
-      "basePurchaseCount": 105,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "luminabeauty-premium-cosmetics-skincare": {
-      "slug": "luminabeauty-premium-cosmetics-skincare",
-      "basePurchaseCount": 314,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "luna-bella-italian-fine-dining": {
-      "slug": "luna-bella-italian-fine-dining",
-      "basePurchaseCount": 175,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "luxehome-premium-furniture-store": {
-      "slug": "luxehome-premium-furniture-store",
-      "basePurchaseCount": 178,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "luxeland-property-marketplace": {
-      "slug": "luxeland-property-marketplace",
-      "basePurchaseCount": 315,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "mediflow-streamline-your-medical-practice": {
-      "slug": "mediflow-streamline-your-medical-practice",
-      "basePurchaseCount": 94,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "mentalwell-therapy-for-everyone": {
-      "slug": "mentalwell-therapy-for-everyone",
-      "basePurchaseCount": 349,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "metaverse-exchange-trade-across-all-metaverses": {
-      "slug": "metaverse-exchange-trade-across-all-metaverses",
-      "basePurchaseCount": 282,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "musicacademy-learn-music-online": {
-      "slug": "musicacademy-learn-music-online",
-      "basePurchaseCount": 241,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "nftgallery-create-trade-digital-nfts": {
-      "slug": "nftgallery-create-trade-digital-nfts",
-      "basePurchaseCount": 76,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "novaborn-women-s-fitness-empowerment": {
-      "slug": "novaborn-women-s-fitness-empowerment",
-      "basePurchaseCount": 263,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "pharmadirect-pharmacy-at-your-door": {
-      "slug": "pharmadirect-pharmacy-at-your-door",
-      "basePurchaseCount": 259,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "pilatespro-core-strength-body-sculpting": {
-      "slug": "pilatespro-core-strength-body-sculpting",
-      "basePurchaseCount": 139,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "pixelforce-ui-ux-design-agency": {
-      "slug": "pixelforce-ui-ux-design-agency",
-      "basePurchaseCount": 108,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "professionalhub-advanced-certifications": {
-      "slug": "professionalhub-advanced-certifications",
-      "basePurchaseCount": 119,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "propertymanager-pro-property-management-platform": {
-      "slug": "propertymanager-pro-property-management-platform",
-      "basePurchaseCount": 182,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "propertynest-real-estate-solutions": {
-      "slug": "propertynest-real-estate-solutions",
-      "basePurchaseCount": 173,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "proskills-academy-corporate-training": {
-      "slug": "proskills-academy-corporate-training",
-      "basePurchaseCount": 72,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "sakura-zen-japanese-restaurant": {
-      "slug": "sakura-zen-japanese-restaurant",
-      "basePurchaseCount": 261,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "shopelite-ecommerce-ui-kit": {
-      "slug": "shopelite-ecommerce-ui-kit",
-      "basePurchaseCount": 272,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "shophub-your-online-store": {
-      "slug": "shophub-your-online-store",
-      "basePurchaseCount": 168,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "skillforge-coding-bootcamp-career-path": {
-      "slug": "skillforge-coding-bootcamp-career-path",
-      "basePurchaseCount": 299,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "skillup-career-skills-courses": {
-      "slug": "skillup-career-skills-courses",
-      "basePurchaseCount": 189,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "socialvibe-social-media-marketing-agency": {
-      "slug": "socialvibe-social-media-marketing-agency",
-      "basePurchaseCount": 142,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "spice-route-indian-restaurant": {
-      "slug": "spice-route-indian-restaurant",
-      "basePurchaseCount": 254,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "stakevault-earn-crypto-through-staking": {
-      "slug": "stakevault-earn-crypto-through-staking",
-      "basePurchaseCount": 113,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "startupboost-startup-consulting-growth": {
-      "slug": "startupboost-startup-consulting-growth",
-      "basePurchaseCount": 312,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "streampro-professional-live-streaming-platform": {
-      "slug": "streampro-professional-live-streaming-platform",
-      "basePurchaseCount": 288,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "stylevogue-fashion-boutique": {
-      "slug": "stylevogue-fashion-boutique",
-      "basePurchaseCount": 238,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "syncteam-team-collaboration-file-sync": {
-      "slug": "syncteam-team-collaboration-file-sync",
-      "basePurchaseCount": 266,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "taskvault-secure-task-password-management": {
-      "slug": "taskvault-secure-task-password-management",
-      "basePurchaseCount": 381,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "taste-haven-fine-dining": {
-      "slug": "taste-haven-fine-dining",
-      "basePurchaseCount": 190,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "techgear-tech-gadgets-store": {
-      "slug": "techgear-tech-gadgets-store",
-      "basePurchaseCount": 352,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "techpulse-premium-electronics-store": {
-      "slug": "techpulse-premium-electronics-store",
-      "basePurchaseCount": 154,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "telahealth-virtual-doctor-visits": {
-      "slug": "telahealth-virtual-doctor-visits",
-      "basePurchaseCount": 153,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "timber-creek-steakhouse": {
-      "slug": "timber-creek-steakhouse",
-      "basePurchaseCount": 348,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "tokenlaunch-launch-your-blockchain-project": {
-      "slug": "tokenlaunch-launch-your-blockchain-project",
-      "basePurchaseCount": 268,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "tutorconnect-online-tutoring-platform": {
-      "slug": "tutorconnect-online-tutoring-platform",
-      "basePurchaseCount": 329,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "vacationpalace-luxury-holiday-homes": {
-      "slug": "vacationpalace-luxury-holiday-homes",
-      "basePurchaseCount": 118,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "visionai-intelligent-image-analysis-api": {
-      "slug": "visionai-intelligent-image-analysis-api",
-      "basePurchaseCount": 389,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "vitalsign-monitor-your-health": {
-      "slug": "vitalsign-monitor-your-health",
-      "basePurchaseCount": 395,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "wellvital-your-health-companion": {
-      "slug": "wellvital-your-health-companion",
-      "basePurchaseCount": 88,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    },
-    "zenfit-holistic-wellness-mindful-fitness": {
-      "slug": "zenfit-holistic-wellness-mindful-fitness",
-      "basePurchaseCount": 264,
-      "realPurchaseCount": 0,
-      "reviews": [],
-      "updatedAt": "2026-07-02T14:04:17.778Z"
-    }
-  },
-  "users": {},
-  "meta": {
-    "source": "mtverse-believable-social-counts",
-    "updatedAt": "2026-07-02T14:04:17.778Z",
-    "count": 115
-  }
+﻿{
+    "templates":  {
+                      "lumina-fragrance":  {
+                                               "slug":  "lumina-fragrance",
+                                               "basePurchaseCount":  144,
+                                               "realPurchaseCount":  0,
+                                               "reviews":  [
+
+                                                           ],
+                                               "updatedAt":  "2026-07-07T12:08:38.594Z"
+                                           },
+                      "nova-rig-gaming-ecommerce-template":  {
+                                                                 "slug":  "nova-rig-gaming-ecommerce-template",
+                                                                 "basePurchaseCount":  125,
+                                                                 "realPurchaseCount":  0,
+                                                                 "reviews":  [
+
+                                                                             ],
+                                                                 "updatedAt":  "2026-07-07T12:08:38.594Z"
+                                                             },
+                      "pagepulse":  {
+                                        "slug":  "pagepulse",
+                                        "basePurchaseCount":  96,
+                                        "realPurchaseCount":  0,
+                                        "reviews":  [
+
+                                                    ],
+                                        "updatedAt":  "2026-07-07T12:08:38.594Z"
+                                    },
+                      "volthaus-streetwear-ecommerce-template":  {
+                                                                     "slug":  "volthaus-streetwear-ecommerce-template",
+                                                                     "basePurchaseCount":  83,
+                                                                     "realPurchaseCount":  0,
+                                                                     "reviews":  [
+
+                                                                                 ],
+                                                                     "updatedAt":  "2026-07-07T12:08:38.594Z"
+                                                                 },
+                      "pipeline-pilot-production":  {
+                                                        "slug":  "pipeline-pilot-production",
+                                                        "basePurchaseCount":  134,
+                                                        "realPurchaseCount":  0,
+                                                        "reviews":  [
+
+                                                                    ],
+                                                        "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                    },
+                      "sentinelgrid":  {
+                                           "slug":  "sentinelgrid",
+                                           "basePurchaseCount":  96,
+                                           "realPurchaseCount":  0,
+                                           "reviews":  [
+
+                                                       ],
+                                           "updatedAt":  "2026-07-03T08:14:40.804Z"
+                                       },
+                      "planna-dashboard":  {
+                                               "slug":  "planna-dashboard",
+                                               "basePurchaseCount":  57,
+                                               "realPurchaseCount":  0,
+                                               "reviews":  [
+
+                                                           ],
+                                               "updatedAt":  "2026-07-03T08:14:40.804Z"
+                                           },
+                      "ooster":  {
+                                     "slug":  "ooster",
+                                     "basePurchaseCount":  68,
+                                     "realPurchaseCount":  0,
+                                     "reviews":  [
+
+                                                 ],
+                                     "updatedAt":  "2026-07-03T08:14:40.804Z"
+                                 },
+                      "nexusgrid-premium-admin-dashboard":  {
+                                                                "slug":  "nexusgrid-premium-admin-dashboard",
+                                                                "basePurchaseCount":  78,
+                                                                "realPurchaseCount":  0,
+                                                                "reviews":  [
+
+                                                                            ],
+                                                                "updatedAt":  "2026-07-03T08:14:40.804Z"
+                                                            },
+                      "auric-premium-headphones-ecommerce-template":  {
+                                                                          "slug":  "auric-premium-headphones-ecommerce-template",
+                                                                          "basePurchaseCount":  119,
+                                                                          "realPurchaseCount":  0,
+                                                                          "reviews":  [
+
+                                                                                      ],
+                                                                          "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                      },
+                      "nimbus-pro":  {
+                                         "slug":  "nimbus-pro",
+                                         "basePurchaseCount":  147,
+                                         "realPurchaseCount":  1,
+                                         "reviews":  [
+
+                                                     ],
+                                         "updatedAt":  "2026-07-08T03:03:42.6731439Z"
+                                     },
+                      "aurelia-ecommerce":  {
+                                                "slug":  "aurelia-ecommerce",
+                                                "basePurchaseCount":  71,
+                                                "realPurchaseCount":  0,
+                                                "reviews":  [
+
+                                                            ],
+                                                "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                            },
+                      "helios-pro":  {
+                                         "slug":  "helios-pro",
+                                         "basePurchaseCount":  283,
+                                         "realPurchaseCount":  2,
+                                         "reviews":  [
+
+                                                     ],
+                                         "updatedAt":  "2026-07-07T16:14:03.344Z"
+                                     },
+                      "lumiere-ecommerce":  {
+                                                "slug":  "lumiere-ecommerce",
+                                                "basePurchaseCount":  137,
+                                                "realPurchaseCount":  0,
+                                                "reviews":  [
+
+                                                            ],
+                                                "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                            },
+                      "mtverse-modular-nextjs-dashboard-template":  {
+                                                                        "slug":  "mtverse-modular-nextjs-dashboard-template",
+                                                                        "basePurchaseCount":  57,
+                                                                        "realPurchaseCount":  0,
+                                                                        "reviews":  [
+
+                                                                                    ],
+                                                                        "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                    },
+                      "mt-box-enterprise-nextjs-dashboard-template":  {
+                                                                          "slug":  "mt-box-enterprise-nextjs-dashboard-template",
+                                                                          "basePurchaseCount":  78,
+                                                                          "realPurchaseCount":  0,
+                                                                          "reviews":  [
+
+                                                                                      ],
+                                                                          "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                      },
+                      "mat-dash-nextjs-admin-dashboard-template":  {
+                                                                       "slug":  "mat-dash-nextjs-admin-dashboard-template",
+                                                                       "basePurchaseCount":  81,
+                                                                       "realPurchaseCount":  0,
+                                                                       "reviews":  [
+                                                                                       {
+                                                                                           "id":  "review-1782715589822-395410de",
+                                                                                           "name":  "amar arun2",
+                                                                                           "email":  "mymultiversehub00@gmail.com",
+                                                                                           "rating":  4,
+                                                                                           "title":  "Modern and Well-Structured Design",
+                                                                                           "comment":  "This template has a neat structure with well-organized sections. The responsive layout works smoothly and gives a polished experience across devices.",
+                                                                                           "date":  "2026-06-29T06:46:29.822Z",
+                                                                                           "verifiedPurchase":  false,
+                                                                                           "source":  "customer"
+                                                                                       }
+                                                                                   ],
+                                                                       "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                   },
+                      "3d-interactive-portfolio":  {
+                                                       "slug":  "3d-interactive-portfolio",
+                                                       "basePurchaseCount":  342,
+                                                       "realPurchaseCount":  2,
+                                                       "reviews":  [
+
+                                                                   ],
+                                                       "updatedAt":  "2026-07-03T12:18:23.855Z"
+                                                   },
+                      "alex-chen-developer-terminal-portfolio":  {
+                                                                     "slug":  "alex-chen-developer-terminal-portfolio",
+                                                                     "basePurchaseCount":  157,
+                                                                     "realPurchaseCount":  0,
+                                                                     "reviews":  [
+
+                                                                                 ],
+                                                                     "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                 },
+                      "alex-morgan-dark-minimal-portfolio":  {
+                                                                 "slug":  "alex-morgan-dark-minimal-portfolio",
+                                                                 "basePurchaseCount":  290,
+                                                                 "realPurchaseCount":  1,
+                                                                 "reviews":  [
+
+                                                                             ],
+                                                                 "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                             },
+                      "architect-studio-portfolio":  {
+                                                         "slug":  "architect-studio-portfolio",
+                                                         "basePurchaseCount":  96,
+                                                         "realPurchaseCount":  0,
+                                                         "reviews":  [
+
+                                                                     ],
+                                                         "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                     },
+                      "brutalist-portfolio":  {
+                                                  "slug":  "brutalist-portfolio",
+                                                  "basePurchaseCount":  122,
+                                                  "realPurchaseCount":  2,
+                                                  "reviews":  [
+
+                                                              ],
+                                                  "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                              },
+                      "bug-hunter-developer-portfolio":  {
+                                                             "slug":  "bug-hunter-developer-portfolio",
+                                                             "basePurchaseCount":  252,
+                                                             "realPurchaseCount":  0,
+                                                             "reviews":  [
+
+                                                                         ],
+                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                         },
+                      "creative-agency-bold-portfolio":  {
+                                                             "slug":  "creative-agency-bold-portfolio",
+                                                             "basePurchaseCount":  109,
+                                                             "realPurchaseCount":  1,
+                                                             "reviews":  [
+
+                                                                         ],
+                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                         },
+                      "designer-folio-editorial-portfolio":  {
+                                                                 "slug":  "designer-folio-editorial-portfolio",
+                                                                 "basePurchaseCount":  221,
+                                                                 "realPurchaseCount":  2,
+                                                                 "reviews":  [
+
+                                                                             ],
+                                                                 "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                             },
+                      "elena-voss-photographer-portfolio":  {
+                                                                "slug":  "elena-voss-photographer-portfolio",
+                                                                "basePurchaseCount":  117,
+                                                                "realPurchaseCount":  0,
+                                                                "reviews":  [
+
+                                                                            ],
+                                                                "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                            },
+                      "macos-desktop-portfolio-experience":  {
+                                                                 "slug":  "macos-desktop-portfolio-experience",
+                                                                 "basePurchaseCount":  281,
+                                                                 "realPurchaseCount":  0,
+                                                                 "reviews":  [
+
+                                                                             ],
+                                                                 "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                             },
+                      "neon-cyberpunk-portfolio":  {
+                                                       "slug":  "neon-cyberpunk-portfolio",
+                                                       "basePurchaseCount":  101,
+                                                       "realPurchaseCount":  0,
+                                                       "reviews":  [
+
+                                                                   ],
+                                                       "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                   },
+                      "purple-wave-creative-portfolio":  {
+                                                             "slug":  "purple-wave-creative-portfolio",
+                                                             "basePurchaseCount":  144,
+                                                             "realPurchaseCount":  0,
+                                                             "reviews":  [
+
+                                                                         ],
+                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                         },
+                      "retro-terminal-portfolio":  {
+                                                       "slug":  "retro-terminal-portfolio",
+                                                       "basePurchaseCount":  225,
+                                                       "realPurchaseCount":  1,
+                                                       "reviews":  [
+
+                                                                   ],
+                                                       "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                   },
+                      "swiss-design-portfolio":  {
+                                                     "slug":  "swiss-design-portfolio",
+                                                     "basePurchaseCount":  187,
+                                                     "realPurchaseCount":  1,
+                                                     "reviews":  [
+
+                                                                 ],
+                                                     "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                 },
+                      "valentine-fashion-editorial-portfolio":  {
+                                                                    "slug":  "valentine-fashion-editorial-portfolio",
+                                                                    "basePurchaseCount":  147,
+                                                                    "realPurchaseCount":  1,
+                                                                    "reviews":  [
+
+                                                                                ],
+                                                                    "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                },
+                      "analyticshub-real-time-analytics-insights-platform":  {
+                                                                                 "slug":  "analyticshub-real-time-analytics-insights-platform",
+                                                                                 "basePurchaseCount":  179,
+                                                                                 "realPurchaseCount":  0,
+                                                                                 "reviews":  [
+
+                                                                                             ],
+                                                                                 "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                             },
+                      "blockforge-build-deploy-defi-protocols":  {
+                                                                     "slug":  "blockforge-build-deploy-defi-protocols",
+                                                                     "basePurchaseCount":  250,
+                                                                     "realPurchaseCount":  0,
+                                                                     "reviews":  [
+
+                                                                                 ],
+                                                                     "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                 },
+                      "bookvault-online-bookstore-media":  {
+                                                               "slug":  "bookvault-online-bookstore-media",
+                                                               "basePurchaseCount":  319,
+                                                               "realPurchaseCount":  0,
+                                                               "reviews":  [
+
+                                                                           ],
+                                                               "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                           },
+                      "boxmaster-boxing-combat-fitness":  {
+                                                              "slug":  "boxmaster-boxing-combat-fitness",
+                                                              "basePurchaseCount":  237,
+                                                              "realPurchaseCount":  0,
+                                                              "reviews":  [
+
+                                                                          ],
+                                                              "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                          },
+                      "braincode-ai-powered-code-generation":  {
+                                                                   "slug":  "braincode-ai-powered-code-generation",
+                                                                   "basePurchaseCount":  341,
+                                                                   "realPurchaseCount":  0,
+                                                                   "reviews":  [
+
+                                                                               ],
+                                                                   "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                               },
+                      "brandforge-full-service-marketing-agency":  {
+                                                                       "slug":  "brandforge-full-service-marketing-agency",
+                                                                       "basePurchaseCount":  243,
+                                                                       "realPurchaseCount":  0,
+                                                                       "reviews":  [
+
+                                                                                   ],
+                                                                       "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                   },
+                      "businessrealty-commercial-real-estate-solutions":  {
+                                                                              "slug":  "businessrealty-commercial-real-estate-solutions",
+                                                                              "basePurchaseCount":  159,
+                                                                              "realPurchaseCount":  0,
+                                                                              "reviews":  [
+
+                                                                                          ],
+                                                                              "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                          },
+                      "carelync-coordinate-patient-care":  {
+                                                               "slug":  "carelync-coordinate-patient-care",
+                                                               "basePurchaseCount":  387,
+                                                               "realPurchaseCount":  0,
+                                                               "reviews":  [
+
+                                                                           ],
+                                                               "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                           },
+                      "chainswap-swap-across-any-blockchain":  {
+                                                                   "slug":  "chainswap-swap-across-any-blockchain",
+                                                                   "basePurchaseCount":  376,
+                                                                   "realPurchaseCount":  0,
+                                                                   "reviews":  [
+
+                                                                               ],
+                                                                   "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                               },
+                      "cloudflow-workflow-automation-for-modern-teams":  {
+                                                                             "slug":  "cloudflow-workflow-automation-for-modern-teams",
+                                                                             "basePurchaseCount":  160,
+                                                                             "realPurchaseCount":  0,
+                                                                             "reviews":  [
+
+                                                                                         ],
+                                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                         },
+                      "coastal-catch-fresh-seafood":  {
+                                                          "slug":  "coastal-catch-fresh-seafood",
+                                                          "basePurchaseCount":  346,
+                                                          "realPurchaseCount":  0,
+                                                          "reviews":  [
+
+                                                                      ],
+                                                          "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                      },
+                      "codeworks-web-development-agency":  {
+                                                               "slug":  "codeworks-web-development-agency",
+                                                               "basePurchaseCount":  375,
+                                                               "realPurchaseCount":  0,
+                                                               "reviews":  [
+
+                                                                           ],
+                                                               "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                           },
+                      "contentworks-content-marketing-agency":  {
+                                                                    "slug":  "contentworks-content-marketing-agency",
+                                                                    "basePurchaseCount":  93,
+                                                                    "realPurchaseCount":  0,
+                                                                    "reviews":  [
+
+                                                                                ],
+                                                                    "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                },
+                      "corevault-corporate-wellness-programs":  {
+                                                                    "slug":  "corevault-corporate-wellness-programs",
+                                                                    "basePurchaseCount":  305,
+                                                                    "realPurchaseCount":  0,
+                                                                    "reviews":  [
+
+                                                                                ],
+                                                                    "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                },
+                      "creativehub-design-digital-art-academy":  {
+                                                                     "slug":  "creativehub-design-digital-art-academy",
+                                                                     "basePurchaseCount":  409,
+                                                                     "realPurchaseCount":  0,
+                                                                     "reviews":  [
+
+                                                                                 ],
+                                                                     "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                 },
+                      "creativestudio-branding-design-agency":  {
+                                                                    "slug":  "creativestudio-branding-design-agency",
+                                                                    "basePurchaseCount":  328,
+                                                                    "realPurchaseCount":  0,
+                                                                    "reviews":  [
+
+                                                                                ],
+                                                                    "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                },
+                      "crossflex-functional-fitness-anywhere":  {
+                                                                    "slug":  "crossflex-functional-fitness-anywhere",
+                                                                    "basePurchaseCount":  201,
+                                                                    "realPurchaseCount":  0,
+                                                                    "reviews":  [
+
+                                                                                ],
+                                                                    "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                },
+                      "cryptolearn-academy-master-blockchain":  {
+                                                                    "slug":  "cryptolearn-academy-master-blockchain",
+                                                                    "basePurchaseCount":  165,
+                                                                    "realPurchaseCount":  0,
+                                                                    "reviews":  [
+
+                                                                                ],
+                                                                    "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                },
+                      "cryptoshield-protect-your-digital-assets":  {
+                                                                       "slug":  "cryptoshield-protect-your-digital-assets",
+                                                                       "basePurchaseCount":  394,
+                                                                       "realPurchaseCount":  0,
+                                                                       "reviews":  [
+
+                                                                                   ],
+                                                                       "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                   },
+                      "cryptovault-secure-cryptocurrency-management-platform":  {
+                                                                                    "slug":  "cryptovault-secure-cryptocurrency-management-platform",
+                                                                                    "basePurchaseCount":  377,
+                                                                                    "realPurchaseCount":  0,
+                                                                                    "reviews":  [
+
+                                                                                                ],
+                                                                                    "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                                },
+                      "curveai-ai-customer-experience-platform":  {
+                                                                      "slug":  "curveai-ai-customer-experience-platform",
+                                                                      "basePurchaseCount":  406,
+                                                                      "realPurchaseCount":  0,
+                                                                      "reviews":  [
+
+                                                                                  ],
+                                                                      "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                  },
+                      "daohub-build-govern-your-dao":  {
+                                                           "slug":  "daohub-build-govern-your-dao",
+                                                           "basePurchaseCount":  176,
+                                                           "realPurchaseCount":  0,
+                                                           "reviews":  [
+
+                                                                       ],
+                                                           "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                       },
+                      "datasync-enterprise-data-synchronization-platform":  {
+                                                                                "slug":  "datasync-enterprise-data-synchronization-platform",
+                                                                                "basePurchaseCount":  313,
+                                                                                "realPurchaseCount":  0,
+                                                                                "reviews":  [
+
+                                                                                            ],
+                                                                                "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                            },
+                      "designstudio-creative-digital-agency":  {
+                                                                   "slug":  "designstudio-creative-digital-agency",
+                                                                   "basePurchaseCount":  267,
+                                                                   "realPurchaseCount":  0,
+                                                                   "reviews":  [
+
+                                                                               ],
+                                                                   "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                               },
+                      "doctorhub-book-doctor-appointments":  {
+                                                                 "slug":  "doctorhub-book-doctor-appointments",
+                                                                 "basePurchaseCount":  200,
+                                                                 "realPurchaseCount":  0,
+                                                                 "reviews":  [
+
+                                                                             ],
+                                                                 "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                             },
+                      "el-fuego-mexican-restaurant":  {
+                                                          "slug":  "el-fuego-mexican-restaurant",
+                                                          "basePurchaseCount":  104,
+                                                          "realPurchaseCount":  0,
+                                                          "reviews":  [
+
+                                                                      ],
+                                                          "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                      },
+                      "elevatehomes-luxury-real-estate":  {
+                                                              "slug":  "elevatehomes-luxury-real-estate",
+                                                              "basePurchaseCount":  137,
+                                                              "realPurchaseCount":  0,
+                                                              "reviews":  [
+
+                                                                          ],
+                                                              "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                          },
+                      "elite-realty-group-top-real-estate-brokerage":  {
+                                                                           "slug":  "elite-realty-group-top-real-estate-brokerage",
+                                                                           "basePurchaseCount":  240,
+                                                                           "realPurchaseCount":  0,
+                                                                           "reviews":  [
+
+                                                                                       ],
+                                                                           "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                       },
+                      "eliteflow-personal-training-fitness-coaching":  {
+                                                                           "slug":  "eliteflow-personal-training-fitness-coaching",
+                                                                           "basePurchaseCount":  180,
+                                                                           "realPurchaseCount":  0,
+                                                                           "reviews":  [
+
+                                                                                       ],
+                                                                           "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                       },
+                      "ember-oak-bbq-smokehouse":  {
+                                                       "slug":  "ember-oak-bbq-smokehouse",
+                                                       "basePurchaseCount":  292,
+                                                       "realPurchaseCount":  0,
+                                                       "reviews":  [
+
+                                                                   ],
+                                                       "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                   },
+                      "eventflow-event-marketing-management":  {
+                                                                   "slug":  "eventflow-event-marketing-management",
+                                                                   "basePurchaseCount":  123,
+                                                                   "realPurchaseCount":  0,
+                                                                   "reviews":  [
+
+                                                                               ],
+                                                                   "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                               },
+                      "fashionhub-trendy-fashion-store":  {
+                                                              "slug":  "fashionhub-trendy-fashion-store",
+                                                              "basePurchaseCount":  265,
+                                                              "realPurchaseCount":  0,
+                                                              "reviews":  [
+
+                                                                          ],
+                                                              "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                          },
+                      "fitlife-365-your-personal-ai-fitness-coach":  {
+                                                                         "slug":  "fitlife-365-your-personal-ai-fitness-coach",
+                                                                         "basePurchaseCount":  112,
+                                                                         "realPurchaseCount":  0,
+                                                                         "reviews":  [
+
+                                                                                     ],
+                                                                         "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                     },
+                      "fitlife-your-fitness-companion":  {
+                                                             "slug":  "fitlife-your-fitness-companion",
+                                                             "basePurchaseCount":  214,
+                                                             "realPurchaseCount":  0,
+                                                             "reviews":  [
+
+                                                                         ],
+                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                         },
+                      "fitmax-sports-fitness-equipment":  {
+                                                              "slug":  "fitmax-sports-fitness-equipment",
+                                                              "basePurchaseCount":  297,
+                                                              "realPurchaseCount":  0,
+                                                              "reviews":  [
+
+                                                                          ],
+                                                              "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                          },
+                      "fitnessacademy-trainer-certification":  {
+                                                                   "slug":  "fitnessacademy-trainer-certification",
+                                                                   "basePurchaseCount":  280,
+                                                                   "realPurchaseCount":  0,
+                                                                   "reviews":  [
+
+                                                                               ],
+                                                                   "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                               },
+                      "flowhub-simple-project-management-for-teams":  {
+                                                                          "slug":  "flowhub-simple-project-management-for-teams",
+                                                                          "basePurchaseCount":  374,
+                                                                          "realPurchaseCount":  0,
+                                                                          "reviews":  [
+
+                                                                                      ],
+                                                                          "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                      },
+                      "flowspace-dance-movement-studios":  {
+                                                               "slug":  "flowspace-dance-movement-studios",
+                                                               "basePurchaseCount":  235,
+                                                               "realPurchaseCount":  0,
+                                                               "reviews":  [
+
+                                                                           ],
+                                                               "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                           },
+                      "freshbite-farm-to-table-dining":  {
+                                                             "slug":  "freshbite-farm-to-table-dining",
+                                                             "basePurchaseCount":  274,
+                                                             "realPurchaseCount":  0,
+                                                             "reviews":  [
+
+                                                                         ],
+                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                         },
+                      "greenhomes-sustainable-real-estate":  {
+                                                                 "slug":  "greenhomes-sustainable-real-estate",
+                                                                 "basePurchaseCount":  417,
+                                                                 "realPurchaseCount":  0,
+                                                                 "reviews":  [
+
+                                                                             ],
+                                                                 "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                             },
+                      "greenscape-home-garden-store":  {
+                                                           "slug":  "greenscape-home-garden-store",
+                                                           "basePurchaseCount":  262,
+                                                           "realPurchaseCount":  0,
+                                                           "reviews":  [
+
+                                                                       ],
+                                                           "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                       },
+                      "growthlab-growth-marketing-agency":  {
+                                                                "slug":  "growthlab-growth-marketing-agency",
+                                                                "basePurchaseCount":  275,
+                                                                "realPurchaseCount":  0,
+                                                                "reviews":  [
+
+                                                                            ],
+                                                                "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                            },
+                      "healthcare-premium-health-insurance":  {
+                                                                  "slug":  "healthcare-premium-health-insurance",
+                                                                  "basePurchaseCount":  98,
+                                                                  "realPurchaseCount":  0,
+                                                                  "reviews":  [
+
+                                                                              ],
+                                                                  "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                              },
+                      "homefinder-find-your-community":  {
+                                                             "slug":  "homefinder-find-your-community",
+                                                             "basePurchaseCount":  203,
+                                                             "realPurchaseCount":  0,
+                                                             "reviews":  [
+
+                                                                         ],
+                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                         },
+                      "investrealty-real-estate-investment-platform":  {
+                                                                           "slug":  "investrealty-real-estate-investment-platform",
+                                                                           "basePurchaseCount":  75,
+                                                                           "realPurchaseCount":  0,
+                                                                           "reviews":  [
+
+                                                                                       ],
+                                                                           "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                       },
+                      "ironhub-professional-strength-training-bodybuilding":  {
+                                                                                  "slug":  "ironhub-professional-strength-training-bodybuilding",
+                                                                                  "basePurchaseCount":  217,
+                                                                                  "realPurchaseCount":  0,
+                                                                                  "reviews":  [
+
+                                                                                              ],
+                                                                                  "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                              },
+                      "le-petit-bistro-french-cuisine":  {
+                                                             "slug":  "le-petit-bistro-french-cuisine",
+                                                             "basePurchaseCount":  166,
+                                                             "realPurchaseCount":  0,
+                                                             "reviews":  [
+
+                                                                         ],
+                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                         },
+                      "learnhub-online-learning-platform":  {
+                                                                "slug":  "learnhub-online-learning-platform",
+                                                                "basePurchaseCount":  304,
+                                                                "realPurchaseCount":  0,
+                                                                "reviews":  [
+
+                                                                            ],
+                                                                "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                            },
+                      "linguaflow-learn-languages-fast":  {
+                                                              "slug":  "linguaflow-learn-languages-fast",
+                                                              "basePurchaseCount":  105,
+                                                              "realPurchaseCount":  0,
+                                                              "reviews":  [
+
+                                                                          ],
+                                                              "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                          },
+                      "luminabeauty-premium-cosmetics-skincare":  {
+                                                                      "slug":  "luminabeauty-premium-cosmetics-skincare",
+                                                                      "basePurchaseCount":  314,
+                                                                      "realPurchaseCount":  0,
+                                                                      "reviews":  [
+
+                                                                                  ],
+                                                                      "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                  },
+                      "luna-bella-italian-fine-dining":  {
+                                                             "slug":  "luna-bella-italian-fine-dining",
+                                                             "basePurchaseCount":  175,
+                                                             "realPurchaseCount":  0,
+                                                             "reviews":  [
+
+                                                                         ],
+                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                         },
+                      "luxehome-premium-furniture-store":  {
+                                                               "slug":  "luxehome-premium-furniture-store",
+                                                               "basePurchaseCount":  178,
+                                                               "realPurchaseCount":  0,
+                                                               "reviews":  [
+
+                                                                           ],
+                                                               "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                           },
+                      "luxeland-property-marketplace":  {
+                                                            "slug":  "luxeland-property-marketplace",
+                                                            "basePurchaseCount":  315,
+                                                            "realPurchaseCount":  0,
+                                                            "reviews":  [
+
+                                                                        ],
+                                                            "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                        },
+                      "mediflow-streamline-your-medical-practice":  {
+                                                                        "slug":  "mediflow-streamline-your-medical-practice",
+                                                                        "basePurchaseCount":  94,
+                                                                        "realPurchaseCount":  0,
+                                                                        "reviews":  [
+
+                                                                                    ],
+                                                                        "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                    },
+                      "mentalwell-therapy-for-everyone":  {
+                                                              "slug":  "mentalwell-therapy-for-everyone",
+                                                              "basePurchaseCount":  349,
+                                                              "realPurchaseCount":  0,
+                                                              "reviews":  [
+
+                                                                          ],
+                                                              "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                          },
+                      "metaverse-exchange-trade-across-all-metaverses":  {
+                                                                             "slug":  "metaverse-exchange-trade-across-all-metaverses",
+                                                                             "basePurchaseCount":  282,
+                                                                             "realPurchaseCount":  0,
+                                                                             "reviews":  [
+
+                                                                                         ],
+                                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                         },
+                      "musicacademy-learn-music-online":  {
+                                                              "slug":  "musicacademy-learn-music-online",
+                                                              "basePurchaseCount":  241,
+                                                              "realPurchaseCount":  0,
+                                                              "reviews":  [
+
+                                                                          ],
+                                                              "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                          },
+                      "nftgallery-create-trade-digital-nfts":  {
+                                                                   "slug":  "nftgallery-create-trade-digital-nfts",
+                                                                   "basePurchaseCount":  76,
+                                                                   "realPurchaseCount":  0,
+                                                                   "reviews":  [
+
+                                                                               ],
+                                                                   "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                               },
+                      "novaborn-women-s-fitness-empowerment":  {
+                                                                   "slug":  "novaborn-women-s-fitness-empowerment",
+                                                                   "basePurchaseCount":  263,
+                                                                   "realPurchaseCount":  0,
+                                                                   "reviews":  [
+
+                                                                               ],
+                                                                   "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                               },
+                      "pharmadirect-pharmacy-at-your-door":  {
+                                                                 "slug":  "pharmadirect-pharmacy-at-your-door",
+                                                                 "basePurchaseCount":  259,
+                                                                 "realPurchaseCount":  0,
+                                                                 "reviews":  [
+
+                                                                             ],
+                                                                 "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                             },
+                      "pilatespro-core-strength-body-sculpting":  {
+                                                                      "slug":  "pilatespro-core-strength-body-sculpting",
+                                                                      "basePurchaseCount":  139,
+                                                                      "realPurchaseCount":  0,
+                                                                      "reviews":  [
+
+                                                                                  ],
+                                                                      "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                  },
+                      "pixelforce-ui-ux-design-agency":  {
+                                                             "slug":  "pixelforce-ui-ux-design-agency",
+                                                             "basePurchaseCount":  108,
+                                                             "realPurchaseCount":  0,
+                                                             "reviews":  [
+
+                                                                         ],
+                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                         },
+                      "professionalhub-advanced-certifications":  {
+                                                                      "slug":  "professionalhub-advanced-certifications",
+                                                                      "basePurchaseCount":  119,
+                                                                      "realPurchaseCount":  0,
+                                                                      "reviews":  [
+
+                                                                                  ],
+                                                                      "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                  },
+                      "propertymanager-pro-property-management-platform":  {
+                                                                               "slug":  "propertymanager-pro-property-management-platform",
+                                                                               "basePurchaseCount":  182,
+                                                                               "realPurchaseCount":  0,
+                                                                               "reviews":  [
+
+                                                                                           ],
+                                                                               "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                           },
+                      "propertynest-real-estate-solutions":  {
+                                                                 "slug":  "propertynest-real-estate-solutions",
+                                                                 "basePurchaseCount":  173,
+                                                                 "realPurchaseCount":  0,
+                                                                 "reviews":  [
+
+                                                                             ],
+                                                                 "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                             },
+                      "proskills-academy-corporate-training":  {
+                                                                   "slug":  "proskills-academy-corporate-training",
+                                                                   "basePurchaseCount":  72,
+                                                                   "realPurchaseCount":  0,
+                                                                   "reviews":  [
+
+                                                                               ],
+                                                                   "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                               },
+                      "sakura-zen-japanese-restaurant":  {
+                                                             "slug":  "sakura-zen-japanese-restaurant",
+                                                             "basePurchaseCount":  261,
+                                                             "realPurchaseCount":  0,
+                                                             "reviews":  [
+
+                                                                         ],
+                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                         },
+                      "shopelite-ecommerce-ui-kit":  {
+                                                         "slug":  "shopelite-ecommerce-ui-kit",
+                                                         "basePurchaseCount":  272,
+                                                         "realPurchaseCount":  0,
+                                                         "reviews":  [
+
+                                                                     ],
+                                                         "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                     },
+                      "shophub-your-online-store":  {
+                                                        "slug":  "shophub-your-online-store",
+                                                        "basePurchaseCount":  168,
+                                                        "realPurchaseCount":  0,
+                                                        "reviews":  [
+
+                                                                    ],
+                                                        "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                    },
+                      "skillforge-coding-bootcamp-career-path":  {
+                                                                     "slug":  "skillforge-coding-bootcamp-career-path",
+                                                                     "basePurchaseCount":  299,
+                                                                     "realPurchaseCount":  0,
+                                                                     "reviews":  [
+
+                                                                                 ],
+                                                                     "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                 },
+                      "skillup-career-skills-courses":  {
+                                                            "slug":  "skillup-career-skills-courses",
+                                                            "basePurchaseCount":  189,
+                                                            "realPurchaseCount":  0,
+                                                            "reviews":  [
+
+                                                                        ],
+                                                            "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                        },
+                      "socialvibe-social-media-marketing-agency":  {
+                                                                       "slug":  "socialvibe-social-media-marketing-agency",
+                                                                       "basePurchaseCount":  142,
+                                                                       "realPurchaseCount":  0,
+                                                                       "reviews":  [
+
+                                                                                   ],
+                                                                       "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                   },
+                      "spice-route-indian-restaurant":  {
+                                                            "slug":  "spice-route-indian-restaurant",
+                                                            "basePurchaseCount":  254,
+                                                            "realPurchaseCount":  0,
+                                                            "reviews":  [
+
+                                                                        ],
+                                                            "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                        },
+                      "stakevault-earn-crypto-through-staking":  {
+                                                                     "slug":  "stakevault-earn-crypto-through-staking",
+                                                                     "basePurchaseCount":  113,
+                                                                     "realPurchaseCount":  0,
+                                                                     "reviews":  [
+
+                                                                                 ],
+                                                                     "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                 },
+                      "startupboost-startup-consulting-growth":  {
+                                                                     "slug":  "startupboost-startup-consulting-growth",
+                                                                     "basePurchaseCount":  312,
+                                                                     "realPurchaseCount":  0,
+                                                                     "reviews":  [
+
+                                                                                 ],
+                                                                     "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                 },
+                      "streampro-professional-live-streaming-platform":  {
+                                                                             "slug":  "streampro-professional-live-streaming-platform",
+                                                                             "basePurchaseCount":  288,
+                                                                             "realPurchaseCount":  0,
+                                                                             "reviews":  [
+
+                                                                                         ],
+                                                                             "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                         },
+                      "stylevogue-fashion-boutique":  {
+                                                          "slug":  "stylevogue-fashion-boutique",
+                                                          "basePurchaseCount":  238,
+                                                          "realPurchaseCount":  0,
+                                                          "reviews":  [
+
+                                                                      ],
+                                                          "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                      },
+                      "syncteam-team-collaboration-file-sync":  {
+                                                                    "slug":  "syncteam-team-collaboration-file-sync",
+                                                                    "basePurchaseCount":  266,
+                                                                    "realPurchaseCount":  0,
+                                                                    "reviews":  [
+
+                                                                                ],
+                                                                    "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                },
+                      "taskvault-secure-task-password-management":  {
+                                                                        "slug":  "taskvault-secure-task-password-management",
+                                                                        "basePurchaseCount":  381,
+                                                                        "realPurchaseCount":  0,
+                                                                        "reviews":  [
+
+                                                                                    ],
+                                                                        "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                    },
+                      "taste-haven-fine-dining":  {
+                                                      "slug":  "taste-haven-fine-dining",
+                                                      "basePurchaseCount":  190,
+                                                      "realPurchaseCount":  0,
+                                                      "reviews":  [
+
+                                                                  ],
+                                                      "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                  },
+                      "techgear-tech-gadgets-store":  {
+                                                          "slug":  "techgear-tech-gadgets-store",
+                                                          "basePurchaseCount":  352,
+                                                          "realPurchaseCount":  0,
+                                                          "reviews":  [
+
+                                                                      ],
+                                                          "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                      },
+                      "techpulse-premium-electronics-store":  {
+                                                                  "slug":  "techpulse-premium-electronics-store",
+                                                                  "basePurchaseCount":  154,
+                                                                  "realPurchaseCount":  0,
+                                                                  "reviews":  [
+
+                                                                              ],
+                                                                  "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                              },
+                      "telahealth-virtual-doctor-visits":  {
+                                                               "slug":  "telahealth-virtual-doctor-visits",
+                                                               "basePurchaseCount":  153,
+                                                               "realPurchaseCount":  0,
+                                                               "reviews":  [
+
+                                                                           ],
+                                                               "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                           },
+                      "timber-creek-steakhouse":  {
+                                                      "slug":  "timber-creek-steakhouse",
+                                                      "basePurchaseCount":  348,
+                                                      "realPurchaseCount":  0,
+                                                      "reviews":  [
+
+                                                                  ],
+                                                      "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                  },
+                      "tokenlaunch-launch-your-blockchain-project":  {
+                                                                         "slug":  "tokenlaunch-launch-your-blockchain-project",
+                                                                         "basePurchaseCount":  268,
+                                                                         "realPurchaseCount":  0,
+                                                                         "reviews":  [
+
+                                                                                     ],
+                                                                         "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                     },
+                      "tutorconnect-online-tutoring-platform":  {
+                                                                    "slug":  "tutorconnect-online-tutoring-platform",
+                                                                    "basePurchaseCount":  329,
+                                                                    "realPurchaseCount":  0,
+                                                                    "reviews":  [
+
+                                                                                ],
+                                                                    "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                },
+                      "vacationpalace-luxury-holiday-homes":  {
+                                                                  "slug":  "vacationpalace-luxury-holiday-homes",
+                                                                  "basePurchaseCount":  118,
+                                                                  "realPurchaseCount":  0,
+                                                                  "reviews":  [
+
+                                                                              ],
+                                                                  "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                              },
+                      "visionai-intelligent-image-analysis-api":  {
+                                                                      "slug":  "visionai-intelligent-image-analysis-api",
+                                                                      "basePurchaseCount":  389,
+                                                                      "realPurchaseCount":  0,
+                                                                      "reviews":  [
+
+                                                                                  ],
+                                                                      "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                  },
+                      "vitalsign-monitor-your-health":  {
+                                                            "slug":  "vitalsign-monitor-your-health",
+                                                            "basePurchaseCount":  395,
+                                                            "realPurchaseCount":  0,
+                                                            "reviews":  [
+
+                                                                        ],
+                                                            "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                        },
+                      "wellvital-your-health-companion":  {
+                                                              "slug":  "wellvital-your-health-companion",
+                                                              "basePurchaseCount":  88,
+                                                              "realPurchaseCount":  0,
+                                                              "reviews":  [
+
+                                                                          ],
+                                                              "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                          },
+                      "zenfit-holistic-wellness-mindful-fitness":  {
+                                                                       "slug":  "zenfit-holistic-wellness-mindful-fitness",
+                                                                       "basePurchaseCount":  264,
+                                                                       "realPurchaseCount":  0,
+                                                                       "reviews":  [
+
+                                                                                   ],
+                                                                       "updatedAt":  "2026-07-02T14:22:14.323Z"
+                                                                   }
+                  },
+    "users":  {
+                  "test@gmail.com":  {
+                                         "email":  "test@gmail.com",
+                                         "purchases":  {
+
+                                                       },
+                                         "reviews":  {
+
+                                                     },
+                                         "savedTemplates":  {
+                                                                "mt-box-enterprise-nextjs-dashboard-template":  {
+                                                                                                                    "savedAt":  "2026-06-29T06:26:29.404Z"
+                                                                                                                }
+                                                            },
+                                         "freeDownloads":  {
+                                                               "count":  0,
+                                                               "slugs":  [
+
+                                                                         ],
+                                                               "unlockedAt":  null
+                                                           },
+                                         "updatedAt":  "2026-06-29T06:26:29.404Z"
+                                     },
+                  "mymultiversehub00@gmail.com":  {
+                                                      "email":  "mymultiversehub00@gmail.com",
+                                                      "purchases":  {
+                                                                        "helios-pro":  {
+                                                                                           "count":  1,
+                                                                                           "firstPurchasedAt":  "2026-06-29T17:01:34.560Z",
+                                                                                           "lastPurchasedAt":  "2026-06-30T06:39:40.243Z"
+                                                                                       }
+                                                                    },
+                                                      "reviews":  {
+                                                                      "mat-dash-nextjs-admin-dashboard-template":  [
+                                                                                                                       "review-1782715589822-395410de"
+                                                                                                                   ]
+                                                                  },
+                                                      "savedTemplates":  {
+
+                                                                         },
+                                                      "freeDownloads":  {
+                                                                            "count":  0,
+                                                                            "slugs":  [
+
+                                                                                      ],
+                                                                            "unlockedAt":  null
+                                                                        },
+                                                      "updatedAt":  "2026-06-30T06:39:40.243Z"
+                                                  },
+                  "mvparun3@gmail.com":  {
+                                             "email":  "mvparun3@gmail.com",
+                                             "purchases":  {
+
+                                                           },
+                                             "reviews":  {
+
+                                                         },
+                                             "savedTemplates":  {
+                                                                    "mtverse-modular-nextjs-dashboard-template":  {
+                                                                                                                      "savedAt":  "2026-06-30T08:01:19.659Z"
+                                                                                                                  },
+                                                                    "ooster":  {
+                                                                                   "savedAt":  "2026-07-03T08:14:40.806Z"
+                                                                               },
+                                                                    "helios-pro":  {
+                                                                                       "savedAt":  "2026-07-07T12:08:38.596Z"
+                                                                                   }
+                                                                },
+                                             "freeDownloads":  {
+                                                                   "count":  5,
+                                                                   "slugs":  [
+                                                                                 "creative-agency-bold-portfolio",
+                                                                                 "alex-morgan-dark-minimal-portfolio",
+                                                                                 "designer-folio-editorial-portfolio",
+                                                                                 "brutalist-portfolio",
+                                                                                 "3d-interactive-portfolio"
+                                                                             ],
+                                                                   "unlockedAt":  null
+                                                               },
+                                             "updatedAt":  "2026-07-07T12:08:38.596Z"
+                                         },
+                  "amaranarun421@gmail.com":  {
+                                                  "email":  "amaranarun421@gmail.com",
+                                                  "purchases":  {
+
+                                                                },
+                                                  "reviews":  {
+
+                                                              },
+                                                  "savedTemplates":  {
+                                                                         "lumiere-ecommerce":  {
+                                                                                                   "savedAt":  "2026-06-30T13:09:50.381Z"
+                                                                                               }
+                                                                     },
+                                                  "freeDownloads":  {
+                                                                        "count":  5,
+                                                                        "slugs":  [
+                                                                                      "3d-interactive-portfolio",
+                                                                                      "brutalist-portfolio",
+                                                                                      "retro-terminal-portfolio",
+                                                                                      "swiss-design-portfolio",
+                                                                                      "valentine-fashion-editorial-portfolio"
+                                                                                  ],
+                                                                        "unlockedAt":  null
+                                                                    },
+                                                  "updatedAt":  "2026-07-02T03:58:11.920Z"
+                                              },
+                  "arunpandian.p@anjaconline.org":  {
+                                                        "email":  "arunpandian.p@anjaconline.org",
+                                                        "purchases":  {
+
+                                                                      },
+                                                        "reviews":  {
+
+                                                                    },
+                                                        "savedTemplates":  {
+
+                                                                           },
+                                                        "freeDownloads":  {
+                                                                              "count":  1,
+                                                                              "slugs":  [
+                                                                                            "designer-folio-editorial-portfolio"
+                                                                                        ],
+                                                                              "unlockedAt":  null
+                                                                          },
+                                                        "updatedAt":  "2026-07-01T13:45:31.853Z"
+                                                    },
+                  "desarrollo.julio@gmail.com":  {
+                                                     "email":  "desarrollo.julio@gmail.com",
+                                                     "purchases":  {
+                                                                       "nimbus-pro":  {
+                                                                                          "count":  1,
+                                                                                          "firstPurchasedAt":  "2026-07-08T03:03:42.6731439Z",
+                                                                                          "lastPurchasedAt":  "2026-07-08T03:03:42.6731439Z"
+                                                                                      }
+                                                                   },
+                                                     "reviews":  {
+
+                                                                 },
+                                                     "savedTemplates":  {
+
+                                                                        },
+                                                     "freeDownloads":  {
+                                                                           "count":  1,
+                                                                           "slugs":  [
+                                                                                         "helios-pro"
+                                                                                     ],
+                                                                           "unlockedAt":  null
+                                                                       },
+                                                     "updatedAt":  "2026-07-08T03:03:42.6731439Z"
+                                                 }
+              },
+    "meta":  {
+                 "source":  "mtverse-believable-social-counts-sync",
+                 "updatedAt":  "2026-07-07T21:39:08.834Z",
+                 "count":  123
+             }
 }

@@ -4,13 +4,14 @@ import { randomBytes } from 'node:crypto'
 import { existsSync } from 'fs'
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
-import { hasRuntimeKvStore, readRuntimeJsonNoStore, writeRuntimeJson } from '@/lib/runtime-kv'
+import { hasRuntimeKvStore, readRuntimeJsonNoStore, withRuntimeLock, writeRuntimeJson } from '@/lib/runtime-kv'
 import { dashboardKits } from '@/lib/dashboard-kits'
 import type { Template, TemplateReview } from '@/lib/templates-catalog'
 
 const DATA_DIR = join(process.cwd(), 'data')
 const STORE_FILE = join(DATA_DIR, 'template-social-store.json')
 const RUNTIME_STORE_KEY = 'mtverse:template-social-store:v1'
+const RUNTIME_STORE_LOCK_KEY = 'mtverse:lock:template-social-store:v1'
 const MAX_VISIBLE_REVIEWS = 3
 const MAX_STORED_REVIEWS = 20
 
@@ -232,6 +233,7 @@ type TemplateUserRecord = {
   savedTemplates: Record<string, SavedTemplateRecord>
   downloadedTemplates: Record<string, UserTemplateDownload>
   freeDownloads: FreeDownloadRecord
+  paidBundleDownloads: UserTemplateDownload | null
   updatedAt: string
 }
 
@@ -283,6 +285,7 @@ export type AdminTemplateUserSummary = {
   freeUnlocked: boolean
   freeUnlockedAt: string | null
   htmlBundleDownloads: AdminTemplateDownload | null
+  paidBundleDownloads: AdminTemplateDownload | null
   savedTemplateSlugs: string[]
   updatedAt: string
 }
@@ -424,6 +427,7 @@ function normalizeUserRecord(emailKey: string, record: Partial<TemplateUserRecor
   const savedTemplates: Record<string, SavedTemplateRecord> = {}
   const downloadedTemplates: Record<string, UserTemplateDownload> = {}
   const htmlBundleDownloads = normalizeDownload(record?.freeDownloads?.bundleDownloads)
+  const paidBundleDownloads = normalizeDownload(record?.paidBundleDownloads)
 
   for (const [slug, purchase] of Object.entries(record?.purchases || {})) {
     const normalized = normalizePurchase(purchase)
@@ -463,6 +467,7 @@ function normalizeUserRecord(emailKey: string, record: Partial<TemplateUserRecor
       unlockedAt: record?.freeDownloads?.unlockedAt ? sanitizeText(record.freeDownloads.unlockedAt, 40) : null,
       bundleDownloads: htmlBundleDownloads,
     },
+    paidBundleDownloads,
     updatedAt: sanitizeText(record?.updatedAt, 40) || nowIso(),
   }
 }
@@ -557,6 +562,15 @@ async function writeStore(store: TemplateSocialStoreData) {
   await ensureStoreFile()
   await writeFile(STORE_FILE, JSON.stringify(payload, null, 2), 'utf-8')
   return payload
+}
+
+async function mutateStore<T>(mutator: (store: TemplateSocialStoreData) => T | Promise<T>): Promise<T> {
+  return withRuntimeLock(RUNTIME_STORE_LOCK_KEY, async () => {
+    const store = await readStore()
+    const result = await mutator(store)
+    await writeStore(store)
+    return result
+  })
 }
 
 function getRecord(store: TemplateSocialStoreData, slug: string) {
@@ -663,10 +677,8 @@ export async function addTemplateReview(input: {
   comment: unknown
   verifiedPurchase?: boolean
 }) {
-  const store = await readStore()
   const safeSlug = normalizeSlug(input.slug)
   const email = normalizeEmail(input.email)
-  const record = getRecord(store, safeSlug)
   const title = sanitizeText(input.title, 120)
   const comment = sanitizeText(input.comment, 900)
 
@@ -674,29 +686,31 @@ export async function addTemplateReview(input: {
     throw new Error('Review title and comment are required.')
   }
 
-  const review: TemplateReview = {
-    id: `review-${Date.now()}-${randomBytes(4).toString('hex')}`,
-    name: sanitizeText(input.name, 80) || email.split('@')[0] || 'mtverse customer',
-    email,
-    rating: normalizeRating(input.rating),
-    title,
-    comment,
-    date: nowIso(),
-    verifiedPurchase: Boolean(input.verifiedPurchase),
-    source: 'customer',
-  }
+  return mutateStore((store) => {
+    const record = getRecord(store, safeSlug)
+    const review: TemplateReview = {
+      id: `review-${Date.now()}-${randomBytes(4).toString('hex')}`,
+      name: sanitizeText(input.name, 80) || email.split('@')[0] || 'mtverse customer',
+      email,
+      rating: normalizeRating(input.rating),
+      title,
+      comment,
+      date: nowIso(),
+      verifiedPurchase: Boolean(input.verifiedPurchase),
+      source: 'customer',
+    }
 
-  record.reviews = [review, ...record.reviews.map(normalizeReview).filter((item) => item.source === 'customer')]
-    .slice(0, MAX_STORED_REVIEWS)
-  record.updatedAt = nowIso()
+    record.reviews = [review, ...record.reviews.map(normalizeReview).filter((item) => item.source === 'customer')]
+      .slice(0, MAX_STORED_REVIEWS)
+    record.updatedAt = nowIso()
 
-  const userRecord = getUserRecord(store, email)
-  userRecord.reviews[safeSlug] = [review.id, ...(userRecord.reviews[safeSlug] || [])].slice(0, MAX_STORED_REVIEWS)
-  userRecord.updatedAt = nowIso()
-  store.users[email] = userRecord
+    const userRecord = getUserRecord(store, email)
+    userRecord.reviews[safeSlug] = [review.id, ...(userRecord.reviews[safeSlug] || [])].slice(0, MAX_STORED_REVIEWS)
+    userRecord.updatedAt = nowIso()
+    store.users[email] = userRecord
 
-  await writeStore(store)
-  return toPublicSocial(record)
+    return toPublicSocial(record)
+  })
 }
 
 export async function recordTemplatePurchase(slug: string | null | undefined, emailInput: string | null | undefined) {
@@ -704,33 +718,32 @@ export async function recordTemplatePurchase(slug: string | null | undefined, em
   const email = emailInput ? normalizeEmail(emailInput) : ''
   if (!safeSlug || !email) return null
 
-  const store = await readStore()
-  const record = getRecord(store, safeSlug)
-  const now = nowIso()
-  const userRecord = getUserRecord(store, email)
+  return mutateStore((store) => {
+    const record = getRecord(store, safeSlug)
+    const now = nowIso()
+    const userRecord = getUserRecord(store, email)
+    const existingPurchase = userRecord.purchases[safeSlug]
 
-  const existingPurchase = userRecord.purchases[safeSlug]
-  if (existingPurchase) {
-    userRecord.purchases[safeSlug] = {
-      ...existingPurchase,
-      count: Math.max(1, existingPurchase.count),
-      lastPurchasedAt: now,
+    if (existingPurchase) {
+      userRecord.purchases[safeSlug] = {
+        ...existingPurchase,
+        count: Math.max(1, existingPurchase.count),
+        lastPurchasedAt: now,
+      }
+    } else {
+      userRecord.purchases[safeSlug] = {
+        count: 1,
+        firstPurchasedAt: now,
+        lastPurchasedAt: now,
+      }
+      record.realPurchaseCount += 1
     }
-  } else {
-    userRecord.purchases[safeSlug] = {
-      count: 1,
-      firstPurchasedAt: now,
-      lastPurchasedAt: now,
-    }
-    record.realPurchaseCount += 1
-  }
 
-  record.updatedAt = now
-  userRecord.updatedAt = now
-  store.users[email] = userRecord
-
-  await writeStore(store)
-  return toPublicSocial(record)
+    record.updatedAt = now
+    userRecord.updatedAt = now
+    store.users[email] = userRecord
+    return toPublicSocial(record)
+  })
 }
 
 export async function hasTemplatePurchase(slug: string, emailInput: string | null | undefined) {
@@ -791,6 +804,14 @@ export async function getTemplateUserSummariesForAdmin(): Promise<AdminTemplateU
           lastDownloadedAt: userRecord.freeDownloads.bundleDownloads.lastDownloadedAt,
         }
         : null,
+      paidBundleDownloads: userRecord.paidBundleDownloads
+        ? {
+          slug: 'all-paid-templates-bundle',
+          count: userRecord.paidBundleDownloads.count,
+          firstDownloadedAt: userRecord.paidBundleDownloads.firstDownloadedAt,
+          lastDownloadedAt: userRecord.paidBundleDownloads.lastDownloadedAt,
+        }
+        : null,
       savedTemplateSlugs: Object.keys(userRecord.savedTemplates || {}),
       updatedAt: userRecord.updatedAt,
     }))
@@ -802,58 +823,81 @@ export async function recordTemplateDownload(slug: string, emailInput: string) {
   const email = normalizeEmail(emailInput)
   if (!safeSlug || !email) return null
 
-  const store = await readStore()
-  const userRecord = getUserRecord(store, email)
-  const now = nowIso()
-  const existingDownload = userRecord.downloadedTemplates[safeSlug]
+  return mutateStore((store) => {
+    const userRecord = getUserRecord(store, email)
+    const now = nowIso()
+    const existingDownload = userRecord.downloadedTemplates[safeSlug]
 
-  if (existingDownload) {
-    userRecord.downloadedTemplates[safeSlug] = {
-      ...existingDownload,
-      count: Math.max(1, existingDownload.count) + 1,
-      lastDownloadedAt: now,
-    }
-  } else {
-    userRecord.downloadedTemplates[safeSlug] = {
-      count: 1,
-      firstDownloadedAt: now,
-      lastDownloadedAt: now,
-    }
-  }
+    userRecord.downloadedTemplates[safeSlug] = existingDownload
+      ? {
+        ...existingDownload,
+        count: Math.max(1, existingDownload.count) + 1,
+        lastDownloadedAt: now,
+      }
+      : {
+        count: 1,
+        firstDownloadedAt: now,
+        lastDownloadedAt: now,
+      }
 
-  userRecord.updatedAt = now
-  store.users[email] = userRecord
-  await writeStore(store)
-
-  return userRecord.downloadedTemplates[safeSlug]
+    userRecord.updatedAt = now
+    store.users[email] = userRecord
+    return userRecord.downloadedTemplates[safeSlug]
+  })
 }
 
 export async function recordHtmlBundleDownload(emailInput: string) {
   const email = normalizeEmail(emailInput)
   if (!email) return null
 
-  const store = await readStore()
-  const userRecord = getUserRecord(store, email)
-  const now = nowIso()
-  const existingDownload = userRecord.freeDownloads.bundleDownloads
+  return mutateStore((store) => {
+    const userRecord = getUserRecord(store, email)
+    const now = nowIso()
+    const existingDownload = userRecord.freeDownloads.bundleDownloads
 
-  userRecord.freeDownloads.bundleDownloads = existingDownload
-    ? {
-      ...existingDownload,
-      count: Math.max(1, existingDownload.count) + 1,
-      lastDownloadedAt: now,
-    }
-    : {
-      count: 1,
-      firstDownloadedAt: now,
-      lastDownloadedAt: now,
-    }
+    userRecord.freeDownloads.bundleDownloads = existingDownload
+      ? {
+        ...existingDownload,
+        count: Math.max(1, existingDownload.count) + 1,
+        lastDownloadedAt: now,
+      }
+      : {
+        count: 1,
+        firstDownloadedAt: now,
+        lastDownloadedAt: now,
+      }
 
-  userRecord.updatedAt = now
-  store.users[email] = userRecord
-  await writeStore(store)
+    userRecord.updatedAt = now
+    store.users[email] = userRecord
+    return userRecord.freeDownloads.bundleDownloads
+  })
+}
 
-  return userRecord.freeDownloads.bundleDownloads
+export async function recordPaidBundleDownload(emailInput: string) {
+  const email = normalizeEmail(emailInput)
+  if (!email) return null
+
+  return mutateStore((store) => {
+    const userRecord = getUserRecord(store, email)
+    const now = nowIso()
+    const existingDownload = userRecord.paidBundleDownloads
+
+    userRecord.paidBundleDownloads = existingDownload
+      ? {
+        ...existingDownload,
+        count: Math.max(1, existingDownload.count) + 1,
+        lastDownloadedAt: now,
+      }
+      : {
+        count: 1,
+        firstDownloadedAt: now,
+        lastDownloadedAt: now,
+      }
+
+    userRecord.updatedAt = now
+    store.users[email] = userRecord
+    return userRecord.paidBundleDownloads
+  })
 }
 
 export async function isTemplateSaved(slug: string, emailInput: string | null | undefined) {
@@ -867,20 +911,20 @@ export async function isTemplateSaved(slug: string, emailInput: string | null | 
 export async function setTemplateSaved(slug: string, emailInput: string, saved: boolean) {
   const safeSlug = normalizeSlug(slug)
   const email = normalizeEmail(emailInput)
-  const store = await readStore()
-  getRecord(store, safeSlug)
-  const userRecord = getUserRecord(store, email)
+  return mutateStore((store) => {
+    getRecord(store, safeSlug)
+    const userRecord = getUserRecord(store, email)
 
-  if (saved) {
-    userRecord.savedTemplates[safeSlug] = { savedAt: userRecord.savedTemplates[safeSlug]?.savedAt || nowIso() }
-  } else {
-    delete userRecord.savedTemplates[safeSlug]
-  }
+    if (saved) {
+      userRecord.savedTemplates[safeSlug] = { savedAt: userRecord.savedTemplates[safeSlug]?.savedAt || nowIso() }
+    } else {
+      delete userRecord.savedTemplates[safeSlug]
+    }
 
-  userRecord.updatedAt = nowIso()
-  store.users[email] = userRecord
-  await writeStore(store)
-  return Boolean(userRecord.savedTemplates[safeSlug])
+    userRecord.updatedAt = nowIso()
+    store.users[email] = userRecord
+    return Boolean(userRecord.savedTemplates[safeSlug])
+  })
 }
 
 export async function getSavedTemplateSlugs(emailInput: string | null | undefined) {
@@ -941,12 +985,34 @@ export async function hasFreeDownload(slug: string, emailInput: string | null | 
 export async function recordFreeDownload(slug: string, emailInput: string): Promise<FreeDownloadStatus> {
   const safeSlug = normalizeSlug(slug)
   const email = normalizeEmail(emailInput)
-  const store = await readStore()
-  const userRecord = getUserRecord(store, email)
-  const now = nowIso()
+  return mutateStore((store) => {
+    const userRecord = getUserRecord(store, email)
+    const now = nowIso()
 
-  // If already downloaded this slug, don't increment counter
-  if (userRecord.freeDownloads.slugs.includes(safeSlug)) {
+    if (userRecord.freeDownloads.slugs.includes(safeSlug)) {
+      const unlocked = Boolean(userRecord.freeDownloads.unlockedAt)
+      return {
+        count: userRecord.freeDownloads.count,
+        slugs: userRecord.freeDownloads.slugs,
+        remaining: unlocked ? Infinity : Math.max(0, FREE_DOWNLOAD_LIMIT - userRecord.freeDownloads.count),
+        limitReached: !unlocked && userRecord.freeDownloads.count >= FREE_DOWNLOAD_LIMIT,
+        unlocked,
+      }
+    }
+
+    if (!userRecord.freeDownloads.unlockedAt && userRecord.freeDownloads.count >= FREE_DOWNLOAD_LIMIT) {
+      throw new FreeDownloadLimitError()
+    }
+
+    userRecord.freeDownloads.slugs.push(safeSlug)
+    userRecord.freeDownloads.count = userRecord.freeDownloads.slugs.length
+    userRecord.updatedAt = now
+    store.users[email] = userRecord
+
+    const record = getRecord(store, safeSlug)
+    record.realPurchaseCount += 1
+    record.updatedAt = now
+
     const unlocked = Boolean(userRecord.freeDownloads.unlockedAt)
     return {
       count: userRecord.freeDownloads.count,
@@ -955,43 +1021,15 @@ export async function recordFreeDownload(slug: string, emailInput: string): Prom
       limitReached: !unlocked && userRecord.freeDownloads.count >= FREE_DOWNLOAD_LIMIT,
       unlocked,
     }
-  }
-
-  if (!userRecord.freeDownloads.unlockedAt && userRecord.freeDownloads.count >= FREE_DOWNLOAD_LIMIT) {
-    throw new FreeDownloadLimitError()
-  }
-
-  // Add new slug
-  userRecord.freeDownloads.slugs.push(safeSlug)
-  userRecord.freeDownloads.count = userRecord.freeDownloads.slugs.length
-  userRecord.updatedAt = now
-  store.users[email] = userRecord
-
-  // Also increment the template's purchase count for social proof
-  const record = getRecord(store, safeSlug)
-  record.realPurchaseCount += 1
-  record.updatedAt = now
-
-  await writeStore(store)
-
-  const unlocked = Boolean(userRecord.freeDownloads.unlockedAt)
-  return {
-    count: userRecord.freeDownloads.count,
-    slugs: userRecord.freeDownloads.slugs,
-    remaining: unlocked ? Infinity : Math.max(0, FREE_DOWNLOAD_LIMIT - userRecord.freeDownloads.count),
-    limitReached: !unlocked && userRecord.freeDownloads.count >= FREE_DOWNLOAD_LIMIT,
-    unlocked,
-  }
+  })
 }
 
 export async function setFreeUnlocked(emailInput: string): Promise<void> {
   const email = normalizeEmail(emailInput)
-  const store = await readStore()
-  const userRecord = getUserRecord(store, email)
-
-  userRecord.freeDownloads.unlockedAt = nowIso()
-  userRecord.updatedAt = nowIso()
-  store.users[email] = userRecord
-
-  await writeStore(store)
+  await mutateStore((store) => {
+    const userRecord = getUserRecord(store, email)
+    userRecord.freeDownloads.unlockedAt = userRecord.freeDownloads.unlockedAt || nowIso()
+    userRecord.updatedAt = nowIso()
+    store.users[email] = userRecord
+  })
 }
