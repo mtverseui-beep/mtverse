@@ -4,6 +4,7 @@ import { isMockPaymentAllowed, verifyPaymentFromSearchParams } from '@/lib/payme
 import { getVerifiedPaddleTransaction } from '@/lib/paddle-transaction'
 import { recordTemplatePurchase, setFreeUnlocked } from '@/lib/template-social-store'
 import { getCurrentCustomerEmail } from '@/lib/auth/current-customer'
+import { sendPurchaseConfirmationOnce } from '@/lib/email/purchase-confirmation'
 
 function shouldRecordTemplatePurchase(packageId: string | null | undefined, kitSlug: string | null) {
   return Boolean(kitSlug && packageId !== 'free-unlock' && packageId !== 'all-paid')
@@ -72,6 +73,15 @@ export async function GET(request: NextRequest) {
         await recordTemplatePurchase(verifiedTransaction.kitSlug, verifiedTransaction.email)
       }
 
+      if (verifiedTransaction) {
+        await sendPurchaseConfirmationOnce({
+          email: verifiedTransaction.email,
+          packageId: verifiedTransaction.packageId,
+          kitSlug: verifiedTransaction.kitSlug,
+          transactionId: verifiedTransaction.transactionId,
+        }).catch((error) => console.error('[Payment verification] Confirmation email failed:', error))
+      }
+
       return NextResponse.json({
         ...result,
         valid: true,
@@ -106,6 +116,13 @@ export async function GET(request: NextRequest) {
         'paddle',
         verifiedTransaction.packageId
       )
+
+      await sendPurchaseConfirmationOnce({
+        email: verifiedTransaction.email,
+        packageId: verifiedTransaction.packageId,
+        kitSlug: verifiedTransaction.kitSlug,
+        transactionId: verifiedTransaction.transactionId,
+      }).catch((error) => console.error('[Payment verification] Confirmation email failed:', error))
 
       return NextResponse.json({
         ...result,

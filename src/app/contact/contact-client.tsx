@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Mail, MessageSquare, Send, Check, MapPin, Clock, Loader2 } from 'lucide-react'
+import { Mail, Send, Check, Clock, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Reveal } from '@/components/design-system/animations'
 import { Blob } from '@/components/design-system/backgrounds'
@@ -10,23 +10,30 @@ import { SOCIAL_EMAIL } from '@/lib/site-social'
 export default function ContactClient() {
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
+  const [referenceId, setReferenceId] = useState('')
+  const [website, setWebsite] = useState('')
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSending(true)
 
-    const subject = encodeURIComponent(form.subject || 'mtverse contact')
-    const body = encodeURIComponent([
-      `Name: ${form.name}`,
-      `Email: ${form.email}`,
-      '',
-      form.message,
-    ].join('\n'))
-
-    window.location.href = `mailto:${SOCIAL_EMAIL}?subject=${subject}&body=${body}`
-    toast.success('Opening your email app')
-    setSending(false)
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, website }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'Could not send your message.')
+      setReferenceId(data.referenceId || '')
+      setSubmitted(true)
+      toast.success('Message sent')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Could not send your message. Please try again.')
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -85,6 +92,7 @@ export default function ContactClient() {
                   <p className="text-sm text-muted-foreground">
                     Thanks for reaching out. We&apos;ll get back to you within 24 hours.
                   </p>
+                  {referenceId ? <p className="text-xs font-medium text-muted-foreground">Reference: {referenceId}</p> : null}
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -138,11 +146,20 @@ export default function ContactClient() {
                       className="ds-input resize-none"
                     />
                   </div>
+                  <input
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    value={website}
+                    onChange={(event) => setWebsite(event.target.value)}
+                    className="absolute -left-[10000px] h-px w-px opacity-0"
+                    name="website"
+                  />
                   <button type="submit" disabled={sending} className="ds-btn ds-btn-primary w-full">
                     {sending ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        Sending…
+                        Sending...
                       </>
                     ) : (
                       <>

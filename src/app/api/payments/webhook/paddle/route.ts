@@ -6,6 +6,7 @@ import { getProductPackage } from '@/lib/packages'
 import { recordTemplatePurchase } from '@/lib/template-social-store'
 import { hasRuntimeKvStore, getRedisClient } from '@/lib/runtime-kv'
 import { hasExpectedPaddlePrice } from '@/lib/paddle-transaction'
+import { sendPurchaseConfirmationOnce } from '@/lib/email/purchase-confirmation'
 
 export const runtime = 'nodejs'
 
@@ -192,6 +193,13 @@ export async function POST(request: NextRequest) {
         await recordTemplatePurchase(kitSlug, email)
       }
     }
+
+    await sendPurchaseConfirmationOnce({
+      email,
+      packageId,
+      kitSlug: kitSlug || null,
+      transactionId,
+    })
 
     if (hasRuntimeKvStore()) {
       const redis = getRedisClient()

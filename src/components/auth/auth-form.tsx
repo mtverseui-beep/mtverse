@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn as signInWithProvider } from 'next-auth/react'
-import { ArrowRight, Mail, Lock, Sparkles, Check, Loader2, Eye, EyeOff, AlertCircle, User } from 'lucide-react'
+import { ArrowRight, Mail, Lock, Sparkles, Check, Loader2, Eye, EyeOff, AlertCircle, User, RotateCcw } from 'lucide-react'
 import { toast } from 'sonner'
 import { Reveal } from '@/components/design-system/animations'
 import { Blob } from '@/components/design-system/backgrounds'
@@ -154,6 +154,8 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const [resending, setResending] = useState(false)
+  const [resendCooldown, setResendCooldown] = useState(0)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [rememberMe, setRememberMe] = useState(false)
   const [nextPath, setNextPath] = useState<string | null>(null)
@@ -162,6 +164,41 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
   useEffect(() => {
     setNextPath(getCallbackUrl())
   }, [])
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return
+    const timer = window.setInterval(() => {
+      setResendCooldown((seconds) => Math.max(0, seconds - 1))
+    }, 1000)
+    return () => window.clearInterval(timer)
+  }, [resendCooldown])
+
+  async function handleResendResetEmail() {
+    if (resending || resendCooldown > 0 || !validateEmail(form.email)) return
+    setResending(true)
+    setError(null)
+    try {
+      const response = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email }),
+      })
+      const data = await response.json()
+      if (!response.ok) {
+        const message = withErrorId(data.error || 'Failed to resend reset email', data.errorId)
+        setError(message)
+        toast.error(message)
+        return
+      }
+      setResendCooldown(60)
+      toast.success('A new reset link was sent')
+    } catch {
+      setError('Network error. Please try again.')
+      toast.error('Network error. Please try again.')
+    } finally {
+      setResending(false)
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -245,6 +282,7 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
           return
         }
         setSuccess(true)
+        setResendCooldown(60)
         toast.success('Reset link sent to your email')
         setLoading(false)
       } else if (mode === 'reset-password') {
@@ -323,7 +361,20 @@ export function AuthForm({ mode, resetToken = '' }: Props) {
                       Sign in
                       <ArrowRight className="h-4 w-4" />
                     </Link>
-                  ) : null}
+                  ) : (
+                    <div className="space-y-2 pt-2">
+                      <button
+                        type="button"
+                        onClick={handleResendResetEmail}
+                        disabled={resending || resendCooldown > 0}
+                        className="ds-btn ds-btn-secondary w-full"
+                      >
+                        {resending ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
+                        {resending ? 'Sending...' : resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend email'}
+                      </button>
+                      <p className="text-xs text-muted-foreground">Check spam or promotions if it is not in your inbox.</p>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-3">

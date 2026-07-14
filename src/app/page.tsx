@@ -30,6 +30,7 @@ import { Reveal, Stagger, StaggerItem, Magnetic } from '@/components/design-syst
 import { TEMPLATE_SEO_HUBS } from '@/lib/template-seo-hubs'
 import { SITE_URL } from '@/lib/site-url'
 import { SOCIAL_EMAIL, SOCIAL_GITHUB, SOCIAL_TWITTER } from '@/lib/site-social'
+import { NewsletterSignup } from '@/components/home/newsletter-signup'
 
 export const dynamic = 'force-static'
 export const revalidate = 300
@@ -436,6 +437,8 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
+        <NewsletterSignup />
 
         <section className="ds-section ds-bg-section">
           <div className="ds-container max-w-4xl">
