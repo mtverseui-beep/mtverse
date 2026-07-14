@@ -59,3 +59,4 @@ data/template-local-store.json
 data/template-details/
 
 data/customer-store.json
+.env.example
