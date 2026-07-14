@@ -11,7 +11,7 @@ import { SITE_URL } from '@/lib/site-url'
 export const metadata: Metadata = {
   title: 'About mtverse - Website Templates, Dashboard UI Kits & HTML Themes',
   description:
-    'Learn how mtverse curates Next.js dashboards, React admin UI kits, ecommerce and landing page templates, and free responsive HTML websites with transparent previews and delivery.',
+    'Learn how mtverse curates premium Next.js dashboards, React admin UI kits, ecommerce themes, landing pages, and free responsive HTML templates.',
   alternates: { canonical: '/about' },
   openGraph: {
     title: 'About mtverse Template Marketplace',
