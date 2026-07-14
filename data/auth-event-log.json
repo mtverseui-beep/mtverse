@@ -1,0 +1,18 @@
+{
+  "events": [
+    {
+      "id": "AUTH-20260712064230-O8KZ62",
+      "type": "sign_up",
+      "status": "success",
+      "provider": "email",
+      "email": "arunpandian.p@anjaconline.org",
+      "reason": "email_sign_up",
+      "message": "Email account created and signed in.",
+      "path": "/api/auth/sign-up",
+      "ip": "::1",
+      "country": null,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+      "createdAt": "2026-07-12T06:42:30.506Z"
+    }
+  ]
+}

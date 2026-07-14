@@ -1,17 +1,37 @@
-﻿{
-    "plans":  {
-                  "mymultiversehub00@gmail.com":  {
-                                                      "email":  "mymultiversehub00@gmail.com",
-                                                      "plan":  "pro",
-                                                      "licenseKey":  "MTV-TIMB-BDWK-0VZC-5QPZ",
-                                                      "status":  "active",
-                                                      "provider":  "mock",
-                                                      "packageId":  "next",
-                                                      "createdAt":  "2026-06-29T17:01:34.210Z",
-                                                      "updatedAt":  "2026-06-30T06:39:39.548Z"
-                                                  }
-              },
-    "licenses":  {
-                     "MTV-TIMB-BDWK-0VZC-5QPZ":  "mymultiversehub00@gmail.com"
-                 }
+{
+  "plans": {
+    "arunpandian.p@anjaconline.org": {
+      "email": "arunpandian.p@anjaconline.org",
+      "plan": "pro",
+      "licenseKey": "MTV-OW4G-555T-UJJV-JAWP",
+      "status": "active",
+      "provider": "paddle",
+      "providerTransactionId": "txn_01kxav83208j46zqnrm507c44a",
+      "providerTransactionIds": [
+        "txn_01kxaj6x37x5qfrrkcmq0ezya3",
+        "txn_01kxakycpaa3gp6fpcm00s7d8j",
+        "txn_01kxama32ngcadznzpv6sp7x69",
+        "txn_01kxamdqmrqt3yq59vf0ah5re8",
+        "txn_01kxamhw68mx8q7km110p0evwc",
+        "txn_01kxan1pz70992nry90zebh65f",
+        "txn_01kxav22dtxbqtjkw6azhp69y8",
+        "txn_01kxav455xhnjfvb7647y612kd",
+        "txn_01kxav83208j46zqnrm507c44a"
+      ],
+      "providerCustomerId": "ctm_01kxahjvgp0t8pcyp11tcm52qn",
+      "packageId": "all-paid",
+      "purchases": [
+        "next",
+        "pro",
+        "ooster-pro",
+        "all-paid",
+        "free-unlock"
+      ],
+      "createdAt": "2026-07-12T07:05:02.653Z",
+      "updatedAt": "2026-07-12T09:41:54.496Z"
+    }
+  },
+  "licenses": {
+    "MTV-OW4G-555T-UJJV-JAWP": "arunpandian.p@anjaconline.org"
+  }
 }
