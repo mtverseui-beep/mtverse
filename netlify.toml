@@ -1,0 +1,4 @@
+[build.environment]
+  # This is an email recipient/config value that is intentionally also public
+  # as the site's contact address. Keep secret scanning enabled for real keys.
+  SECRETS_SCAN_OMIT_KEYS = "RESEND_ADMIN_EMAIL"
