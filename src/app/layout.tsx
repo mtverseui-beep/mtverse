@@ -27,6 +27,9 @@ const instrumentSerif = Instrument_Serif({
   display: 'swap',
 })
 
+const yandexVerification = process.env.YANDEX_SITE_VERIFICATION?.trim()
+const naverVerification = process.env.NAVER_SITE_VERIFICATION?.trim()
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -52,6 +55,10 @@ export const metadata: Metadata = {
   authors: [{ name: 'mtverse', url: SITE_URL }],
   creator: 'mtverse',
   publisher: 'mtverse',
+  verification: {
+    ...(yandexVerification ? { yandex: yandexVerification } : {}),
+    ...(naverVerification ? { other: { 'naver-site-verification': naverVerification } } : {}),
+  },
   icons: { icon: '/SiteLogo.png', apple: '/SiteLogo.png' },
   manifest: '/manifest.webmanifest',
   alternates: {
