@@ -37,7 +37,7 @@ export const revalidate = 300
 export const metadata: Metadata = {
   title: 'Next.js Dashboard Templates, Free HTML Templates & Website UI Kits',
   description:
-    'Browse premium Next.js dashboard templates, React admin UI kits, ecommerce and SaaS templates, landing pages, and free responsive HTML website templates with live previews and secure ZIP downloads.',
+    'Browse premium Next.js dashboard, React admin, ecommerce, SaaS, landing page, and free responsive HTML templates with live previews and secure downloads.',
   keywords: [
     'Next.js templates',
     'Next.js dashboard templates',

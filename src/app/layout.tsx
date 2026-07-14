@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     template: '%s | mtverse',
   },
   description:
-    'Premium Next.js dashboard templates, React admin UI kits, ecommerce and SaaS templates, landing pages, and free responsive HTML website templates with live previews and secure downloads.',
+    'Preview premium Next.js dashboard, React admin, ecommerce, SaaS, landing page, and free responsive HTML templates with secure source downloads.',
   keywords: [
     'Next.js templates',
     'Next.js dashboard templates',
