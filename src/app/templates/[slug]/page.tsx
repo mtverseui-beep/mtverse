@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import type { Template } from '@/lib/templates-catalog'
 import { SITE_URL } from '@/lib/site-url'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
@@ -58,9 +59,109 @@ function resolveTemplateSlug(slug: string) {
 }
 
 function uniqueKeywords(values: Array<string | undefined>) {
-  return Array.from(new Set(values.map((value) => value?.trim()).filter(Boolean) as string[])).slice(0, 30)
+  return Array.from(new Set(values.map((value) => value?.trim()).filter(Boolean) as string[])).slice(0, 24)
 }
 
+function normalizeText(value: string) {
+  return value.replace(/\s+/g, ' ').trim()
+}
+
+function truncateMetaDescription(value: string, maxLength = 160) {
+  const normalized = normalizeText(value)
+  if (normalized.length <= maxLength) return normalized
+
+  const shortened = normalized.slice(0, maxLength - 1)
+  const lastSpace = shortened.lastIndexOf(' ')
+  return (lastSpace > 110 ? shortened.slice(0, lastSpace) : shortened).replace(/[.,;:!?-]+$/g, '') + '.'
+}
+
+function getTemplateFramework(template: Template) {
+  const framework = template.frameworkLabel?.trim()
+  if (framework) {
+    if (/next/i.test(framework)) return 'Next.js'
+    if (/react/i.test(framework)) return 'React'
+    if (/vite/i.test(framework)) return 'Vite'
+    if (/html/i.test(framework)) return 'HTML'
+    if (/vue/i.test(framework)) return 'Vue.js'
+    if (/angular/i.test(framework)) return 'Angular'
+    if (/laravel/i.test(framework)) return 'Laravel'
+    return framework
+  }
+
+  const stackFramework = template.techStack.find((item) => /next|react|html|vue|angular|laravel/i.test(item))
+  if (stackFramework) return stackFramework
+
+  return template.category === 'html' ? 'HTML' : 'Next.js'
+}
+
+function getTemplateIntent(template: Template) {
+  const framework = getTemplateFramework(template)
+  const category = template.category.toLowerCase()
+
+  if (category === 'html') return template.isFree || template.price <= 0 ? 'Free HTML Website Template' : 'HTML Website Template'
+  if (['dashboards', 'dashboard-kits', 'dashboard-kit'].includes(category)) return `${framework} Admin Dashboard Template`
+  if (category === 'ecommerce') return `${framework} Ecommerce Website Template`
+  if (['landing', 'landings', 'landing-pages'].includes(category)) return `${framework} Landing Page Template`
+  return `${framework} Website Template`
+}
+
+function buildTemplateSeoTitle(template: Template) {
+  const intent = getTemplateIntent(template)
+  const suffix = ` - ${intent}`
+  const maxBaseLength = Math.max(16, 66 - suffix.length)
+  const rawTitle = normalizeText(template.title)
+  const conciseTitle = rawTitle
+    .replace(/\s*(?:-\s*)?(?:free\s+|premium\s+)?(?:next\.?js|react|vite|html|vue\.?js|angular|laravel)\b.*(?:template|ui kit)$/i, '')
+    .trim()
+  const normalizedTitle = conciseTitle.length >= 3 ? conciseTitle : rawTitle
+
+  if (normalizedTitle.length <= maxBaseLength) {
+    return `${normalizedTitle}${suffix}`
+  }
+
+  const shortened = normalizedTitle.slice(0, maxBaseLength)
+  const lastSpace = shortened.lastIndexOf(' ')
+  const baseTitle = (lastSpace > 12 ? shortened.slice(0, lastSpace) : shortened).replace(/[.,;:!?-]+$/g, '')
+  return `${baseTitle}${suffix}`
+}
+
+function buildTemplateMetaDescription(template: Template) {
+  const storedDescription = template.metaDescription?.trim()
+  if (storedDescription && storedDescription.length >= 90) {
+    return truncateMetaDescription(storedDescription)
+  }
+
+  const includedPages = template.pages.slice(0, 3).join(', ')
+  const details = includedPages
+    ? ` Includes ${includedPages} and responsive source files.`
+    : ' Includes responsive source files, screenshots, and a live preview.'
+
+  return truncateMetaDescription(`${template.summary}${details}`)
+}
+
+function getCategoryKeywords(template: Template) {
+  const category = template.category.toLowerCase()
+
+  if (category === 'html') {
+    return ['HTML website template', 'responsive HTML template', 'HTML CSS template', 'static website template']
+  }
+  if (['dashboards', 'dashboard-kits', 'dashboard-kit'].includes(category)) {
+    return ['admin dashboard template', 'SaaS dashboard template', 'analytics dashboard UI', 'dashboard source code']
+  }
+  if (category === 'ecommerce') {
+    return ['ecommerce website template', 'online store template', 'storefront UI kit', 'shopping website source code']
+  }
+  if (['landing', 'landings', 'landing-pages'].includes(category)) {
+    return ['landing page template', 'SaaS landing page', 'product website template', 'conversion landing page']
+  }
+
+  return ['website template', 'responsive website template', 'source code template']
+}
+
+function buildTemplateImageAlt(template: Template) {
+  const pageNames = template.pages.slice(0, 3).join(', ')
+  return `${template.title} ${getTemplateIntent(template).toLowerCase()} preview${pageNames ? ` showing ${pageNames}` : ''}`
+}
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params
   const resolvedSlug = resolveTemplateSlug(slug)
@@ -70,20 +171,17 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
 
   const categoryLabel = template.categoryLabel || template.category
-  const description = template.metaDescription || template.summary
-  const title = template.seoTitle || template.title + ' - Premium Template'
+  const description = buildTemplateMetaDescription(template)
+  const title = buildTemplateSeoTitle(template)
   const keywords = uniqueKeywords([
     template.title,
+    `${template.title} template`,
+    `${template.title} download`,
+    getTemplateIntent(template),
     template.subcategory,
-    categoryLabel + ' template',
-    categoryLabel + ' website template',
-    template.frameworkLabel || 'Next.js template',
-    'premium website templates',
-    'dashboard templates with live preview',
-    'admin dashboard template',
-    'SaaS dashboard template',
-    'ecommerce dashboard template',
-    'React admin template',
+    `${categoryLabel} templates`,
+    template.isFree || template.price <= 0 ? 'free website template download' : 'premium website template source code',
+    ...getCategoryKeywords(template),
     ...(template.keywords || []),
     ...template.tags,
     ...template.techStack,
@@ -136,48 +234,95 @@ export default async function TemplateDetailPage({ params }: { params: Params })
   const category = categories.find((c) => c.id === template.category)
 
   const canonicalUrl = SITE_URL + '/templates/' + template.slug
-  const pageDescription = template.metaDescription || template.summary
+  const pageDescription = buildTemplateMetaDescription(template)
+  const categoryUrl = category ? `${SITE_URL}/template-categories/${category.id}` : `${SITE_URL}/templates`
+  const breadcrumbItems = [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Templates', item: `${SITE_URL}/templates` },
+    ...(category ? [{ '@type': 'ListItem', position: 3, name: category.label, item: categoryUrl }] : []),
+    { '@type': 'ListItem', position: category ? 4 : 3, name: template.title, item: canonicalUrl },
+  ]
+  const productImage = {
+    '@type': 'ImageObject',
+    url: template.screenshotUrl,
+    caption: buildTemplateImageAlt(template),
+  }
+  const offer = {
+    '@type': 'Offer',
+    url: canonicalUrl,
+    price: template.price,
+    priceCurrency: template.currency,
+    availability: 'https://schema.org/InStock',
+    itemCondition: 'https://schema.org/NewCondition',
+    seller: { '@type': 'Organization', name: 'mtverse', url: SITE_URL },
+  }
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
+        '@type': 'WebPage',
+        '@id': canonicalUrl + '#webpage',
+        url: canonicalUrl,
+        name: buildTemplateSeoTitle(template),
+        description: pageDescription,
+        dateModified: template.lastUpdated,
+        isPartOf: { '@id': SITE_URL + '/#website' },
+        primaryImageOfPage: productImage,
+        mainEntity: { '@id': canonicalUrl + '#product' },
+        breadcrumb: { '@id': canonicalUrl + '#breadcrumb' },
+      },
+      {
         '@type': 'Product',
         '@id': canonicalUrl + '#product',
+        url: canonicalUrl,
         name: template.title,
         description: pageDescription,
-        image: [template.screenshotUrl],
+        image: [productImage],
         sku: template.id,
         category: template.categoryLabel || template.category,
-        brand: { '@type': 'Brand', name: template.author.name },
-        ...(template.reviewCount > 0 ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: template.rating, reviewCount: template.reviewCount, bestRating: 5 } } : {}),
-        offers: {
-          '@type': 'Offer',
-          url: canonicalUrl,
-          price: template.price,
-          priceCurrency: template.currency,
-          availability: 'https://schema.org/InStock',
-          itemCondition: 'https://schema.org/NewCondition',
-        },
+        brand: { '@type': 'Brand', name: 'mtverse' },
+        offers: offer,
+        ...(template.reviewCount > 0
+          ? {
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: template.rating,
+                reviewCount: template.reviewCount,
+                bestRating: 5,
+              },
+            }
+          : {}),
       },
       {
         '@type': 'SoftwareApplication',
         '@id': canonicalUrl + '#software',
         name: template.title,
+        url: canonicalUrl,
         applicationCategory: 'DeveloperApplication',
         operatingSystem: 'Web',
         description: pageDescription,
-        image: template.screenshotUrl,
-        offers: { '@type': 'Offer', price: template.price, priceCurrency: template.currency },
+        image: productImage,
+        softwareRequirements: template.techStack.join(', '),
+        offers: offer,
       },
       {
         '@type': 'BreadcrumbList',
         '@id': canonicalUrl + '#breadcrumb',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-          { '@type': 'ListItem', position: 2, name: 'Templates', item: SITE_URL + '/templates' },
-          { '@type': 'ListItem', position: 3, name: template.title, item: canonicalUrl },
-        ],
+        itemListElement: breadcrumbItems,
       },
+      ...(template.faq.length
+        ? [
+            {
+              '@type': 'FAQPage',
+              '@id': canonicalUrl + '#faq',
+              mainEntity: template.faq.map((item) => ({
+                '@type': 'Question',
+                name: item.question,
+                acceptedAnswer: { '@type': 'Answer', text: item.answer },
+              })),
+            },
+          ]
+        : []),
     ],
   }
 
@@ -251,7 +396,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
                   <div className="group relative overflow-hidden rounded-lg border border-border/70 bg-background">
                       <Image
                         src={template.screenshotUrl}
-                        alt={template.title}
+                        alt={buildTemplateImageAlt(template)}
                         width={1900}
                         height={900}
                         sizes="(max-width: 1024px) 100vw, 760px"
@@ -272,6 +417,9 @@ export default async function TemplateDetailPage({ params }: { params: Params })
                         </span>
                       </Link>
                     </div>
+                    <p className="px-2 pb-1 pt-2 text-xs leading-5 text-muted-foreground">
+                      {buildTemplateImageAlt(template)}. Open the live preview to inspect the responsive layout before downloading.
+                    </p>
                   </div>
               </Reveal>
 
@@ -381,43 +529,6 @@ export default async function TemplateDetailPage({ params }: { params: Params })
             </Reveal>
           </div>
         </section>
-        {/* ═══ Changelog ═══ */}
-        <section className="ds-section-sm">
-          <div className="ds-container max-w-4xl">
-            <Reveal>
-              <h2 className="ds-h2 mb-6">What&apos;s new</h2>
-              <div className="space-y-4">
-                {[
-                  { version: 'v1.0.0', date: template.lastUpdated, changes: ['Initial release', 'All pages built and tested', 'Documentation complete'], latest: true },
-                  { version: 'v0.9.0', date: '2026-05-15', changes: ['Beta release for early testers', 'Bug fixes and polish'], latest: false },
-                ].map((release, i) => (
-                  <Reveal key={i} delay={i * 0.05}>
-                    <div className="ds-card">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <span className="ds-badge ds-badge-primary">{release.version}</span>
-                          <span className="text-sm text-muted-foreground">
-                            {new Date(release.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                          </span>
-                        </div>
-                        {release.latest && <span className="ds-badge ds-badge-success">Latest</span>}
-                      </div>
-                      <ul className="space-y-1.5">
-                        {release.changes.map((change, j) => (
-                          <li key={j} className="flex items-start gap-2 text-sm">
-                            <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary-500 shrink-0" />
-                            <span>{change}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
         {/* ═══ FAQ ═══ */}
         <section className="ds-section-sm ds-bg-section relative overflow-hidden">
           <SectionBackground />

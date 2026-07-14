@@ -1,24 +1,24 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Mail, MessageSquare, BookOpen, Code, CreditCard, Shield } from 'lucide-react'
+import { Mail, MessageSquare, BookOpen, Code, CreditCard, Shield, Download, ArrowRight } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
 import { SectionBackground, CtaBackground } from '@/components/design-system/backgrounds'
 import { SOCIAL_EMAIL } from '@/lib/site-social'
 
 export const metadata: Metadata = {
-  title: 'Support — Get Help with mtverse',
-  description: 'Get help with mtverse prompts, templates, your account, payments, and more. Contact our support team.',
+  title: 'Support - Get Help with mtverse Templates',
+  description: 'Get help with mtverse templates, downloads, account access, payments, licenses, bundles, and framework requests.',
   alternates: { canonical: '/support' },
 }
 
 const SUPPORT_CATEGORIES = [
   {
-    icon: MessageSquare,
-    title: 'Prompts',
-    description: 'Questions about using AI prompts, model compatibility, and prompt structure.',
-    link: '/prompts',
-    linkText: 'Browse prompts',
+    icon: Download,
+    title: 'Template downloads',
+    description: 'Help with free limits, paid ZIP access, bundles, and download history.',
+    link: '/account',
+    linkText: 'Open account',
   },
   {
     icon: Code,
@@ -104,7 +104,7 @@ export default function SupportPage() {
                       <p className="text-sm text-muted-foreground mb-3">{cat.description}</p>
                       <span className="text-sm font-medium text-primary-600 inline-flex items-center gap-1">
                         {cat.linkText}
-                        <span className="transition-transform group-hover:translate-x-0.5">→</span>
+                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                       </span>
                     </Link>
                   </StaggerItem>

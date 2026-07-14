@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
     formats: ["image/webp"],
+    qualities: [72, 75],
     remotePatterns: [
       {
         protocol: "https",
@@ -58,12 +59,6 @@ const nextConfig: NextConfig = {
               ? "frame-ancestors https://www.mtverse.dev https://mtverse.dev"
               : "frame-ancestors https://www.mtverse.dev https://mtverse.dev http://localhost:3000 http://127.0.0.1:3000",
           },
-        ],
-      },
-      {
-        source: "/prompts/:slug*",
-        headers: [
-          { key: "Cache-Control", value: "public, s-maxage=300, stale-while-revalidate=600" },
         ],
       },
       {

@@ -12,7 +12,7 @@ export default function RefundPolicyPage() {
     <LegalPage
       title="Refund Policy"
       description="Our refund policy for premium template purchases."
-      lastUpdated="June 27, 2026"
+      lastUpdated="July 14, 2026"
     >
       <h2>14-Day Money-Back Guarantee</h2>
       <p>
@@ -47,7 +47,6 @@ export default function RefundPolicyPage() {
       <h2>Non-Refundable Items</h2>
       <p>The following are not eligible for refunds:</p>
       <ul>
-        <li>Free prompts (no purchase was made)</li>
         <li>Template purchases older than 14 days</li>
         <li>Custom development or consulting services</li>
         <li>Purchases made with fraudulent or unauthorized payment methods</li>

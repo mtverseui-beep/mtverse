@@ -47,7 +47,7 @@ const COPY: Record<AuthMode, {
   'sign-up': {
     eyebrow: 'Get started',
     title: 'Create your account',
-    subtitle: 'Start collecting prompts and templates today',
+    subtitle: 'Save templates and access your downloads',
     button: 'Create account',
     footer: 'Already have an account?',
     footerLink: 'Sign in',

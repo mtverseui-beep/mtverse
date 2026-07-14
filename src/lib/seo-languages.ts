@@ -70,7 +70,7 @@ function getPublicHreflangLanguages() {
  * Generates an array of hreflang alternate entries for the given canonical
  * path. The "x-default" entry always points to the English version.
  *
- * @param canonicalPath - A site-relative path, e.g. "/prompts" or "/about"
+ * @param canonicalPath - A site-relative path, e.g. "/templates" or "/about"
  * @param baseUrl - The absolute site origin, e.g. "https://mtverse.dev"
  * @returns Array of { lang, url } objects ready for <link rel="alternate"> tags
  */

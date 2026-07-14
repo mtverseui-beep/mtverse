@@ -134,69 +134,6 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
   },
   {
-    slug: 'ai-image-prompt-workflow-brief-to-final',
-    title: 'A Repeatable AI Image Prompt Workflow: From Brief to Final Selection',
-    excerpt:
-      'Turn a visual idea into a controlled prompt, useful variations, a review grid, and a reusable production recipe instead of generating at random.',
-    date: 'July 8, 2026',
-    isoDate: '2026-07-08',
-    readTime: '10 min read',
-    category: 'AI Prompts',
-    intro:
-      'Consistent AI image work comes from a repeatable decision process. The prompt matters, but the brief, variation plan, evaluation criteria, and record of what changed are what turn an isolated result into a usable creative workflow.',
-    sections: [
-      {
-        heading: 'Write A One-Sentence Visual Brief',
-        body: [
-          'Describe the communication job before describing aesthetics. State the subject, audience, use case, and desired response. A beverage launch image for a social advertisement has different composition needs from a product catalog image, even when both show the same can.',
-          'A strong brief gives you a reason to reject attractive images that do not solve the actual job. It also keeps collaborators aligned before model-specific syntax enters the conversation.',
-        ],
-      },
-      {
-        heading: 'Build The Prompt In Ordered Layers',
-        body: [
-          'Start with subject identity and action, then add environment, composition, camera, lighting, materials, color, and output constraints. Put the most important facts early and avoid several style directions that compete with each other.',
-          'Use variables for details that should change across a campaign, such as product name, colorway, location, aspect ratio, or audience. Keep fixed art direction separate so the visual family remains recognizable.',
-        ],
-        bullets: [
-          'Subject and required product details',
-          'Scene, action, and supporting objects',
-          'Framing, camera angle, lens, and aspect ratio',
-          'Lighting direction, contrast, palette, and material behavior',
-          'Constraints such as readable label, empty copy space, or excluded objects',
-        ],
-      },
-      {
-        heading: 'Plan Variations Before Generating',
-        body: [
-          'Generate a small matrix instead of many unrelated images. Keep the subject constant while testing three compositions, or keep composition constant while testing three lighting directions. This makes the differences easy to interpret.',
-          'When every variable changes at once, a good result teaches you very little. Controlled variation helps you identify which instruction improved the outcome and which phrase had no useful effect.',
-        ],
-      },
-      {
-        heading: 'Review With A Practical Scorecard',
-        body: [
-          'Score results against the brief: subject accuracy, composition, brand fit, physical realism, text or logo integrity, editability, and final-channel suitability. A clear scorecard reduces the tendency to select only the most dramatic image.',
-          'Inspect details at full resolution. Hands, reflections, packaging edges, typography, repeated objects, and inconsistent shadows frequently reveal problems that are easy to miss in a thumbnail grid.',
-        ],
-      },
-      {
-        heading: 'Revise One Failure At A Time',
-        body: [
-          'Name the failure in concrete language: label is distorted, rim light is too harsh, background competes with the product, or camera angle hides the silhouette. Update the smallest relevant instruction and generate the next comparison set.',
-          'Negative direction is useful for recurring failures, but it should remain shorter than the positive art direction. The model needs a clear picture of what to create, not only a long list of what to avoid.',
-        ],
-      },
-      {
-        heading: 'Save The Recipe With The Result',
-        body: [
-          'Store the final prompt, model, aspect ratio, seed or reference settings, selected output, and a note about the winning change. This record lets a team reproduce the visual language for the next product or campaign.',
-          'The mtverse prompt library is most useful as a starting structure. Replace variables, run controlled tests, and save the version that worked for your own brief rather than treating any copied prompt as a guaranteed final result.',
-        ],
-      },
-    ],
-  },
-  {
     slug: 'html-template-launch-checklist',
     title: 'Static HTML Template Launch Checklist for Fast, Reliable Websites',
     excerpt:
@@ -253,55 +190,6 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
   },
   {
-    slug: 'best-midjourney-prompts-2026',
-    title: 'The Best Midjourney Prompts for Stunning AI Art in 2026',
-    excerpt:
-      'A practical guide to prompt structure, camera language, style control, and iteration patterns for more reliable AI image results.',
-    date: 'March 1, 2026',
-    isoDate: '2026-03-01',
-    readTime: '8 min read',
-    category: 'AI Prompts',
-    intro:
-      'Good image prompts are not just long descriptions. The most reliable prompts describe intent, subject, composition, lighting, style, constraints, and the final use case in a way the model can prioritize.',
-    sections: [
-      {
-        heading: 'Start With A Clear Visual Job',
-        body: [
-          'Before adding style words, define what the image needs to do. A product image needs clarity and recognizable details. A poster needs hierarchy and negative space. A portrait needs pose, lens, skin texture, and emotional direction.',
-          'This gives the model a practical target instead of a pile of aesthetic tags. It also makes the result easier to judge: either the image performs the job or it does not.',
-        ],
-        bullets: [
-          'Subject: who or what is in the image',
-          'Scene: where the image takes place',
-          'Composition: framing, angle, and aspect ratio',
-          'Lighting: time of day, source, contrast, and mood',
-          'Output: poster, editorial photo, product render, icon, or concept art',
-        ],
-      },
-      {
-        heading: 'Use Camera And Lighting Language',
-        body: [
-          'Camera language is useful because it is specific. Phrases such as "85mm portrait lens", "low angle product shot", "soft window light", and "high contrast rim light" tell the model how the image should feel physically.',
-          'Lighting is often more important than style. The same subject can become cinematic, documentary, commercial, or playful simply by changing light direction and contrast.',
-        ],
-      },
-      {
-        heading: 'Keep Style References Controlled',
-        body: [
-          'It is tempting to stack many style references into one prompt. That usually produces mixed results. Pick one dominant style direction, then add two or three supporting constraints.',
-          'For example, "minimal editorial product photography" is stronger than combining editorial, cyberpunk, watercolor, cinematic, luxury, vintage, and hyperrealistic in one instruction.',
-        ],
-      },
-      {
-        heading: 'Iterate With Small Changes',
-        body: [
-          'When a prompt is close, change one variable at a time: crop, camera angle, background, lighting, or color palette. This makes each generation teach you something.',
-          'A useful prompt library should preserve these decisions. mtverse prompts are written so creators can copy the base idea, replace variables, and reuse the structure for many projects.',
-        ],
-      },
-    ],
-  },
-  {
     slug: 'react-component-architecture',
     title: 'Building Scalable React Component Architecture with TypeScript',
     excerpt:
@@ -351,47 +239,6 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
   },
   {
-    slug: 'chatgpt-writing-prompts',
-    title: '50 ChatGPT Writing Prompts That Actually Produce Great Content',
-    excerpt:
-      'How to write prompts that produce specific, useful writing instead of generic AI output.',
-    date: 'February 1, 2026',
-    isoDate: '2026-02-01',
-    readTime: '6 min read',
-    category: 'AI Prompts',
-    intro:
-      'The best writing prompts give the model context, audience, constraints, voice, and a review checklist. Without those pieces, the output often sounds polished but vague.',
-    sections: [
-      {
-        heading: 'Define The Reader First',
-        body: [
-          'Writing improves when the audience is specific. "Write a product update" is weak. "Write a product update for SaaS founders who care about faster onboarding" gives the model a useful target.',
-          'Audience context changes examples, vocabulary, objections, and the level of explanation. It also reduces filler because the model knows what the reader already understands.',
-        ],
-      },
-      {
-        heading: 'Give A Voice Model',
-        body: [
-          'Voice does not need to imitate a person. It can be described as concise, helpful, practical, confident, warm, technical, plainspoken, or editorial.',
-          'Combine voice with forbidden patterns. For example: "Use short paragraphs. Avoid hype, cliches, and exaggerated claims." This keeps the result more human and easier to edit.',
-        ],
-      },
-      {
-        heading: 'Ask For Structure And Revision',
-        body: [
-          'For blog posts, landing copy, emails, and documentation, ask for an outline first. Then ask for a draft, then a revision pass for clarity and specificity.',
-          'This staged approach produces better writing because the model has a chance to organize ideas before generating final copy.',
-        ],
-      },
-      {
-        heading: 'Use Prompt Variables',
-        body: [
-          'Reusable prompts work best when they include variables such as product, audience, tone, format, goal, and constraints. That is why mtverse prompt cards focus on structured copy-ready prompts rather than one-off examples.',
-        ],
-      },
-    ],
-  },
-  {
     slug: 'tailwind-css-design-system',
     title: 'Creating a Design System with Tailwind CSS v4 and shadcn/ui',
     excerpt:
@@ -432,46 +279,6 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
   },
   {
-    slug: 'flux-image-generation-guide',
-    title: 'The Complete Guide to Flux AI Image Generation',
-    excerpt:
-      'Prompting patterns for photorealistic Flux images, product scenes, editorial portraits, and visual consistency.',
-    date: 'January 5, 2026',
-    isoDate: '2026-01-05',
-    readTime: '9 min read',
-    category: 'AI Prompts',
-    intro:
-      'Flux responds well to precise scene direction. The strongest prompts describe subject identity, environment, lens, lighting, material detail, and what should be avoided.',
-    sections: [
-      {
-        heading: 'Use Physical Detail',
-        body: [
-          'Instead of saying "high quality", describe what quality means: natural skin texture, soft fabric folds, realistic reflections, clean product edges, or believable depth of field.',
-          'Physical detail gives the model something concrete to render and gives you a better way to evaluate the output.',
-        ],
-      },
-      {
-        heading: 'Control The Background',
-        body: [
-          'Backgrounds often decide whether an image looks professional. For portraits, use simple rooms, streets, studios, or natural locations. For products, use surface material, color temperature, and shadow behavior.',
-        ],
-      },
-      {
-        heading: 'Add Negative Direction Carefully',
-        body: [
-          'Negative prompts are useful when they remove common failures such as extra limbs, distorted text, harsh plastic skin, duplicate objects, or unreadable labels.',
-          'They should not become longer than the main prompt. Too many negative constraints can confuse the output.',
-        ],
-      },
-      {
-        heading: 'Save Working Patterns',
-        body: [
-          'When a prompt works, save the structure. Change only the variable fields for the next image. This turns one successful generation into a repeatable workflow.',
-        ],
-      },
-    ],
-  },
-  {
     slug: 'nextjs-16-features',
     title: "What's New in Next.js 16: A Practical Overview",
     excerpt:
@@ -493,7 +300,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         heading: 'Use Metadata Per Route',
         body: [
-          'Every important route should have a clear title, description, canonical URL, and Open Graph data. Prompt detail pages and component detail pages should be indexable only when the content is unique and useful.',
+          'Every important route should have a clear title, description, canonical URL, and Open Graph data. Template detail pages should be indexable only when the content is unique, accurate, and useful to a buyer.',
         ],
       },
       {

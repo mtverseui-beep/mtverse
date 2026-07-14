@@ -8,7 +8,6 @@
  *
  * Three variants:
  * - HomeHero3D: Floating geometric shapes (cubes, spheres) with parallax depth
- * - PromptsHero3D: Rising prompt preview cards in 3D perspective
  * - TemplatesHero3D: Rotating template screenshot tiles in 3D grid
  */
 
@@ -182,82 +181,6 @@ export function HomeHero3D({ className }: { className?: string }) {
       {/* Edge fade */}
 
       {/* 3D keyframes */}
-    </div>
-  )
-}
-
-/* ──────────────────────────────────────────────────────────────
-   PROMPTS HERO 3D — Rising prompt cards in 3D perspective
-   Content-related: small card-like shapes rising up with depth
-   ────────────────────────────────────────────────────────────── */
-
-export function PromptsHero3D({ className }: { className?: string }) {
-  const cards = [
-    { size: 50, color: 'var(--ds-soft-blue)', left: '8%', delay: '0s', duration: '14s', z: 20 },
-    { size: 65, color: 'var(--ds-soft-lavender)', left: '22%', delay: '3s', duration: '18s', z: 40 },
-    { size: 45, color: 'var(--ds-soft-yellow)', left: '38%', delay: '6s', duration: '16s', z: 30 },
-    { size: 70, color: 'var(--ds-soft-mint)', left: '52%', delay: '1.5s', duration: '20s', z: 50 },
-    { size: 55, color: 'var(--ds-soft-peach)', left: '68%', delay: '4.5s', duration: '15s', z: 35 },
-    { size: 48, color: 'var(--ds-soft-rose)', left: '82%', delay: '7.5s', duration: '17s', z: 25 },
-    { size: 58, color: 'var(--ds-soft-blue)', left: '15%', delay: '9s', duration: '19s', z: 45 },
-    { size: 62, color: 'var(--ds-soft-lavender)', left: '45%', delay: '11s', duration: '13s', z: 38 },
-    { size: 42, color: 'var(--ds-soft-mint)', left: '75%', delay: '2.5s', duration: '21s', z: 28 },
-  ]
-
-  return (
-    <div aria-hidden className={cn('absolute inset-0 overflow-hidden', className)}>
-      
-
-      {/* 3D perspective */}
-      <div
-        className="absolute inset-0"
-        style={{ perspective: '800px', perspectiveOrigin: '50% 100%' }}
-      >
-        {/* Rising card-shaped pastel elements */}
-        {cards.map((card, i) => (
-          <div
-            key={i}
-            className="absolute rounded-2xl"
-            style={{
-              width: card.size,
-              height: card.size * 1.25,
-              background: card.color,
-              left: card.left,
-              bottom: '-20%',
-              opacity: 0.55,
-              transform: `translateZ(${card.z}px)`,
-              animation: `ds-3d-rise ${card.duration} linear infinite`,
-              animationDelay: card.delay,
-              borderRadius: i % 3 === 0 ? '50%' : i % 3 === 1 ? '16px' : '8px 24px 8px 24px',
-            }}
-          />
-        ))}
-
-        {/* Subtle floating dots in foreground */}
-        {[
-          { top: '20%', left: '30%', size: 5, color: 'var(--ds-primary-200)' },
-          { top: '40%', left: '70%', size: 4, color: 'var(--ds-accent-200)' },
-          { top: '60%', left: '20%', size: 6, color: 'var(--ds-soft-mint)' },
-        ].map((dot, i) => (
-          <div
-            key={`dot-${i}`}
-            className="absolute rounded-full"
-            style={{
-              top: dot.top,
-              left: dot.left,
-              width: dot.size,
-              height: dot.size,
-              background: dot.color,
-              opacity: 0.4,
-              transform: 'translateZ(80px)',
-              animation: `ds-float-y ${5 + i}s ease-in-out infinite`,
-              animationDelay: `${i * 0.7}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Bottom fade */}
     </div>
   )
 }

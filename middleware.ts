@@ -2,14 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const ADMIN_SESSION_COOKIE = 'multiverse_admin_session'
 const CANONICAL_HOST = 'www.mtverse.dev'
-const LEGACY_GONE_PROMPT_SLUGS = new Set([
-  'nano-banana-pro-0879-elegant-confidence-in-cinematic-light',
-  'nano-banana-pro-0354-step-back-in-time-edo-castle-town-in-stunning-detail',
-  'nano-banana-pro-0033-transform-your-menu-with-tasty-visuals',
-  'nano-banana-pro-0274-craft-the-perfect-scene-with-nano-banana-s-3x3-grid-magic',
-  'nano-banana-pro-0548-the-quest-for-the-perfect-knot-a-nano-banana-s-dilemma',
-  'nano-banana-pro-0689-confident-glamour-in-vintage-noir',
-])
+const NON_CANONICAL_PRODUCTION_HOSTS = new Set(['mtverse.dev', 'mtverse-main.netlify.app'])
 
 function buildSignInUrl(request: NextRequest) {
   const signInUrl = new URL('/admin-login', request.url)
@@ -29,16 +22,6 @@ function buildCanonicalHostRedirect(request: NextRequest) {
   url.hostname = CANONICAL_HOST
   url.protocol = 'https'
   return NextResponse.redirect(url, 308)
-}
-
-function getPromptSlugFromPath(pathname: string) {
-  if (!pathname.startsWith('/prompts/')) return ''
-  const rawSlug = pathname.slice('/prompts/'.length).replace(/\/+$/, '')
-  try {
-    return decodeURIComponent(rawSlug)
-  } catch {
-    return rawSlug
-  }
 }
 
 function buildGoneResponse() {
@@ -120,11 +103,11 @@ async function handleRequest(request: NextRequest) {
   const { pathname } = request.nextUrl
   const host = getRequestHost(request)
 
-  if (host === `www.${CANONICAL_HOST}`) {
+  if (NON_CANONICAL_PRODUCTION_HOSTS.has(host)) {
     return buildCanonicalHostRedirect(request)
   }
 
-  if (LEGACY_GONE_PROMPT_SLUGS.has(getPromptSlugFromPath(pathname))) {
+  if (pathname === '/prompts' || pathname.startsWith('/prompts/')) {
     return buildGoneResponse()
   }
 

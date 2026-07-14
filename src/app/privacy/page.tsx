@@ -55,7 +55,7 @@ export default function PrivacyPage() {
       <p>Types of cookies we use:</p>
       <ul>
         <li><strong>Essential cookies:</strong> Required for the website to function correctly (authentication, security).</li>
-        <li><strong>Analytics cookies:</strong> Help us understand how visitors interact with our website (Google Analytics, Vercel Analytics).</li>
+        <li><strong>Analytics cookies:</strong> Help us understand how visitors interact with our website (Cloudflare Web Analytics).</li>
         <li><strong>Advertising cookies:</strong> Used to deliver relevant ads (Google AdSense, if enabled).</li>
       </ul>
       <p>
@@ -75,9 +75,9 @@ export default function PrivacyPage() {
       <p>Our Service uses third-party services that may collect information:</p>
       <ul>
         <li><strong>Google AdSense:</strong> May serve ads and use cookies to personalize content. See <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">Google&apos;s Advertising Policy</a>.</li>
-        <li><strong>Google Analytics:</strong> Tracks website usage patterns. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google&apos;s Privacy Policy</a>.</li>
         <li><strong>Paddle:</strong> Processes payments. See <a href="https://www.paddle.com/legal/privacy" target="_blank" rel="noopener noreferrer">Paddle&apos;s Privacy Policy</a>.</li>
-        <li><strong>Vercel:</strong> Hosts our website. See <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Vercel&apos;s Privacy Policy</a>.</li>
+        <li><strong>Netlify:</strong> Hosts our website. See <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener noreferrer">Netlify&apos;s Privacy Policy</a>.</li>
+        <li><strong>Cloudflare:</strong> Provides analytics and content delivery services. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare&apos;s Privacy Policy</a>.</li>
       </ul>
 
       <h2>6. Data Security</h2>

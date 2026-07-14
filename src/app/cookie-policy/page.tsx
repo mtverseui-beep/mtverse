@@ -38,8 +38,7 @@ export default function CookiePolicyPage() {
       <h3>2. Analytics Cookies</h3>
       <p>These cookies help us understand how visitors interact with our website:</p>
       <ul>
-        <li><strong>Vercel Analytics:</strong> Tracks page views and performance metrics</li>
-        <li><strong>Google Analytics (if enabled):</strong> Tracks user behavior and demographics</li>
+        <li><strong>Cloudflare Web Analytics:</strong> Measures aggregate page views and website performance</li>
       </ul>
 
       <h3>3. Advertising Cookies</h3>
@@ -61,7 +60,7 @@ export default function CookiePolicyPage() {
       </p>
       <ul>
         <li>Process payments securely (Paddle)</li>
-        <li>Analyze website traffic (Google Analytics, Vercel Analytics)</li>
+        <li>Analyze website traffic (Cloudflare Web Analytics)</li>
         <li>Serve advertisements (Google AdSense)</li>
         <li>Provide social media features (GitHub, Google OAuth)</li>
       </ul>

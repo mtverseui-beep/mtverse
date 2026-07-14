@@ -3,85 +3,42 @@ import { LegalPage, legalMetadata } from '@/components/legal/legal-page'
 
 export const metadata: Metadata = legalMetadata(
   'Disclaimer',
-  'Important disclaimers and limitations for mtverse services and content.',
-  '/disclaimer'
+  'Important limitations relating to mtverse website template listings, previews, source packages, and third-party dependencies.',
+  '/disclaimer',
 )
 
 export default function DisclaimerPage() {
   return (
-    <LegalPage
-      title="Disclaimer"
-      description="Important disclaimers regarding our service and content."
-      lastUpdated="June 27, 2026"
-    >
+    <LegalPage title="Disclaimer" description="Limitations relating to template listings, previews, source packages, and external services." lastUpdated="July 14, 2026">
       <h2>General Information</h2>
-      <p>
-        The information provided by mtverse on mtverse.dev is for general informational purposes only. All information on the Service
-        is provided in good faith, however we make no representation or warranty of any kind, express or implied, regarding the accuracy,
-        adequacy, validity, reliability, availability, or completeness of any information on the Service.
-      </p>
+      <p>Information on mtverse is provided in good faith for general product-evaluation and development purposes. We do not warrant that every description, screenshot, price, dependency, or external link will remain unchanged.</p>
 
-      <h2>AI Prompts Disclaimer</h2>
-      <p>
-        The AI prompts available on our Service are provided for informational and creative purposes only. Results may vary depending on
-        the AI model used, input parameters, and other factors. We do not guarantee specific results from using any prompt.
-      </p>
-      <p>
-        You are solely responsible for reviewing and complying with the terms of service of any AI tool you use with our prompts,
-        including but not limited to ChatGPT, Midjourney, Flux, Gemini, Claude, and Photoshop AI.
-      </p>
+      <h2>Template Compatibility</h2>
+      <p>Templates are provided as-is. Framework releases, package managers, browser behavior, hosting providers, operating systems, and third-party dependencies can change. You are responsible for testing the downloaded project in your own environment before production deployment.</p>
 
-      <h2>Templates Disclaimer</h2>
-      <p>
-        Our premium templates are provided as-is. While we test every template before release, we cannot guarantee that every template
-        will work perfectly in every environment or use case. You are responsible for testing templates in your own environment before
-        deploying to production.
-      </p>
+      <h2>Preview Differences</h2>
+      <p>Live previews and screenshots demonstrate the template at a point in time. Fonts, external images, sample data, animations, integrations, and responsive rendering may differ from the downloaded package or your customized deployment.</p>
 
-      <h2>External Links Disclaimer</h2>
-      <p>
-        The Service may contain links to other websites or content belonging to or originating from third parties. Such external links
-        are not investigated, monitored, or checked for accuracy, adequacy, validity, reliability, availability, or completeness by us.
-      </p>
+      <h2>Package Scope</h2>
+      <p>The exact package scope is described on each template page. A visual preview does not imply that backend services, databases, paid assets, hosting, third-party accounts, or external APIs are included unless stated.</p>
 
-      <h2>Professional Disclaimer</h2>
-      <p>
-        The Service does not contain professional advice of any kind. The prompts and templates provided are not a substitute for
-        professional advice. You should consult with a qualified professional before making decisions based on any content from the Service.
-      </p>
+      <h2>Third-Party Dependencies</h2>
+      <p>Templates may use open-source frameworks, packages, icons, fonts, images, or services governed by separate licenses and terms. You are responsible for reviewing those requirements and replacing assets when necessary.</p>
 
-      <h2>Testimonials Disclaimer</h2>
-      <p>
-        The Service may contain testimonials from users. These testimonials reflect the real-life experiences and opinions of such users.
-        However, the experiences are personal to those particular users, and may not necessarily be representative of all users of our products.
-      </p>
+      <h2>Security and Production Use</h2>
+      <p>A successful build or preview is not a security audit. Before production use, review authentication, authorization, secrets, dependency vulnerabilities, data validation, payment configuration, privacy requirements, accessibility, performance, and deployment settings for your application.</p>
 
-      <h2>Errors and Omissions Disclaimer</h2>
-      <p>
-        While we strive to keep the information on the Service up-to-date and accurate, errors may occur. mtverse is not responsible for
-        any errors or omissions, or for the results obtained from the use of this information.
-      </p>
+      <h2>External Links</h2>
+      <p>mtverse may link to external previews, documentation, payment pages, social platforms, or third-party websites. We do not control their availability, content, security, or privacy practices.</p>
 
-      <h2>Fair Use Disclaimer</h2>
-      <p>
-        The Service may contain copyrighted material not specifically authorized by the copyright owner. We believe this constitutes a
-        &quot;fair use&quot; of any such copyrighted material as provided for in section 107 of the United States Copyright Law.
-      </p>
+      <h2>Reviews and Results</h2>
+      <p>User reviews reflect individual experiences. They do not guarantee that every buyer will achieve the same implementation time, performance, business result, or compatibility outcome.</p>
 
-      <h2>Views Expressed Disclaimer</h2>
-      <p>
-        The Service may contain views and opinions which are those of the authors and do not necessarily reflect the official policy or
-        position of any other author, agency, organization, employer, or company, including mtverse.
-      </p>
+      <h2>No Professional Advice</h2>
+      <p>Template listings and guides are not legal, financial, security, accessibility, or compliance advice. Obtain qualified advice when your project requires it.</p>
 
-      <h2>No Responsibility for AI-Generated Content</h2>
-      <p>
-        mtverse is not responsible for any content generated by AI models using our prompts. Users are solely responsible for reviewing,
-        verifying, and ensuring the legality and appropriateness of any AI-generated content before publishing or distributing it.
-      </p>
-
-      <h2>Contact Us</h2>
-      <p>For questions about this Disclaimer, please contact us at <a href="mailto:legal@mtverse.dev">legal@mtverse.dev</a>.</p>
+      <h2>Contact</h2>
+      <p>Questions about this Disclaimer can be sent to <a href="mailto:legal@mtverse.dev">legal@mtverse.dev</a>.</p>
     </LegalPage>
   )
 }

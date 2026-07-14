@@ -7,14 +7,9 @@ import AdSenseUnit from '@/components/ads/AdSenseUnit'
 interface PublicLayoutProps {
   children: React.ReactNode
   schemaMarkup?: Record<string, unknown> | Record<string, unknown>[]
-  promptCount?: number
 }
 
-export default function PublicLayout({
-  children,
-  schemaMarkup,
-  promptCount,
-}: PublicLayoutProps) {
+export default function PublicLayout({ children, schemaMarkup }: PublicLayoutProps) {
   const schemas = schemaMarkup
     ? Array.isArray(schemaMarkup)
       ? schemaMarkup
@@ -23,24 +18,20 @@ export default function PublicLayout({
 
   return (
     <>
-      {schemas.map((schema, i) => (
+      {schemas.map((schema, index) => (
         <script
-          key={i}
+          key={index}
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
       <div className="flex min-h-screen flex-col">
-        <Suspense
-          fallback={
-            <div className="sticky top-0 z-[900] h-16 border-b border-border/50 bg-background/70 backdrop-blur-xl" />
-          }
-        >
-          <Navbar promptCount={promptCount} />
+        <Suspense fallback={<div className="sticky top-0 z-[900] h-16 border-b border-border/50 bg-background/70 backdrop-blur-xl" />}>
+          <Navbar />
         </Suspense>
         <main className="flex-1">{children}</main>
         <AdSenseUnit placement="footer" />
-        <Footer promptCount={promptCount} />
+        <Footer />
         <ScrollToTop />
       </div>
     </>

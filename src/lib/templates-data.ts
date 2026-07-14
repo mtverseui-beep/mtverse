@@ -150,15 +150,25 @@ function toTemplate(kit: DashboardKit): Template {
   const categoryLabel = getCategoryLabel(kit, category)
   const pageCount = kit.includedPages.length
   const featureCount = kit.features.length
+  const hasStalePremiumTierCopy = Boolean(kit.isFree && /\s-\sPremium(?:\s|$)/i.test(kit.title))
+  const cleanFreeTierCopy = (value: string) => {
+    if (!hasStalePremiumTierCopy) return value
+
+    return value
+      .replace(/\bA premium,\s+/gi, 'A ')
+      .replace(/\bis a premium,\s+/gi, 'is an ')
+      .replace(/\bis a premium\s+/gi, 'is a free ')
+      .replace(/\bpremium Next\.js/gi, 'free Next.js')
+  }
 
   return {
     id: kit.id.replace('dashboard-kit-', 'template-'),
     slug: kit.slug,
-    title: kit.title,
-    summary: kit.summary,
-    description: kit.description,
-    seoTitle: kit.seoTitle,
-    metaDescription: kit.metaDescription,
+    title: hasStalePremiumTierCopy ? kit.shortTitle : kit.title,
+    summary: cleanFreeTierCopy(kit.summary),
+    description: cleanFreeTierCopy(kit.description),
+    seoTitle: hasStalePremiumTierCopy ? kit.shortTitle + ' - Free ' + kit.frameworkLabel + ' Admin Dashboard Template' : kit.seoTitle,
+    metaDescription: cleanFreeTierCopy(kit.metaDescription),
     keywords: kit.keywords,
     category,
     categoryLabel,

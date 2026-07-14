@@ -1,4 +1,4 @@
-export type SiteSearchResultType = 'prompt' | 'template'
+export type SiteSearchResultType = 'template'
 
 export type SiteSearchResult = {
   id: string
@@ -14,25 +14,15 @@ export type SiteSearchResult = {
 const SEARCH_RESULT_CACHE_TTL_MS = 5 * 60 * 1000
 const searchResultCache = new Map<string, { expiresAt: number; results: SiteSearchResult[] }>()
 
-export async function fetchSiteSearch(
-  query: string,
-  limit = 12,
-  signal?: AbortSignal
-): Promise<SiteSearchResult[]> {
+export async function fetchSiteSearch(query: string, limit = 12, signal?: AbortSignal): Promise<SiteSearchResult[]> {
   const normalizedQuery = query.trim()
   if (normalizedQuery.length < 2) return []
+
   const cacheKey = `${normalizedQuery.toLowerCase()}::${limit}`
   const cachedEntry = searchResultCache.get(cacheKey)
+  if (cachedEntry && cachedEntry.expiresAt > Date.now()) return cachedEntry.results
 
-  if (cachedEntry && cachedEntry.expiresAt > Date.now()) {
-    return cachedEntry.results
-  }
-
-  const params = new URLSearchParams({
-    q: normalizedQuery,
-    limit: String(limit),
-  })
-
+  const params = new URLSearchParams({ q: normalizedQuery, limit: String(limit) })
   const response = await fetch(`/api/search?${params.toString()}`, {
     signal,
     cache: 'no-store',
@@ -42,7 +32,6 @@ export async function fetchSiteSearch(
 
   const data = (await response.json()) as { results?: SiteSearchResult[] }
   const results = data.results ?? []
-
   searchResultCache.set(cacheKey, {
     expiresAt: Date.now() + SEARCH_RESULT_CACHE_TTL_MS,
     results,

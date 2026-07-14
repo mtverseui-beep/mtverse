@@ -3,7 +3,6 @@
 /**
  * Three distinct animated hero backgrounds.
  * - HomeHeroBackground: floating pastel orbs + drifting dot grid
- * - PromptsHeroBackground: vertical stream of pastel shapes rising upward
  * - TemplatesHeroBackground: rotating concentric ring + scattered shapes
  *
  * All use SOLID colors (no gradients). All respect prefers-reduced-motion.
@@ -73,65 +72,6 @@ export function HomeHeroBackground({ className }: { className?: string }) {
           background: 'var(--ds-bg-canvas)',
           maskImage: 'radial-gradient(ellipse at center, transparent 35%, black 90%)',
           WebkitMaskImage: 'radial-gradient(ellipse at center, transparent 35%, black 90%)',
-        }}
-      />
-    </div>
-  )
-}
-
-/* ──────────────────────────────────────────────────────────────
-   PROMPTS HERO — vertical stream of pastel shapes rising upward
-   ────────────────────────────────────────────────────────────── */
-
-export function PromptsHeroBackground({ className }: { className?: string }) {
-  const shapes = [
-    { size: 60, color: 'var(--ds-soft-blue)', left: '8%', delay: '0s', duration: '14s' },
-    { size: 80, color: 'var(--ds-soft-lavender)', left: '22%', delay: '3s', duration: '18s' },
-    { size: 50, color: 'var(--ds-soft-yellow)', left: '38%', delay: '6s', duration: '16s' },
-    { size: 90, color: 'var(--ds-soft-mint)', left: '52%', delay: '1.5s', duration: '20s' },
-    { size: 70, color: 'var(--ds-soft-peach)', left: '68%', delay: '4.5s', duration: '15s' },
-    { size: 55, color: 'var(--ds-soft-rose)', left: '82%', delay: '7.5s', duration: '17s' },
-    { size: 65, color: 'var(--ds-soft-blue)', left: '15%', delay: '9s', duration: '19s' },
-    { size: 75, color: 'var(--ds-soft-lavender)', left: '45%', delay: '11s', duration: '13s' },
-    { size: 45, color: 'var(--ds-soft-mint)', left: '75%', delay: '2.5s', duration: '21s' },
-  ]
-
-  return (
-    <div aria-hidden className={cn('absolute inset-0 -z-10 overflow-hidden', className)}>
-      <div className="absolute inset-0 bg-background" />
-
-      {/* Rising pastel shapes */}
-      {shapes.map((s, i) => (
-        <div
-          key={i}
-          className="absolute rounded-3xl"
-          style={{
-            width: s.size,
-            height: s.size,
-            background: s.color,
-            left: s.left,
-            bottom: '-15%',
-            opacity: 0.55,
-            animation: `ds-rise-up ${s.duration} linear infinite`,
-            animationDelay: s.delay,
-            borderRadius: i % 3 === 0 ? '50%' : i % 3 === 1 ? '60% 40% 30% 70% / 60% 30% 70% 40%' : '30% 70% 70% 30% / 30% 30% 70% 70%',
-          }}
-        />
-      ))}
-
-      {/* Subtle dot grid overlay */}
-      <div
-        className="absolute inset-0 ds-dot-grid"
-        style={{ opacity: 0.2 }}
-      />
-
-      {/* Bottom fade */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-1/2"
-        style={{
-          background: 'var(--ds-bg-canvas)',
-          maskImage: 'linear-gradient(to top, black 0%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to top, black 0%, transparent 100%)',
         }}
       />
     </div>

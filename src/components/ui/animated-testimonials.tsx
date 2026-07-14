@@ -75,7 +75,7 @@ export function AnimatedTestimonials({
         type="button"
         onClick={handlePrev}
         disabled={count < 2}
-        aria-label="Previous prompt"
+        aria-label="Previous testimonial"
         className="group/button flex size-8 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-[var(--shadow-xs)] transition-colors hover:border-primary/35 hover:text-primary disabled:pointer-events-none disabled:opacity-50 sm:size-9"
       >
         <ChevronLeft className="size-4 transition-transform duration-300 group-hover/button:-translate-x-0.5" />
@@ -84,7 +84,7 @@ export function AnimatedTestimonials({
         type="button"
         onClick={handleNext}
         disabled={count < 2}
-        aria-label="Next prompt"
+        aria-label="Next testimonial"
         className="group/button flex size-8 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-[var(--shadow-xs)] transition-colors hover:border-primary/35 hover:text-primary disabled:pointer-events-none disabled:opacity-50 sm:size-9"
       >
         <ChevronRight className="size-4 transition-transform duration-300 group-hover/button:translate-x-0.5" />

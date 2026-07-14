@@ -8,19 +8,18 @@ import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animati
 import { SectionBackground } from '@/components/design-system/backgrounds'
 
 export const metadata: Metadata = {
-  title: 'Blog - AI Prompts, Templates & Web Development Guides | mtverse',
-  description: 'Practical guides on AI prompt engineering, Next.js dashboard templates, React architecture, Tailwind CSS design systems, and modern web development.',
+  title: 'Template Guides, Next.js UI & Web Development Blog | mtverse',
+  description: 'Practical guides for choosing, customizing, testing, and deploying Next.js dashboards, React admin interfaces, HTML templates, Tailwind CSS systems, and modern websites.',
   alternates: { canonical: '/blog' },
   openGraph: {
     title: 'Blog - mtverse',
-    description: 'Practical guides on AI prompts, dashboard templates, and modern web development.',
+    description: 'Practical guides on dashboard templates, React architecture, HTML websites, and modern web development.',
     url: SITE_URL + '/blog',
     type: 'website',
   },
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  'AI Prompts': 'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300',
   'React': 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-300',
   'CSS': 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300',
   'Next.js': 'bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300',
@@ -38,7 +37,7 @@ export default function BlogPage() {
     '@context': 'https://schema.org',
     '@type': 'Blog',
     name: 'mtverse Blog',
-    description: 'Practical guides on AI prompts, dashboard templates, and web development.',
+    description: 'Practical guides on dashboard templates, HTML websites, and web development.',
     url: SITE_URL + '/blog',
     publisher: {
       '@type': 'Organization',
@@ -75,7 +74,7 @@ export default function BlogPage() {
             </Reveal>
             <Reveal delay={0.16}>
               <p className="ds-lead ds-text-pretty">
-                Practical articles on AI prompt engineering, Next.js templates, React patterns, and modern web development.
+                Practical articles on Next.js templates, React patterns, responsive HTML websites, design systems, and production deployment.
               </p>
             </Reveal>
           </div>
@@ -174,12 +173,9 @@ export default function BlogPage() {
           <div className="ds-container max-w-3xl text-center">
             <Reveal>
               <h2 className="ds-h2 mb-3">Want to explore more?</h2>
-              <p className="ds-muted mb-6">Browse our prompt library or check out premium dashboard templates.</p>
+              <p className="ds-muted mb-6">Compare website templates or read focused guides for dashboards, HTML sites, and production launches.</p>
               <div className="flex flex-wrap items-center justify-center gap-3">
-                <Link href="/prompts" className="ds-btn ds-btn-primary ds-btn-lg">
-                  Browse prompts
-                </Link>
-                <Link href="/templates" className="ds-btn ds-btn-secondary ds-btn-lg">
+                <Link href="/templates" className="ds-btn ds-btn-primary ds-btn-lg">
                   View templates
                 </Link>
               </div>

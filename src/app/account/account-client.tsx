@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
-  Bot,
   Calendar,
   CheckCircle2,
   Clipboard,
@@ -18,7 +17,6 @@ import {
   Mail,
   PackageCheck,
   ShieldCheck,
-  Sparkles,
   WalletCards,
 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -49,17 +47,6 @@ type AccountTemplate = {
   canDownload: boolean
 }
 
-
-type AccountPrompt = {
-  slug: string
-  title: string
-  summary: string
-  previewImage: string
-  previewAlt: string
-  categoryTitle: string
-  subcategory: string
-  savedAt: string
-}
 type AccountUser = {
   email: string
   name?: string | null
@@ -100,7 +87,6 @@ export default function AccountClient() {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const [signingOut, setSigningOut] = useState(false)
   const [library, setLibrary] = useState<AccountTemplate[]>([])
-  const [promptLibrary, setPromptLibrary] = useState<AccountPrompt[]>([])
   const [libraryLoading, setLibraryLoading] = useState(false)
 
   useEffect(() => {
@@ -114,23 +100,20 @@ export default function AccountClient() {
 
     if (!authenticated) {
       setLibrary([])
-      setPromptLibrary([])
       return
     }
 
     setLibraryLoading(true)
     fetch('/api/account/templates', { credentials: 'include' })
       .then(async (response) => {
-        const payload = (await response.json().catch(() => null)) as { templates?: AccountTemplate[]; prompts?: AccountPrompt[] } | null
+        const payload = (await response.json().catch(() => null)) as { templates?: AccountTemplate[] } | null
         if (!cancelled) {
           setLibrary(response.ok && payload?.templates ? payload.templates : [])
-          setPromptLibrary(response.ok && payload?.prompts ? payload.prompts : [])
         }
       })
       .catch(() => {
         if (!cancelled) {
           setLibrary([])
-          setPromptLibrary([])
         }
       })
       .finally(() => {
@@ -144,7 +127,6 @@ export default function AccountClient() {
 
   const paidUnlockedTemplates = useMemo(() => library.filter((template) => template.purchased && template.canDownload), [library])
   const savedTemplates = useMemo(() => library.filter((template) => template.saved), [library])
-  const savedPrompts = promptLibrary
   const templateLibrary = useMemo(() => {
     const items = new Map<string, AccountTemplate>()
     for (const template of paidUnlockedTemplates) items.set(template.slug, template)
@@ -198,7 +180,7 @@ export default function AccountClient() {
             <div>
               <p className="ds-eyebrow ds-eyebrow-accent mb-2">Account</p>
               <h1 className="ds-h1">Account dashboard</h1>
-              <p className="mt-2 max-w-2xl text-sm text-muted-foreground">Manage saved prompts, saved templates, and paid template downloads from one clean workspace.</p>
+              <p className="mt-2 max-w-2xl text-sm text-muted-foreground">Manage saved templates, paid purchases, license access, and protected downloads from one clean workspace.</p>
             </div>
             <div className="flex flex-wrap justify-center gap-2">
               <Link href="/templates" className="ds-btn ds-btn-secondary">
@@ -258,7 +240,7 @@ export default function AccountClient() {
             </div>
           </section>
 
-          <section className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <section className="mb-6 grid gap-4 sm:grid-cols-3">
             <div className="ds-card p-5">
               <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 text-primary-700 dark:bg-primary-950/30 dark:text-primary-300">
                 <PackageCheck className="h-5 w-5" />
@@ -274,13 +256,6 @@ export default function AccountClient() {
               <p className="text-sm text-muted-foreground">Saved templates</p>
             </div>
             <div className="ds-card p-5">
-              <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-violet-50 text-violet-700 dark:bg-violet-950/30 dark:text-violet-300">
-                <Sparkles className="h-5 w-5" />
-              </div>
-              <div className="text-2xl font-semibold">{savedPrompts.length}</div>
-              <p className="text-sm text-muted-foreground">Saved prompts</p>
-            </div>
-            <div className="ds-card p-5">
               <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-300">
                 <ShieldCheck className="h-5 w-5" />
               </div>
@@ -293,63 +268,6 @@ export default function AccountClient() {
                 </button>
               ) : null}
             </div>
-          </section>
-
-
-          <section id="prompts" className="ds-card mb-6 p-6">
-            <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h2 className="ds-h3">Saved prompts</h2>
-                <p className="text-sm text-muted-foreground">Prompts you save with the heart button stay here for quick access.</p>
-              </div>
-              {libraryLoading ? <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /> : null}
-            </div>
-
-            {libraryLoading ? (
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {[0, 1, 2].map((item) => (
-                  <div key={item} className="h-40 animate-pulse rounded-lg border border-border bg-muted/50" />
-                ))}
-              </div>
-            ) : savedPrompts.length > 0 ? (
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {savedPrompts.map((prompt) => (
-                  <Link key={prompt.slug} href={`/prompts/${prompt.slug}`} className="group overflow-hidden rounded-lg border border-border bg-background transition hover:border-primary/40 hover:shadow-sm">
-                    <div className="relative aspect-[4/3] bg-muted">
-                      <Image
-                        src={prompt.previewImage}
-                        alt={prompt.previewAlt || prompt.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-contain transition-transform duration-300 group-hover:scale-[1.015]"
-                        unoptimized
-                      />
-                    </div>
-                    <div className="p-4">
-                      <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-primary-50 px-2.5 py-1 text-xs font-semibold text-primary-700 dark:bg-primary-950/30 dark:text-primary-300">
-                        <Bot className="h-3.5 w-3.5" />
-                        {prompt.categoryTitle}
-                      </div>
-                      <h3 className="line-clamp-2 font-semibold text-foreground">{prompt.title}</h3>
-                      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{prompt.summary}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <div className="rounded-lg border border-dashed border-border p-8 text-center">
-                <div className="mx-auto mb-3 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                  <Sparkles className="h-5 w-5" />
-                </div>
-                <h3 className="font-semibold">No saved prompts yet</h3>
-                <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-                  Open any prompt, tap the heart button, and it will appear here automatically.
-                </p>
-                <Link href="/prompts" className="ds-btn ds-btn-primary mt-5">
-                  Browse prompts
-                </Link>
-              </div>
-            )}
           </section>
 
           <section id="library" className="ds-card p-6">

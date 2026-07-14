@@ -216,7 +216,6 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
             </div>
             {/* Footer links */}
             <div className="mt-8 flex flex-wrap gap-2 text-sm">
-              <Link href="/prompts" className="ds-btn ds-btn-ghost ds-btn-sm">Free AI prompts</Link>
               <Link href="/html-templates" className="ds-btn ds-btn-ghost ds-btn-sm">Free HTML templates</Link>
               <Link href="/faq" className="ds-btn ds-btn-ghost ds-btn-sm">Template FAQ</Link>
               <Link href="/support" className="ds-btn ds-btn-ghost ds-btn-sm">Support</Link>

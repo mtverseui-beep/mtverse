@@ -8,7 +8,6 @@ export type CloudflareR2Config = {
   bucket: string
   packageBucket: string
   publicUrl: string
-  promptPreviewPrefix: string
   packagePrefix: string
   templatePreviewPrefix: string
   templatePackagePrefix: string
@@ -71,7 +70,6 @@ export function getCloudflareR2Config(): CloudflareR2Config {
     bucket,
     packageBucket: readEnv(process.env.CLOUDFLARE_R2_PACKAGE_BUCKET),
     publicUrl: readEnv(process.env.CLOUDFLARE_R2_PUBLIC_URL),
-    promptPreviewPrefix: readEnv(process.env.CLOUDFLARE_R2_PROMPT_PREVIEW_PREFIX) || 'prompt-previews',
     packagePrefix: readEnv(process.env.CLOUDFLARE_R2_PACKAGE_PREFIX) || 'packages',
     templatePreviewPrefix: readEnv(process.env.CLOUDFLARE_R2_TEMPLATE_PREVIEW_PREFIX) || 'template-previews',
     templatePackagePrefix: readEnv(process.env.CLOUDFLARE_R2_TEMPLATE_PACKAGE_PREFIX) || 'packages/dashboard-kits',
@@ -100,17 +98,6 @@ export function isCloudflareR2PackageStorageConfigured() {
     config.packageBucket &&
     config.packageBucket !== config.bucket
   )
-}
-
-export function buildR2PromptPreviewKey(slug: string, extension = 'jpg') {
-  const config = getCloudflareR2Config()
-  return `${trimSlashes(config.promptPreviewPrefix)}/${slug}.${normalizeImageExtension(extension)}`
-}
-
-export function buildR2PromptPreviewUrl(slug: string, extension = 'jpg') {
-  const config = getCloudflareR2Config()
-  const key = buildR2PromptPreviewKey(slug, extension)
-  return `${config.publicUrl.replace(/\/+$/g, '')}/${key}`
 }
 
 export function buildR2TemplatePreviewKey(slug: string, filename: string, extension = 'jpg') {

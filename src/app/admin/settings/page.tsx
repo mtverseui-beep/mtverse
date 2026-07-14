@@ -118,7 +118,7 @@ export default function AdminSettingsPage() {
             </div>
             <div>
               <label className="block text-xs font-medium mb-1.5 text-muted-foreground">Bucket name</label>
-              <input className="ds-input font-mono text-xs" placeholder="mtverse-prompts" />
+              <input className="ds-input font-mono text-xs" placeholder="mtverse" />
             </div>
             <div>
               <label className="block text-xs font-medium mb-1.5 text-muted-foreground">Access key ID</label>

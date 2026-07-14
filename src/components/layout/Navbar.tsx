@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   ArrowUpRight,
   ChevronDown,
@@ -14,7 +14,6 @@ import {
   Moon,
   PackageCheck,
   Search,
-  Sparkles,
   Sun,
   User,
   X,
@@ -25,13 +24,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/use-auth'
 import { fetchSiteSearch, type SiteSearchResult } from '@/lib/site-search'
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -45,13 +37,14 @@ import {
 
 const NAV_LINKS = [
   { name: 'Home', href: '/' },
-  { name: 'Prompts', href: '/prompts' },
   { name: 'Templates', href: '/templates' },
   { name: 'Pricing', href: '/pricing' },
   { name: 'Blog', href: '/blog' },
 ]
 
 const DEFAULT_USER_AVATAR = '/default-3d-avatar.jpg'
+const DRAWER_ID = 'mtverse-mobile-navigation'
+const AUTH_NEXT_BLOCKED_PATHS = ['/sign-in', '/sign-up', '/forgot-password', '/reset-password', '/admin-login', '/api']
 
 type NavUser = {
   email: string
@@ -89,15 +82,11 @@ function UserAvatar({ user, size = 'sm' }: { user: NavUser; size?: 'sm' | 'md' |
   )
 }
 
-const AUTH_NEXT_BLOCKED_PATHS = ['/sign-in', '/sign-up', '/forgot-password', '/reset-password', '/admin-login', '/api']
-
 function getCurrentAuthNextPath() {
   if (typeof window === 'undefined') return '/'
-
   const pathname = window.location.pathname || '/'
   const normalizedPathname = pathname.replace(/\/+$/, '') || '/'
   const isBlocked = AUTH_NEXT_BLOCKED_PATHS.some((path) => normalizedPathname === path || normalizedPathname.startsWith(`${path}/`))
-
   if (isBlocked) return '/account'
   return `${pathname}${window.location.search}${window.location.hash}`
 }
@@ -106,12 +95,18 @@ function getAuthHref(path: '/sign-in' | '/sign-up', nextPath: string) {
   return `${path}?next=${encodeURIComponent(nextPath || '/')}`
 }
 
-export default function Navbar({ promptCount }: { promptCount?: number }) {
+function isRouteActive(pathname: string, href: string) {
+  return href === '/' ? pathname === '/' : pathname.startsWith(href)
+}
+
+export default function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
-  const { theme, setTheme } = useTheme()
+  const { resolvedTheme, setTheme } = useTheme()
   const { user, authenticated, loading, signOut } = useAuth()
   const [mounted, setMounted] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const [searchResults, setSearchResults] = useState<SiteSearchResult[]>([])
@@ -121,35 +116,71 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const [signingOut, setSigningOut] = useState(false)
   const [authNextPath, setAuthNextPath] = useState('/')
+
+  const tickingRef = useRef(false)
+  const lastScrolledRef = useRef(false)
+  const mobileWasOpenRef = useRef(false)
+  const hamburgerRef = useRef<HTMLButtonElement>(null)
+  const firstMobileLinkRef = useRef<HTMLAnchorElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const userMenuRef = useRef<HTMLDivElement>(null)
 
+  useEffect(() => setMounted(true), [])
+
   useEffect(() => {
-    setMounted(true)
+    const handleScroll = () => {
+      if (tickingRef.current) return
+      tickingRef.current = true
+      window.requestAnimationFrame(() => {
+        const nextScrolled = window.scrollY > 20
+        if (nextScrolled !== lastScrolledRef.current) {
+          lastScrolledRef.current = nextScrolled
+          setIsScrolled(nextScrolled)
+        }
+        tickingRef.current = false
+      })
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
     setAuthNextPath(getCurrentAuthNextPath())
+    setMobileMenuOpen(false)
+    setSearchOpen(false)
+    setUserMenuOpen(false)
   }, [pathname])
 
   useEffect(() => {
-    if (loading || !authenticated) return
+    if (!mobileMenuOpen) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = previousOverflow }
+  }, [mobileMenuOpen])
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      mobileWasOpenRef.current = true
+      const timer = window.setTimeout(() => firstMobileLinkRef.current?.focus(), 180)
+      return () => window.clearTimeout(timer)
+    }
+    if (mobileWasOpenRef.current) {
+      mobileWasOpenRef.current = false
+      hamburgerRef.current?.focus()
+    }
+  }, [mobileMenuOpen])
+
+  useEffect(() => {
+    if (loading || !authenticated) return
     const toastKind = window.sessionStorage.getItem('mtverse:auth-success-toast')
     if (!toastKind) return
-
     window.sessionStorage.removeItem('mtverse:auth-success-toast')
-
     if (toastKind === 'sign-up') {
-      toast.success('Account created successfully', {
-        description: 'You are signed in now.',
-      })
+      toast.success('Account created successfully', { description: 'You are signed in now.' })
       return
     }
-
-    toast.success('Logged in successfully', {
-      description: 'Welcome back to mtverse.',
-    })
+    toast.success('Logged in successfully', { description: 'Welcome back to mtverse.' })
   }, [authenticated, loading])
 
   useEffect(() => {
@@ -158,19 +189,16 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
 
   useEffect(() => {
     const query = searchValue.trim()
-
-    if (!searchOpen || query.length < 2) {
+    if ((!searchOpen && !mobileMenuOpen) || query.length < 2) {
       setSearchResults([])
       setSearchLoading(false)
       setSearchError(false)
       return
     }
-
     const controller = new AbortController()
     const timeout = window.setTimeout(() => {
       setSearchLoading(true)
       setSearchError(false)
-
       fetchSiteSearch(query, 8, controller.signal)
         .then((results) => {
           if (!controller.signal.aborted) {
@@ -188,67 +216,65 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
           if (!controller.signal.aborted) setSearchLoading(false)
         })
     }, 180)
-
     return () => {
       controller.abort()
       window.clearTimeout(timeout)
     }
-  }, [searchOpen, searchValue])
+  }, [mobileMenuOpen, searchOpen, searchValue])
 
   useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
-        setUserMenuOpen(false)
-      }
+    if (!userMenuOpen) return
+    const handleClick = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) setUserMenuOpen(false)
     }
-
-    if (userMenuOpen) {
-      document.addEventListener('mousedown', handleClick)
-      return () => document.removeEventListener('mousedown', handleClick)
-    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
   }, [userMenuOpen])
 
   useEffect(() => {
-    function handleKey(e: KeyboardEvent) {
-      const activeElement = document.activeElement?.tagName
-      const isTyping = activeElement === 'INPUT' || activeElement === 'TEXTAREA'
-
-      if (e.key === '/' && !isTyping) {
-        e.preventDefault()
+    const handleKey = (event: KeyboardEvent) => {
+      const tag = document.activeElement?.tagName
+      const isTyping = tag === 'INPUT' || tag === 'TEXTAREA'
+      if (event.key === '/' && !isTyping && !mobileMenuOpen) {
+        event.preventDefault()
         setSearchOpen(true)
       }
-
-      if (e.key === 'Escape') {
+      if (event.key === 'Escape') {
         setSearchOpen(false)
         setSearchResults([])
         setUserMenuOpen(false)
+        setMobileMenuOpen(false)
       }
     }
-
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
-  }, [])
+  }, [mobileMenuOpen])
 
-  function closeSearch() {
+  const closeSearch = useCallback(() => {
     setSearchOpen(false)
     setSearchValue('')
     setSearchResults([])
     setSearchError(false)
     setSearchLoading(false)
-  }
+  }, [])
+
+  const toggleTheme = useCallback(() => {
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
+  }, [resolvedTheme, setTheme])
 
   function openSearchResult(result: SiteSearchResult) {
     router.push(result.href)
+    setMobileMenuOpen(false)
     closeSearch()
   }
 
-  function handleSearchSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    const q = searchValue.trim()
-    if (!q) return
-
+  function handleSearchSubmit(event: React.FormEvent) {
+    event.preventDefault()
+    const query = searchValue.trim()
+    if (!query) return
     const firstResult = searchResults[0]
-    router.push(firstResult ? firstResult.href : `/templates?search=${encodeURIComponent(q)}`)
+    router.push(firstResult ? firstResult.href : `/templates?search=${encodeURIComponent(query)}`)
+    setMobileMenuOpen(false)
     closeSearch()
   }
 
@@ -272,403 +298,285 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
   const signInHref = getAuthHref('/sign-in', authNextPath)
   const signUpHref = getAuthHref('/sign-up', authNextPath)
   const authPending = !mounted || loading
-
+  const compact = isScrolled
   return (
     <>
-      <header className="sticky top-0 z-[900] h-16 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85">
-        <div className="mx-auto flex h-full max-w-[1920px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="group flex shrink-0 items-center gap-2">
-            <Image
-              src="/SiteLogo.png"
-              alt="mtverse"
-              width={32}
-              height={32}
-              className="rounded-lg transition-transform group-hover:scale-105"
-            />
-            <span className="hidden text-base font-bold tracking-tight sm:inline-block">mtverse</span>
-          </Link>
+      <header className={cn('sticky top-0 z-[900] h-20 transition-[padding] duration-500 ease-out', compact ? 'px-3 py-3 sm:px-4' : 'px-0 py-0')}>
+        <nav
+          aria-label="Primary navigation"
+          className={cn(
+            'relative mx-auto transition-[max-width,background-color,border-color,border-radius,box-shadow,backdrop-filter] duration-500 ease-out',
+            compact || mobileMenuOpen
+              ? 'max-w-[1200px] rounded-2xl border border-foreground/10 bg-background/85 shadow-lg shadow-black/[0.06] backdrop-blur-xl dark:shadow-black/30'
+              : 'max-w-[1400px] border border-transparent bg-transparent'
+          )}
+        >
+          <div className={cn('flex items-center justify-between gap-3 px-4 transition-[height,padding] duration-500 ease-out sm:px-6 lg:px-8', compact ? 'h-14' : 'h-20')}>
+            <Link href="/" className="group flex min-w-0 shrink-0 items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40" aria-label="mtverse home">
+              <Image
+                src="/SiteLogo.png"
+                alt=""
+                width={32}
+                height={32}
+                priority
+                className={cn('rounded-lg transition-[width,height,transform] duration-500 group-hover:scale-105', compact ? 'h-7 w-7' : 'h-8 w-8')}
+              />
+              <span className={cn('font-bold tracking-normal transition-[font-size] duration-500', compact ? 'text-lg' : 'text-xl')}>mtverse</span>
+            </Link>
 
-          <nav className="hidden items-center gap-1 md:flex">
-            {NAV_LINKS.map((link) => {
-              const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href)
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    'inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition-all',
-                    isActive
-                      ? 'bg-primary/10 text-primary-700 dark:text-primary-300'
-                      : 'text-muted-foreground hover:bg-accent/70 hover:text-foreground'
-                  )}
-                >
-                  {link.name}
-                  {link.name === 'Prompts' && typeof promptCount === 'number' ? (
-                    <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
-                      {promptCount}
-                    </span>
-                  ) : null}
-                </Link>
-              )
-            })}
-          </nav>
-
-          <div className="flex items-center gap-2">
-            <div className="relative hidden items-center sm:flex">
-              <AnimatePresence mode="wait" initial={false}>
-                {searchOpen ? (
-                  <motion.form
-                    key="search-open"
-                    onSubmit={handleSearchSubmit}
-                    initial={{ width: 40, opacity: 0 }}
-                    animate={{ width: 340, opacity: 1 }}
-                    exit={{ width: 40, opacity: 0 }}
-                    transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                    className="relative flex h-9 items-center gap-1.5 rounded-full border border-primary-300 bg-background pl-3 pr-1.5 shadow-sm"
+            <div className="hidden items-center gap-7 lg:flex">
+              {NAV_LINKS.map((link) => {
+                const active = isRouteActive(pathname, link.href)
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-current={active ? 'page' : undefined}
+                    className={cn(
+                      'group relative rounded-sm text-sm font-medium tracking-normal transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40',
+                      active ? 'text-foreground' : 'text-foreground/65 hover:text-foreground'
+                    )}
                   >
-                    <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
-                    <input
-                      ref={searchInputRef}
-                      type="search"
-                      value={searchValue}
-                      onChange={(e) => setSearchValue(e.target.value)}
-                      placeholder="Search prompts and templates..."
-                      className="w-full flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-                    />
-                    <kbd className="hidden h-5 select-none items-center rounded border bg-muted px-1.5 font-mono text-[10px] text-muted-foreground md:inline-flex">
-                      ESC
-                    </kbd>
-                    <button
-                      type="button"
-                      onClick={closeSearch}
-                      className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground"
-                      aria-label="Close search"
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </button>
-
-                    {searchValue.trim().length >= 2 ? (
-                      <div className="absolute right-0 top-11 z-[950] w-full overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl ring-1 ring-black/5">
-                        <div className="max-h-[420px] overflow-y-auto p-2">
-                          {searchLoading ? (
-                            <div className="flex items-center gap-2 rounded-xl px-3 py-3 text-sm text-muted-foreground">
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                              Searching mtverse...
-                            </div>
-                          ) : searchError ? (
-                            <div className="rounded-xl px-3 py-3 text-sm text-rose-600">Search is temporarily unavailable.</div>
-                          ) : searchResults.length ? (
-                            <div className="space-y-1">
-                              {searchResults.map((result) => (
-                                <button
-                                  key={result.id}
-                                  type="button"
-                                  onMouseDown={(event) => event.preventDefault()}
-                                  onClick={() => openSearchResult(result)}
-                                  className="group flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
-                                >
-                                  <span className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-primary">
-                                    {result.type === 'template' ? <LayoutDashboard className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />}
-                                  </span>
-                                  <span className="min-w-0 flex-1">
-                                    <span className="flex items-center gap-2">
-                                      <span className="truncate text-sm font-semibold text-foreground">{result.title}</span>
-                                      <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground">{result.badge}</span>
-                                    </span>
-                                    <span className="mt-0.5 line-clamp-2 text-xs leading-5 text-muted-foreground">{result.description}</span>
-                                  </span>
-                                  <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-                                </button>
-                              ))}
-                            </div>
-                          ) : (
-                            <div className="rounded-xl px-3 py-3 text-sm text-muted-foreground">No results found. Press Enter to search prompts.</div>
-                          )}
-                        </div>
-                      </div>
-                    ) : null}
-                  </motion.form>
-                ) : (
-                  <motion.button
-                    key="search-closed"
-                    onClick={() => setSearchOpen(true)}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                    className="inline-flex h-9 items-center gap-2 rounded-full border border-input bg-background px-3 text-sm text-muted-foreground transition-all hover:border-primary-300 hover:text-foreground"
-                    aria-label="Open search"
-                  >
-                    <Search className="h-4 w-4" />
-                    <span className="hidden lg:inline">Search...</span>
-                    <kbd className="hidden h-5 select-none items-center rounded border bg-muted px-1.5 font-mono text-[10px] text-muted-foreground lg:inline-flex">
-                      /
-                    </kbd>
-                  </motion.button>
-                )}
-              </AnimatePresence>
+                    {link.name}
+                    <span className={cn('absolute -bottom-1 left-0 h-px bg-foreground transition-[width] duration-300', active ? 'w-full' : 'w-0 group-hover:w-full')} />
+                  </Link>
+                )
+              })}
             </div>
 
-            <button
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-input bg-background text-muted-foreground transition-all hover:bg-accent/70 hover:text-foreground"
-              aria-label="Toggle theme"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            >
-              {mounted && theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
-
-            {authPending ? (
-              <div className="hidden items-center gap-2 md:flex">
-                <div className="h-9 w-24 animate-pulse rounded-full bg-muted/70" />
+            <div className="flex min-w-0 items-center gap-2">
+              <div className="relative hidden items-center lg:flex">
+                <AnimatePresence mode="wait" initial={false}>
+                  {searchOpen ? (
+                    <motion.form
+                      key="search-open"
+                      onSubmit={handleSearchSubmit}
+                      initial={{ width: compact ? 32 : 36, opacity: 0, scale: 0.96 }}
+                      animate={{ width: compact ? 280 : 320, opacity: 1 }}
+                      exit={{ width: compact ? 32 : 36, opacity: 0, scale: 0.96 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 30, mass: 0.8 }}
+                      className="relative flex h-9 items-center gap-1.5 rounded-full border border-foreground/15 bg-background/95 pl-3 pr-1.5 shadow-lg shadow-black/[0.06] ring-1 ring-foreground/[0.04] backdrop-blur-xl"
+                    >
+                      <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+                      <input
+                        ref={searchInputRef}
+                        type="search"
+                        value={searchValue}
+                        onChange={(event) => setSearchValue(event.target.value)}
+                        placeholder="Search templates..."
+                        className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+                      />
+                      <kbd className="hidden h-5 select-none items-center rounded border bg-muted px-1.5 font-mono text-[10px] text-muted-foreground xl:inline-flex">ESC</kbd>
+                      <button type="button" onClick={closeSearch} className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground" aria-label="Close search">
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                      <DesktopSearchResults query={searchValue} loading={searchLoading} error={searchError} results={searchResults} onSelect={openSearchResult} />
+                    </motion.form>
+                  ) : (
+                    <motion.button
+                      key="search-closed"
+                      type="button"
+                      onClick={() => setSearchOpen(true)}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.18 }}
+                      whileHover={{ scale: 1.04 }}
+                      whileTap={{ scale: 0.96 }}
+                      className={cn('inline-flex items-center justify-center rounded-full border border-foreground/15 bg-background/70 text-foreground/65 shadow-sm transition-colors hover:border-foreground/35 hover:bg-background hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40', compact ? 'h-8 w-8' : 'h-9 w-9')}
+                      aria-label="Search templates"
+                      title="Search templates (/)"
+                    >
+                      <Search className="h-4 w-4" />
+                    </motion.button>
+                  )}
+                </AnimatePresence>
               </div>
-            ) : authenticated && user ? (
-              <div ref={userMenuRef} className="relative hidden md:block">
-                <button
-                  onClick={() => setUserMenuOpen((open) => !open)}
-                  className="inline-flex h-9 items-center gap-2 rounded-full border border-border/60 bg-background px-1.5 pr-3 text-sm font-medium transition-all hover:border-primary/30 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-                  aria-label="User menu"
-                  aria-haspopup="menu"
-                  aria-expanded={userMenuOpen}
-                >
-                  <UserAvatar user={user} />
-                  <span className="hidden max-w-[100px] truncate text-xs font-semibold xl:inline">{displayName}</span>
-                  <ChevronDown className={cn('h-3.5 w-3.5 text-muted-foreground transition-transform', userMenuOpen && 'rotate-180')} />
-                </button>
 
-                {userMenuOpen ? (
-                  <div className="absolute right-0 top-11 z-50 w-64 overflow-hidden rounded-2xl border border-border/60 bg-popover p-1.5 shadow-xl animate-in fade-in-0 zoom-in-95 duration-150">
-                    {/* User info header */}
-                    <div className="flex items-center gap-3 rounded-xl bg-muted/50 p-3 mb-1">
-                      <UserAvatar user={user} size="lg" />
-                      <div className="min-w-0">
-                        <div className="truncate text-sm font-semibold">{displayName}</div>
-                        <div className="truncate text-[11px] text-muted-foreground">{user.email}</div>
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className={cn('inline-flex items-center justify-center rounded-full border border-foreground/15 text-foreground transition-[width,height,border-color,background-color] duration-500 hover:border-foreground/40 hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40', compact ? 'h-8 w-8' : 'h-9 w-9')}
+                aria-label={resolvedTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+              >
+                {!mounted ? <Sun className="h-4 w-4 opacity-50" /> : resolvedTheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              </button>
+
+              <div className="hidden lg:block">
+                {authPending ? (
+                  <div className={cn('animate-pulse rounded-full bg-muted/70', compact ? 'h-8 w-20' : 'h-9 w-24')} />
+                ) : authenticated && user ? (
+                  <div ref={userMenuRef} className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setUserMenuOpen((open) => !open)}
+                      className={cn('inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-background/80 font-medium text-foreground transition-all hover:border-foreground/35 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40', compact ? 'h-8 px-1 pr-2.5' : 'h-9 px-1.5 pr-3')}
+                      aria-label="User menu"
+                      aria-haspopup="menu"
+                      aria-expanded={userMenuOpen}
+                    >
+                      <UserAvatar user={user} />
+                      <span className="hidden max-w-[96px] truncate text-xs font-semibold xl:inline">{displayName}</span>
+                      <ChevronDown className={cn('h-3.5 w-3.5 text-muted-foreground transition-transform', userMenuOpen && 'rotate-180')} />
+                    </button>
+                    <UserMenu open={userMenuOpen} user={user} displayName={displayName} onClose={() => setUserMenuOpen(false)} onSignOut={() => { setUserMenuOpen(false); setShowLogoutConfirm(true) }} />
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Link href={signInHref} className={cn('inline-flex items-center text-foreground/65 transition-all hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40', compact ? 'h-8 px-2 text-xs' : 'h-9 px-3 text-sm')}>Sign in</Link>
+                    <Link href={signUpHref} className={cn('inline-flex items-center justify-center rounded-full bg-foreground font-medium text-background transition-all hover:bg-foreground/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background', compact ? 'h-8 px-4 text-xs' : 'h-10 px-5 text-sm')}>Get started</Link>
+                  </div>
+                )}
+              </div>
+
+              {!authPending && authenticated && user ? (
+                <Link href="/account" className="relative inline-flex h-9 w-9 items-center justify-center lg:hidden" aria-label="Open account">
+                  <UserAvatar user={user} />
+                  <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-background bg-emerald-500" />
+                </Link>
+              ) : null}
+
+              <button
+                ref={hamburgerRef}
+                type="button"
+                onClick={() => setMobileMenuOpen((open) => !open)}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 text-foreground transition-colors hover:border-foreground/35 hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 lg:hidden"
+                aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={mobileMenuOpen}
+                aria-controls={DRAWER_ID}
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  {mobileMenuOpen ? (
+                    <motion.span key="close" initial={{ opacity: 0, rotate: -90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: 90 }} transition={{ duration: 0.18 }}><X className="h-5 w-5" /></motion.span>
+                  ) : (
+                    <motion.span key="menu" initial={{ opacity: 0, rotate: 90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: -90 }} transition={{ duration: 0.18 }}><Menu className="h-5 w-5" /></motion.span>
+                  )}
+                </AnimatePresence>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <AnimatePresence>
+        {mobileMenuOpen ? (
+          <motion.div
+            id={DRAWER_ID}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[880] bg-background lg:hidden"
+          >
+            <div className="mx-auto flex h-full w-full max-w-3xl flex-col overflow-y-auto px-5 pb-6 pt-28 sm:px-8">
+              <motion.div
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                variants={{ hidden: {}, show: { transition: { staggerChildren: 0.075, delayChildren: 0.08 } } }}
+                className="flex flex-1 flex-col justify-center gap-5"
+              >
+                {NAV_LINKS.map((link, index) => {
+                  const active = isRouteActive(pathname, link.href)
+                  return (
+                    <motion.div
+                      key={link.href}
+                      variants={{
+                        hidden: { opacity: 0, y: 18 },
+                        show: { opacity: 1, y: 0, transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] } },
+                      }}
+                    >
+                      <Link
+                        ref={index === 0 ? firstMobileLinkRef : undefined}
+                        href={link.href}
+                        aria-current={active ? 'page' : undefined}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={cn('inline-flex rounded-md text-4xl font-bold tracking-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 sm:text-5xl', active ? 'text-foreground' : 'text-foreground/45 hover:text-foreground')}
+                      >
+                        {link.name}
+                      </Link>
+                    </motion.div>
+                  )
+                })}
+
+                <motion.form
+                  onSubmit={handleSearchSubmit}
+                  variants={{
+                    hidden: { opacity: 0, y: 18 },
+                    show: { opacity: 1, y: 0, transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] } },
+                  }}
+                  className="relative mt-4"
+                >
+                  <div className="flex h-14 items-center gap-3 rounded-2xl border border-foreground/15 bg-foreground/[0.03] px-4 focus-within:border-foreground/35">
+                    <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
+                    <input
+                      type="search"
+                      value={searchValue}
+                      onChange={(event) => setSearchValue(event.target.value)}
+                      placeholder="Search templates"
+                      className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
+                    />
+                    {searchLoading ? <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" /> : null}
+                  </div>
+                  <MobileSearchResults query={searchValue} error={searchError} results={searchResults} onSelect={openSearchResult} />
+                </motion.form>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 16 }}
+                transition={{ duration: 0.42, delay: 0.3 }}
+                className="border-t border-foreground/10 pt-5"
+              >
+                {authPending ? (
+                  <div className="flex h-14 items-center justify-center"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
+                ) : authenticated && user ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 rounded-2xl border border-foreground/10 bg-foreground/[0.03] p-3">
+                      <UserAvatar user={user} size="md" />
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate text-sm font-semibold text-foreground">{displayName}</div>
+                        <div className="truncate text-xs text-muted-foreground">{user.email}</div>
                       </div>
                     </div>
-
-                    {/* Menu items */}
-                    <div className="grid gap-0.5">
-                      <Link
-                        href="/account"
-                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent"
-                        onClick={() => setUserMenuOpen(false)}
-                      >
-                        <User className="h-4 w-4 text-muted-foreground" />
-                        Account
+                    <div className="grid grid-cols-2 gap-3">
+                      <Link href="/account" onClick={() => setMobileMenuOpen(false)} className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-foreground/20 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5">
+                        <User className="h-4 w-4" />Account
                       </Link>
-                      <Link
-                        href="/account#library"
-                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent"
-                        onClick={() => setUserMenuOpen(false)}
-                      >
-                        <PackageCheck className="h-4 w-4 text-muted-foreground" />
-                        My templates
-                      </Link>
-                      <Link
-                        href="/templates"
-                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent"
-                        onClick={() => setUserMenuOpen(false)}
-                      >
-                        <LayoutDashboard className="h-4 w-4 text-muted-foreground" />
-                        Browse templates
-                      </Link>
-                    </div>
-
-                    {/* Divider + sign out */}
-                    <div className="mt-1 border-t border-border/60 pt-1">
-                      <button
-                        onClick={() => {
-                          setUserMenuOpen(false)
-                          setShowLogoutConfirm(true)
-                        }}
-                        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium text-rose-600 transition-colors hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/20"
-                      >
-                        <LogOut className="h-4 w-4" />
-                        Sign out
+                      <button type="button" onClick={() => { setMobileMenuOpen(false); setShowLogoutConfirm(true) }} className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-foreground text-sm font-medium text-background transition-colors hover:bg-foreground/90">
+                        <LogOut className="h-4 w-4" />Sign out
                       </button>
                     </div>
                   </div>
-                ) : null}
-              </div>
-            ) : (
-              <div className="hidden items-center gap-2 md:flex">
-                <Link
-                  href={signInHref}
-                  className="inline-flex h-9 items-center rounded-full px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  Sign in
-                </Link>
-                <Link href={signUpHref} className="ds-btn ds-btn-primary ds-btn-sm">
-                  Get started
-                </Link>
-              </div>
-            )}
-
-            {!authPending && authenticated && user ? (
-              <Link
-                href="/account"
-                className="relative inline-flex h-9 w-9 items-center justify-center rounded-full md:hidden"
-                aria-label="Open account"
-              >
-                <UserAvatar user={user} />
-                <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-background bg-emerald-500" />
-              </Link>
-            ) : null}
-
-            <Sheet>
-              <SheetTrigger asChild>
-                <button
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-input bg-background text-foreground md:hidden"
-                  aria-label="Open menu"
-                >
-                  <Menu className="h-5 w-5" />
-                </button>
-              </SheetTrigger>
-              <SheetContent side="right" className="flex w-[300px] flex-col p-0 sm:w-[360px]">
-                <div className="flex items-center justify-between border-b border-border bg-[var(--ds-bg-sunken)] px-5 py-4">
-                  <SheetTitle className="flex items-center gap-2">
-                    <Image src="/SiteLogo.png" alt="mtverse" width={28} height={28} className="rounded-md" />
-                    <span className="text-base font-bold tracking-tight">mtverse</span>
-                  </SheetTitle>
-                  <SheetClose asChild>
-                    <button className="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground hover:bg-accent" aria-label="Close menu">
-                      <X className="h-4 w-4" />
-                    </button>
-                  </SheetClose>
-                </div>
-
-                <div className="space-y-1 px-4 py-4">
-                  {NAV_LINKS.map((link) => {
-                    const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href)
-                    return (
-                      <SheetClose asChild key={link.href}>
-                        <Link
-                          href={link.href}
-                          className={cn(
-                            'flex items-center justify-between rounded-lg border px-4 py-3 text-base font-medium transition-all',
-                            isActive
-                              ? 'border-primary/20 bg-primary/10 text-primary-700 dark:text-primary-300'
-                              : 'border-transparent text-foreground hover:bg-accent'
-                          )}
-                        >
-                          <span>{link.name}</span>
-                          {link.name === 'Prompts' && typeof promptCount === 'number' ? (
-                            <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">{promptCount}</span>
-                          ) : null}
-                        </Link>
-                      </SheetClose>
-                    )
-                  })}
-                </div>
-
-                <div className="px-4 pb-4">
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault()
-                      const input = e.currentTarget.querySelector('input')
-                      const q = input?.value?.trim()
-                      if (q) {
-                        window.location.href = `/prompts?q=${encodeURIComponent(q)}`
-                      }
-                    }}
-                    className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 transition-all focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
-                  >
-                    <Search className="h-4 w-4 text-muted-foreground shrink-0" />
-                    <input
-                      type="search"
-                      placeholder="Search prompts & templates..."
-                      className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-                    />
-                  </form>
-                </div>
-
-                <div className="mt-auto border-t border-border px-4 pb-6 pt-4">
-                  {authPending ? (
-                    <div className="flex items-center justify-center py-4">
-                      <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                    </div>
-                  ) : authenticated && user ? (
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-3 rounded-lg bg-[var(--ds-bg-sunken)] p-3">
-                        <UserAvatar user={user} size="md" />
-                        <div className="min-w-0">
-                          <div className="truncate text-sm font-semibold">{displayName}</div>
-                          <div className="truncate text-xs text-muted-foreground">{user.email}</div>
-                        </div>
-                      </div>
-                      <SheetClose asChild>
-                        <Link href="/account" className="ds-btn ds-btn-secondary w-full">
-                          <User className="h-4 w-4" />
-                          My account
-                        </Link>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Link href="/account#library" className="ds-btn ds-btn-secondary w-full">
-                          <PackageCheck className="h-4 w-4" />
-                          Template library
-                        </Link>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <button
-                          onClick={() => setShowLogoutConfirm(true)}
-                          className="ds-btn ds-btn-ghost w-full text-rose-600 dark:text-rose-400"
-                        >
-                          <LogOut className="h-4 w-4" />
-                          Sign out
-                        </button>
-                      </SheetClose>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      <SheetClose asChild>
-                        <Link href={signInHref} className="ds-btn ds-btn-secondary w-full">
-                          Sign in
-                        </Link>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Link href={signUpHref} className="ds-btn ds-btn-primary w-full">
-                          <Sparkles className="h-4 w-4" />
-                          Get started
-                        </Link>
-                      </SheetClose>
-                    </div>
-                  )}
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
-        </div>
-      </header>
+                ) : (
+                  <div className="grid grid-cols-2 gap-3">
+                    <Link href={signInHref} onClick={() => setMobileMenuOpen(false)} className="inline-flex h-12 items-center justify-center rounded-full border border-foreground/20 text-sm font-medium text-foreground transition-colors hover:bg-foreground/5">Sign in</Link>
+                    <Link href={signUpHref} onClick={() => setMobileMenuOpen(false)} className="inline-flex h-12 items-center justify-center rounded-full bg-foreground text-sm font-medium text-background transition-colors hover:bg-foreground/90">Get started</Link>
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       <AlertDialog open={showLogoutConfirm} onOpenChange={setShowLogoutConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Sign out of mtverse?</AlertDialogTitle>
-            <AlertDialogDescription>
-              You will need to sign in again to access your account, purchased templates, and saved templates.
-            </AlertDialogDescription>
+            <AlertDialogDescription>You will need to sign in again to access your account, purchased templates, and saved templates.</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={signingOut}>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={(event) => {
-                event.preventDefault()
-                void handleLogout()
-              }}
+              onClick={(event) => { event.preventDefault(); void handleLogout() }}
               disabled={signingOut}
               className="bg-rose-600 text-white hover:bg-rose-700"
             >
-              {signingOut ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Signing out...
-                </>
-              ) : (
-                <>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Sign out
-                </>
-              )}
+              {signingOut ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Signing out...</> : <><LogOut className="mr-2 h-4 w-4" />Sign out</>}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -676,4 +584,112 @@ export default function Navbar({ promptCount }: { promptCount?: number }) {
     </>
   )
 }
+function DesktopSearchResults({ query, loading, error, results, onSelect }: {
+  query: string
+  loading: boolean
+  error: boolean
+  results: SiteSearchResult[]
+  onSelect: (result: SiteSearchResult) => void
+}) {
+  if (query.trim().length < 2) return null
 
+  return (
+    <div className="absolute right-0 top-11 z-[950] w-full min-w-[320px] overflow-hidden rounded-2xl border border-foreground/10 bg-popover shadow-2xl ring-1 ring-black/5">
+      <div className="max-h-[420px] overflow-y-auto p-2">
+        {loading ? (
+          <div className="flex items-center gap-2 rounded-xl px-3 py-3 text-sm text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" />Searching templates...</div>
+        ) : error ? (
+          <div className="rounded-xl px-3 py-3 text-sm text-rose-600">Search is temporarily unavailable.</div>
+        ) : results.length ? (
+          <div className="space-y-1">
+            {results.map((result) => (
+              <button
+                key={result.id}
+                type="button"
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => onSelect(result)}
+                className="group flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
+              >
+                <span className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-primary"><LayoutDashboard className="h-4 w-4" /></span>
+                <span className="min-w-0 flex-1">
+                  <span className="flex items-center gap-2">
+                    <span className="truncate text-sm font-semibold text-foreground">{result.title}</span>
+                    <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold uppercase tracking-normal text-muted-foreground">{result.badge}</span>
+                  </span>
+                  <span className="mt-0.5 line-clamp-2 text-xs leading-5 text-muted-foreground">{result.description}</span>
+                </span>
+                <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-xl px-3 py-3 text-sm text-muted-foreground">No templates found. Press Enter to search the catalog.</div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function MobileSearchResults({ query, error, results, onSelect }: {
+  query: string
+  error: boolean
+  results: SiteSearchResult[]
+  onSelect: (result: SiteSearchResult) => void
+}) {
+  if (query.trim().length < 2 || (!error && !results.length)) return null
+
+  return (
+    <div className="mt-2 max-h-44 overflow-y-auto rounded-2xl border border-foreground/10 bg-foreground/[0.03] p-1.5">
+      {error ? (
+        <div className="px-3 py-2 text-sm text-rose-600">Search is temporarily unavailable.</div>
+      ) : (
+        results.slice(0, 4).map((result) => (
+          <button key={result.id} type="button" onClick={() => onSelect(result)} className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-foreground/[0.06]">
+            <LayoutDashboard className="h-4 w-4 shrink-0 text-muted-foreground" />
+            <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">{result.title}</span>
+            <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+          </button>
+        ))
+      )}
+    </div>
+  )
+}
+
+function UserMenu({ open, user, displayName, onClose, onSignOut }: {
+  open: boolean
+  user: NavUser
+  displayName: string
+  onClose: () => void
+  onSignOut: () => void
+}) {
+  return (
+    <AnimatePresence>
+      {open ? (
+        <motion.div
+          role="menu"
+          initial={{ opacity: 0, y: -6, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -6, scale: 0.98 }}
+          transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute right-0 top-11 z-[950] w-64 overflow-hidden rounded-2xl border border-foreground/10 bg-popover p-1.5 shadow-xl"
+        >
+          <div className="mb-1 flex items-center gap-3 rounded-xl bg-muted/50 p-3">
+            <UserAvatar user={user} size="lg" />
+            <div className="min-w-0">
+              <div className="truncate text-sm font-semibold">{displayName}</div>
+              <div className="truncate text-[11px] text-muted-foreground">{user.email}</div>
+            </div>
+          </div>
+          <div className="grid gap-0.5">
+            <Link href="/account" role="menuitem" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent" onClick={onClose}><User className="h-4 w-4 text-muted-foreground" />Account</Link>
+            <Link href="/account#library" role="menuitem" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent" onClick={onClose}><PackageCheck className="h-4 w-4 text-muted-foreground" />My templates</Link>
+            <Link href="/templates" role="menuitem" className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-accent" onClick={onClose}><LayoutDashboard className="h-4 w-4 text-muted-foreground" />Browse templates</Link>
+          </div>
+          <div className="mt-1 border-t border-border/60 pt-1">
+            <button type="button" role="menuitem" onClick={onSignOut} className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium text-rose-600 transition-colors hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/20"><LogOut className="h-4 w-4" />Sign out</button>
+          </div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
+  )
+}

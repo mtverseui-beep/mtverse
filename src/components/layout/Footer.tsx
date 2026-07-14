@@ -4,7 +4,7 @@ import { useEffect, useState, type ComponentType } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Github, Twitter, Mail, ArrowRight, LayoutGrid, PenTool, LayoutDashboard, ShoppingBag, Code2 } from 'lucide-react'
+import { Github, Twitter, Mail, ArrowRight, LayoutGrid, LayoutDashboard, ShoppingBag, Code2, Rocket } from 'lucide-react'
 import { SOCIAL_GITHUB, SOCIAL_TWITTER, SOCIAL_EMAIL } from '@/lib/site-social'
 
 const FOOTER_COLUMNS: Array<{
@@ -12,33 +12,34 @@ const FOOTER_COLUMNS: Array<{
   links: Array<{ name: string; href: string; icon?: ComponentType<{ className?: string }> }>
 }> = [
   {
-    heading: 'Product',
-    links: [
-      { name: 'Prompts', href: '/prompts', icon: PenTool },
-      { name: 'Templates', href: '/templates', icon: LayoutGrid },
-      { name: 'HTML templates', href: '/html-templates', icon: Code2 },
-      { name: 'Pricing', href: '/pricing' },
-      { name: 'Blog', href: '/blog' },
-      { name: 'Featured prompts', href: '/prompts?sort=featured' },
-    ],
-  },
-  {
     heading: 'Templates',
     links: [
-      { name: 'All templates', href: '/templates' },
-      { name: 'HTML templates', href: '/html-templates', icon: Code2 },
-      { name: 'Dashboards', href: '/templates?category=dashboards', icon: LayoutDashboard },
-      { name: 'Ecommerce', href: '/templates?category=ecommerce', icon: ShoppingBag },
-      { name: 'Portfolio HTML', href: '/templates?category=html&subcategory=portfolio' },
-      { name: 'SaaS HTML', href: '/templates?category=html&subcategory=saas' },
+      { name: 'All templates', href: '/templates', icon: LayoutGrid },
+      { name: 'Free HTML templates', href: '/html-templates', icon: Code2 },
+      { name: 'Dashboard templates', href: '/template-categories/dashboards', icon: LayoutDashboard },
+      { name: 'Ecommerce templates', href: '/template-categories/ecommerce', icon: ShoppingBag },
+      { name: 'Landing pages', href: '/template-categories/landing', icon: Rocket },
     ],
   },
   {
-    heading: 'Account',
+    heading: 'Template guides',
     links: [
-      { name: 'Sign in', href: '/sign-in' },
-      { name: 'Sign up', href: '/sign-up' },
-      { name: 'Forgot password', href: '/forgot-password' },
+      { name: 'Next.js dashboards', href: '/template-hubs/nextjs-dashboard-templates' },
+      { name: 'React admin templates', href: '/template-hubs/react-admin-dashboard-templates' },
+      { name: 'SaaS templates', href: '/template-hubs/saas-templates' },
+      { name: 'Portfolio templates', href: '/template-hubs/portfolio-html-templates' },
+      { name: 'Agency websites', href: '/template-hubs/agency-website-templates' },
+    ],
+  },
+  {
+    heading: 'Product',
+    links: [
+      { name: 'Pricing', href: '/pricing' },
+      { name: 'Account', href: '/account' },
+      { name: 'Blog', href: '/blog' },
+      { name: 'FAQ', href: '/faq' },
+      { name: 'Support', href: '/support' },
+      { name: 'About', href: '/about' },
     ],
   },
   {
@@ -79,7 +80,7 @@ function getAuthHref(href: string, nextPath: string) {
   return `${href}?next=${encodeURIComponent(nextPath || '/')}`
 }
 
-export default function Footer({ promptCount }: { promptCount?: number }) {
+export default function Footer() {
   const pathname = usePathname()
   const year = new Date().getFullYear()
   const [authNextPath, setAuthNextPath] = useState('/')
@@ -90,17 +91,15 @@ export default function Footer({ promptCount }: { promptCount?: number }) {
 
   return (
     <footer className="mt-auto border-t border-border/50 bg-[var(--ds-bg-sunken)]">
-      <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mx-auto max-w-[1920px] px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6">
-          <div className="col-span-2 lg:col-span-2 space-y-3">
+          <div className="col-span-2 space-y-3 lg:col-span-2">
             <Link href="/" className="flex items-center gap-2">
               <Image src="/SiteLogo.png" alt="mtverse" width={32} height={32} className="rounded-lg" />
               <span className="text-base font-bold tracking-tight">mtverse</span>
             </Link>
-            <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
-              {promptCount
-                ? promptCount.toLocaleString() + ' curated AI prompts, free HTML website templates, and premium dashboard templates for creators.'
-                : 'Curated AI prompts, free HTML website templates, and premium dashboard templates for creators.'}
+            <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
+              Next.js dashboards, React admin UI kits, landing pages, ecommerce projects, and free responsive HTML website templates with preview-first browsing.
             </p>
             <div className="flex items-center gap-2 pt-2">
               {SOCIAL_LINKS.map((social) => {
@@ -111,7 +110,7 @@ export default function Footer({ promptCount }: { promptCount?: number }) {
                     href={social.href}
                     target={social.href.startsWith('mailto:') ? undefined : '_blank'}
                     rel={social.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-input bg-background text-muted-foreground hover:text-foreground hover:border-primary-300 hover:-translate-y-0.5 transition-all"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-input bg-background text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-primary-300 hover:text-foreground"
                     aria-label={social.name}
                   >
                     <Icon className="h-4 w-4" />
@@ -121,16 +120,16 @@ export default function Footer({ promptCount }: { promptCount?: number }) {
             </div>
           </div>
 
-          {FOOTER_COLUMNS.map((col) => (
-            <div key={col.heading} className="space-y-3">
-              <h3 className="text-sm font-semibold text-foreground">{col.heading}</h3>
+          {FOOTER_COLUMNS.map((column) => (
+            <div key={column.heading} className="space-y-3">
+              <h3 className="text-sm font-semibold text-foreground">{column.heading}</h3>
               <ul className="space-y-2">
-                {col.links.map((link) => {
+                {column.links.map((link) => {
                   const Icon = link.icon
                   return (
                     <li key={link.name}>
-                      <Link href={getAuthHref(link.href, authNextPath)} className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5">
-                        {Icon && <Icon className="h-3 w-3 opacity-60" />}
+                      <Link href={getAuthHref(link.href, authNextPath)} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground">
+                        {Icon ? <Icon className="h-3 w-3 opacity-60" /> : null}
                         {link.name}
                       </Link>
                     </li>
@@ -141,16 +140,12 @@ export default function Footer({ promptCount }: { promptCount?: number }) {
           ))}
         </div>
 
-        <div className="mt-10 pt-6 border-t border-border/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <p className="text-xs text-muted-foreground">
-            (c) {year} mtverse. All rights reserved.
-          </p>
-          <div className="flex items-center gap-4 text-xs text-muted-foreground">
-            <Link href="/html-templates" className="inline-flex items-center gap-1 font-medium text-primary-600 hover:underline">
-              HTML templates
-              <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
+        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-border/50 pt-6 sm:flex-row sm:items-center">
+          <p className="text-xs text-muted-foreground">(c) {year} mtverse. All rights reserved.</p>
+          <Link href="/templates" className="inline-flex items-center gap-1 text-xs font-medium text-primary-600 hover:underline">
+            Explore templates
+            <ArrowRight className="h-3 w-3" />
+          </Link>
         </div>
       </div>
     </footer>

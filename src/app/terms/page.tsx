@@ -3,158 +3,77 @@ import { LegalPage, legalMetadata } from '@/components/legal/legal-page'
 
 export const metadata: Metadata = legalMetadata(
   'Terms of Service',
-  'The terms and conditions for using mtverse services and purchasing templates.',
-  '/terms'
+  'The terms and conditions for browsing, downloading, and purchasing mtverse website templates.',
+  '/terms',
 )
 
 export default function TermsPage() {
   return (
-    <LegalPage
-      title="Terms of Service"
-      description="The terms and conditions for using our services."
-      lastUpdated="June 27, 2026"
-    >
-      <p>Welcome to mtverse. These Terms of Service (&quot;Terms&quot;) govern your use of mtverse.dev (the &quot;Service&quot;).</p>
+    <LegalPage title="Terms of Service" description="Terms for mtverse template browsing, accounts, purchases, licenses, and downloads." lastUpdated="July 14, 2026">
+      <p>These Terms of Service govern your use of mtverse.dev and its website template catalog, account features, checkout, licensing, and downloads.</p>
 
-      <h2>1. Acceptance of Terms</h2>
-      <p>
-        By accessing or using the Service, you agree to be bound by these Terms. If you do not agree to these Terms,
-        you may not access or use the Service.
-      </p>
+      <h2>1. Acceptance and Eligibility</h2>
+      <p>By accessing or using the Service, you agree to these Terms. You must be at least 13 years old and legally able to enter into this agreement.</p>
 
-      <h2>2. Use of the Service</h2>
-      <h3>2.1 Eligibility</h3>
-      <p>You must be at least 13 years old to use the Service. By using the Service, you represent and warrant that you meet this requirement.</p>
+      <h2>2. Accounts</h2>
+      <p>Certain features require an account, including free downloads, paid purchases, saved templates, bundle access, and download history. You are responsible for accurate account information, session security, and activity under your account.</p>
 
-      <h3>2.2 Account Registration</h3>
-      <p>
-        To access certain features of the Service, you must register for an account. You agree to provide accurate, current, and complete
-        information during registration and to update such information to keep it accurate, current, and complete.
-      </p>
-
-      <h3>2.3 Acceptable Use</h3>
+      <h2>3. Acceptable Use</h2>
       <p>You agree not to:</p>
       <ul>
-        <li>Use the Service for any unlawful purpose</li>
-        <li>Violate any applicable local, state, national, or international law</li>
-        <li>Harass, abuse, threaten, or impersonate other users</li>
-        <li>Attempt to gain unauthorized access to any portion of the Service</li>
-        <li>Use the Service to upload or transmit viruses, malware, or harmful code</li>
-        <li>Scrape, crawl, or use robots to collect data from the Service without permission</li>
-        <li>Use the prompts for illegal, harmful, or fraudulent purposes</li>
+        <li>Use the Service for unlawful, harmful, or fraudulent activity</li>
+        <li>Attempt unauthorized access to accounts, files, APIs, admin routes, or payment systems</li>
+        <li>Upload or transmit malware or interfere with Service availability</li>
+        <li>Scrape, crawl, or copy the catalog at scale without permission</li>
+        <li>Bypass download limits, purchase checks, signed URLs, or entitlement controls</li>
+        <li>Misrepresent a template, license, or mtverse content as your own marketplace inventory</li>
       </ul>
 
-      <h2>3. Free Prompts</h2>
-      <p>
-        All prompts available on the Service are free to browse, copy after sign-in, and use. You may use prompts for personal and commercial projects
-        without attribution. However, you may not resell or redistribute the prompts as-is as part of a competing prompt library or service.
-      </p>
+      <h2>4. Free HTML Templates</h2>
+      <p>Free template downloads follow the account limits and access rules shown on the Service. The separate HTML bundle unlock provides the access described on its pricing and checkout pages. Free status does not transfer ownership of the original template listing or mtverse branding.</p>
 
-      <h2>4. Premium Templates</h2>
-      <h3>4.1 License Grant</h3>
-      <p>
-        When you purchase a template, you receive a single-project license that allows you to:
-      </p>
+      <h2>5. Paid Templates and Bundles</h2>
+      <h3>5.1 Purchase Scope</h3>
+      <p>A single-template purchase unlocks only the selected template. It does not unlock another template. Bundle products are separate and include only the catalog scope described before checkout.</p>
+
+      <h3>5.2 License Grant</h3>
+      <p>Unless a template page states otherwise, a paid template purchase provides a single-production-project license. You may customize the template and use it in one personal or commercial production project.</p>
+
+      <h3>5.3 Restrictions</h3>
       <ul>
-        <li>Use the template in one production project</li>
-        <li>Modify and customize the template for your project</li>
-        <li>Use the template for personal or commercial purposes</li>
+        <li>Do not resell, sublicense, redistribute, or publish the source package as-is</li>
+        <li>Do not use one license for multiple production projects</li>
+        <li>Do not include the source package in a competing template club, builder, repository, or download service</li>
+        <li>Do not share account-only download links, license keys, or protected archives</li>
+        <li>Purchase another license when the same paid template is used for another production project</li>
       </ul>
 
-      <h3>4.2 Restrictions</h3>
-      <p>You may NOT:</p>
-      <ul>
-        <li>Resell, sublicense, or redistribute the template as-is</li>
-        <li>Use the template in more than one production project (purchase additional licenses for additional projects)</li>
-        <li>Include the template in a product builder, template club, or similar service</li>
-        <li>Claim ownership or authorship of the template</li>
-        <li>Use the template in a way that competes with mtverse</li>
-      </ul>
+      <h2>6. Payments</h2>
+      <p>Supported payments are processed by Paddle. mtverse does not store full card details. Prices are shown in USD unless stated otherwise and may change for future purchases. A completed checkout is subject to payment verification before access is granted.</p>
 
-      <h3>4.3 License Key</h3>
-      <p>
-        Upon purchase, you will receive a license key. Your license key is linked to your email address and is required for
-        template downloads and support. Keep your license key confidential.
-      </p>
+      <h2>7. Downloads and Availability</h2>
+      <p>Downloads are attached to the signed-in account and applicable entitlement. Generated bundles may take time to prepare. You are responsible for keeping a backup of downloaded source packages and reviewing dependencies before production use.</p>
 
-      <h2>5. Payments and Billing</h2>
-      <h3>5.1 Payment Processing</h3>
-      <p>
-        Payments are processed securely through Paddle. We do not store your credit card information. By making a purchase,
-        you agree to Paddle&apos;s terms of service and privacy policy.
-      </p>
+      <h2>8. Refunds</h2>
+      <p>Refund requests are handled under the published <a href="/refund-policy">Refund Policy</a>. Approved refunds may revoke the corresponding license and future download access.</p>
 
-      <h3>5.2 Pricing</h3>
-      <p>
-        All prices are listed in US Dollars (USD) unless otherwise stated. Prices may change at any time without notice.
-        However, prices for existing purchases will not be affected.
-      </p>
+      <h2>9. Intellectual Property</h2>
+      <p>The Service, catalog text, branding, screenshots, software, and original content are protected by applicable intellectual property laws. A template license grants usage rights; it does not transfer ownership of the original package or marketplace listing.</p>
 
-      <h3>5.3 Refunds</h3>
-      <p>
-        We offer a 14-day money-back guarantee on all template purchases. If you are not satisfied with your purchase,
-        contact us within 14 days of purchase for a full refund. See our <a href="/refund-policy">Refund Policy</a> for details.
-      </p>
+      <h2>10. Third-Party Software and Services</h2>
+      <p>Templates may rely on open-source packages, frameworks, fonts, images, icons, or external services. Their separate licenses and terms continue to apply. You are responsible for reviewing dependencies before publication.</p>
 
-      <h2>6. Intellectual Property</h2>
-      <h3>6.1 Our Rights</h3>
-      <p>
-        The Service and its original content, features, and functionality (including but not limited to the website design,
-        logo, text, graphics, and software) are owned by mtverse and are protected by international copyright, trademark,
-        patent, trade secret, and other intellectual property laws.
-      </p>
+      <h2>11. Disclaimer and Liability</h2>
+      <p>The Service and templates are provided on an as-is and as-available basis. To the maximum extent permitted by law, mtverse is not liable for indirect, incidental, consequential, or punitive damages arising from use of the Service or a template package.</p>
 
-      <h3>6.2 Your Content</h3>
-      <p>
-        You retain all rights to any content you create using our prompts or templates. We claim no ownership over your
-        creative work.
-      </p>
+      <h2>12. Termination</h2>
+      <p>Access may be suspended or terminated for fraud, chargeback abuse, license violations, unauthorized distribution, security threats, or other material violations of these Terms.</p>
 
-      <h2>7. Disclaimers</h2>
-      <p>
-        The Service is provided on an &quot;as-is&quot; and &quot;as-available&quot; basis without warranties of any kind, either express or implied.
-        We do not warrant that the Service will be uninterrupted, secure, or error-free, that defects will be corrected,
-        or that the Service is free of viruses or other harmful components.
-      </p>
-      <p>See our <a href="/disclaimer">Disclaimer</a> for full details.</p>
+      <h2>13. Governing Law and Changes</h2>
+      <p>These Terms are governed by the laws of India, without regard to conflict-of-law rules. We may update these Terms and will publish the revised date on this page.</p>
 
-      <h2>8. Limitation of Liability</h2>
-      <p>
-        To the maximum extent permitted by law, mtverse shall not be liable for any indirect, incidental, special, consequential,
-        or punitive damages, including without limitation loss of profits, data, use, goodwill, or other intangible losses,
-        resulting from your access to or use of the Service.
-      </p>
-
-      <h2>9. Indemnification</h2>
-      <p>
-        You agree to defend, indemnify, and hold harmless mtverse from and against any claims, liabilities, damages, losses,
-        and expenses, including attorney&apos;s fees, arising out of or in any way connected with your access to or use of the Service
-        or your violation of these Terms.
-      </p>
-
-      <h2>10. Termination</h2>
-      <p>
-        We may terminate or suspend your account and access to the Service at our sole discretion, without notice, for conduct
-        that we believe violates these Terms or is harmful to other users of the Service, us, or third parties, or for any other reason.
-      </p>
-
-      <h2>11. Governing Law</h2>
-      <p>
-        These Terms shall be governed by and construed in accordance with the laws of India, without regard to its conflict of law provisions.
-      </p>
-
-      <h2>12. Changes to These Terms</h2>
-      <p>
-        We reserve the right to modify these Terms at any time. We will notify users of significant changes by posting a notice
-        on the Service. Your continued use of the Service after changes constitutes acceptance of the new Terms.
-      </p>
-
-      <h2>13. Contact Us</h2>
-      <p>If you have questions about these Terms, please contact us:</p>
-      <ul>
-        <li>Email: <a href="mailto:terms@mtverse.dev">terms@mtverse.dev</a></li>
-        <li>Contact page: <a href="/contact">/contact</a></li>
-      </ul>
+      <h2>14. Contact</h2>
+      <p>Questions about these Terms can be sent to <a href="mailto:terms@mtverse.dev">terms@mtverse.dev</a> or through the <a href="/contact">contact page</a>.</p>
     </LegalPage>
   )
 }

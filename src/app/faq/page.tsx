@@ -1,200 +1,118 @@
 import type { Metadata } from 'next'
-import { SITE_URL } from '@/lib/site-url'
 import Link from 'next/link'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, CircleHelp } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
-import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
-import { SectionBackground, CtaBackground } from '@/components/design-system/backgrounds'
+import { Reveal } from '@/components/design-system/animations'
+import { SITE_URL } from '@/lib/site-url'
 
 export const metadata: Metadata = {
-  title: 'FAQ - Frequently Asked Questions | mtverse',
-  description: 'Answers to common questions about mtverse AI prompts, free HTML templates, premium Next.js templates, pricing, downloads, licenses, and support.',
+  title: 'Template FAQ - Pricing, Downloads, Licenses & Live Previews',
+  description: 'Answers about mtverse website templates, Next.js dashboard packages, free HTML downloads, pricing, licenses, live previews, payments, bundles, and account access.',
   alternates: { canonical: '/faq' },
   openGraph: {
-    title: 'FAQ | mtverse',
-    description: 'Frequently asked questions about prompts, HTML templates, premium templates, pricing, and downloads.',
-    url: SITE_URL + '/faq',
+    title: 'Template FAQ | mtverse',
+    description: 'Frequently asked questions about website templates, pricing, previews, licenses, bundles, checkout, and downloads.',
+    url: `${SITE_URL}/faq`,
   },
 }
 
-const FAQS = [
+const FAQ_GROUPS = [
   {
-    category: 'Prompts',
+    category: 'Choosing a template',
     questions: [
-      {
-        q: 'Are the AI prompts really free?',
-        a: 'Yes. All public prompts on mtverse are free to use. You can browse, search, and filter freely; sign in to reveal, copy, and save prompt text.',
-      },
-      {
-        q: 'Which AI models do the prompts work with?',
-        a: 'Our prompts are tagged for tools such as ChatGPT, Claude, Gemini, Midjourney, Flux, and Photoshop AI. Use the model filters to find prompts for your workflow.',
-      },
-      {
-        q: 'Can I use AI-generated content commercially?',
-        a: 'You are responsible for checking the terms of the AI tool you use. mtverse provides prompt ideas, but every AI provider has its own commercial-use rules.',
-      },
-      {
-        q: 'How often are new prompts added?',
-        a: 'New prompt collections are added regularly, and each published prompt is reviewed before it appears in the library.',
-      },
+      { q: 'What types of templates are available?', a: 'The catalog includes premium Next.js dashboards, React admin interfaces, ecommerce storefronts, SaaS workspaces, landing pages, and free responsive HTML templates for portfolios and business websites.' },
+      { q: 'Can I preview a template before buying or downloading it?', a: 'Yes. Template pages include screenshots and a live preview when available. Use them to inspect page structure, navigation, responsive behavior, and visual direction.' },
+      { q: 'How do I compare frameworks and included pages?', a: 'Each detail page lists the framework, technology stack, features, included pages, license, pricing tier, and package scope. Use catalog filters and focused template guides to narrow the options.' },
+      { q: 'Can I request the same design in another framework?', a: 'Paid template pages include a framework request form for HTML, React, Next.js, Vue, Angular, Laravel, or a custom stack. Requests are reviewed and the reply is sent by email.' },
     ],
   },
   {
-    category: 'HTML Templates',
+    category: 'Free HTML templates',
     questions: [
-      {
-        q: 'What are mtverse HTML templates?',
-        a: 'HTML templates are static website packages built for simple hosting and fast customization. They include responsive pages for portfolios, SaaS sites, ecommerce stores, agencies, restaurants, education, healthcare, real estate, fitness, crypto, and more.',
-      },
-      {
-        q: 'Are HTML templates free?',
-        a: 'Individual HTML templates can be downloaded with a free account up to the free download limit. The $5 HTML bundle unlock gives unlimited individual HTML downloads and one server-prepared ZIP containing every HTML template package.',
-      },
-      {
-        q: 'Do HTML templates need Next.js or a build setup?',
-        a: 'No. HTML templates are static HTML, CSS, and JavaScript packages. You can edit them directly and host them on any static hosting provider.',
-      },
-      {
-        q: 'Can I preview HTML templates before downloading?',
-        a: 'Yes. Each HTML template has screenshots and a live preview link so you can inspect the design before downloading.',
-      },
+      { q: 'Are individual HTML templates free?', a: 'Individual HTML templates follow the free account download rules shown on the site. Sign in before downloading so the limit and download history can be tracked correctly.' },
+      { q: 'What does the HTML bundle unlock include?', a: 'The separate HTML bundle unlock provides the HTML collection in one generated ZIP and enables the HTML access described on the pricing page.' },
+      { q: 'Are HTML templates mixed with premium dashboards?', a: 'No. HTML templates have a dedicated category and subcategories, making static website options easy to browse without mixing them with paid application dashboards.' },
     ],
   },
   {
-    category: 'Premium Templates',
+    category: 'Pricing and checkout',
     questions: [
-      {
-        q: 'What is included in a paid Next.js template?',
-        a: 'Paid templates include the source package for the specific template you purchase, reusable pages and components shown in the preview, secure download access, and a single-project license.',
-      },
-      {
-        q: 'What license do I get?',
-        a: 'Paid templates include a single-project license. You can use the purchased template in one production project. HTML bundle access covers the included static HTML templates under the HTML template license.',
-      },
-      {
-        q: 'Can I see a live preview before buying?',
-        a: 'Yes. Click Live preview on a template detail page to inspect the demo before checkout.',
-      },
-      {
-        q: 'Are templates responsive?',
-        a: 'Yes. Templates are designed for desktop, tablet, and mobile screens. Check each template detail page for its included pages and feature list.',
-      },
+      { q: 'Does one template purchase unlock every paid template?', a: 'No. A single purchase unlocks only the selected template. The all-paid bundle is a separate product and includes the paid catalog described on the pricing page.' },
+      { q: 'Are payments one-time or subscriptions?', a: 'Template offers currently use one-time payments unless a checkout page clearly states otherwise. The exact price and access scope appear before payment.' },
+      { q: 'Which payment provider processes checkout?', a: 'Paddle processes supported checkout transactions and handles the secure payment form. mtverse does not store full card details.' },
+      { q: 'What happens after a successful payment?', a: 'The purchase is verified, attached to the signed-in account, and displayed in the account template library. The matching ZIP download becomes available after verification.' },
     ],
   },
   {
-    category: 'Pricing & Payments',
+    category: 'Downloads and licenses',
     questions: [
-      {
-        q: 'How much do templates cost?',
-        a: 'Paid Next.js templates are one-time purchases for the selected template only. The HTML bundle is a separate one-time $5 unlock for all HTML templates in one ZIP plus unlimited individual HTML downloads.',
-      },
-      {
-        q: 'How are payments processed?',
-        a: 'Payments are processed securely through Paddle. mtverse does not see or store your card details.',
-      },
-      {
-        q: 'Do you offer refunds?',
-        a: 'Yes. We offer a 14-day refund window for eligible template purchases. Contact support with your order details if something is not right.',
-      },
-      {
-        q: 'Can I get an invoice?',
-        a: 'Yes. Paddle sends a receipt or invoice to your email after purchase.',
-      },
+      { q: 'Where can I find purchased templates?', a: 'Sign in and open the account page. Paid unlocked templates and saved templates appear in the template library with the available download action.' },
+      { q: 'Can purchasing one template unlock another template by mistake?', a: 'No. Template-specific access is checked against the requested slug and the purchasing account. Bundle access is checked separately.' },
+      { q: 'Can I use a template for a client project?', a: 'Review the license shown on the template detail page. Paid packages generally use a single production project license unless a different license is stated.' },
+      { q: 'What if a download does not appear after payment?', a: 'Contact support with the account email and Paddle transaction ID. Do not include card details. The purchase record can be verified and the correct entitlement restored.' },
     ],
   },
   {
-    category: 'Account & Support',
+    category: 'Account and support',
     questions: [
-      {
-        q: 'Do I need an account to use mtverse?',
-        a: 'You do not need an account to browse prompt pages. An account is needed to reveal, copy, save prompts, download templates, access purchases, and manage your downloads.',
-      },
-      {
-        q: 'I forgot my password. How do I reset it?',
-        a: 'Open the sign-in page, choose the forgot password option, enter your email, and use the reset link sent to your inbox. Reset links expire for security.',
-      },
-      {
-        q: 'How do I download a purchased template?',
-        a: 'After purchase, sign in and open your account downloads. Paid Next.js templates download only after purchase. HTML bundle downloads become available after the $5 HTML unlock.',
-      },
-      {
-        q: 'How do I get support?',
-        a: 'Email hello@mtverse.dev or use the contact page. Include the template slug, order email, and a short description of the issue so we can help faster.',
-      },
+      { q: 'Do I need an account?', a: 'You can browse public template pages and previews without an account. An account is required for downloads, purchases, saved templates, and access history.' },
+      { q: 'Will I remain signed in after closing the browser?', a: 'A valid session can persist according to the selected sign-in behavior and cookie lifetime. You may need to sign in again after the session expires or cookies are cleared.' },
+      { q: 'How can I contact support?', a: 'Use the contact or support page and include the template name, account email, and transaction ID when the issue concerns a purchase.' },
     ],
   },
 ]
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: FAQS.flatMap((cat) =>
-    cat.questions.map((q) => ({
+export default function FAQPage() {
+  const allQuestions = FAQ_GROUPS.flatMap((group) => group.questions)
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: allQuestions.map((item) => ({
       '@type': 'Question',
-      name: q.q,
-      acceptedAnswer: { '@type': 'Answer', text: q.a },
-    }))
-  ),
-}
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  }
 
-export default function FaqPage() {
   return (
-    <PublicLayout>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <main>
-        <section className="ds-section-lg ds-bg-section relative overflow-hidden">
-          <SectionBackground />
-          <div className="ds-container relative">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
-              <Reveal>
-                <span className="ds-eyebrow ds-eyebrow-accent">FAQ</span>
-              </Reveal>
-              <Reveal delay={0.08}>
-                <h1 className="ds-display-2 ds-text-balance">
-                  Frequently asked <span className="ds-text-emphasis">questions</span>
-                </h1>
-              </Reveal>
-              <Reveal delay={0.16}>
-                <p className="ds-lead">
-                  Everything you need to know about prompts, HTML templates, premium templates, pricing, and downloads.
-                  Can't find an answer? <Link href="/contact" className="text-primary-600 hover:underline">Contact us</Link>.
-                </p>
-              </Reveal>
-            </div>
-          </div>
-        </section>
-
-        <section className="ds-section ds-bg-section">
-          <div className="ds-container max-w-3xl">
-            <Stagger className="space-y-10">
-              {FAQS.map((cat) => (
-                <StaggerItem key={cat.category}>
-                  <h2 className="ds-h2 mb-4">{cat.category}</h2>
-                  <div className="space-y-3">
-                    {cat.questions.map((item, i) => (
-                      <details key={i} className="ds-card group">
-                        <summary className="flex items-center justify-between gap-3 cursor-pointer list-none font-medium text-foreground">
-                          {item.q}
-                          <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
-                        </summary>
-                        <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{item.a}</p>
-                      </details>
-                    ))}
-                  </div>
-                </StaggerItem>
-              ))}
-            </Stagger>
-          </div>
-        </section>
-
-        <section className="ds-section-lg ds-bg-section relative overflow-hidden">
-          <CtaBackground />
-          <div className="ds-container relative text-center max-w-2xl">
+    <PublicLayout schemaMarkup={jsonLd}>
+      <main className="ds-bg-section">
+        <section className="ds-section-sm border-b border-border">
+          <div className="ds-container max-w-4xl py-14 text-center">
             <Reveal>
-              <h2 className="ds-display-3 mb-4">Still have questions?</h2>
-              <p className="ds-lead mb-6">Our team is here to help. Reach out and we'll respond as soon as possible.</p>
-              <Link href="/contact" className="ds-btn ds-btn-primary ds-btn-lg">Contact support</Link>
+              <span className="ds-eyebrow ds-eyebrow-accent mb-3"><CircleHelp className="h-3.5 w-3.5" />Help center</span>
+              <h1 className="ds-display-2 ds-text-balance">Template questions, answered clearly</h1>
+              <p className="ds-lead ds-text-pretty mx-auto mt-4 max-w-3xl">
+                Learn how previews, pricing, HTML downloads, paid source packages, account access, licenses, bundles, and support work.
+              </p>
             </Reveal>
+          </div>
+        </section>
+
+        <section className="ds-section">
+          <div className="ds-container max-w-4xl space-y-10">
+            {FAQ_GROUPS.map((group) => (
+              <section key={group.category}>
+                <h2 className="ds-h2 mb-4">{group.category}</h2>
+                <div className="space-y-3">
+                  {group.questions.map((item) => (
+                    <details key={item.q} className="ds-card group">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-foreground">
+                        {item.q}
+                        <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+                      </summary>
+                      <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.a}</p>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            ))}
+
+            <div className="rounded-lg border border-primary/20 bg-primary/5 p-6 text-center">
+              <h2 className="ds-h3">Still need help?</h2>
+              <p className="mt-2 text-sm text-muted-foreground">Contact support with the template name and your account email.</p>
+              <Link href="/contact" className="ds-btn ds-btn-primary mt-5">Contact support</Link>
+            </div>
           </div>
         </section>
       </main>

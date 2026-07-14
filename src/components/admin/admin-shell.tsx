@@ -41,7 +41,6 @@ const NAV_SECTIONS: Array<{
   {
     title: 'Content',
     items: [
-      { name: 'Prompts', href: '/admin/prompts', icon: MessageSquare },
       { name: 'Templates', href: '/admin/templates', icon: LayoutGrid },
     ],
   },

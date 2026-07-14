@@ -207,14 +207,10 @@ export default async function BlogPostPage({ params }: { params: Params }) {
               <div className="mt-12 ds-card bg-primary/5 border-primary/20 p-6 sm:p-8 text-center">
                 <h3 className="text-lg font-bold mb-2">Explore more on mtverse</h3>
                 <p className="text-sm text-muted-foreground mb-5">
-                  Browse 2,300+ free AI prompts or check out our premium Next.js dashboard templates.
+                  Browse premium Next.js dashboard templates, free responsive HTML websites, and focused template collections.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
-                  <Link href="/prompts" className="ds-btn ds-btn-primary">
-                    Browse prompts
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                  <Link href="/templates" className="ds-btn ds-btn-secondary">
+                  <Link href="/templates" className="ds-btn ds-btn-primary">
                     View templates
                   </Link>
                 </div>

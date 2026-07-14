@@ -1,114 +1,76 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import { SITE_URL } from '@/lib/site-url'
 import {
   ArrowRight,
-  Sparkles,
-  Search,
-  Tag,
-  Zap,
-  Heart,
-  TrendingUp,
-  Users,
-  Image as ImageIcon,
-  PenTool,
-  Code,
-  Briefcase,
-  GraduationCap,
-  Microscope,
-  Wand2,
-  LayoutGrid,
-  Eye,
   Check,
-  Shield,
+  Code2,
+  Eye,
+  Gauge,
+  Layers3,
+  LayoutGrid,
+  PackageCheck,
+  Search,
+  ShieldCheck,
+  ShoppingBag,
+  Sparkles,
+  Zap,
 } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
-import { getPromptLibraryData } from '@/lib/prompt-db'
-import { PROMPT_CATEGORIES, PROMPT_MODELS } from '@/lib/prompt-library-data'
 import {
+  getAllTemplatesFromStore,
   getFeaturedTemplatesFromStore,
-  getTemplateStatsFromStore,
+  getTemplateCategoriesFor,
+  getTemplateStatsFor,
 } from '@/lib/templates-data'
 import { withAllTemplateSocial } from '@/lib/template-social-store'
 import { TemplateCard } from '@/components/templates/template-card'
-import { SectionBackground, CtaBackground, Blob } from '@/components/design-system/backgrounds'
+import { SectionBackground, CtaBackground } from '@/components/design-system/backgrounds'
 import { HomeHero3D } from '@/components/design-system/hero-3d'
-import { AI_TOOL_ICONS } from '@/components/design-system/ai-icons'
-import { Reveal, Stagger, StaggerItem, Magnetic, Marquee } from '@/components/design-system/animations'
-import { AnimatedPromptsShowcase } from '@/components/home/animated-prompts-showcase'
+import { Reveal, Stagger, StaggerItem, Magnetic } from '@/components/design-system/animations'
+import { TEMPLATE_SEO_HUBS } from '@/lib/template-seo-hubs'
+import { SITE_URL } from '@/lib/site-url'
 import { SOCIAL_EMAIL, SOCIAL_GITHUB, SOCIAL_TWITTER } from '@/lib/site-social'
 
 export const dynamic = 'force-static'
-export const revalidate = 60
+export const revalidate = 300
 
-const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
-  writing: PenTool,
-  work: Briefcase,
-  coding: Code,
-  career: Users,
-  study: GraduationCap,
-  research: Microscope,
-  'image-generation': ImageIcon,
-  'image-editing': Wand2,
-}
-
-const CATEGORY_PASTEL: Record<string, string> = {
-  writing: 'ds-card-pastel-yellow',
-  work: 'ds-card-pastel-blue',
-  coding: 'ds-card-pastel-mint',
-  career: 'ds-card-pastel-peach',
-  study: 'ds-card-pastel-lavender',
-  research: 'ds-card-pastel-rose',
-  'image-generation': 'ds-card-pastel-blue',
-  'image-editing': 'ds-card-pastel-mint',
-}
-
-export const metadata = {
-  title: {
-    default: 'mtverse - Free AI Prompts, HTML Templates & Dashboard Templates',
-    template: '%s | mtverse',
-  },
+export const metadata: Metadata = {
+  title: 'Next.js Dashboard Templates, Free HTML Templates & Website UI Kits',
   description:
-    'Browse 2,300+ free AI prompts, free responsive HTML website templates, and premium Next.js dashboard templates for SaaS, ecommerce, CRM, and analytics. Copy prompts instantly, preview templates live, and download securely.',
+    'Browse premium Next.js dashboard templates, React admin UI kits, ecommerce and SaaS templates, landing pages, and free responsive HTML website templates with live previews and secure ZIP downloads.',
   keywords: [
-    'AI prompts',
-    'free AI prompts',
-    'ChatGPT prompts',
-    'Midjourney prompts',
-    'Nano Banana prompts',
-    'Gemini prompts',
-    'Flux prompts',
-    'image generation prompts',
-    'AI image prompts',
     'Next.js templates',
-    'dashboard templates',
-    'ecommerce templates',
-    'SaaS templates',
-    'portfolio templates',
-    'prompt library',
-    'prompt marketplace',
+    'Next.js dashboard templates',
+    'React admin dashboard templates',
+    'admin UI kits',
+    'SaaS dashboard templates',
+    'ecommerce website templates',
+    'landing page templates',
     'free HTML templates',
     'responsive website templates',
-    'HTML portfolio templates',
-    'HTML ecommerce templates',
-    'all HTML templates bundle',
+    'portfolio HTML templates',
+    'Tailwind CSS templates',
+    'TypeScript dashboard templates',
+    'CRM dashboard templates',
+    'analytics dashboard templates',
+    'premium website templates',
+    'website template source code',
   ],
-  authors: [{ name: 'mtverse' }],
-  metadataBase: new URL(`${SITE_URL}`),
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'mtverse - Free AI Prompts, HTML Templates & Dashboard Templates',
+    title: 'mtverse - Next.js Dashboard Templates & Free HTML Templates',
     description:
-      '2,300+ free AI prompts, free responsive HTML templates, and premium Next.js dashboard templates. Copy prompts instantly and preview templates live.',
-    url: `${SITE_URL}`,
+      'Preview and download dashboard, ecommerce, SaaS, landing page, portfolio, and responsive HTML website templates.',
+    url: SITE_URL,
     siteName: 'mtverse',
     type: 'website',
-    images: [{ url: '/SiteLogo.png', width: 512, height: 512, alt: 'mtverse' }],
+    images: [{ url: '/SiteLogo.png', width: 512, height: 512, alt: 'mtverse template marketplace' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'mtverse - Free AI Prompts, HTML Templates & Dashboard Templates',
-    description:
-      '2,300+ free AI prompts, free responsive HTML templates, and premium Next.js dashboard templates.',
+    title: 'mtverse - Next.js Dashboard Templates & Free HTML Templates',
+    description: 'Live template previews, source-code packages, free HTML downloads, and secure delivery.',
+    images: ['/SiteLogo.png'],
   },
   robots: {
     index: true,
@@ -119,23 +81,48 @@ export const metadata = {
   },
 }
 
+const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  dashboards: Gauge,
+  ecommerce: ShoppingBag,
+  html: Code2,
+  landing: LayoutGrid,
+}
+
+const FAQS = [
+  {
+    question: 'What types of website templates are available on mtverse?',
+    answer:
+      'mtverse includes premium Next.js and React dashboard templates, admin UI kits, ecommerce storefronts, SaaS interfaces, landing pages, and free responsive HTML templates for portfolios and business websites.',
+  },
+  {
+    question: 'Can I preview a template before downloading or buying it?',
+    answer:
+      'Yes. Template detail pages include screenshots and a live preview when available, so you can inspect layouts, pages, responsive behavior, and visual direction before checkout or download.',
+  },
+  {
+    question: 'Does one template purchase unlock every paid template?',
+    answer:
+      'No. A single-template purchase unlocks only that template. The all-paid bundle is a separate offer that includes the paid catalog described on the pricing page.',
+  },
+  {
+    question: 'Are the HTML website templates free?',
+    answer:
+      'Individual HTML templates follow the free account download rules. A separate HTML bundle unlock provides the complete HTML collection in one generated ZIP.',
+  },
+  {
+    question: 'What do paid template downloads include?',
+    answer:
+      'Paid downloads provide the source package described on that template page. Included pages, technology details, features, license terms, and delivery options are listed before checkout.',
+  },
+]
+
 export default async function Home() {
-  const library = await getPromptLibraryData().catch(() => null)
-  const promptCount = library?.stats?.totalPrompts ?? 0
-  const featuredCount = library?.stats?.featuredPrompts ?? 0
-  const imageCount = library?.stats?.imagePrompts ?? 0
-
-  const [featuredTemplates, templateStats] = await Promise.all([
-    getFeaturedTemplatesFromStore(3).then((templates) => withAllTemplateSocial(templates)),
-    getTemplateStatsFromStore(),
-  ])
-
-  const stats = [
-    { value: promptCount.toLocaleString(), label: 'Curated prompts' },
-    { value: `${templateStats.totalTemplates}`, label: 'Website templates' },
-    { value: `${featuredCount}+`, label: 'Featured picks' },
-    { value: 'Weekly', label: 'New prompts added' },
-  ]
+  const templates = await getAllTemplatesFromStore()
+  const featuredTemplates = await getFeaturedTemplatesFromStore(6).then((items) => withAllTemplateSocial(items))
+  const templateStats = getTemplateStatsFor(templates)
+  const categoryOptions = getTemplateCategoriesFor(templates).filter((category) => category.id !== 'all')
+  const paidTemplates = templates.filter((template) => !template.isFree).length
+  const freeTemplates = templates.filter((template) => template.isFree).length
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -143,15 +130,15 @@ export default async function Home() {
       {
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
-        url: `${SITE_URL}`,
+        url: SITE_URL,
         name: 'mtverse',
-        description: 'Free AI prompts, free HTML templates, and premium Next.js templates',
+        description: 'Next.js dashboard templates, React admin UI kits, and free responsive HTML website templates.',
         publisher: { '@id': `${SITE_URL}/#organization` },
         potentialAction: {
           '@type': 'SearchAction',
           target: {
             '@type': 'EntryPoint',
-            urlTemplate: `${SITE_URL}/prompts?q={search_term_string}`,
+            urlTemplate: `${SITE_URL}/templates?search={search_term_string}`,
           },
           'query-input': 'required name=search_term_string',
         },
@@ -160,7 +147,7 @@ export default async function Home() {
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
         name: 'mtverse',
-        url: `${SITE_URL}`,
+        url: SITE_URL,
         logo: `${SITE_URL}/SiteLogo.png`,
         sameAs: [SOCIAL_GITHUB, SOCIAL_TWITTER],
         contactPoint: {
@@ -170,86 +157,74 @@ export default async function Home() {
         },
       },
       {
+        '@type': 'CollectionPage',
+        '@id': `${SITE_URL}/#templates`,
+        name: 'Website template marketplace',
+        url: `${SITE_URL}/templates`,
+        numberOfItems: templates.length,
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: featuredTemplates.map((template, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: template.title,
+            url: `${SITE_URL}/templates/${template.slug}`,
+          })),
+        },
+      },
+      {
         '@type': 'FAQPage',
-        mainEntity: [
-          {
-            '@type': 'Question',
-            name: 'What are AI prompts?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: 'AI prompts are instructions you give to AI models like ChatGPT, Midjourney, or Gemini to generate text, images, or code. mtverse offers 2,300+ curated prompts across image generation, writing, coding, and more - free to browse, reveal, copy, and save after sign-in.',
-            },
-          },
-          {
-            '@type': 'Question',
-            name: 'Are the prompts really free?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: 'Yes. Every prompt on mtverse is free to use. You can browse by category, search by keyword, filter by AI model, then sign in to reveal, copy, and save prompts.',
-            },
-          },
-          {
-            '@type': 'Question',
-            name: 'What AI models do the prompts work with?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: 'Our prompts work with ChatGPT, Claude, Gemini, Midjourney, Flux, and Photoshop AI. Each prompt is tagged with the models it works best with, so you can filter by your favorite tool.',
-            },
-          },
-          {
-            '@type': 'Question',
-            name: 'What are the premium templates?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: 'mtverse includes free responsive HTML website templates and paid Next.js source packages for SaaS, enterprise, analytics, ecommerce, CRM, and admin products. HTML templates support free individual downloads and a $5 bundle unlock. Paid templates include live previews, source code, and secure download access.',
-            },
-          },
-        ],
+        mainEntity: FAQS.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
+        })),
       },
     ],
   }
 
-  return (
-    <PublicLayout promptCount={promptCount}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <main>
-        {/* =============== HERO - fits in viewport =============== */}
-        <section className="relative min-h-[88vh] flex items-center overflow-hidden">
-          <HomeHero3D />
+  const stats = [
+    { value: templateStats.totalTemplates.toLocaleString(), label: 'Website templates' },
+    { value: freeTemplates.toLocaleString(), label: 'Free templates' },
+    { value: paidTemplates.toLocaleString(), label: 'Premium templates' },
+    { value: categoryOptions.length.toLocaleString(), label: 'Template categories' },
+  ]
 
-          <div className="ds-container relative">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
+  return (
+    <PublicLayout schemaMarkup={jsonLd}>
+      <main>
+        <section className="relative flex min-h-[82vh] items-center overflow-hidden">
+          <HomeHero3D />
+          <div className="ds-container relative py-20">
+            <div className="mx-auto max-w-4xl space-y-6 text-center">
               <Reveal>
                 <span className="ds-eyebrow ds-eyebrow-accent">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  {promptCount.toLocaleString()} prompts | {templateStats.totalTemplates} templates
+                  <LayoutGrid className="h-3.5 w-3.5" />
+                  {templateStats.totalTemplates.toLocaleString()} templates with preview-first browsing
                 </span>
               </Reveal>
               <Reveal delay={0.08}>
                 <h1 className="ds-display-1 ds-text-balance">
-                  Prompts &amp; templates for <span className="ds-text-emphasis">creators</span>
+                  Website templates built to help you <span className="ds-text-emphasis">ship faster</span>
                 </h1>
               </Reveal>
               <Reveal delay={0.16}>
-                <p className="ds-lead ds-text-pretty">
-                  Free AI prompts for ChatGPT, Midjourney, Nano Banana, Gemini, Flux.
-                  Free responsive HTML templates plus premium Next.js dashboard templates for SaaS, enterprise, ecommerce, CRM, and analytics.
+                <p className="ds-lead ds-text-pretty mx-auto max-w-3xl">
+                  Explore premium Next.js dashboards, React admin UI kits, ecommerce and SaaS templates,
+                  landing pages, and free responsive HTML websites. Inspect the real UI before you download.
                 </p>
               </Reveal>
               <Reveal delay={0.24}>
                 <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
                   <Magnetic>
-                    <Link href="/prompts" className="ds-btn ds-btn-primary ds-btn-lg">
-                      Browse prompts
+                    <Link href="/templates" className="ds-btn ds-btn-primary ds-btn-lg">
+                      Browse all templates
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Magnetic>
-                  <Link href="/templates" className="ds-btn ds-btn-secondary ds-btn-lg">
-                    <LayoutGrid className="h-4 w-4" />
-                    Browse templates
+                  <Link href="/html-templates" className="ds-btn ds-btn-secondary ds-btn-lg">
+                    <Code2 className="h-4 w-4" />
+                    Free HTML templates
                   </Link>
                 </div>
               </Reveal>
@@ -257,16 +232,15 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* =============== STATS STRIP =============== */}
         <section className="ds-section-sm ds-bg-section relative overflow-hidden border-y">
           <SectionBackground />
           <div className="ds-container relative">
-            <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {stats.map((s, i) => (
-                <StaggerItem key={i}>
+            <Stagger className="grid grid-cols-2 gap-6 md:grid-cols-4">
+              {stats.map((stat) => (
+                <StaggerItem key={stat.label}>
                   <div className="text-center">
-                    <div className="ds-stat-number">{s.value}</div>
-                    <div className="ds-stat-label">{s.label}</div>
+                    <div className="ds-stat-number">{stat.value}</div>
+                    <div className="ds-stat-label">{stat.label}</div>
                   </div>
                 </StaggerItem>
               ))}
@@ -274,161 +248,67 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* =============== ANIMATED PROMPTS SHOWCASE (8 cards, 24 images cycling) =============== */}
-        <section className="ds-section ds-bg-section relative overflow-hidden">
-          <div className="ds-container relative">
-            <Reveal className="ds-section-head ds-section-head-left mb-8">
-              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 w-full">
+        <section className="ds-section ds-bg-section">
+          <div className="ds-container">
+            <Reveal className="ds-section-head ds-section-head-left mb-10">
+              <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <span className="ds-eyebrow ds-eyebrow-accent mb-3">
                     <Sparkles className="h-3.5 w-3.5" />
-                    Newly added
+                    Featured source packages
                   </span>
-                  <h2 className="ds-h1 ds-text-balance">Fresh prompts, every week</h2>
+                  <h2 className="ds-h1 ds-text-balance">Popular templates to inspect now</h2>
                   <p className="ds-lead ds-text-pretty mt-2">
-                    A rotating preview of the latest prompts from our library. Hover to pause.
+                    Compare real screenshots, live previews, included pages, framework details, and pricing before choosing.
                   </p>
                 </div>
-                <Link
-                  href="/prompts?sort=new"
-                  className="ds-btn ds-btn-secondary shrink-0"
-                >
-                  See all new prompts
+                <Link href="/templates?sort=featured" className="ds-btn ds-btn-secondary shrink-0">
+                  View catalog
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             </Reveal>
-
-            <Reveal delay={0.1}>
-              <AnimatedPromptsShowcase />
-            </Reveal>
-          </div>
-        </section>
-
-        {/* =============== FEATURE CARDS =============== */}
-        <section className="ds-section ds-bg-section relative overflow-hidden">
-          <SectionBackground />
-          <div className="ds-container relative">
-            <Reveal className="ds-section-head">
-              <span className="ds-eyebrow">
-                <Zap className="h-3.5 w-3.5" />
-                Why mtverse
-              </span>
-              <h2 className="ds-h1 ds-text-balance">Built for creators who ship</h2>
-              <p className="ds-lead ds-text-pretty">
-                Every prompt is hand-reviewed, every template is production-ready. No bloat, no filler.
-              </p>
-            </Reveal>
-
-            <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <StaggerItem>
-                <div className="ds-card ds-card-hover h-full">
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 text-primary-600 mb-4 dark:bg-primary-900/30 dark:text-primary-300">
-                    <Search className="h-5 w-5" />
-                  </div>
-                  <h3 className="ds-h3 mb-2">Search &amp; filter</h3>
-                  <p className="ds-body ds-muted">
-                    Find the right prompt or template by category, model, tag, or keyword. Sort by trending, newest, or shuffle for fresh inspiration.
-                  </p>
-                </div>
-              </StaggerItem>
-              <StaggerItem>
-                <div className="ds-card ds-card-hover h-full">
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-accent-50 text-accent-600 mb-4 dark:bg-accent-900/30 dark:text-accent-300">
-                    <Tag className="h-5 w-5" />
-                  </div>
-                  <h3 className="ds-h3 mb-2">Copy &amp; use</h3>
-                  <p className="ds-body ds-muted">
-                    Prompts come with one-click copy and structured guidance. Templates come with full source code and lifetime updates.
-                  </p>
-                </div>
-              </StaggerItem>
-              <StaggerItem>
-                <div className="ds-card ds-card-hover h-full">
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 mb-4 dark:bg-emerald-900/30 dark:text-emerald-300">
-                    <Sparkles className="h-5 w-5" />
-                  </div>
-                  <h3 className="ds-h3 mb-2">Curated quality</h3>
-                  <p className="ds-body ds-muted">
-                    Every prompt is hand-reviewed and paired with a preview image. Every template is production-tested and battle-hardened.
-                  </p>
-                </div>
-              </StaggerItem>
-            </Stagger>
-          </div>
-        </section>
-
-        {/* =============== TEMPLATES PREVIEW =============== */}
-        <section className="ds-section ds-bg-section relative overflow-hidden">
-          <Blob variant="peach" size={400} position={{ top: '10%', right: '-5%' }} float="slow" />
-          <Blob variant="lavender" size={300} position={{ bottom: '5%', left: '-5%' }} float="normal" />
-
-          <div className="ds-container relative">
-            <Reveal className="ds-section-head ds-section-head-left mb-10">
-              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 w-full">
-                <div>
-                  <span className="ds-eyebrow ds-eyebrow-accent mb-3">
-                    <LayoutGrid className="h-3.5 w-3.5" />
-                    Website templates
-                  </span>
-                  <h2 className="ds-h1 ds-text-balance">Ship faster with dashboards and HTML websites</h2>
-                  <p className="ds-lead ds-text-pretty mt-2">
-                    Responsive HTML templates and suite-backed Next.js templates with live previews, secure download access, and source packages you can ship from.
-                  </p>
-                </div>
-                <Link
-                  href="/templates"
-                  className="ds-btn ds-btn-secondary shrink-0"
-                >
-                  View all templates
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </Reveal>
-
-            <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-              {featuredTemplates.map((t) => (
-                <StaggerItem key={t.id}>
-                  <TemplateCard template={t} />
+            <Stagger className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+              {featuredTemplates.map((template) => (
+                <StaggerItem key={template.id}>
+                  <TemplateCard template={template} />
                 </StaggerItem>
               ))}
             </Stagger>
           </div>
         </section>
 
-        {/* =============== CATEGORIES =============== */}
         <section className="ds-section ds-bg-section relative overflow-hidden">
           <SectionBackground />
           <div className="ds-container relative">
             <Reveal className="ds-section-head">
               <span className="ds-eyebrow">
-                <Heart className="h-3.5 w-3.5" />
-                Browse by category
+                <Layers3 className="h-3.5 w-3.5" />
+                Browse by format
               </span>
-              <h2 className="ds-h1 ds-text-balance">Find the perfect prompt</h2>
+              <h2 className="ds-h1 ds-text-balance">Find the right template category</h2>
               <p className="ds-lead ds-text-pretty">
-                Eight curated categories covering image generation, writing, coding, and more.
+                Keep static HTML websites, application dashboards, ecommerce projects, and landing pages easy to compare.
               </p>
             </Reveal>
-
-            <Stagger className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-              {PROMPT_CATEGORIES.map((c) => {
-                const Icon = CATEGORY_ICONS[c.id] ?? Sparkles
-                const pastelClass = CATEGORY_PASTEL[c.id] ?? 'ds-card-pastel-blue'
+            <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {categoryOptions.map((category) => {
+                const Icon = CATEGORY_ICONS[category.id] ?? LayoutGrid
+                const count = templates.filter((template) => template.category === category.id).length
                 return (
-                  <StaggerItem key={c.id}>
+                  <StaggerItem key={category.id}>
                     <Link
-                      href={`/prompts?category=${c.id}`}
-                      className={`${pastelClass} ds-card-pastel block h-full no-underline group`}
+                      href={`/template-categories/${category.id}`}
+                      className="ds-card ds-card-hover group block h-full no-underline"
                     >
-                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/60 mb-3 transition-transform group-hover:scale-110">
-                        <Icon className="h-5 w-5 text-foreground/70" />
+                      <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-transform group-hover:scale-105">
+                        <Icon className="h-5 w-5" />
                       </div>
-                      <h3 className="ds-h4 mb-1">{c.title}</h3>
-                      <p className="text-xs text-foreground/60 line-clamp-2">{c.description}</p>
-                      <div className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-foreground/70 group-hover:text-foreground">
-                        Explore
-                        <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                      <h3 className="ds-h3">{category.label}</h3>
+                      <p className="mt-2 text-sm leading-6 text-muted-foreground">{category.description}</p>
+                      <div className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+                        {count} templates
+                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                       </div>
                     </Link>
                   </StaggerItem>
@@ -438,65 +318,71 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* =============== AI TOOLS MARQUEE (real icons) =============== */}
-        <section className="ds-section-sm ds-bg-section relative overflow-hidden border-y">
-          <div className="ds-container relative">
-            <Reveal className="text-center mb-6">
-              <span className="ds-eyebrow">Works with your favorite AI tools</span>
+        <section className="ds-section ds-bg-section">
+          <div className="ds-container">
+            <Reveal className="ds-section-head ds-section-head-left mb-8">
+              <span className="ds-eyebrow ds-eyebrow-accent mb-3">
+                <Search className="h-3.5 w-3.5" />
+                Focused template guides
+              </span>
+              <h2 className="ds-h1 ds-text-balance">Browse templates by project intent</h2>
+              <p className="ds-lead ds-text-pretty mt-2">
+                Use focused collections when you already know the framework, website type, or application workflow you need.
+              </p>
             </Reveal>
-            <Marquee speed="slow">
-              {AI_TOOL_ICONS.map(({ name, Icon, bg, fg }) => (
-                <div key={name} className="flex items-center gap-3 px-8">
-                  <div className={`inline-flex h-11 w-11 items-center justify-center rounded-xl ${bg} ${fg} shadow-sm`}>
-                    <Icon className="h-6 w-6" />
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {TEMPLATE_SEO_HUBS.map((hub) => (
+                <Link
+                  key={hub.slug}
+                  href={`/template-hubs/${hub.slug}`}
+                  className="group flex min-h-28 items-start justify-between gap-4 rounded-lg border border-border bg-card p-5 transition hover:border-primary/40 hover:shadow-sm"
+                >
+                  <div>
+                    <h3 className="font-semibold text-foreground">{hub.title}</h3>
+                    <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">{hub.metaDescription}</p>
                   </div>
-                  <span className="text-2xl font-bold text-foreground/70">{name}</span>
-                </div>
+                  <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+                </Link>
               ))}
-            </Marquee>
+            </div>
           </div>
         </section>
 
-        {/* =============== PRODUCT ASSURANCES =============== */}
         <section className="ds-section ds-bg-section relative overflow-hidden">
           <SectionBackground />
           <div className="ds-container relative">
             <Reveal className="ds-section-head">
               <span className="ds-eyebrow">
-                <Check className="h-3.5 w-3.5" />
-                Clear before you download
+                <Zap className="h-3.5 w-3.5" />
+                A clearer buying path
               </span>
-              <h2 className="ds-h1 ds-text-balance">What mtverse makes easy</h2>
+              <h2 className="ds-h1 ds-text-balance">Know what you are getting before checkout</h2>
             </Reveal>
-
-            <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Stagger className="grid gap-6 md:grid-cols-3">
               {[
                 {
-                  icon: <Eye className="h-5 w-5" />,
-                  title: 'Inspect before choosing',
-                  description: 'Open the live preview and review screenshots, framework details, and included pages before you decide.',
-                  color: 'blue',
+                  icon: Eye,
+                  title: 'Preview the real interface',
+                  copy: 'Open screenshots and live previews to inspect layout, navigation, pages, components, and responsive behavior.',
                 },
                 {
-                  icon: <Shield className="h-5 w-5" />,
-                  title: 'Protected account delivery',
-                  description: 'Paid files are available only to the signed-in account that owns the template or bundle entitlement.',
-                  color: 'mint',
+                  icon: PackageCheck,
+                  title: 'Read the package scope',
+                  copy: 'Each detail page lists the framework, technology stack, included pages, features, license, and exact purchase scope.',
                 },
                 {
-                  icon: <Check className="h-5 w-5" />,
-                  title: 'Straightforward access',
-                  description: 'One-time purchases unlock the selected template. Bundle purchases include the catalog described on the pricing page.',
-                  color: 'yellow',
+                  icon: ShieldCheck,
+                  title: 'Download through your account',
+                  copy: 'Free-download rules and paid entitlements are attached to your signed-in account for protected ZIP delivery.',
                 },
               ].map((item) => (
                 <StaggerItem key={item.title}>
-                  <div className={`ds-card-pastel ds-card-pastel-${item.color} h-full`}>
-                    <div className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/70 text-foreground/75">
-                      {item.icon}
+                  <div className="ds-card h-full">
+                    <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300">
+                      <item.icon className="h-5 w-5" />
                     </div>
-                    <h3 className="mb-2 text-lg font-semibold text-foreground/85">{item.title}</h3>
-                    <p className="text-sm leading-relaxed text-foreground/65">{item.description}</p>
+                    <h3 className="ds-h3">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.copy}</p>
                   </div>
                 </StaggerItem>
               ))}
@@ -504,101 +390,64 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* =============== ADVANCED SEO CONTENT =============== */}
         <section className="ds-section ds-bg-section">
-          <div className="ds-container max-w-4xl">
+          <div className="ds-container max-w-5xl">
             <Reveal>
-              <h2 className="ds-h2 mb-6">Free AI prompts for every workflow</h2>
-              <div className="prose prose-sm dark:prose-invert max-w-none space-y-4 text-muted-foreground leading-relaxed">
+              <h2 className="ds-h2 mb-5">Templates for dashboards, ecommerce, SaaS, landing pages, and static websites</h2>
+              <div className="space-y-4 text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
                 <p>
-                  mtverse is a curated library of <strong>free AI prompts</strong> for image generation,
-                  writing, coding, career development, study, and research. Whether you are a designer looking
-                  for <Link href="/prompts?category=image-generation" className="text-primary-600 hover:underline">AI image prompts</Link> for
-                  Midjourney, a developer searching for <Link href="/prompts?category=coding" className="text-primary-600 hover:underline">ChatGPT coding prompts</Link>,
-                  or a marketer needing <Link href="/prompts?category=writing" className="text-primary-600 hover:underline">writing prompts</Link> for
-                  blog posts and ad copy, our library has you covered.
+                  mtverse is a template catalog for developers, founders, designers, freelancers, and agencies who need a strong starting point without rebuilding common layouts from scratch. The collection covers <Link href="/template-hubs/nextjs-dashboard-templates" className="font-medium text-primary hover:underline">Next.js dashboard templates</Link>, <Link href="/template-hubs/react-admin-dashboard-templates" className="font-medium text-primary hover:underline">React admin UI kits</Link>, ecommerce storefronts, SaaS workspaces, landing pages, and responsive HTML websites.
                 </p>
                 <p>
-                  Every prompt in our library is hand-reviewed and paired with a preview image, so you can see
-                  what the prompt actually produces before you copy it. We currently offer prompts for{' '}
-                  <strong>ChatGPT</strong>, <strong>Claude</strong>, <strong>Gemini</strong>,{' '}
-                  <strong>Midjourney</strong>, <strong>Flux</strong>, and <strong>Photoshop AI</strong>,
-                  with new prompts added weekly. Browse by category, search by keyword, or filter by AI model
-                  to find exactly what you need in seconds.
+                  Dashboard packages focus on application shells, navigation, analytics, tables, charts, settings, authentication screens, billing, ecommerce operations, CRM workflows, and internal tools. Website templates focus on clear page structure, responsive sections, product presentation, portfolios, service pages, and launch-ready marketing layouts.
                 </p>
                 <p>
-                  Beyond prompts, we also offer <Link href="/html-templates" className="text-primary-600 hover:underline">free responsive HTML templates</Link>{' '}
-                  for portfolios, ecommerce, SaaS, agencies, restaurants, healthcare, education, fitness, crypto, and real estate, plus{' '}
-                  <Link href="/templates" className="text-primary-600 hover:underline">premium Next.js templates</Link>{' '}
-                  for SaaS, enterprise, analytics, ecommerce, CRM, and admin products. Paid templates come with source packages and secure access. The $5 HTML bundle unlock prepares one ZIP containing every HTML template package.
+                  Search visibility comes from useful, accurate template pages rather than keyword lists. Every important mtverse template route is designed to explain the project type, framework, included screens, preview options, pricing scope, and download path so visitors and search engines can understand what the page actually offers.
                 </p>
               </div>
             </Reveal>
-
-            <Reveal delay={0.1}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10">
-                <div className="ds-card">
-                  <h3 className="ds-h4 mb-2">Popular prompt categories</h3>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li><Link href="/prompts?category=image-generation" className="hover:text-foreground hover:underline">AI image generation prompts</Link></li>
-                    <li><Link href="/prompts?category=image-editing" className="hover:text-foreground hover:underline">AI image editing prompts</Link></li>
-                    <li><Link href="/prompts?category=writing" className="hover:text-foreground hover:underline">Writing &amp; content prompts</Link></li>
-                    <li><Link href="/prompts?category=coding" className="hover:text-foreground hover:underline">Coding &amp; development prompts</Link></li>
-                    <li><Link href="/prompts?category=work" className="hover:text-foreground hover:underline">Work &amp; productivity prompts</Link></li>
-                    <li><Link href="/prompts?category=career" className="hover:text-foreground hover:underline">Career &amp; job search prompts</Link></li>
-                  </ul>
-                </div>
-                <div className="ds-card">
-                  <h3 className="ds-h4 mb-2">Popular AI model prompts</h3>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li><Link href="/prompts?model=ChatGPT" className="hover:text-foreground hover:underline">ChatGPT prompts</Link></li>
-                    <li><Link href="/prompts?model=Midjourney" className="hover:text-foreground hover:underline">Midjourney prompts</Link></li>
-                    <li><Link href="/prompts?model=Flux" className="hover:text-foreground hover:underline">Flux prompts</Link></li>
-                    <li><Link href="/prompts?model=Gemini" className="hover:text-foreground hover:underline">Gemini prompts</Link></li>
-                    <li><Link href="/prompts?model=Claude" className="hover:text-foreground hover:underline">Claude prompts</Link></li>
-                    <li><Link href="/prompts?model=Photoshop%20AI" className="hover:text-foreground hover:underline">Photoshop AI prompts</Link></li>
-                  </ul>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              <div className="ds-card">
+                <h3 className="ds-h4">Popular developer template searches</h3>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {[
+                    ['Next.js dashboards', '/template-hubs/nextjs-dashboard-templates'],
+                    ['React admin templates', '/template-hubs/react-admin-dashboard-templates'],
+                    ['SaaS templates', '/template-hubs/saas-templates'],
+                    ['Ecommerce templates', '/template-hubs/ecommerce-website-templates'],
+                  ].map(([label, href]) => (
+                    <Link key={href} href={href} className="ds-btn ds-btn-secondary ds-btn-sm">{label}</Link>
+                  ))}
                 </div>
               </div>
-            </Reveal>
-
-            <Reveal delay={0.2}>
-              <div className="ds-card mt-6">
-                <div className="flex items-start gap-3">
-                  <Shield className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="ds-h4 mb-1">Free to use with sign-in copy access</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Every prompt on mtverse is free to browse and use. Sign in to reveal, copy, and save prompts,
-                      search, or copy prompts. Sign up is optional - it only saves your favorites and lets you
-                      download purchased templates.
-                    </p>
-                  </div>
+              <div className="ds-card">
+                <h3 className="ds-h4">Popular website template searches</h3>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {[
+                    ['Free HTML templates', '/template-hubs/free-html-templates'],
+                    ['Portfolio templates', '/template-hubs/portfolio-html-templates'],
+                    ['Landing pages', '/template-hubs/landing-page-templates'],
+                    ['Agency websites', '/template-hubs/agency-website-templates'],
+                  ].map(([label, href]) => (
+                    <Link key={href} href={href} className="ds-btn ds-btn-secondary ds-btn-sm">{label}</Link>
+                  ))}
                 </div>
               </div>
-            </Reveal>
+            </div>
           </div>
         </section>
 
-        {/* =============== CTA =============== */}
-        {/* Homepage FAQ */}
         <section className="ds-section ds-bg-section">
           <div className="ds-container max-w-4xl">
-            <Reveal className="text-center mb-8">
-              <span className="ds-eyebrow ds-eyebrow-accent mb-3">Help center</span>
-              <h2 className="ds-h1 ds-text-balance">Questions before you browse?</h2>
-              <p className="ds-lead ds-text-pretty mt-2">Clear answers for prompt users, template buyers, and creators checking mtverse for the first time.</p>
+            <Reveal className="mb-8 text-center">
+              <span className="ds-eyebrow ds-eyebrow-accent mb-3">Template FAQ</span>
+              <h2 className="ds-h1 ds-text-balance">Questions before you choose a template</h2>
             </Reveal>
             <div className="grid gap-3">
-              {[
-                ['Are mtverse AI prompts free?', 'Yes. Public prompts are free to browse and adapt. Sign in when you want to reveal, copy, and save the exact prompt text.'],
-                ['What templates can I download?', 'mtverse includes free HTML website templates, a $5 all-HTML bundle unlock, and paid Next.js dashboard, SaaS, ecommerce, CRM, analytics, and admin templates with live previews.'],
-                ['Can I preview a template before purchase?', 'Yes. Each paid template has a live preview route and full screenshots so you can inspect the UI before checkout.'],
-                ['What helps mtverse rank in Google?', 'Useful page content, accurate metadata, internal links, fast pages, clean schema, a sitemap, and trustworthy policy pages help more than long keyword stuffing lists.'],
-              ].map(([question, answer]) => (
-                <details key={question} className="rounded-lg border border-border bg-card p-4">
-                  <summary className="cursor-pointer list-none text-sm font-semibold text-foreground">{question}</summary>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{answer}</p>
+              {FAQS.map((item) => (
+                <details key={item.question} className="rounded-lg border border-border bg-card p-4">
+                  <summary className="cursor-pointer list-none text-sm font-semibold text-foreground">{item.question}</summary>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.answer}</p>
                 </details>
               ))}
             </div>
@@ -608,35 +457,30 @@ export default async function Home() {
         <section className="ds-section-lg ds-bg-section relative overflow-hidden">
           <CtaBackground />
           <div className="ds-container relative">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
+            <div className="mx-auto max-w-3xl space-y-6 text-center">
               <Reveal>
                 <span className="ds-eyebrow ds-eyebrow-accent">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Start creating
+                  <Check className="h-3.5 w-3.5" />
+                  Preview first, then choose
                 </span>
               </Reveal>
               <Reveal delay={0.08}>
                 <h2 className="ds-display-2 ds-text-balance">
-                  Your next great idea is one <span className="ds-text-emphasis">prompt</span> away
+                  Find a template that fits the <span className="ds-text-emphasis">actual project</span>
                 </h2>
               </Reveal>
               <Reveal delay={0.16}>
                 <p className="ds-lead ds-text-pretty">
-                  Browse {promptCount.toLocaleString()} curated prompts and {templateStats.totalTemplates} website templates.
+                  Compare {templateStats.totalTemplates.toLocaleString()} templates across {categoryOptions.length} focused categories.
                 </p>
               </Reveal>
               <Reveal delay={0.24}>
                 <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                  <Magnetic>
-                    <Link href="/prompts" className="ds-btn ds-btn-primary ds-btn-lg">
-                      Browse prompts
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Magnetic>
-                  <Link href="/templates" className="ds-btn ds-btn-secondary ds-btn-lg">
-                    <Eye className="h-4 w-4" />
+                  <Link href="/templates" className="ds-btn ds-btn-primary ds-btn-lg">
                     Browse templates
+                    <ArrowRight className="h-4 w-4" />
                   </Link>
+                  <Link href="/pricing" className="ds-btn ds-btn-secondary ds-btn-lg">Compare pricing</Link>
                 </div>
               </Reveal>
             </div>

@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils"
 
 /**
  * Premium skeleton loader primitive — used by all 700+ MTVerse components
- * for loading state placeholders (prompt cards, admin tables, dashboards,
+ * for loading state placeholders (template cards, admin tables, dashboards,
  * settings panels, etc.).
  *
  * Design tokens:

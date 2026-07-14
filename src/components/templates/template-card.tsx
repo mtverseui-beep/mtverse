@@ -22,7 +22,7 @@ export function TemplateCard({ template, priority = false }: Props) {
   const showProBadge = !template.isFree && template.pricingTier === 'pro'
 
   return (
-    <Link href={`/templates/${template.slug}`} className="group block h-full no-underline">
+    <Link href={`/templates/${template.slug}`} prefetch={false} className="group block h-full no-underline">
       <article className="relative h-full overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/[0.04]">
         {/* Screenshot container */}
         <div className="relative overflow-hidden bg-gradient-to-br from-muted/60 via-muted/30 to-muted/50 p-3">

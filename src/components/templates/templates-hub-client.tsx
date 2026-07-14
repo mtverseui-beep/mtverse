@@ -384,7 +384,7 @@ export function TemplatesHubClient({
       </section>
 
       {/* ═══ Sticky Toolbar — filters + sort ═══ */}
-      <div className="sticky top-[var(--mtverse-header-height,4rem)] z-30 border-b border-border/40 bg-background/80 backdrop-blur-xl lg:top-[var(--mtverse-desktop-header-height,4rem)]">
+      <div className="border-b border-border/40 bg-background">
         <div className="mx-auto flex max-w-[1920px] items-center justify-between gap-3 px-4 py-2.5 sm:px-6 lg:px-8">
           <p className="text-sm text-muted-foreground">
             <span className="font-semibold text-foreground">{filtered.length}</span>{' '}

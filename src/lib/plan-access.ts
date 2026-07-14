@@ -5,7 +5,6 @@ export type AccessLevel = 'free' | 'advanced' | 'extended'
 export interface PlanFeatures {
   seats: number
   projects: number | 'unlimited'
-  promptCollections: 'free' | 'full'
   uiElements: 'free' | 'advanced' | 'extended'
   advancedUIAccess: 'preview' | 'full'
   extendedSourceAccess: boolean
@@ -23,7 +22,6 @@ export const PLAN_FEATURES: Record<PlanLevel, PlanFeatures> = {
   free: {
     seats: 1,
     projects: 3,
-    promptCollections: 'free',
     uiElements: 'free',
     advancedUIAccess: 'preview',
     extendedSourceAccess: false,
@@ -39,7 +37,6 @@ export const PLAN_FEATURES: Record<PlanLevel, PlanFeatures> = {
   pro: {
     seats: 1,
     projects: 'unlimited',
-    promptCollections: 'full',
     uiElements: 'advanced',
     advancedUIAccess: 'full',
     extendedSourceAccess: false,
@@ -55,7 +52,6 @@ export const PLAN_FEATURES: Record<PlanLevel, PlanFeatures> = {
   business: {
     seats: 5,
     projects: 'unlimited',
-    promptCollections: 'full',
     uiElements: 'advanced',
     advancedUIAccess: 'full',
     extendedSourceAccess: false,
@@ -71,7 +67,6 @@ export const PLAN_FEATURES: Record<PlanLevel, PlanFeatures> = {
   extended: {
     seats: 999,
     projects: 'unlimited',
-    promptCollections: 'full',
     uiElements: 'extended',
     advancedUIAccess: 'full',
     extendedSourceAccess: true,
