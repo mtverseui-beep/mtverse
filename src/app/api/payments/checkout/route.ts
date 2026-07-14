@@ -4,13 +4,31 @@ import { createCheckout } from '@/lib/payments'
 import { getTemplateCheckoutPackageId } from '@/lib/template-checkout'
 import { getTemplateBySlugFromStore } from '@/lib/templates-data'
 import { isPackageId } from '@/lib/packages'
+import { resolveSiteUrlFromRequestHeaders, SITE_URL } from '@/lib/site-url'
+
+function normalizeCheckoutOrigin(value: string) {
+  const url = new URL(value)
+  const hostname = url.hostname.toLowerCase().replace(/^www\./, '')
+  return `${url.protocol}//${hostname}${url.port ? `:${url.port}` : ''}`
+}
+
+function isAllowedCheckoutOrigin(request: NextRequest, origin: string) {
+  const requestOrigins = [
+    SITE_URL,
+    resolveSiteUrlFromRequestHeaders(request.headers),
+    request.nextUrl.origin,
+  ]
+
+  const allowedOrigins = new Set(requestOrigins.map(normalizeCheckoutOrigin))
+  return allowedOrigins.has(normalizeCheckoutOrigin(origin))
+}
 
 export async function POST(request: NextRequest) {
   try {
     const origin = request.headers.get('origin')
     if (origin) {
       try {
-        if (new URL(origin).origin !== request.nextUrl.origin) {
+        if (!isAllowedCheckoutOrigin(request, origin)) {
           return NextResponse.json(
             { error: 'Cross-origin checkout requests are not allowed.' },
             { status: 403 }
