@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Calendar,
+  Blocks,
   CheckCircle2,
   Clipboard,
   Download,
@@ -82,7 +83,7 @@ function formatPlan(plan: string) {
 }
 
 export default function AccountClient() {
-  const { user, loading, authenticated, signOut, plan, licenseKey } = useAuth()
+  const { user, loading, authenticated, signOut, plan, licenseKey, entitlements } = useAuth()
   const router = useRouter()
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const [signingOut, setSigningOut] = useState(false)
@@ -269,6 +270,43 @@ export default function AccountClient() {
               ) : null}
             </div>
           </section>
+
+          {entitlements.uiLibrary ? (
+            <section className="mb-6 overflow-hidden rounded-xl border border-cyan-200/70 bg-gradient-to-br from-cyan-50 via-background to-background shadow-sm dark:border-cyan-900/60 dark:from-cyan-950/30">
+              <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-start gap-4">
+                  <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-cyan-100 text-cyan-700 dark:bg-cyan-900/50 dark:text-cyan-200">
+                    <Blocks className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="text-lg font-semibold text-foreground">mtverse UI Library</h2>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        Lifetime access
+                      </span>
+                    </div>
+                    <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                      Component source code, dependencies, usage details, and future component updates are unlocked.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+                  <Link href="/api/download/package/ui-library" className="ds-btn ds-btn-secondary">
+                    <Download className="h-4 w-4" />
+                    Download full ZIP
+                  </Link>
+                  <Link
+                    href={process.env.NEXT_PUBLIC_UI_LIBRARY_URL || 'https://ui.mtverse.dev'}
+                    className="ds-btn ds-btn-primary"
+                  >
+                    <Blocks className="h-4 w-4" />
+                    Open UI Library
+                  </Link>
+                </div>
+              </div>
+            </section>
+          ) : null}
 
           <section id="library" className="ds-card p-6">
             <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">

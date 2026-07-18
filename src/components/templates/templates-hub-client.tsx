@@ -270,20 +270,9 @@ export function TemplatesHubClient({
     <div className="min-h-screen">
       {/* ═══ Hero Section — compact so list starts higher ═══ */}
       <section className="relative overflow-hidden border-b border-border/40">
-        {/* Animated 3D background */}
         <div aria-hidden className="absolute inset-0">
           <TemplatesHero3D />
         </div>
-
-        {/* Gradient mesh overlay for depth */}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background/90"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,var(--ds-primary-100)_0%,transparent_60%)] opacity-60 dark:opacity-30"
-        />
 
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-8 pt-8 sm:px-6 sm:pb-10 sm:pt-12 lg:pb-12 lg:pt-14">
           <div className="text-center">
@@ -298,12 +287,12 @@ export function TemplatesHubClient({
               className="text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl"
               style={{ fontFamily: 'var(--ds-font-serif)', letterSpacing: '-0.015em' }}
             >
-              mtverse templates
+              Website templates for real products
             </h1>
 
             {/* Subtitle */}
             <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base sm:leading-7">
-              Premium dashboard templates from real suite projects. Preview the product, purchase once, and download securely.
+              Explore dashboard, ecommerce, SaaS, landing page, portfolio, and HTML templates. Preview the real interface, review the package scope, and download source securely.
             </p>
 
             {/* ═══ Search Bar — prominent, centered ═══ */}

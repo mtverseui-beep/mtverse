@@ -26,6 +26,7 @@ import { TemplateCard } from '@/components/templates/template-card'
 import { TemplateDetailClient } from '@/components/templates/template-detail-client'
 import { TemplateTabs } from '@/components/templates/template-tabs'
 import { TemplateFrameworkRequest } from '@/components/templates/template-framework-request'
+import { TemplateFaqList } from '@/components/content/template-faq-list'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
 import { SectionBackground, CtaBackground } from '@/components/design-system/backgrounds'
 
@@ -108,7 +109,7 @@ function getTemplateIntent(template: Template) {
 function buildTemplateSeoTitle(template: Template) {
   const intent = getTemplateIntent(template)
   const suffix = ` - ${intent}`
-  const maxBaseLength = Math.max(16, 66 - suffix.length)
+  const maxBaseLength = Math.max(16, 60 - suffix.length)
   const rawTitle = normalizeText(template.title)
   const conciseTitle = rawTitle
     .replace(/\s*(?:-\s*)?(?:free\s+|premium\s+)?(?:next\.?js|react|vite|html|vue\.?js|angular|laravel)\b.*(?:template|ui kit)$/i, '')
@@ -188,7 +189,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   ])
 
   return {
-    title,
+    title: { absolute: title },
     description,
     keywords,
     alternates: { canonical: '/templates/' + template.slug },
@@ -330,7 +331,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
     <PublicLayout>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main>
-        {/* ═══ Breadcrumb ═══ */}
+        {/* â•â•â• Breadcrumb â•â•â• */}
         <div className="ds-container pt-6">
           <nav className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <Link href="/" className="hover:text-foreground">Home</Link>
@@ -347,7 +348,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
           </nav>
         </div>
 
-        {/* ═══ HERO: Large screenshot + sticky buy box ═══ */}
+        {/* â•â•â• HERO: Large screenshot + sticky buy box â•â•â• */}
         <section className="ds-section-sm">
           <div className="ds-container">
             {/* Title + meta row */}
@@ -388,7 +389,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
               </div>
             </Reveal>
 
-            {/* Screenshot + Buy box grid — side-by-side from sm (640px) */}
+            {/* Screenshot + Buy box grid â€” side-by-side from sm (640px) */}
             <div className="grid grid-cols-1 gap-4 items-start sm:grid-cols-[1fr_280px] md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px]">
               {/* Left: full screenshot preview */}
               <Reveal>
@@ -437,7 +438,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
           </div>
         </section>
 
-        {/* ═══ Highlights — bento-style grid ═══ */}
+        {/* â•â•â• Highlights â€” bento-style grid â•â•â• */}
         <section className="ds-section-sm">
           <div className="ds-container">
             <Stagger className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
@@ -471,7 +472,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
           </div>
         </section>
 
-        {/* ═══ Description + Features with Tabs (About + Reviews) ═══ */}
+        {/* â•â•â• Description + Features with Tabs (About + Reviews) â•â•â• */}
         <section className="ds-section-sm ds-bg-section relative overflow-hidden">
           <SectionBackground />
           <div className="ds-container relative max-w-5xl">
@@ -479,7 +480,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
               <TemplateTabs template={template} />
             </Reveal>
 
-            {/* What's included — below tabs */}
+            {/* What's included â€” below tabs */}
             <Reveal delay={0.1}>
               <div className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t">
                 <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">What&apos;s included</h2>
@@ -529,7 +530,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
             </Reveal>
           </div>
         </section>
-        {/* ═══ FAQ ═══ */}
+        {/* â•â•â• FAQ â•â•â• */}
         <section className="ds-section-sm ds-bg-section relative overflow-hidden">
           <SectionBackground />
           <div className="ds-container relative max-w-3xl">
@@ -537,25 +538,11 @@ export default async function TemplateDetailPage({ params }: { params: Params })
               <h2 className="ds-h2 mb-2">FAQ</h2>
               <p className="ds-muted">Frequently asked questions about this template</p>
             </Reveal>
-            <div className="space-y-3">
-              {template.faq.map((item, i) => (
-                <Reveal key={i} delay={i * 0.05}>
-                  <div className="ds-card group">
-                    <details>
-                      <summary className="flex items-center justify-between gap-3 cursor-pointer list-none font-medium text-foreground">
-                        {item.question}
-                        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-90" />
-                      </summary>
-                      <p className="mt-3 text-sm text-muted-foreground">{item.answer}</p>
-                    </details>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+            <TemplateFaqList items={template.faq} />
           </div>
         </section>
 
-        {/* ═══ Support ═══ */}
+        {/* â•â•â• Support â•â•â• */}
         <section className="ds-section-sm">
           <div className="ds-container max-w-4xl">
             <Reveal>
@@ -586,7 +573,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
           </div>
         </section>
 
-        {/* ═══ Related ═══ */}
+        {/* â•â•â• Related â•â•â• */}
         {related.length > 0 && (
           <section className="ds-section-sm">
             <div className="ds-container">
@@ -603,7 +590,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
           </section>
         )}
 
-        {/* ═══ Final CTA ═══ */}
+        {/* â•â•â• Final CTA â•â•â• */}
         <section className="ds-section-lg ds-bg-section relative overflow-hidden">
           <CtaBackground />
           <div className="ds-container relative text-center max-w-2xl">
@@ -617,7 +604,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
               <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                 <Link href="#buy" className="ds-btn ds-btn-accent ds-btn-lg text-sm sm:text-base">
                   <ShoppingCart className="h-4 w-4" />
-                  Buy now — ${template.price}
+                  Buy now - ${template.price}
                 </Link>
                 <Link href={`/preview/${template.slug}`} target="_blank" className="ds-btn ds-btn-secondary ds-btn-lg text-sm sm:text-base">
                   <Eye className="h-4 w-4" />

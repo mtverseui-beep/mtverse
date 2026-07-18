@@ -86,7 +86,10 @@ function resolvePackageId(existing: PlanRecord | undefined, incomingPackageId: s
 
 export function hasPlanPackageAccess(record: PlanRecord | null | undefined, packageId: string) {
   if (!record || record.status === 'revoked') return false
-  if (record.packageId === 'all-paid') return true
+  if (
+    record.packageId === 'all-paid' &&
+    ['next', 'pro', 'ooster-pro', 'all-paid'].includes(packageId)
+  ) return true
   if (record.packageId === packageId) return true
   return Boolean(record.purchases?.includes(packageId))
 }

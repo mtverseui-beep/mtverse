@@ -6,6 +6,7 @@ export type BlogPost = {
   isoDate: string
   readTime: string
   category: string
+  coverImage: string
   intro: string
   sections: Array<{
     heading: string
@@ -16,6 +17,206 @@ export type BlogPost = {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: 'website-template-selection-guide',
+    title: 'How to Choose the Right Website Template for Your Product',
+    excerpt:
+      'A practical framework for comparing website templates by business goal, content model, technology, responsiveness, accessibility, and long-term ownership.',
+    date: 'July 17, 2026',
+    isoDate: '2026-07-17',
+    readTime: '11 min read',
+    category: 'Template Guides',
+    coverImage: '/template-previews/lumina-fragrance.png',
+    intro:
+      'The best website template is not the one with the most pages or decoration. It is the source package that matches the product goal, supports the real content, and remains understandable after the first visual changes are complete.',
+    sections: [
+      {
+        heading: 'Begin With The Job Of The Website',
+        body: [
+          'A storefront needs product discovery, trustworthy product detail, cart and checkout paths, while a SaaS launch page needs clear positioning, proof, pricing, and conversion. A portfolio needs project storytelling and a fast contact path. Write down that primary job before comparing styles.',
+          'Treat every included page as a maintenance commitment. A smaller package with the right page types is usually a better starting point than a large demo filled with sections the business cannot support.',
+        ],
+      },
+      {
+        heading: 'Compare Content Structure Before Color',
+        body: [
+          'Review how headings, supporting copy, media, testimonials, feature groups, and calls to action are organized. Replace the demo content mentally with the real product content and check whether the hierarchy still makes sense.',
+          'A reusable template should remain clear when titles become longer, images use different aspect ratios, and sections contain fewer or more items than the demo.',
+        ],
+      },
+      {
+        heading: 'Verify Technology And Ownership',
+        body: [
+          'Confirm the framework, language, styling system, dependency versions, build command, and expected hosting environment. The team should be able to run, inspect, and update the source without depending on an undocumented generator.',
+          'Read the license and purchase scope before checkout. One-template access, all-template bundles, HTML source bundles, and component-library access solve different ownership needs.',
+        ],
+      },
+      {
+        heading: 'Inspect Mobile, Accessibility, And Performance',
+        body: [
+          'Use the live preview at mobile and desktop widths. Test navigation, forms, dialogs, keyboard focus, text wrapping, image loading, and empty states rather than judging only the first screenshot.',
+          'Prefer layouts that reserve media dimensions, keep client-side JavaScript focused, and use semantic page structure. These fundamentals matter more to users and search engines than decorative motion.',
+        ],
+      },
+      {
+        heading: 'Plan The First Production Pass',
+        body: [
+          'Before launch, replace every placeholder, connect forms and analytics, configure metadata and redirects, verify consent behavior, and test the deployed domain. Keep these tasks separate from visual customization so important operational work is not forgotten.',
+          'A strong template shortens the path to production; it does not remove the need for content, integration, security, and release testing.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'admin-dashboard-template-buyers-guide',
+    title: 'Admin Dashboard Template Buyer Guide: Pages, Data, and Production Fit',
+    excerpt:
+      'What to inspect in an admin dashboard template before buying: shell architecture, tables, charts, permissions, responsive behavior, dependencies, and delivery.',
+    date: 'July 15, 2026',
+    isoDate: '2026-07-15',
+    readTime: '12 min read',
+    category: 'Template Guides',
+    coverImage: '/template-previews/ooster.png',
+    intro:
+      'Dashboard screenshots can look similar while the underlying source quality differs dramatically. A useful evaluation focuses on the application shell, reusable data patterns, state handling, and how quickly the package can accept real product logic.',
+    sections: [
+      {
+        heading: 'Evaluate The Application Shell',
+        body: [
+          'Inspect the sidebar, top navigation, breadcrumbs, page titles, mobile menu, command search, theme behavior, and account controls. These shared surfaces affect every screen and should be consistent before feature pages are considered.',
+          'Check that fixed elements do not overlap content, long labels remain readable, and the shell works at laptop, tablet, and narrow mobile widths.',
+        ],
+      },
+      {
+        heading: 'Look Beyond Filled Dashboard States',
+        body: [
+          'Tables should support realistic density, horizontal overflow, empty rows, loading, sorting, filtering, pagination, and actions. Charts need labels, legends, responsive containers, and useful fallback content. Forms need validation and accessible labels.',
+          'Templates that show error, empty, loading, and permission states reduce the amount of product work hidden behind a polished overview screenshot.',
+        ],
+      },
+      {
+        heading: 'Review Component Boundaries And Dependencies',
+        body: [
+          'Reusable layouts, cards, tables, dialogs, and form controls should have clear props and avoid page-specific assumptions. Review the package manifest for heavy libraries, duplicate tools, abandoned dependencies, and packages loaded globally without need.',
+          'A TypeScript project should build without ignored errors. Styling tokens and shared primitives make brand changes safer than repeating raw colors and spacing throughout every page.',
+        ],
+      },
+      {
+        heading: 'Map Demo Data To Real APIs',
+        body: [
+          'Identify where sample metrics, rows, notifications, and profiles are defined. A maintainable package keeps demo data separate from presentation and makes loading or error replacement straightforward.',
+          'Permissions and protected actions must ultimately be enforced by the server. Hiding a button in the interface is useful presentation, not authorization.',
+        ],
+      },
+      {
+        heading: 'Confirm Purchase And Delivery Scope',
+        body: [
+          'Use the detail page to confirm included screens, framework, version, license, price, preview URL, and package format. After payment, access should attach to the signed-in account and expose only the purchased template or selected bundle.',
+          'For a larger catalog, compare a single-template purchase with an all-paid bundle based on the number of projects the team expects to build, not only the immediate screen.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'ecommerce-template-conversion-checklist',
+    title: 'Ecommerce Website Template Conversion and Trust Checklist',
+    excerpt:
+      'A buyer-focused checklist for product discovery, product detail, mobile conversion, performance, trust, accessibility, and search-ready ecommerce content.',
+    date: 'July 13, 2026',
+    isoDate: '2026-07-13',
+    readTime: '10 min read',
+    category: 'Template Guides',
+    coverImage: '/template-previews/volthaus-streetwear-ecommerce-template.png',
+    intro:
+      'An ecommerce template should help shoppers understand products and complete decisions, not simply display attractive campaign imagery. The strongest source packages balance brand expression with predictable shopping behavior.',
+    sections: [
+      {
+        heading: 'Make Product Discovery Obvious',
+        body: [
+          'Navigation, categories, search, filters, sorting, availability, and collection labels should use familiar language. Shoppers need to understand where they are and how to narrow the catalog without learning a custom interaction model.',
+          'Test long product names, multiple price formats, sale states, unavailable variants, and uneven image ratios. Repeated cards should remain aligned and readable under real catalog data.',
+        ],
+      },
+      {
+        heading: 'Strengthen Product Detail Decisions',
+        body: [
+          'Product pages should present clear media, price, variants, stock status, delivery context, returns, and the primary purchase action without forcing unnecessary scrolling. Supporting content should answer genuine objections.',
+          'Use real product descriptions and structured attributes instead of copying manufacturer or demo text. Unique useful content improves customer trust and gives search engines a reason to index the page.',
+        ],
+      },
+      {
+        heading: 'Protect The Mobile Checkout Path',
+        body: [
+          'Review touch targets, sticky actions, keyboard behavior, form autofill, error messages, and payment handoff on a narrow device. Popups and promotional bars must not cover the cart or checkout controls.',
+          'A fast mobile experience benefits from appropriately sized images, limited third-party scripts, reserved layout dimensions, and server-rendered product information.',
+        ],
+      },
+      {
+        heading: 'Use Honest Trust Signals',
+        body: [
+          'Policies, contact details, shipping expectations, payment methods, privacy information, and verified customer feedback should be easy to find. Avoid invented purchase counters, ratings, or testimonials that cannot be supported.',
+          'Trust also comes from consistent visual behavior: buttons work, links lead where expected, totals are explained, and failures provide a recovery path.',
+        ],
+      },
+      {
+        heading: 'Prepare Search And Measurement',
+        body: [
+          'Give category and product pages distinct titles, descriptions, canonical URLs, headings, and useful visible content. Add valid product structured data only when price, availability, and product information match what shoppers see.',
+          'Measure product views, search, filter use, add-to-cart, checkout start, completed purchase, and failure events. These signals reveal whether the template supports the business goal after launch.',
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'ui-component-library-vs-website-template',
+    title: 'UI Component Library vs Website Template: Which Source Should You Choose?',
+    excerpt:
+      'A clear comparison of reusable UI component source, complete website templates, dashboard packages, and when teams benefit from combining them.',
+    date: 'July 11, 2026',
+    isoDate: '2026-07-11',
+    readTime: '9 min read',
+    category: 'Engineering',
+    coverImage: '/template-previews/pagepulse.png',
+    intro:
+      'A template gives a project a coherent starting structure. A component library gives teams smaller reusable building blocks. Choosing between them depends on whether the immediate problem is product architecture, page delivery, or repeated interface construction.',
+    sections: [
+      {
+        heading: 'Choose A Template For Project Structure',
+        body: [
+          'Website and dashboard templates are valuable when a project needs navigation, page composition, responsive layouts, visual direction, and representative screens together. They reduce decisions at the start of a defined product.',
+          'The tradeoff is specificity. A template often includes opinions about routing, styling, data presentation, and application structure that the team should review before adoption.',
+        ],
+      },
+      {
+        heading: 'Choose A Component Library For Repeated UI Work',
+        body: [
+          'A source component library is better when the product already has an architecture but repeatedly needs tables, forms, navigation, dialogs, charts, pricing, authentication, and state patterns.',
+          'Protected individual source access lets developers inspect and copy only the selected component, while a complete dashboard ZIP provides a reference implementation when broader context is useful.',
+        ],
+      },
+      {
+        heading: 'Compare Integration Cost',
+        body: [
+          'Before copying source, confirm React and framework versions, TypeScript expectations, Tailwind configuration, icon packages, headless primitives, animation dependencies, and local utility functions.',
+          'A useful component page should state those dependencies and show a real preview. The source should be understandable without copying an entire application into the project.',
+        ],
+      },
+      {
+        heading: 'Combine Them Deliberately',
+        body: [
+          'Teams can begin with a template for shell and page structure, then use a component library for new workflows that were not included in the original package. Shared tokens should be adapted first so new components match the project.',
+          'Avoid mixing several unrelated design systems without a normalization pass. Typography, spacing, color, radius, focus states, and responsive rules should still feel like one product.',
+        ],
+      },
+      {
+        heading: 'Decide Based On The Next Six Months',
+        body: [
+          'For one defined website, a focused template may be enough. For agencies, internal product teams, or founders building repeated screens, a component library creates more value over time.',
+          'Evaluate the source package, license, update terms, and protected delivery model rather than choosing only from the headline component or page count.',
+        ],
+      },
+    ],
+  },
+  {
     slug: 'how-to-evaluate-nextjs-dashboard-template',
     title: 'How to Evaluate a Next.js Dashboard Template Before You Buy',
     excerpt:
@@ -24,6 +225,7 @@ export const BLOG_POSTS: BlogPost[] = [
     isoDate: '2026-07-12',
     readTime: '11 min read',
     category: 'Template Guides',
+    coverImage: '/template-previews/pipeline-pilot-production.png',
     intro:
       'A dashboard screenshot can look excellent while the source is difficult to extend. The useful question is not whether the demo looks polished; it is whether the template gives your team a dependable starting point for a real product.',
     sections: [
@@ -86,6 +288,7 @@ export const BLOG_POSTS: BlogPost[] = [
     isoDate: '2026-07-10',
     readTime: '12 min read',
     category: 'Engineering',
+    coverImage: '/template-previews/sentinelgrid.png',
     intro:
       'Downloading a template solves the first layout problem, not the production problem. Before launch, every external service, protected action, error path, and public page needs an explicit owner and a test that reflects the deployed environment.',
     sections: [
@@ -142,6 +345,7 @@ export const BLOG_POSTS: BlogPost[] = [
     isoDate: '2026-07-05',
     readTime: '9 min read',
     category: 'Template Guides',
+    coverImage: '/template-previews/lumina-fragrance.png',
     intro:
       'Static HTML sites can be extremely fast and inexpensive to host, but a template still needs deliberate content, form, search, accessibility, and deployment work before it represents a real business well.',
     sections: [
@@ -198,6 +402,7 @@ export const BLOG_POSTS: BlogPost[] = [
     isoDate: '2026-02-15',
     readTime: '12 min read',
     category: 'Engineering',
+    coverImage: '/template-previews/nexusgrid-premium-admin-dashboard.png',
     intro:
       'A component library becomes valuable when teams can understand it quickly, customize it safely, and trust it across many screens. That requires more than attractive visuals.',
     sections: [
@@ -247,6 +452,7 @@ export const BLOG_POSTS: BlogPost[] = [
     isoDate: '2026-01-20',
     readTime: '10 min read',
     category: 'Engineering',
+    coverImage: '/template-previews/pagepulse.png',
     intro:
       'A design system is not a color palette. It is a set of decisions that keeps product screens consistent even when many components are built over time.',
     sections: [
@@ -287,6 +493,7 @@ export const BLOG_POSTS: BlogPost[] = [
     isoDate: '2025-12-15',
     readTime: '7 min read',
     category: 'Engineering',
+    coverImage: '/template-previews/planna-dashboard.png',
     intro:
       'Next.js continues to push more work toward server rendering, streaming, and route-level decisions. The biggest production wins still come from clean data boundaries and careful client bundles.',
     sections: [

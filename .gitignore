@@ -1,4 +1,4 @@
-﻿# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 node_modules
@@ -60,3 +60,5 @@ data/template-details/
 
 data/customer-store.json
 .env.example
+data/mtverse-ui-library-source.zip
+data/newsletter-store.json

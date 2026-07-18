@@ -7,7 +7,7 @@ import { getCurrentCustomerEmail } from '@/lib/auth/current-customer'
 import { sendPurchaseConfirmationOnce } from '@/lib/email/purchase-confirmation'
 
 function shouldRecordTemplatePurchase(packageId: string | null | undefined, kitSlug: string | null) {
-  return Boolean(kitSlug && packageId !== 'free-unlock' && packageId !== 'all-paid')
+  return Boolean(kitSlug && !['free-unlock', 'all-paid', 'ui-library'].includes(packageId || ''))
 }
 
 export async function GET(request: NextRequest) {
@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
       const verifiedTransaction = await getVerifiedPaddleTransaction(transactionId)
       if (verifiedTransaction?.packageId === 'free-unlock') {
         await setFreeUnlocked(verifiedTransaction.email)
-      } else if (verifiedTransaction?.kitSlug && verifiedTransaction.packageId !== 'all-paid') {
+      } else if (verifiedTransaction?.kitSlug && !['all-paid', 'ui-library'].includes(verifiedTransaction.packageId)) {
         await recordTemplatePurchase(verifiedTransaction.kitSlug, verifiedTransaction.email)
       }
 
@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
 
       if (verifiedTransaction.packageId === 'free-unlock') {
         await setFreeUnlocked(verifiedTransaction.email)
-      } else if (verifiedTransaction.kitSlug && verifiedTransaction.packageId !== 'all-paid') {
+      } else if (verifiedTransaction.kitSlug && !['all-paid', 'ui-library'].includes(verifiedTransaction.packageId)) {
         await recordTemplatePurchase(verifiedTransaction.kitSlug, verifiedTransaction.email)
       }
 

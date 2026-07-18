@@ -11,6 +11,21 @@ type EmailContent = {
 const BRAND_BLUE = '#3157f6'
 const TEXT = '#111827'
 const MUTED = '#667085'
+const EMAIL_SITE_URL = /https?:\/\/(?:localhost|127\.0\.0\.1|0\.0\.0\.0)(?::\d+)?/i.test(SITE_URL)
+  ? 'https://www.mtverse.dev'
+  : SITE_URL
+
+function normalizeEmailUrl(value: string) {
+  try {
+    const parsed = new URL(value, EMAIL_SITE_URL)
+    if (['localhost', '127.0.0.1', '0.0.0.0'].includes(parsed.hostname)) {
+      return new URL(`${parsed.pathname}${parsed.search}${parsed.hash}`, EMAIL_SITE_URL).toString()
+    }
+    return parsed.toString()
+  } catch {
+    return EMAIL_SITE_URL
+  }
+}
 
 function escapeHtml(value: string) {
   return value
@@ -43,8 +58,9 @@ function emailShell(input: {
         .join('')}</table>`
     : ''
 
-  const button = input.buttonLabel && input.buttonUrl
-    ? `<table role="presentation" cellspacing="0" cellpadding="0" style="margin:26px auto 20px;"><tr><td bgcolor="${BRAND_BLUE}" style="border-radius:8px;"><a href="${escapeHtml(input.buttonUrl)}" style="display:inline-block;padding:13px 24px;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;">${escapeHtml(input.buttonLabel)}</a></td></tr></table>`
+  const safeButtonUrl = input.buttonUrl ? normalizeEmailUrl(input.buttonUrl) : ''
+  const button = input.buttonLabel && safeButtonUrl
+    ? `<table role="presentation" cellspacing="0" cellpadding="0" style="margin:26px auto 20px;"><tr><td bgcolor="${BRAND_BLUE}" style="border-radius:8px;"><a href="${escapeHtml(safeButtonUrl)}" style="display:inline-block;padding:13px 24px;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;">${escapeHtml(input.buttonLabel)}</a></td></tr></table>`
     : ''
 
   return `<!doctype html>
@@ -54,7 +70,7 @@ function emailShell(input: {
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding:28px 12px;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;background:#ffffff;border:1px solid #e6e8ec;border-radius:8px;overflow:hidden;">
       <tr><td class="email-header" style="padding:22px 28px;border-bottom:1px solid #eef0f3;">
-        <a href="${SITE_URL}" style="display:inline-flex;align-items:center;color:${TEXT};text-decoration:none;font-size:20px;font-weight:800;"><img src="${SITE_URL}/SiteLogo.png" width="32" height="32" alt="mtverse" style="display:inline-block;margin-right:10px;border:0;border-radius:7px;vertical-align:middle;">mtverse</a>
+        <a href="${EMAIL_SITE_URL}" style="display:inline-flex;align-items:center;color:${TEXT};text-decoration:none;font-size:20px;font-weight:800;"><img src="${EMAIL_SITE_URL}/SiteLogo.png" width="32" height="32" alt="mtverse" style="display:inline-block;margin-right:10px;border:0;border-radius:7px;vertical-align:middle;">mtverse</a>
       </td></tr>
       <tr><td class="email-content" style="padding:36px 28px 30px;text-align:center;">
         ${input.eyebrow ? `<div style="display:inline-block;margin-bottom:16px;padding:6px 10px;border-radius:999px;background:#eef1ff;color:#3c4fd5;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;">${escapeHtml(input.eyebrow)}</div>` : ''}
@@ -63,11 +79,11 @@ function emailShell(input: {
         ${details}
         ${input.bodyHtml || ''}
         ${button}
-        ${input.buttonUrl ? `<p style="margin:14px 0 0;color:#98a2b3;font-size:12px;line-height:1.6;word-break:break-all;">If the button does not work, open:<br><a href="${escapeHtml(input.buttonUrl)}" style="color:${BRAND_BLUE};">${escapeHtml(input.buttonUrl)}</a></p>` : ''}
+        ${input.buttonUrl ? `<p style="margin:14px 0 0;color:#98a2b3;font-size:12px;line-height:1.6;word-break:break-all;">If the button does not work, open:<br><a href="${escapeHtml(safeButtonUrl)}" style="color:${BRAND_BLUE};">${escapeHtml(safeButtonUrl)}</a></p>` : ''}
       </td></tr>
       <tr><td class="email-footer" style="padding:20px 28px;background:#f8fafc;border-top:1px solid #eef0f3;text-align:center;color:#7b8494;font-size:12px;line-height:1.65;">
         ${escapeHtml(input.footerNote || 'mtverse template support and account notifications.')}<br>
-        <a href="${SITE_URL}/contact" style="color:#4b5fce;text-decoration:none;">Contact support</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="${SITE_URL}/privacy" style="color:#4b5fce;text-decoration:none;">Privacy</a>
+        <a href="${EMAIL_SITE_URL}/contact" style="color:#4b5fce;text-decoration:none;">Contact support</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="${EMAIL_SITE_URL}/privacy" style="color:#4b5fce;text-decoration:none;">Privacy</a>
       </td></tr>
     </table>
   </td></tr></table>
@@ -76,6 +92,7 @@ function emailShell(input: {
 
 export function passwordResetEmail(input: { name: string; resetUrl: string }): EmailContent {
   const name = input.name.trim() || 'there'
+  const resetUrl = normalizeEmailUrl(input.resetUrl)
   return {
     subject: 'Reset your mtverse password',
     html: emailShell({
@@ -84,10 +101,10 @@ export function passwordResetEmail(input: { name: string; resetUrl: string }): E
       title: `Reset your password, ${name}`,
       intro: 'We received a request to reset your mtverse password. This secure link expires in 60 minutes and can be used once.',
       buttonLabel: 'Reset password',
-      buttonUrl: input.resetUrl,
+      buttonUrl: resetUrl,
       footerNote: 'If you did not request this change, you can safely ignore this email.',
     }),
-    text: `Hi ${name},\n\nReset your mtverse password using this secure link:\n${input.resetUrl}\n\nThe link expires in 60 minutes and can be used once. If you did not request this, ignore this email.`,
+    text: `Hi ${name},\n\nReset your mtverse password using this secure link:\n${resetUrl}\n\nThe link expires in 60 minutes and can be used once. If you did not request this, ignore this email.`,
   }
 }
 
@@ -97,6 +114,7 @@ export function purchaseConfirmationEmail(input: {
   transactionId: string
   accessUrl: string
 }): EmailContent {
+  const accessUrl = normalizeEmailUrl(input.accessUrl)
   return {
     subject: `Your ${input.itemName} access is ready`,
     html: emailShell({
@@ -110,14 +128,15 @@ export function purchaseConfirmationEmail(input: {
         { label: 'Transaction', value: input.transactionId },
       ],
       buttonLabel: 'Open download access',
-      buttonUrl: input.accessUrl,
+      buttonUrl: accessUrl,
       footerNote: 'Keep this email as your purchase record. Download links remain protected by your mtverse account.',
     }),
-    text: `Payment confirmed\n\nItem: ${input.itemName}\nPaid: ${input.amount}\nTransaction: ${input.transactionId}\n\nOpen your download access: ${input.accessUrl}`,
+    text: `Payment confirmed\n\nItem: ${input.itemName}\nPaid: ${input.amount}\nTransaction: ${input.transactionId}\n\nOpen your download access: ${accessUrl}`,
   }
 }
 
 export function newsletterWelcomeEmail(input: { unsubscribeUrl: string }): EmailContent {
+  const unsubscribeUrl = normalizeEmailUrl(input.unsubscribeUrl)
   return {
     subject: 'You are subscribed to mtverse template updates',
     html: emailShell({
@@ -125,12 +144,12 @@ export function newsletterWelcomeEmail(input: { unsubscribeUrl: string }): Email
       eyebrow: 'Subscription confirmed',
       title: 'Template updates, without the noise',
       intro: 'You are now subscribed to occasional mtverse updates about new dashboard, ecommerce, landing page, and HTML templates.',
-      bodyHtml: `<p style="margin:24px auto 0;max-width:480px;color:#667085;font-size:14px;line-height:1.7;">We will send only useful release notes and important template updates. <a href="${escapeHtml(input.unsubscribeUrl)}" style="color:#3157f6;">Unsubscribe anytime</a>.</p>`,
+      bodyHtml: `<p style="margin:24px auto 0;max-width:480px;color:#667085;font-size:14px;line-height:1.7;">We will send only useful release notes and important template updates. <a href="${escapeHtml(unsubscribeUrl)}" style="color:#3157f6;">Unsubscribe anytime</a>.</p>`,
       buttonLabel: 'Browse templates',
-      buttonUrl: `${SITE_URL}/templates`,
+      buttonUrl: `${EMAIL_SITE_URL}/templates`,
       footerNote: 'You requested template release updates from mtverse.',
     }),
-    text: `You are subscribed to mtverse template updates.\n\nBrowse templates: ${SITE_URL}/templates\n\nUnsubscribe: ${input.unsubscribeUrl}`,
+    text: `You are subscribed to mtverse template updates.\n\nBrowse templates: ${EMAIL_SITE_URL}/templates\n\nUnsubscribe: ${unsubscribeUrl}`,
   }
 }
 
@@ -148,7 +167,7 @@ export function feedbackReceivedEmail(input: { name: string; subject: string; re
         { label: 'Reference', value: input.referenceId },
       ],
       buttonLabel: 'Browse templates',
-      buttonUrl: `${SITE_URL}/templates`,
+      buttonUrl: `${EMAIL_SITE_URL}/templates`,
       footerNote: 'Reply to this email if you need to add useful context to your request.',
     }),
     text: `Hi ${name},\n\nWe received your message.\nSubject: ${input.subject}\nReference: ${input.referenceId}\n\nWe usually reply within 24 hours.`,

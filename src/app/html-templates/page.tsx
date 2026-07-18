@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Check, Code2, Download, FolderOpen, Globe2, Infinity, Layers, Search, Sparkles } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
@@ -10,7 +10,7 @@ import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animati
 import { CtaBackground, SectionBackground } from '@/components/design-system/backgrounds'
 
 export const metadata: Metadata = {
-  title: 'Free HTML Website Templates and $5 All HTML Bundle | mtverse',
+  title: 'Free HTML Website Templates & $5 Bundle',
   description:
     'Browse free responsive HTML website templates for portfolios, SaaS, ecommerce, agencies, restaurants, healthcare, education, fitness, crypto, and real estate. Download individual templates or unlock the all HTML templates ZIP bundle for $5.',
   keywords: [

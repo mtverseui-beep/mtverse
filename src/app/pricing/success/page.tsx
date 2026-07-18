@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { AlertTriangle, ArrowLeft, CheckCircle2, Clock3, PackageCheck } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, Blocks, CheckCircle2, Clock3, ExternalLink, PackageCheck } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { PackageDownloadButton } from '@/components/payment/package-download-button'
 import { getPlanByProviderTransactionId, setPlan } from '@/lib/plan-store'
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 type SearchParams = Promise<Record<string, string | string[] | undefined>>
 
 function shouldRecordTemplatePurchase(packageId: string | null | undefined, kitSlug: string | null) {
-  return Boolean(kitSlug && packageId !== 'free-unlock' && packageId !== 'all-paid')
+  return Boolean(kitSlug && !['free-unlock', 'all-paid', 'ui-library'].includes(packageId || ''))
 }
 
 function toUrlSearchParams(input: Record<string, string | string[] | undefined>) {
@@ -165,22 +165,28 @@ export default async function PricingSuccessPage({ searchParams }: { searchParam
   const kitSlug = params.get('kit')
   const isHtmlBundle = result.packageId === 'free-unlock'
   const isAllPaidBundle = result.packageId === 'all-paid'
+  const isUiLibrary = result.packageId === 'ui-library'
+  const uiLibraryUrl = process.env.NEXT_PUBLIC_UI_LIBRARY_URL?.trim() || 'https://ui.mtverse.dev'
   const templateAccessReady = Boolean(
     !kitSlug ||
     isHtmlBundle ||
     isAllPaidBundle ||
+    isUiLibrary ||
     (result.email && await hasTemplatePurchase(kitSlug, result.email))
   )
   const valid = Boolean(result.valid && result.packageId && templateAccessReady)
   const paymentConfirmedWaitingForAccess = Boolean(result.valid && result.packageId && kitSlug && !templateAccessReady)
-  const downloadHref = kitSlug
-    ? `/api/download/template/${encodeURIComponent(kitSlug)}`
-    : `/api/download/package/${encodeURIComponent(result.packageId || 'next')}`
+  const packageDownload = isHtmlBundle || isAllPaidBundle || isUiLibrary || !kitSlug
+  const downloadHref = packageDownload
+    ? `/api/download/package/${encodeURIComponent(result.packageId || 'next')}`
+    : `/api/download/template/${encodeURIComponent(kitSlug)}`
   const successCopy = isHtmlBundle
     ? 'Your all HTML templates bundle access is active. The server will prepare one ZIP with every HTML template package.'
     : isAllPaidBundle
       ? 'Your all paid templates bundle is active. The server will prepare one ZIP with every paid template package and future updates stay included in your account.'
-      : 'Your mtverse template package access is active. You can download the package now.'
+      : isUiLibrary
+        ? 'Your mtverse UI Library lifetime access is active. Download the complete dashboard ZIP or open the library for protected component source.'
+        : 'Your mtverse template package access is active. You can download the package now.'
   const waitingCopy = 'Payment confirmed. Your template access is still being prepared. Refresh this page in a few seconds; if it does not unlock, send the transaction ID to support.'
 
   return (
@@ -216,15 +222,15 @@ export default async function PricingSuccessPage({ searchParams }: { searchParam
                     : result.error || 'We could not verify this payment. Please refresh after a moment or contact support if the charge completed.'}
               </p>
 
-              {valid && (isHtmlBundle || isAllPaidBundle) ? (
+              {valid && (isHtmlBundle || isAllPaidBundle || isUiLibrary) ? (
                 <div className="mx-auto mt-6 grid max-w-xl gap-3 rounded-2xl border border-border/70 bg-muted/25 p-4 text-left sm:grid-cols-3">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Bundle</p>
-                    <p className="mt-1 text-sm font-semibold text-foreground">{isAllPaidBundle ? 'All paid templates' : 'All HTML templates'}</p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">{isUiLibrary ? 'UI Library' : isAllPaidBundle ? 'All paid templates' : 'All HTML templates'}</p>
                   </div>
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Delivery</p>
-                    <p className="mt-1 text-sm font-semibold text-foreground">Generated ZIP</p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">{isUiLibrary ? 'Protected source + ZIP' : 'Generated ZIP'}</p>
                   </div>
                   <div>
                     <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Access</p>
@@ -234,7 +240,21 @@ export default async function PricingSuccessPage({ searchParams }: { searchParam
               ) : null}
 
               <div className="mx-auto mt-7 grid max-w-xl gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
-                {valid ? (
+                {valid && isUiLibrary ? (
+                  <div className="grid min-w-0 gap-3 sm:grid-cols-2">
+                    <PackageDownloadButton
+                      href={downloadHref}
+                      label="Download full dashboard ZIP"
+                      loadingLabel="Preparing UI Library ZIP..."
+                      className="min-w-0"
+                    />
+                    <Link href={uiLibraryUrl} className="ds-btn ds-btn-secondary h-12 min-w-0 px-5 text-sm">
+                      <Blocks className="h-4 w-4" />
+                      Open UI Library
+                      <ExternalLink className="h-4 w-4" />
+                    </Link>
+                  </div>
+                ) : valid ? (
                   <PackageDownloadButton
                     href={downloadHref}
                     label={isHtmlBundle ? 'Download all HTML ZIP' : isAllPaidBundle ? 'Download all paid ZIP' : 'Download package'}

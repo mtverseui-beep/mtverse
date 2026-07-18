@@ -36,7 +36,7 @@ class BundleSourceError extends Error {
 }
 
 function canDownloadStaticPackage(record: Awaited<ReturnType<typeof getPlan>>, packageId: PackageId) {
-  if (packageId !== 'next' && packageId !== 'pro' && packageId !== 'ooster-pro') return false
+  if (!['next', 'pro', 'ooster-pro', 'ui-library'].includes(packageId)) return false
   return hasPlanPackageAccess(record, packageId)
 }
 
@@ -430,6 +430,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
   if (!isPackageId(rawPackageId)) {
     return NextResponse.json({ error: 'Invalid package.' }, { status: 400 })
   }
+
 
   const email = await getCurrentCustomerEmail(request)
   if (!email) {

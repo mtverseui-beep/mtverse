@@ -9,13 +9,13 @@ import { getAllTemplatesFromStore } from '@/lib/templates-data'
 import { SITE_URL } from '@/lib/site-url'
 
 export const metadata: Metadata = {
-  title: 'About mtverse - Website Templates, Dashboard UI Kits & HTML Themes',
+  title: 'About mtverse UI Components and Templates',
   description:
-    'Learn how mtverse curates premium Next.js dashboards, React admin UI kits, ecommerce themes, landing pages, and free responsive HTML templates.',
+    'Learn how mtverse curates modern React, Next.js, and Tailwind UI components plus dashboards, ecommerce sites, landing pages, and responsive HTML templates.',
   alternates: { canonical: '/about' },
   openGraph: {
-    title: 'About mtverse Template Marketplace',
-    description: 'A preview-first catalog of dashboard, ecommerce, SaaS, landing page, portfolio, and responsive HTML templates.',
+    title: 'About mtverse UI Components and Template Marketplace',
+    description: 'A preview-first library of modern UI components and dashboard, ecommerce, SaaS, landing page, portfolio, and responsive HTML templates.',
     url: `${SITE_URL}/about`,
     type: 'website',
   },
@@ -58,7 +58,7 @@ export default async function AboutPage() {
       name: 'mtverse',
       url: SITE_URL,
       logo: `${SITE_URL}/SiteLogo.png`,
-      description: 'A catalog of website templates and application UI kits with live previews and source-package delivery.',
+      description: 'A preview-first library of modern UI components, application UI kits, and website templates with protected source-package delivery.',
       sameAs: [SOCIAL_GITHUB, SOCIAL_TWITTER],
       email: SOCIAL_EMAIL,
     },
@@ -75,16 +75,16 @@ export default async function AboutPage() {
                 <span className="ds-eyebrow ds-eyebrow-accent"><Sparkles className="h-3.5 w-3.5" />About mtverse</span>
               </Reveal>
               <Reveal delay={0.08}>
-                <h1 className="ds-display-1 ds-text-balance">A clearer way to choose <span className="ds-text-emphasis">website templates</span></h1>
+                <h1 className="ds-display-1 ds-text-balance">A clearer way to choose <span className="ds-text-emphasis">UI components and templates</span></h1>
               </Reveal>
               <Reveal delay={0.16}>
                 <p className="ds-lead ds-text-pretty mx-auto max-w-3xl">
-                  mtverse curates {templates.length} dashboard, ecommerce, SaaS, landing page, portfolio, and responsive HTML templates for developers, founders, designers, freelancers, and agencies.
+                  mtverse curates modern React, Next.js, and Tailwind UI components plus {templates.length} dashboard, ecommerce, SaaS, landing page, portfolio, and responsive HTML templates.
                 </p>
               </Reveal>
               <Reveal delay={0.24}>
-                <Link href="/templates" className="ds-btn ds-btn-primary ds-btn-lg">
-                  Browse templates
+                <Link href="/ui-components" className="ds-btn ds-btn-primary ds-btn-lg">
+                  Browse UI components
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Reveal>
@@ -112,7 +112,7 @@ export default async function AboutPage() {
               <Reveal delay={0.08}>
                 <div className="space-y-4 text-base leading-8 text-muted-foreground">
                   <p>Choosing a template is difficult when a marketplace shows only a polished thumbnail. Buyers need to know the framework, included pages, visual system, responsive behavior, license, purchase scope, and exact download path.</p>
-                  <p>mtverse organizes templates around those decisions. Dashboard packages cover admin, analytics, CRM, ecommerce, billing, settings, and application workflows. Website templates cover portfolios, agencies, products, stores, services, and campaign landing pages.</p>
+                  <p>mtverse organizes components and templates around those decisions. The UI library covers navigation, sidebars, buttons, forms, dialogs, tables, dashboards, authentication, and marketing blocks. Template packages cover complete admin, analytics, CRM, ecommerce, SaaS, portfolio, and landing page workflows.</p>
                   <p>The goal is straightforward: show the interface clearly, describe the package accurately, keep pricing honest, and make account delivery predictable.</p>
                 </div>
               </Reveal>

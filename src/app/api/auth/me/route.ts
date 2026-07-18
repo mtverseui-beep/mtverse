@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth/oauth'
 import { CUSTOMER_SESSION_COOKIE, verifyCustomerSessionToken } from '@/lib/auth/customer-session'
 import { getCustomerUser, upsertCustomerProfile } from '@/lib/auth/customer-store'
-import { getPlan } from '@/lib/plan-store'
+import { getPlan, hasPlanPackageAccess } from '@/lib/plan-store'
 
 function hasInvalidOAuthUrlEnv() {
   return [process.env.NEXTAUTH_URL, process.env.AUTH_URL].some(value => value !== undefined && value.trim() === '')
@@ -28,7 +28,13 @@ export async function GET() {
   const email = session?.email || oauthSession?.user?.email
 
   if (!email) {
-    return NextResponse.json({ authenticated: false, user: null, plan: 'free' })
+    return NextResponse.json({
+      authenticated: false,
+      user: null,
+      plan: 'free',
+      licenseKey: null,
+      entitlements: { uiLibrary: false },
+    })
   }
 
   const userPromise = oauthSession?.user?.email
@@ -54,5 +60,8 @@ export async function GET() {
     },
     plan: planRecord?.plan || 'free',
     licenseKey: planRecord?.licenseKey || null,
+    entitlements: {
+      uiLibrary: hasPlanPackageAccess(planRecord, 'ui-library'),
+    },
   })
 }

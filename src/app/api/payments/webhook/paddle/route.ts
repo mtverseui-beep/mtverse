@@ -189,7 +189,7 @@ export async function POST(request: NextRequest) {
         packageId
       )
 
-      if (kitSlug && packageId !== 'all-paid') {
+      if (kitSlug && !['all-paid', 'ui-library'].includes(packageId)) {
         await recordTemplatePurchase(kitSlug, email)
       }
     }

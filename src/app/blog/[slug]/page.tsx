@@ -1,11 +1,13 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Calendar, Clock, Share2, BookOpen } from 'lucide-react'
+import { ArrowLeft, Calendar, Clock, BookOpen } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { BLOG_POSTS, getBlogPost } from '@/lib/blog-posts'
 import { SITE_URL } from '@/lib/site-url'
 import { Reveal } from '@/components/design-system/animations'
+import { BlogShareButton } from '@/components/blog/blog-share-button'
 
 type Params = Promise<{ slug: string }>
 
@@ -21,6 +23,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return {
     title: `${post.title} | mtverse Blog`,
     description: post.excerpt,
+    keywords: [
+      post.title,
+      post.category,
+      'website template guide',
+      'dashboard template guide',
+      'UI component library',
+      'responsive website templates',
+      'template source code',
+      'production web development',
+    ],
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.title,
@@ -29,11 +41,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       type: 'article',
       publishedTime: post.isoDate,
       authors: ['mtverse'],
+      images: [{ url: post.coverImage, alt: post.title }],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt,
+      images: [post.coverImage],
     },
   }
 }
@@ -55,6 +69,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
+    image: SITE_URL + post.coverImage,
     datePublished: post.isoDate,
     dateModified: post.isoDate,
     url: `${SITE_URL}/blog/${post.slug}`,
@@ -122,6 +137,20 @@ export default async function BlogPostPage({ params }: { params: Params }) {
           </div>
         </section>
 
+        <section className="pt-8">
+          <div className="ds-container max-w-3xl">
+            <figure className="relative aspect-[16/9] overflow-hidden rounded-lg border border-border bg-muted shadow-sm">
+              <Image
+                src={post.coverImage}
+                alt={post.title}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 768px"
+                className="object-cover object-top"
+              />
+            </figure>
+          </div>
+        </section>
         {/* Article Body */}
         <article className="ds-section-sm">
           <div className="ds-container max-w-3xl">
@@ -163,14 +192,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                     {post.category}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  aria-label="Share this article"
-                >
-                  <Share2 className="h-4 w-4" />
-                  Share
-                </button>
+                <BlogShareButton title={post.title} />
               </div>
             </Reveal>
 
@@ -207,11 +229,14 @@ export default async function BlogPostPage({ params }: { params: Params }) {
               <div className="mt-12 ds-card bg-primary/5 border-primary/20 p-6 sm:p-8 text-center">
                 <h3 className="text-lg font-bold mb-2">Explore more on mtverse</h3>
                 <p className="text-sm text-muted-foreground mb-5">
-                  Browse premium Next.js dashboard templates, free responsive HTML websites, and focused template collections.
+                  Browse dashboard, ecommerce, SaaS, landing page, portfolio, and HTML templates, or explore reusable UI component source.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <Link href="/templates" className="ds-btn ds-btn-primary">
                     View templates
+                  </Link>
+                  <Link href="/pricing#ui-library" className="ds-btn ds-btn-secondary">
+                    Explore UI Library
                   </Link>
                 </div>
               </div>

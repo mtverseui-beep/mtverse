@@ -1,6 +1,6 @@
 import type { PlanLevel } from './plan-access'
 
-export const PACKAGE_IDS = ['next', 'pro', 'ooster-pro', 'free-unlock', 'all-paid'] as const
+export const PACKAGE_IDS = ['next', 'pro', 'ooster-pro', 'free-unlock', 'all-paid', 'ui-library'] as const
 
 export type PackageId = (typeof PACKAGE_IDS)[number]
 
@@ -51,6 +51,14 @@ export const PRODUCT_PACKAGES: Record<PackageId, ProductPackage> = {
     name: 'All Paid Templates Bundle',
     shortName: 'All Paid Bundle',
     amountUsd: 149,
+    currency: 'USD',
+    accessPlan: 'pro',
+  },
+  'ui-library': {
+    id: 'ui-library',
+    name: 'mtverse UI Library Lifetime Access',
+    shortName: 'UI Library',
+    amountUsd: 25,
     currency: 'USD',
     accessPlan: 'pro',
   },

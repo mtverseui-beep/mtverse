@@ -34,6 +34,11 @@ const FOOTER_COLUMNS: Array<{
   {
     heading: 'Product',
     links: [
+      { name: 'UI component guides', href: '/ui-components', icon: Code2 },
+      { name: 'React components', href: '/ui-components/react-ui-components' },
+      { name: 'Next.js components', href: '/ui-components/nextjs-ui-components' },
+      { name: 'Navbar components', href: '/ui-components/navbar-components' },
+      { name: 'Live UI Library', href: process.env.NEXT_PUBLIC_UI_LIBRARY_URL || 'https://ui.mtverse.dev', icon: Code2 },
       { name: 'Pricing', href: '/pricing' },
       { name: 'Account', href: '/account' },
       { name: 'Blog', href: '/blog' },
@@ -99,7 +104,7 @@ export default function Footer() {
               <span className="text-base font-bold tracking-tight">mtverse</span>
             </Link>
             <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Next.js dashboards, React admin UI kits, landing pages, ecommerce projects, and free responsive HTML website templates with preview-first browsing.
+              Modern React, Next.js, and Tailwind UI components plus dashboard, ecommerce, landing page, and responsive HTML templates with preview-first browsing.
             </p>
             <div className="flex items-center gap-2 pt-2">
               {SOCIAL_LINKS.map((social) => {
@@ -128,7 +133,12 @@ export default function Footer() {
                   const Icon = link.icon
                   return (
                     <li key={link.name}>
-                      <Link href={getAuthHref(link.href, authNextPath)} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground">
+                      <Link
+                        href={getAuthHref(link.href, authNextPath)}
+                        target={link.href.startsWith('http') ? '_blank' : undefined}
+                        rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
                         {Icon ? <Icon className="h-3 w-3 opacity-60" /> : null}
                         {link.name}
                       </Link>

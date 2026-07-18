@@ -23,6 +23,9 @@ type AuthState = {
   user: User | null
   plan: string
   licenseKey: string | null
+  entitlements: {
+    uiLibrary: boolean
+  }
   loading: boolean // true while fetching initial auth state
   authenticated: boolean
 }
@@ -42,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user: null,
     plan: 'free',
     licenseKey: null,
+    entitlements: { uiLibrary: false },
     loading: true,
     authenticated: false,
   })
@@ -51,7 +55,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const res = await fetch('/api/auth/me', { credentials: 'include' })
       if (!res.ok) {
-        setState((s) => ({ ...s, user: null, authenticated: false, loading: false }))
+        setState({
+          user: null,
+          plan: 'free',
+          licenseKey: null,
+          entitlements: { uiLibrary: false },
+          authenticated: false,
+          loading: false,
+        })
         return
       }
       const data = await res.json()
@@ -59,11 +70,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user: data.authenticated ? data.user : null,
         plan: data.plan || 'free',
         licenseKey: data.licenseKey || null,
+        entitlements: {
+          uiLibrary: Boolean(data.entitlements?.uiLibrary),
+        },
         authenticated: Boolean(data.authenticated),
         loading: false,
       })
     } catch {
-      setState((s) => ({ ...s, user: null, authenticated: false, loading: false }))
+      setState({
+        user: null,
+        plan: 'free',
+        licenseKey: null,
+        entitlements: { uiLibrary: false },
+        authenticated: false,
+        loading: false,
+      })
     }
   }, [])
 
@@ -132,6 +153,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user: null,
       plan: 'free',
       licenseKey: null,
+      entitlements: { uiLibrary: false },
       loading: false,
       authenticated: false,
     })

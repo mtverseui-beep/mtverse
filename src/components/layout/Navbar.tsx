@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   ArrowUpRight,
-  ChevronDown,
+  Blocks,
   LayoutDashboard,
   Loader2,
   LogOut,
@@ -35,9 +35,12 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 
+const UI_LIBRARY_URL = process.env.NEXT_PUBLIC_UI_LIBRARY_URL || 'https://ui.mtverse.dev'
+
 const NAV_LINKS = [
   { name: 'Home', href: '/' },
   { name: 'Templates', href: '/templates' },
+  { name: 'UI Library', href: UI_LIBRARY_URL, icon: Blocks },
   { name: 'Pricing', href: '/pricing' },
   { name: 'Blog', href: '/blog' },
 ]
@@ -331,6 +334,8 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
+                    target={link.href.startsWith('http') ? '_blank' : undefined}
+                    rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                     aria-current={active ? 'page' : undefined}
                     className={cn(
                       'group relative rounded-sm text-sm font-medium tracking-normal transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40',
@@ -404,20 +409,22 @@ export default function Navbar() {
 
               <div className="hidden lg:block">
                 {authPending ? (
-                  <div className={cn('animate-pulse rounded-full bg-muted/70', compact ? 'h-8 w-20' : 'h-9 w-24')} />
+                  <div className={cn('animate-pulse rounded-full bg-muted/70', compact ? 'h-8 w-8' : 'h-9 w-9')} />
                 ) : authenticated && user ? (
                   <div ref={userMenuRef} className="relative">
                     <button
                       type="button"
                       onClick={() => setUserMenuOpen((open) => !open)}
-                      className={cn('inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-background/80 font-medium text-foreground transition-all hover:border-foreground/35 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40', compact ? 'h-8 px-1 pr-2.5' : 'h-9 px-1.5 pr-3')}
-                      aria-label="User menu"
+                      className={cn(
+                        'relative inline-flex items-center justify-center rounded-full bg-background outline-none transition-[box-shadow,opacity] hover:opacity-90 focus-visible:ring-2 focus-visible:ring-foreground/40',
+                        compact ? 'h-8 w-8' : 'h-9 w-9'
+                      )}
+                      aria-label="Open account menu"
                       aria-haspopup="menu"
                       aria-expanded={userMenuOpen}
                     >
                       <UserAvatar user={user} />
-                      <span className="hidden max-w-[96px] truncate text-xs font-semibold xl:inline">{displayName}</span>
-                      <ChevronDown className={cn('h-3.5 w-3.5 text-muted-foreground transition-transform', userMenuOpen && 'rotate-180')} />
+                      <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-background bg-emerald-500" />
                     </button>
                     <UserMenu open={userMenuOpen} user={user} displayName={displayName} onClose={() => setUserMenuOpen(false)} onSignOut={() => { setUserMenuOpen(false); setShowLogoutConfirm(true) }} />
                   </div>
@@ -491,6 +498,8 @@ export default function Navbar() {
                       <Link
                         ref={index === 0 ? firstMobileLinkRef : undefined}
                         href={link.href}
+                        target={link.href.startsWith('http') ? '_blank' : undefined}
+                        rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                         aria-current={active ? 'page' : undefined}
                         onClick={() => setMobileMenuOpen(false)}
                         className={cn('inline-flex rounded-md text-4xl font-bold tracking-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40 sm:text-5xl', active ? 'text-foreground' : 'text-foreground/45 hover:text-foreground')}

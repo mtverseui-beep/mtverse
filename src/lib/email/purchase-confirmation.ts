@@ -28,9 +28,11 @@ export async function sendPurchaseConfirmationOnce(input: {
     const product = getProductPackage(input.packageId)
     const template = input.kitSlug ? await getTemplateBySlugFromStore(input.kitSlug) : null
     const itemName = template?.title || product.name
-    const accessUrl = input.kitSlug && input.packageId !== 'all-paid'
-      ? `${SITE_URL}/templates/${encodeURIComponent(input.kitSlug)}`
-      : `${SITE_URL}/account`
+    const accessUrl = input.packageId === 'ui-library'
+      ? `${SITE_URL}/account`
+      : input.kitSlug && !['all-paid', 'ui-library'].includes(input.packageId)
+        ? `${SITE_URL}/templates/${encodeURIComponent(input.kitSlug)}`
+        : `${SITE_URL}/account`
     const content = purchaseConfirmationEmail({
       itemName,
       amount: `$${product.amountUsd.toFixed(2)} USD`,

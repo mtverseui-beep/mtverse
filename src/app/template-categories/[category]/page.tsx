@@ -24,7 +24,7 @@ const PRIORITY_CATEGORY_LABELS: Record<string, string> = {
 
 const CATEGORY_SEO: Record<string, { title: string; description: string; keywords: string[] }> = {
   dashboards: {
-    title: 'Next.js Dashboard Templates & Admin UI Kits',
+    title: 'Next.js Dashboard Templates & Admin UI',
     description: 'Browse premium Next.js dashboard templates, React admin UI kits, SaaS dashboards, ecommerce admin panels, analytics dashboards, CRM screens, and production-ready dashboard source code.',
     keywords: [
       'Next.js dashboard templates',
@@ -38,7 +38,7 @@ const CATEGORY_SEO: Record<string, { title: string; description: string; keyword
     ],
   },
   ecommerce: {
-    title: 'Ecommerce Website Templates & Storefront UI Kits',
+    title: 'Ecommerce Website Templates & Storefront UI',
     description: 'Browse ecommerce templates with storefronts, product pages, cart, checkout, customer accounts, order management, inventory screens, and secure source-code delivery.',
     keywords: [
       'ecommerce templates',

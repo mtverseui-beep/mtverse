@@ -5,6 +5,7 @@ import { generateHreflangMap } from '@/lib/seo-languages'
 import { resolveSiteUrlFromRequestHeaders } from '@/lib/site-url'
 import { TEMPLATE_SEO_HUBS } from '@/lib/template-seo-hubs'
 import { getAllTemplatesFromStore, getTemplateCategoriesFor, TEMPLATES } from '@/lib/templates-data'
+import { UI_COMPONENT_SEO_HUBS } from '@/lib/ui-component-seo-hubs'
 
 const PRIORITY_TEMPLATE_CATEGORY_IDS = ['dashboards', 'ecommerce', 'landing', 'html'] as const
 
@@ -15,12 +16,13 @@ function safeDate(value: Date | string, fallback: Date) {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = resolveSiteUrlFromRequestHeaders(await headers())
-  const staticDate = new Date('2026-07-14')
+  const staticDate = new Date('2026-07-18')
   const templates = await getAllTemplatesFromStore().catch(() => TEMPLATES)
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: staticDate, changeFrequency: 'weekly', priority: 1 },
     { url: `${baseUrl}/templates`, lastModified: staticDate, changeFrequency: 'daily', priority: 1 },
+    { url: `${baseUrl}/ui-components`, lastModified: staticDate, changeFrequency: 'weekly', priority: 0.99 },
     { url: `${baseUrl}/html-templates`, lastModified: staticDate, changeFrequency: 'daily', priority: 0.98 },
     { url: `${baseUrl}/pricing`, lastModified: staticDate, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${baseUrl}/blog`, lastModified: staticDate, changeFrequency: 'weekly', priority: 0.76 },
@@ -64,6 +66,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: !template.isFree ? (template.pricingTier === 'pro' ? 0.99 : 0.98) : template.category === 'html' ? 0.94 : 0.91,
   }))
 
+  const uiComponentHubRoutes: MetadataRoute.Sitemap = UI_COMPONENT_SEO_HUBS.map((hub) => ({
+    url: `${baseUrl}/ui-components/${hub.slug}`,
+    lastModified: staticDate,
+    changeFrequency: 'weekly' as const,
+    priority: ['modern-ui-components', 'react-ui-components', 'nextjs-ui-components'].includes(hub.slug) ? 0.98 : 0.95,
+  }))
   const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: safeDate(post.isoDate, staticDate),
@@ -71,7 +79,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.72,
   }))
 
-  return [...staticRoutes, ...templateCategoryRoutes, ...templateHubRoutes, ...templateRoutes, ...blogRoutes].map((route) => ({
+  return [...staticRoutes, ...templateCategoryRoutes, ...templateHubRoutes, ...templateRoutes, ...uiComponentHubRoutes, ...blogRoutes].map((route) => ({
     ...route,
     alternates: {
       languages: generateHreflangMap(route.url.replace(baseUrl, ''), baseUrl),

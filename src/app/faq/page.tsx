@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ChevronDown, CircleHelp } from 'lucide-react'
+import { CircleHelp } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { Reveal } from '@/components/design-system/animations'
 import { SITE_URL } from '@/lib/site-url'
+import { TemplateFaqList } from '@/components/content/template-faq-list'
 
 export const metadata: Metadata = {
-  title: 'Template FAQ - Pricing, Downloads, Licenses & Live Previews',
+  title: 'Template FAQ: Pricing, Downloads & Licenses',
   description: 'Answers about mtverse website templates, Next.js dashboard packages, free HTML downloads, pricing, licenses, live previews, payments, bundles, and account access.',
   alternates: { canonical: '/faq' },
   openGraph: {
@@ -94,17 +95,8 @@ export default function FAQPage() {
             {FAQ_GROUPS.map((group) => (
               <section key={group.category}>
                 <h2 className="ds-h2 mb-4">{group.category}</h2>
-                <div className="space-y-3">
-                  {group.questions.map((item) => (
-                    <details key={item.q} className="ds-card group">
-                      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-foreground">
-                        {item.q}
-                        <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
-                      </summary>
-                      <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.a}</p>
-                    </details>
-                  ))}
-                </div>
+                <TemplateFaqList items={group.questions.map((item) => ({ question: item.q, answer: item.a }))} />
+
               </section>
             ))}
 

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Check, Sparkles, Zap, Shield, Download, Eye, Infinity, PackageCheck } from 'lucide-react'
+import { ArrowRight, Blocks, Check, Sparkles, Shield, Download, Eye, Infinity, PackageCheck } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { SITE_URL } from '@/lib/site-url'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
@@ -9,12 +9,15 @@ import { AmexIcon, ApplePayIcon, GooglePayIcon, MastercardIcon, PayPalIcon, Visa
 import { AllPaidBundleButton } from '@/components/payment/all-paid-bundle-button'
 import { FreeUnlockButton } from '@/components/payment/free-unlock-button'
 import { PricingFreeAccountCta } from '@/components/payment/pricing-free-account-cta'
+import { UiLibraryButton } from '@/components/payment/ui-library-button'
+import { getProductPackage } from '@/lib/packages'
 import { getAllTemplatesFromStore } from '@/lib/templates-data'
 import { getPricingCtaSettings } from '@/lib/pricing-settings-store'
+import { TemplateFaqList } from '@/components/content/template-faq-list'
 
 export const metadata: Metadata = {
-  title: 'Pricing - Premium Templates, $149 Paid Bundle and $5 HTML Bundle | mtverse',
-  description: 'One-time pricing for individual premium Next.js templates, the $149 all paid templates bundle with future paid updates included, and the $5 all HTML templates bundle.',
+  title: 'Template Pricing, Paid & HTML Bundles',
+  description: 'One-time pricing for premium website templates, complete template bundles, free HTML source, and lifetime access to the mtverse UI component library.',
   keywords: [
     'HTML templates bundle',
     'all HTML templates zip',
@@ -36,11 +39,14 @@ export const metadata: Metadata = {
     'Tailwind CSS templates',
     'Next.js dashboard templates',
     'premium website templates',
+    'React UI component library',
+    'Next.js component library',
+    'Tailwind CSS components',
   ],
   alternates: { canonical: '/pricing' },
   openGraph: {
     title: 'Pricing - mtverse',
-    description: 'One-time access to individual premium templates, the $149 all paid templates bundle, and the $5 all HTML website templates ZIP.',
+    description: 'One-time access to premium templates, website template bundles, and the mtverse UI component source library.',
     url: SITE_URL + '/pricing',
     type: 'website',
   },
@@ -59,12 +65,14 @@ export default async function PricingPage() {
   const bundlePrice = 149
   const bundleRetailTotal = paidTemplates.reduce((total, template) => total + Number(template.price || 0), 0)
   const bundleSavings = Math.max(0, bundleRetailTotal - bundlePrice)
+  const uiLibraryPackage = getProductPackage('ui-library')
+  const uiLibraryUrl = process.env.NEXT_PUBLIC_UI_LIBRARY_URL?.trim() || 'https://ui.mtverse.dev'
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: 'mtverse UI Framework Packages',
-    description: 'One-time template packages for individual premium templates, the all paid templates bundle, and the all HTML website templates bundle.',
+    description: 'One-time packages for premium templates, template bundles, and lifetime UI component source access.',
     url: SITE_URL + '/pricing',
     image: SITE_URL + '/SiteLogo.png',
     brand: { '@type': 'Brand', name: 'mtverse' },
@@ -73,37 +81,30 @@ export default async function PricingPage() {
       lowPrice: '5',
       highPrice: '149',
       priceCurrency: 'USD',
-      offerCount: '5',
+      offerCount: '4',
       availability: 'https://schema.org/InStock',
       url: SITE_URL + '/pricing',
     },
   }
 
-  const premiumPricePoints = [
-    { label: 'Standard templates', price: '$12' },
-    { label: 'Pro templates', price: '$20' },
-    { label: 'Premium Pro templates', price: '$52' },
-  ]
-
-  const premiumFeatures = [
-    'Unlock only the template you purchase',
-    'Lifetime access for purchased template',
-    'Full source code',
-    'Commercial use license',
-    'Live preview before purchase',
-    'Instant download after payment',
-    'Email support included',
-    '14-day money-back guarantee',
-  ]
-
   const allPaidFeatures = [
-    'All paid templates in one generated ZIP',
+    'Every current paid template in one source bundle',
     'Future paid template updates included',
     'Individual paid downloads stay unlocked',
     'Dashboard, ecommerce, and landing templates',
     'Commercial project use',
     'Lifetime account access',
     'Secure download after purchase',
+  ]
+
+  const uiLibraryFeatures = [
+    '360+ production-ready React components',
+    'Preview, source, dependencies, and usage details',
+    'Next.js, React, TypeScript, and Tailwind CSS',
+    'Lifetime source access with future component updates',
+    'Complete UI Library project access',
+    'Commercial project use under the mtverse license',
+    'Copy individual components without downloading a full template',
   ]
 
   const paymentMethods = [
@@ -121,6 +122,7 @@ export default async function PricingPage() {
     { q: 'What happens after I purchase?', a: 'After payment, you get instant access to download your purchased template. For generated bundles, the server prepares one ZIP archive and the download starts when it is ready.' },
     { q: 'Do you offer refunds?', a: 'Yes. We offer a 14-day money-back guarantee. Contact us within 14 days for a full refund, no questions asked.' },
     { q: 'What about the HTML templates?', a: 'HTML templates can be downloaded individually up to 5 times with a free account. A one-time $5 unlock enables unlimited free HTML downloads and the all HTML templates bundle ZIP.' },
+    { q: 'What is included with UI Library access?', a: 'The one-time UI Library purchase unlocks protected source code for every current component plus future component updates. It is separate from template and template-bundle purchases.' },
     { q: 'Is the payment secure?', a: 'All payments are processed through Paddle, a trusted payment processor. We never store your card information. Fully PCI-DSS compliant.' },
   ]
 
@@ -130,9 +132,9 @@ export default async function PricingPage() {
 
       <main>
         {/* Hero */}
-        <section className="ds-section-lg pt-20 relative overflow-hidden">
+        <section className="relative flex min-h-[calc(50svh-5rem)] items-center overflow-hidden border-b">
           <CtaBackground />
-          <div className="ds-container relative text-center max-w-4xl">
+          <div className="ds-container relative max-w-4xl py-10 text-center">
             <Reveal>
               <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
                 <Sparkles className="h-4 w-4" />
@@ -144,37 +146,35 @@ export default async function PricingPage() {
             </Reveal>
             <Reveal delay={0.2}>
               <p className="ds-lead ds-text-pretty mb-8 max-w-2xl mx-auto">
-                No subscriptions. No hidden fees. Pay once for the exact premium template you need, get every paid template in one $149 bundle, or unlock every HTML website template in one ZIP for $5.
+                No subscriptions. Pay once for the exact premium template you need, choose a template bundle, or unlock the complete mtverse UI component source library for life.
               </p>
             </Reveal>
           </div>
         </section>
 
         {/* Pricing cards */}
-        <section className="ds-section-sm">
-          <div className="ds-container max-w-[1380px]">
-            <div className={`grid gap-6 ${hasFreeTemplates ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-2 max-w-5xl mx-auto'}`}>
+        <section className="pb-12 pt-8">
+          <div className="ds-container max-w-[1440px]">
+            <div className="grid items-stretch gap-5 md:grid-cols-2 lg:grid-cols-4">
               {hasFreeTemplates && (
                 <Reveal>
-                  <div className="h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-shadow hover:shadow-md sm:p-8">
-                    <div className="mb-6">
-                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 mb-3">
+                  <div className="flex h-full flex-col rounded-lg border border-border bg-card p-6 shadow-sm">
+                    <div className="mb-6 lg:min-h-[184px]">
+                      <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
                         <Download className="h-5 w-5" />
                       </div>
-                      <h3 className="text-lg font-bold">Free</h3>
-                      <div className="mt-2 flex items-baseline gap-1">
-                        <span className="text-3xl font-bold">$0</span>
-                      </div>
-                      <p className="mt-1.5 text-sm text-muted-foreground">Up to 5 template downloads</p>
+                      <h3 className="text-lg font-black">Free templates</h3>
+                      <div className="mt-2 text-3xl font-black">$0</div>
+                      <p className="mt-2 text-sm leading-6 text-muted-foreground">Create an account and access five free source packages.</p>
                     </div>
-
-                    <PricingFreeAccountCta />
-
-                    <ul className="space-y-2.5">
-                      {['5 free template downloads', 'Full source code', 'Live preview access', 'Single project license', 'Community support'].map((f) => (
-                        <li key={f} className="flex items-start gap-2.5 text-sm">
-                          <Check className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" />
-                          {f}
+                    <div className="border-t border-border pb-5 pt-4">
+                      <PricingFreeAccountCta />
+                    </div>
+                    <ul className="space-y-3">
+                      {['5 free template downloads', 'Full source packages', 'Live preview access', 'Single project license'].map((feature) => (
+                        <li key={feature} className="flex items-start gap-2.5 text-sm">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                          {feature}
                         </li>
                       ))}
                     </ul>
@@ -182,117 +182,97 @@ export default async function PricingPage() {
                 </Reveal>
               )}
 
-              <Reveal delay={hasFreeTemplates ? 0.08 : 0}>
-                <div className="relative h-full rounded-2xl border-2 border-primary/30 bg-card p-6 shadow-lg shadow-primary/[0.04] sm:p-8">
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <span className="rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground shadow-sm">
-                      Most popular
-                    </span>
+              <Reveal delay={0.06}>
+                <div className="relative flex h-full flex-col rounded-lg border-2 border-foreground bg-card p-6 shadow-md">
+                  <span className="absolute right-4 top-4 rounded-md bg-foreground px-2 py-1 text-[10px] font-bold uppercase text-background">
+                    {pricingCta.badge}
+                  </span>
+                  <div className="mb-6 lg:min-h-[184px]">
+                    <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-foreground text-background">
+                      <PackageCheck className="h-5 w-5" />
+                    </div>
+                    <h3 className="text-lg font-black leading-tight">All paid templates</h3>
+                    <div className="mt-2 flex items-end gap-2">
+                      <span className="text-3xl font-black">${bundlePrice}</span>
+                      <span className="pb-1 text-xs font-semibold text-muted-foreground">one-time</span>
+                    </div>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                      Current paid templates and future updates in one private source bundle.
+                    </p>
+
                   </div>
-
-                  <div className="mb-6">
-                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary mb-3">
-                      <Zap className="h-5 w-5" />
-                    </div>
-                    <h3 className="text-lg font-bold">Premium</h3>
-                    <div className="mt-2 flex items-baseline gap-1.5">
-                      <span className="text-3xl font-bold">From $12</span>
-                    </div>
-                    <p className="mt-1.5 text-sm text-muted-foreground">Per template - one-time payment</p>
-                    <div className="mt-4 grid gap-2 rounded-xl border border-border/70 bg-muted/30 p-3">
-                      {premiumPricePoints.map((point) => (
-                        <div key={point.label} className="flex items-center justify-between gap-3 text-sm">
-                          <span className="text-muted-foreground">{point.label}</span>
-                          <span className="font-bold text-foreground">{point.price}</span>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="border-t border-border pb-5 pt-4">
+                    <AllPaidBundleButton label={pricingCta.buttonLabel} />
                   </div>
-
-                  <Link href="/templates" className="ds-btn ds-btn-accent w-full mb-6">
-                    <Zap className="h-4 w-4" />
-                    Browse Templates
-                  </Link>
-
-                  <ul className="space-y-2.5">
-                    {premiumFeatures.map((f) => (
-                      <li key={f} className="flex items-start gap-2.5 text-sm">
-                        <Check className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" />
-                        {f}
+                  <ul className="space-y-3">
+                    {bundleSavings > 0 && (
+                      <li className="flex items-start gap-2.5 text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0" />
+                        Save ${bundleSavings} versus individual prices
+                      </li>
+                    )}
+                    {allPaidFeatures.slice(0, 5).map((feature) => (
+                      <li key={feature} className="flex items-start gap-2.5 text-sm">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                        {feature}
                       </li>
                     ))}
                   </ul>
-
-                  <div className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
-                    <Shield className="h-3.5 w-3.5 text-emerald-600" />
-                    14-day money-back guarantee
-                  </div>
                 </div>
               </Reveal>
 
               <Reveal delay={0.12}>
-                <div className="relative h-full rounded-2xl border-2 border-violet-300/70 bg-gradient-to-b from-violet-50 via-card to-card p-6 shadow-lg shadow-violet-500/[0.08] dark:border-violet-700/50 dark:from-violet-950/30 sm:p-8">
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <span className="rounded-full bg-violet-600 px-3 py-1 text-xs font-bold text-white shadow-sm">
-                      {pricingCta.badge}
-                    </span>
-                  </div>
-
-                  <div className="mb-6">
-                    <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-200">
-                      <PackageCheck className="h-5 w-5" />
+                <div id="ui-library" className="flex h-full scroll-mt-24 flex-col rounded-lg border-2 border-primary/60 bg-card p-6 shadow-md">
+                  <div className="mb-6 lg:min-h-[184px]">
+                    <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                      <Blocks className="h-5 w-5" />
                     </div>
-                    <h3 className="text-lg font-black leading-tight">{pricingCta.title}</h3>
-                    <div className="mt-2 flex items-end gap-1.5">
-                      <span className="text-3xl font-black tracking-normal">${bundlePrice}</span>
-                      <span className="pb-1 text-xs font-semibold text-muted-foreground">one-time</span>
+                    <h3 className="text-lg font-black">UI component library</h3>
+                    <div className="mt-2 flex items-end gap-2">
+                      <span className="text-3xl font-black">${uiLibraryPackage.amountUsd}</span>
+                      <span className="pb-1 text-xs font-semibold text-muted-foreground">lifetime</span>
                     </div>
-                    <p className="mt-2 text-sm leading-5 text-muted-foreground">
-                      ${bundleRetailTotal} individual value. Save ${bundleSavings} compared with buying one by one.
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                      Component source, implementation notes, the complete project, and future updates.
                     </p>
                   </div>
-
-                  <div className="mb-5 rounded-2xl border border-violet-200/70 bg-background/75 p-3 text-sm leading-5 text-muted-foreground dark:border-violet-800/50">
-                    Current paid templates, future paid updates, and individual downloads stay available in your account.
+                  <div className="border-t border-border pb-5 pt-4">
+                    <UiLibraryButton />
                   </div>
-
-                  <AllPaidBundleButton label={pricingCta.buttonLabel} />
-                  <Link href="/templates" className="mt-2 flex h-10 items-center justify-center rounded-xl text-sm font-bold text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
-                    {pricingCta.secondaryLabel}
-                  </Link>
-
-                  <ul className="mt-5 space-y-2.5">
-                    {allPaidFeatures.map((f) => (
-                      <li key={f} className="flex items-start gap-2.5 text-sm">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
-                        {f}
+                  <ul className="space-y-3">
+                    {uiLibraryFeatures.slice(0, 5).map((feature) => (
+                      <li key={feature} className="flex items-start gap-2.5 text-sm">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                        {feature}
                       </li>
                     ))}
                   </ul>
+                  <Link href={uiLibraryUrl} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
+                    Preview components
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
                 </div>
               </Reveal>
 
               {hasFreeTemplates && (
                 <Reveal delay={0.18}>
-                  <div className="h-full rounded-2xl border border-border/70 bg-card p-6 shadow-sm transition-shadow hover:shadow-md sm:p-8">
-                    <div className="mb-6">
-                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400 mb-3">
+                  <div className="flex h-full flex-col rounded-lg border border-border bg-card p-6 shadow-sm">
+                    <div className="mb-6 lg:min-h-[184px]">
+                      <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
                         <Infinity className="h-5 w-5" />
                       </div>
-                      <h3 className="text-lg font-bold">HTML Bundle</h3>
-                      <div className="mt-2 flex items-baseline gap-1">
-                        <span className="text-3xl font-bold">$5</span>
-                      </div>
-                      <p className="mt-1.5 text-sm text-muted-foreground">{htmlTemplateCount} HTML templates in one ZIP</p>
+                      <h3 className="text-lg font-black">HTML bundle</h3>
+                      <div className="mt-2 text-3xl font-black">$5</div>
+                      <p className="mt-2 text-sm leading-6 text-muted-foreground">{htmlTemplateCount} responsive HTML templates with lifetime bundle access.</p>
                     </div>
-
-                    <FreeUnlockButton />
-
-                    <ul className="mt-6 space-y-2.5">
-                      {[`All ${htmlTemplateCount} HTML templates in one ZIP`, 'Unlimited individual HTML downloads', 'One-time $5 payment', 'Portfolio, SaaS, ecommerce, agency, and more', 'No expiration'].map((f) => (
-                        <li key={f} className="flex items-start gap-2.5 text-sm">
-                          <Check className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" />
-                          {f}
+                    <div className="border-t border-border pb-5 pt-4">
+                      <FreeUnlockButton />
+                    </div>
+                    <ul className="space-y-3">
+                      {['All ' + htmlTemplateCount + ' HTML templates', 'Unlimited individual HTML downloads', 'Portfolio, SaaS, ecommerce, and more', 'One-time payment with no expiration'].map((feature) => (
+                        <li key={feature} className="flex items-start gap-2.5 text-sm">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                          {feature}
                         </li>
                       ))}
                     </ul>
@@ -300,6 +280,9 @@ export default async function PricingPage() {
                 </Reveal>
               )}
             </div>
+            <p className="mt-5 text-center text-xs leading-5 text-muted-foreground">
+              Need only one paid template? Open its detail page to see the exact one-time price and package scope.
+            </p>
           </div>
         </section>
 
@@ -376,21 +359,7 @@ export default async function PricingPage() {
               <h2 className="ds-h2 mb-2">Frequently asked questions</h2>
             </Reveal>
 
-            <div className="space-y-3">
-              {faqs.map((faq, i) => (
-                <Reveal key={i} delay={i * 0.04}>
-                  <div className="ds-card group">
-                    <details>
-                      <summary className="flex items-center justify-between gap-3 cursor-pointer list-none font-medium text-foreground p-5">
-                        {faq.q}
-                        <span className="shrink-0 text-muted-foreground transition-transform group-open:rotate-45">+</span>
-                      </summary>
-                      <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
-                    </details>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+            <TemplateFaqList items={faqs.map((faq) => ({ question: faq.q, answer: faq.a }))} />
           </div>
         </section>
 

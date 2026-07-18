@@ -6,7 +6,7 @@ import './design-system.css'
 import { Toaster } from '@/components/ui/toaster'
 import { Toaster as SonnerToaster } from '@/components/ui/sonner'
 import ThemeProvider from '@/components/providers/ThemeProvider'
-import AppToaster from '@/components/providers/AppToaster'
+
 import NavigationProgress from '@/components/providers/NavigationProgress'
 import AppInsights from '@/components/providers/AppInsights'
 import { AuthProvider } from '@/hooks/use-auth'
@@ -33,11 +33,11 @@ const naverVerification = process.env.NAVER_SITE_VERIFICATION?.trim()
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'mtverse - Next.js Dashboard Templates & Free HTML Templates',
+    default: 'mtverse - Modern UI Components & Website Templates',
     template: '%s | mtverse',
   },
   description:
-    'Preview premium Next.js dashboard, React admin, ecommerce, SaaS, landing page, and free responsive HTML templates with secure source downloads.',
+    'Preview modern React, Next.js, and Tailwind UI components plus dashboard, ecommerce, SaaS, landing page, portfolio, and responsive HTML templates.',
   keywords: [
     'Next.js templates',
     'Next.js dashboard templates',
@@ -51,6 +51,22 @@ export const metadata: Metadata = {
     'portfolio templates',
     'Tailwind CSS templates',
     'TypeScript dashboard templates',
+    'modern UI components',
+    'UI component library',
+    'React UI components',
+    'Next.js UI components',
+    'Tailwind CSS components',
+    'navbar components',
+    'sidebar components',
+    'button components',
+    'form components',
+    'dashboard UI components',
+    'SaaS UI blocks',
+    'React table components',
+    'modern card UI',
+    'dropdown components',
+    'hero section components',
+    'authentication UI components',
   ],
   authors: [{ name: 'mtverse', url: SITE_URL }],
   creator: 'mtverse',
@@ -66,8 +82,8 @@ export const metadata: Metadata = {
     languages: generateHreflangMap('/', SITE_URL),
   },
   openGraph: {
-    title: 'mtverse - Next.js Dashboard Templates & Free HTML Templates',
-    description: 'Preview dashboard, ecommerce, SaaS, landing page, portfolio, and responsive HTML website templates.',
+    title: 'mtverse - Modern UI Components & Website Templates',
+    description: 'Preview modern UI components plus dashboard, ecommerce, SaaS, landing page, portfolio, and responsive HTML templates.',
     url: SITE_URL,
     siteName: 'mtverse',
     type: 'website',
@@ -76,8 +92,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'mtverse - Next.js Dashboard Templates & Free HTML Templates',
-    description: 'Live template previews, source-code packages, free HTML downloads, and protected delivery.',
+    title: 'mtverse - Modern UI Components & Website Templates',
+    description: 'Live previews for modern UI components and website templates with protected source access and secure downloads.',
     images: ['/SiteLogo.png'],
   },
   robots: {
@@ -121,7 +137,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <Suspense fallback={null}>
               <NavigationProgress />
             </Suspense>
-            <AppToaster />
+
             <Toaster />
             <SonnerToaster />
             <AppInsights />

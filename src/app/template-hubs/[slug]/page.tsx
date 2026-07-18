@@ -9,6 +9,7 @@ import { SITE_URL } from '@/lib/site-url'
 import { getAllTemplatesFromStore } from '@/lib/templates-data'
 import { withAllTemplateSocial } from '@/lib/template-social-store'
 import { getHubTemplates, getTemplateSeoHub, TEMPLATE_SEO_HUBS } from '@/lib/template-seo-hubs'
+import { TemplateFaqList } from '@/components/content/template-faq-list'
 
 type Params = Promise<{ slug: string }>
 
@@ -207,14 +208,8 @@ export default async function TemplateSeoHubPage({ params }: { params: Params })
               </span>
               <h2 className="mt-3 text-2xl font-bold tracking-tight">Questions about {hub.title.toLowerCase()}</h2>
             </Reveal>
-            <div className="grid gap-3">
-              {hub.faqs.map((faq) => (
-                <details key={faq.question} className="ds-card group">
-                  <summary className="cursor-pointer list-none text-sm font-semibold text-foreground">{faq.question}</summary>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{faq.answer}</p>
-                </details>
-              ))}
-            </div>
+            <TemplateFaqList items={hub.faqs} />
+
           </div>
         </section>
 

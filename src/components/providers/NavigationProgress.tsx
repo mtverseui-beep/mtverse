@@ -16,11 +16,16 @@ export default function NavigationProgress() {
   const prevRouteKey = useRef(routeKey);
   const historyIndexRef = useRef<number | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const safetyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const clearTimers = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
+    if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
     if (intervalRef.current) clearInterval(intervalRef.current);
+    timerRef.current = null;
+    safetyTimerRef.current = null;
+    intervalRef.current = null;
   }, []);
 
   const complete = useCallback(() => {
@@ -51,7 +56,11 @@ export default function NavigationProgress() {
         if (intervalRef.current) clearInterval(intervalRef.current);
       }
     }, 100);
-  }, [clearTimers]);
+
+    // Interrupted client handlers, checkout overlays, and browser history races
+    // must never leave the progress bar visible indefinitely.
+    safetyTimerRef.current = setTimeout(complete, 5000);
+  }, [clearTimers, complete]);
 
   const getHistoryIndex = useCallback((state: unknown) => {
     if (!state || typeof state !== "object") return null;
@@ -102,9 +111,9 @@ export default function NavigationProgress() {
       }
     }
 
-    document.addEventListener("click", handleClick, { capture: true });
-    return () =>
-      document.removeEventListener("click", handleClick, { capture: true });
+    // Bubble phase lets client handlers cancel the click before a loader starts.
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
   }, [start]);
 
   // Browser back/forward buttons, trackpad gestures, and Alt+Arrow navigation
@@ -127,6 +136,12 @@ export default function NavigationProgress() {
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, [getHistoryIndex, start]);
+
+  useEffect(() => {
+    const handlePageShow = () => complete();
+    window.addEventListener("pageshow", handlePageShow);
+    return () => window.removeEventListener("pageshow", handlePageShow);
+  }, [complete]);
 
   // Cleanup on unmount
   useEffect(() => {
