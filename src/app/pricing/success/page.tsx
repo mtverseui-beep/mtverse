@@ -239,22 +239,23 @@ export default async function PricingSuccessPage({ searchParams }: { searchParam
                 </div>
               ) : null}
 
-              <div className="mx-auto mt-7 grid max-w-xl gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+              <div className={isUiLibrary ? "mx-auto mt-7 grid max-w-xl gap-3 sm:grid-cols-3" : "mx-auto mt-7 grid max-w-xl gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start"}>
                 {valid && isUiLibrary ? (
-                  <div className="grid min-w-0 gap-3 sm:grid-cols-2">
+                  <>
                     <PackageDownloadButton
                       href={downloadHref}
-                      label="Download full dashboard ZIP"
-                      loadingLabel="Preparing UI Library ZIP..."
+                      label="Download ZIP"
+                      loadingLabel="Preparing ZIP..."
                       className="min-w-0"
                     />
-                    <Link href={uiLibraryUrl} className="ds-btn ds-btn-secondary h-12 min-w-0 px-5 text-sm">
+                    <Link href={uiLibraryUrl} className="ds-btn ds-btn-secondary h-12 min-w-0 px-4 text-sm">
                       <Blocks className="h-4 w-4" />
-                      Open UI Library
-                      <ExternalLink className="h-4 w-4" />
+                      <span className="truncate">Open UI Library</span>
+                      <ExternalLink className="h-4 w-4 shrink-0" />
                     </Link>
-                  </div>
+                  </>
                 ) : valid ? (
+
                   <PackageDownloadButton
                     href={downloadHref}
                     label={isHtmlBundle ? 'Download all HTML ZIP' : isAllPaidBundle ? 'Download all paid ZIP' : 'Download package'}

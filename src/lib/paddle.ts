@@ -22,6 +22,33 @@ function readEnv(name: string) {
   return process.env[name]?.trim() || ''
 }
 
+function readFirstEnv(names: string[]) {
+  for (const name of names) {
+    const value = readEnv(name)
+    if (value) return value
+  }
+  return ''
+}
+
+function getScopedPaddleEnvName(name: string, environment: PaddleEnvironment) {
+  const scope = environment === 'production' ? 'PRODUCTION' : 'SANDBOX'
+
+  if (name.startsWith('NEXT_PUBLIC_PADDLE_')) {
+    return name.replace('NEXT_PUBLIC_PADDLE_', `NEXT_PUBLIC_PADDLE_${scope}_`)
+  }
+
+  if (name.startsWith('PADDLE_')) {
+    return name.replace('PADDLE_', `PADDLE_${scope}_`)
+  }
+
+  return name
+}
+
+function getPaddleEnvNames(name: string, environment: PaddleEnvironment) {
+  const scopedName = getScopedPaddleEnvName(name, environment)
+  return scopedName === name ? [name] : [scopedName, name]
+}
+
 function looksLikePaddleApiKey(value: string, environment: PaddleEnvironment) {
   const expectedPrefix = environment === 'production' ? 'pdl_live_' : 'pdl_sdbx_'
   return value.startsWith(expectedPrefix) && value.includes('_apikey_') && value.length >= 40
@@ -39,16 +66,13 @@ export function getPaddleEnvironment(): PaddleEnvironment {
   return process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT === 'production' ? 'production' : 'sandbox'
 }
 
-function getPaddlePriceEnvNames(packageId: PackageId) {
-  return [PADDLE_PRICE_ENV[packageId], ...(PADDLE_PRICE_ENV_ALIASES[packageId] || [])]
+function getPaddlePriceEnvNames(packageId: PackageId, environment = getPaddleEnvironment()) {
+  const baseNames = [PADDLE_PRICE_ENV[packageId], ...(PADDLE_PRICE_ENV_ALIASES[packageId] || [])]
+  return Array.from(new Set(baseNames.flatMap((name) => getPaddleEnvNames(name, environment))))
 }
 
 export function getPaddlePriceId(packageId: PackageId) {
-  for (const envName of getPaddlePriceEnvNames(packageId)) {
-    const value = readEnv(envName)
-    if (value) return value
-  }
-  return ''
+  return readFirstEnv(getPaddlePriceEnvNames(packageId))
 }
 
 export function getPaddleConfigurationStatus(
@@ -56,9 +80,12 @@ export function getPaddleConfigurationStatus(
   options: { requireWebhookSecret?: boolean } = {},
 ) {
   const environment = getPaddleEnvironment()
-  const clientToken = readEnv('PADDLE_CLIENT_TOKEN')
-  const apiKey = readEnv('PADDLE_API_KEY')
-  const webhookSecret = readEnv('PADDLE_WEBHOOK_SECRET')
+  const clientTokenNames = getPaddleEnvNames('PADDLE_CLIENT_TOKEN', environment)
+  const apiKeyNames = getPaddleEnvNames('PADDLE_API_KEY', environment)
+  const webhookSecretNames = getPaddleEnvNames('PADDLE_WEBHOOK_SECRET', environment)
+  const clientToken = readFirstEnv(clientTokenNames)
+  const apiKey = readFirstEnv(apiKeyNames)
+  const webhookSecret = readFirstEnv(webhookSecretNames)
   const issues: string[] = []
   const provider = process.env.PAYMENT_PROVIDER?.trim() || 'mock'
   const expectedClientPrefix = environment === 'production' ? 'live_' : 'test_'
@@ -69,13 +96,13 @@ export function getPaddleConfigurationStatus(
     issues.push('PAYMENT_PROVIDER must be set to paddle.')
   }
   if (!clientToken.startsWith(expectedClientPrefix)) {
-    issues.push('PADDLE_CLIENT_TOKEN must be a ' + environment + ' token starting with ' + expectedClientPrefix + '.')
+    issues.push(clientTokenNames.join(' or ') + ' must be a ' + environment + ' token starting with ' + expectedClientPrefix + '.')
   }
   if (!looksLikePaddleApiKey(apiKey, environment) || !apiKey.startsWith(expectedApiPrefix)) {
-    issues.push('PADDLE_API_KEY must be a ' + environment + ' API key starting with ' + expectedApiPrefix + '.')
+    issues.push(apiKeyNames.join(' or ') + ' must be a ' + environment + ' API key starting with ' + expectedApiPrefix + '.')
   }
   if (requireWebhookSecret && !looksLikePaddleWebhookSecret(webhookSecret)) {
-    issues.push('PADDLE_WEBHOOK_SECRET must be the endpoint secret key starting with pdl_ntfset_.')
+    issues.push(webhookSecretNames.join(' or ') + ' must be the endpoint secret key starting with pdl_ntfset_.')
   }
 
   const packageIds = packageId
@@ -83,8 +110,8 @@ export function getPaddleConfigurationStatus(
     : (Object.keys(PADDLE_PRICE_ENV) as PackageId[])
 
   for (const currentPackageId of packageIds) {
-    const envNames = getPaddlePriceEnvNames(currentPackageId)
-    if (!looksLikePaddlePriceId(getPaddlePriceId(currentPackageId))) {
+    const envNames = getPaddlePriceEnvNames(currentPackageId, environment)
+    if (!looksLikePaddlePriceId(readFirstEnv(envNames))) {
       issues.push(envNames.join(' or ') + ' is missing or is not a Paddle price ID for ' + currentPackageId + '.')
     }
   }
@@ -104,15 +131,16 @@ export function createPaddleCheckoutPayload(packageId: PackageId, email?: string
   }
 
   const product = getProductPackage(packageId)
-  const clientToken = readEnv('PADDLE_CLIENT_TOKEN')
+  const environment = getPaddleEnvironment()
+  const clientToken = readFirstEnv(getPaddleEnvNames('PADDLE_CLIENT_TOKEN', environment))
   const priceId = getPaddlePriceId(packageId)
 
   if (!clientToken) {
-    throw new Error('Paddle client token is missing. Set PADDLE_CLIENT_TOKEN in .env.local.')
+    throw new Error('Paddle client token is missing. Set ' + getPaddleEnvNames('PADDLE_CLIENT_TOKEN', environment).join(' or ') + ' in your environment.')
   }
 
   if (!priceId) {
-    throw new Error(`Paddle price ID is missing. Set ${getPaddlePriceEnvNames(packageId).join(' or ')} in your environment.`)
+    throw new Error(`Paddle price ID is missing. Set ${getPaddlePriceEnvNames(packageId, environment).join(' or ')} in your environment.`)
   }
 
   const customerEmail = email?.trim().toLowerCase()
@@ -122,7 +150,7 @@ export function createPaddleCheckoutPayload(packageId: PackageId, email?: string
     : null
 
   return {
-    environment: getPaddleEnvironment(),
+    environment,
     clientToken,
     priceId,
     packageId,
@@ -140,4 +168,3 @@ export function createPaddleCheckoutPayload(packageId: PackageId, email?: string
     },
   }
 }
-

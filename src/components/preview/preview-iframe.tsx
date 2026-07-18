@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { track } from '@vercel/analytics'
 import { ExternalLink, Loader2, RefreshCw } from 'lucide-react'
 
 type PreviewIframeProps = {
@@ -18,8 +19,9 @@ export function PreviewIframe({ url, directUrl, title }: PreviewIframeProps) {
 
   // Warm up the preview server with a HEAD request to avoid cold start delay
   useEffect(() => {
+    track('preview_opened', { title, url })
     fetch(url, { method: 'HEAD', mode: 'no-cors' }).catch(() => {})
-  }, [url])
+  }, [title, url])
 
   // Timeout: 15s covers cold starts. Only error if onLoad never fires.
   useEffect(() => {
@@ -37,19 +39,22 @@ export function PreviewIframe({ url, directUrl, title }: PreviewIframeProps) {
     loadedRef.current = true
     setLoading(false)
     setError(false)
-  }, [])
+    track('preview_loaded', { title, url })
+  }, [title, url])
 
   const handleError = useCallback(() => {
     loadedRef.current = true
     setLoading(false)
     setError(true)
-  }, [])
+    track('preview_failed', { title, url })
+  }, [title, url])
 
   const handleRetry = useCallback(() => {
+    track('preview_retry_clicked', { title, url })
     setLoading(true)
     setError(false)
     setRetryCount(prev => prev + 1)
-  }, [])
+  }, [title, url])
 
   return (
     <>
@@ -120,3 +125,4 @@ export function PreviewIframe({ url, directUrl, title }: PreviewIframeProps) {
     </>
   )
 }
+

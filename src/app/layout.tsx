@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Analytics } from '@vercel/analytics/next'
 import { Suspense } from 'react'
 import { Inter, Instrument_Serif } from 'next/font/google'
 import './globals.css'
@@ -141,9 +142,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <Toaster />
             <SonnerToaster />
             <AppInsights />
+            <Analytics />
           </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
   )
 }
+

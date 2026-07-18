@@ -72,10 +72,23 @@ export async function createCheckout(input: CheckoutInput): Promise<CheckoutResu
   }
 
   if (provider === 'paddle') {
-    return {
-      provider,
-      mock: false,
-      paddle: createPaddleCheckoutPayload(input.packageId, input.email, input.kitSlug),
+    try {
+      return {
+        provider,
+        mock: false,
+        paddle: createPaddleCheckoutPayload(input.packageId, input.email, input.kitSlug),
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('[Payments] Falling back to mock checkout in development because Paddle is not fully configured.', error)
+        return {
+          url: buildMockSuccessUrl(input.packageId, input.email, input.kitSlug),
+          provider: 'mock',
+          mock: true,
+        }
+      }
+
+      throw error
     }
   }
 
@@ -133,4 +146,3 @@ export function verifyPaymentFromSearchParams(searchParams: URLSearchParams): Ve
     mock: isMock,
   }
 }
-
