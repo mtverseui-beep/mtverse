@@ -14,19 +14,21 @@ const PADDLE_PRICE_ENV: Record<PackageId, string> = {
   'ui-library': 'PADDLE_UI_LIBRARY_PRICE_ID',
 }
 
+const PADDLE_PRICE_ENV_ALIASES: Partial<Record<PackageId, string[]>> = {
+  'ui-library': ['NEXT_PUBLIC_PADDLE_UI_LIBRARY_PRICE_ID', 'PADDLE_UI_LIB_PRICE_ID'],
+}
+
 function readEnv(name: string) {
   return process.env[name]?.trim() || ''
 }
 
 function looksLikePaddleApiKey(value: string, environment: PaddleEnvironment) {
-  const environmentPart = environment === 'production' ? 'live' : 'sdbx'
-  return new RegExp(
-    '^pdl_' + environmentPart + '_apikey_[a-z0-9]{26}_[A-Za-z0-9]{22}_[A-Za-z0-9]{3}$'
-  ).test(value)
+  const expectedPrefix = environment === 'production' ? 'pdl_live_' : 'pdl_sdbx_'
+  return value.startsWith(expectedPrefix) && value.includes('_apikey_') && value.length >= 40
 }
 
 function looksLikePaddleWebhookSecret(value: string) {
-  return /^pdl_ntfset_[A-Za-z0-9_+/=-]{32,}$/.test(value)
+  return value.startsWith('pdl_ntfset_') && value.length >= 32
 }
 
 function looksLikePaddlePriceId(value: string) {
@@ -37,11 +39,22 @@ export function getPaddleEnvironment(): PaddleEnvironment {
   return process.env.NEXT_PUBLIC_PADDLE_ENVIRONMENT === 'production' ? 'production' : 'sandbox'
 }
 
-export function getPaddlePriceId(packageId: PackageId) {
-  return readEnv(PADDLE_PRICE_ENV[packageId])
+function getPaddlePriceEnvNames(packageId: PackageId) {
+  return [PADDLE_PRICE_ENV[packageId], ...(PADDLE_PRICE_ENV_ALIASES[packageId] || [])]
 }
 
-export function getPaddleConfigurationStatus(packageId?: PackageId) {
+export function getPaddlePriceId(packageId: PackageId) {
+  for (const envName of getPaddlePriceEnvNames(packageId)) {
+    const value = readEnv(envName)
+    if (value) return value
+  }
+  return ''
+}
+
+export function getPaddleConfigurationStatus(
+  packageId?: PackageId,
+  options: { requireWebhookSecret?: boolean } = {},
+) {
   const environment = getPaddleEnvironment()
   const clientToken = readEnv('PADDLE_CLIENT_TOKEN')
   const apiKey = readEnv('PADDLE_API_KEY')
@@ -50,6 +63,7 @@ export function getPaddleConfigurationStatus(packageId?: PackageId) {
   const provider = process.env.PAYMENT_PROVIDER?.trim() || 'mock'
   const expectedClientPrefix = environment === 'production' ? 'live_' : 'test_'
   const expectedApiPrefix = environment === 'production' ? 'pdl_live_' : 'pdl_sdbx_'
+  const requireWebhookSecret = options.requireWebhookSecret ?? true
 
   if (provider !== 'paddle') {
     issues.push('PAYMENT_PROVIDER must be set to paddle.')
@@ -60,17 +74,18 @@ export function getPaddleConfigurationStatus(packageId?: PackageId) {
   if (!looksLikePaddleApiKey(apiKey, environment) || !apiKey.startsWith(expectedApiPrefix)) {
     issues.push('PADDLE_API_KEY must be a ' + environment + ' API key starting with ' + expectedApiPrefix + '.')
   }
-  if (!looksLikePaddleWebhookSecret(webhookSecret)) {
+  if (requireWebhookSecret && !looksLikePaddleWebhookSecret(webhookSecret)) {
     issues.push('PADDLE_WEBHOOK_SECRET must be the endpoint secret key starting with pdl_ntfset_.')
   }
 
-  const priceEntries = packageId
-    ? [[packageId, PADDLE_PRICE_ENV[packageId]] as [PackageId, string]]
-    : (Object.entries(PADDLE_PRICE_ENV) as Array<[PackageId, string]>)
+  const packageIds = packageId
+    ? [packageId]
+    : (Object.keys(PADDLE_PRICE_ENV) as PackageId[])
 
-  for (const [currentPackageId, envName] of priceEntries) {
-    if (!looksLikePaddlePriceId(readEnv(envName))) {
-      issues.push(envName + ' is missing or is not a Paddle price ID for ' + currentPackageId + '.')
+  for (const currentPackageId of packageIds) {
+    const envNames = getPaddlePriceEnvNames(currentPackageId)
+    if (!looksLikePaddlePriceId(getPaddlePriceId(currentPackageId))) {
+      issues.push(envNames.join(' or ') + ' is missing or is not a Paddle price ID for ' + currentPackageId + '.')
     }
   }
 
@@ -83,7 +98,7 @@ export function getPaddleConfigurationStatus(packageId?: PackageId) {
 }
 
 export function createPaddleCheckoutPayload(packageId: PackageId, email?: string, kitSlug?: string): PaddleCheckoutPayload {
-  const configuration = getPaddleConfigurationStatus(packageId)
+  const configuration = getPaddleConfigurationStatus(packageId, { requireWebhookSecret: false })
   if (!configuration.ready) {
     throw new Error('Paddle checkout configuration is incomplete: ' + configuration.issues.join(' '))
   }
@@ -97,7 +112,7 @@ export function createPaddleCheckoutPayload(packageId: PackageId, email?: string
   }
 
   if (!priceId) {
-    throw new Error(`Paddle price ID is missing. Set ${PADDLE_PRICE_ENV[packageId]} in your environment.`)
+    throw new Error(`Paddle price ID is missing. Set ${getPaddlePriceEnvNames(packageId).join(' or ')} in your environment.`)
   }
 
   const customerEmail = email?.trim().toLowerCase()
@@ -125,3 +140,4 @@ export function createPaddleCheckoutPayload(packageId: PackageId, email?: string
     },
   }
 }
+
