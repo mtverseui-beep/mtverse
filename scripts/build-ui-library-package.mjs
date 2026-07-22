@@ -178,7 +178,7 @@ This package contains the complete mtverse UI dashboard and more than 360 respon
 - Full TypeScript and React source
 - Raw code and implementation documentation unlocked locally
 - Component previews, dependencies, shared CSS, and generated route metadata
-- Light and dark themes
+- Light-only theme tuned for clean component previews
 - Future-ready Next.js App Router project structure
 
 ## Run locally
