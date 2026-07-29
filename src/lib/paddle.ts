@@ -12,10 +12,15 @@ const PADDLE_PRICE_ENV: Record<PackageId, string> = {
   'free-unlock': 'PADDLE_FREE_UNLOCK_PRICE_ID',
   'all-paid': 'PADDLE_ALL_PAID_PRICE_ID',
   'ui-library': 'PADDLE_UI_LIBRARY_PRICE_ID',
+  'mtadmin-nextjs': 'PADDLE_MTADMIN_INDIVIDUAL_PRICE_ID',
+  'mtadmin-react': 'PADDLE_MTADMIN_INDIVIDUAL_PRICE_ID',
+  'mtadmin-bundle': 'PADDLE_MTADMIN_BUNDLE_PRICE_ID',
 }
 
 const PADDLE_PRICE_ENV_ALIASES: Partial<Record<PackageId, string[]>> = {
   'ui-library': ['NEXT_PUBLIC_PADDLE_UI_LIBRARY_PRICE_ID', 'PADDLE_UI_LIB_PRICE_ID'],
+  'mtadmin-nextjs': ['PADDLE_MTADMIN_NEXTJS_PRICE_ID'],
+  'mtadmin-react': ['PADDLE_MTADMIN_REACT_PRICE_ID'],
 }
 
 function readEnv(name: string) {

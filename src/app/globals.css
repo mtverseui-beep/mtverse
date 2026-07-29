@@ -2320,3 +2320,21 @@
 .cs-hover:hover { background-color: var(--card-hover); }
 .cs-input { background-color: var(--card-input-bg); }
 /* End theme-aware shared card surfaces */
+.payment-methods-rail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 0.75rem;
+  row-gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .payment-methods-rail {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .payment-methods-rail {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}

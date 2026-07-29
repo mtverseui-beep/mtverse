@@ -1,6 +1,16 @@
 import type { PlanLevel } from './plan-access'
 
-export const PACKAGE_IDS = ['next', 'pro', 'ooster-pro', 'free-unlock', 'all-paid', 'ui-library'] as const
+export const PACKAGE_IDS = [
+  'next',
+  'pro',
+  'ooster-pro',
+  'free-unlock',
+  'all-paid',
+  'ui-library',
+  'mtadmin-nextjs',
+  'mtadmin-react',
+  'mtadmin-bundle',
+] as const
 
 export type PackageId = (typeof PACKAGE_IDS)[number]
 
@@ -59,6 +69,30 @@ export const PRODUCT_PACKAGES: Record<PackageId, ProductPackage> = {
     name: 'mtverse UI Library Lifetime Access',
     shortName: 'UI Library',
     amountUsd: 25,
+    currency: 'USD',
+    accessPlan: 'pro',
+  },
+  'mtadmin-nextjs': {
+    id: 'mtadmin-nextjs',
+    name: 'mtadmin Next.js Admin Dashboard',
+    shortName: 'mtadmin Next.js',
+    amountUsd: 25,
+    currency: 'USD',
+    accessPlan: 'pro',
+  },
+  'mtadmin-react': {
+    id: 'mtadmin-react',
+    name: 'mtadmin React Admin Dashboard',
+    shortName: 'mtadmin React',
+    amountUsd: 25,
+    currency: 'USD',
+    accessPlan: 'pro',
+  },
+  'mtadmin-bundle': {
+    id: 'mtadmin-bundle',
+    name: 'mtadmin All Frameworks Bundle',
+    shortName: 'mtadmin Bundle',
+    amountUsd: 30,
     currency: 'USD',
     accessPlan: 'pro',
   },

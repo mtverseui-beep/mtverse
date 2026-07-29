@@ -29,6 +29,8 @@ import { TemplateFrameworkRequest } from '@/components/templates/template-framew
 import { TemplateFaqList } from '@/components/content/template-faq-list'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
 import { SectionBackground, CtaBackground } from '@/components/design-system/backgrounds'
+import { MtadminTemplateDetail } from '@/components/mtadmin/mtadmin-template-detail'
+import { getMtadminProduct } from '@/lib/mtadmin-product'
 
 type Params = Promise<{ slug: string }>
 
@@ -327,6 +329,16 @@ export default async function TemplateDetailPage({ params }: { params: Params })
     ],
   }
 
+  if (template.slug === 'mtadmin') {
+    return (
+      <MtadminTemplateDetail
+        product={getMtadminProduct()}
+        template={template}
+        related={related}
+        jsonLd={jsonLd}
+      />
+    )
+  }
   return (
     <PublicLayout>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

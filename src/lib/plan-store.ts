@@ -86,10 +86,12 @@ function resolvePackageId(existing: PlanRecord | undefined, incomingPackageId: s
 
 export function hasPlanPackageAccess(record: PlanRecord | null | undefined, packageId: string) {
   if (!record || record.status === 'revoked') return false
+  const purchases = new Set([record.packageId, ...(record.purchases || [])].filter(Boolean))
   if (
-    record.packageId === 'all-paid' &&
-    ['next', 'pro', 'ooster-pro', 'all-paid'].includes(packageId)
+    purchases.has('all-paid') &&
+    (['next', 'pro', 'ooster-pro', 'all-paid'].includes(packageId) || packageId.startsWith('mtadmin-'))
   ) return true
+  if (purchases.has('mtadmin-bundle') && packageId.startsWith('mtadmin-')) return true
   if (record.packageId === packageId) return true
   return Boolean(record.purchases?.includes(packageId))
 }

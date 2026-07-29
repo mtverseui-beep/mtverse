@@ -308,6 +308,52 @@ export default function AccountClient() {
             </section>
           ) : null}
 
+          {(entitlements.mtadminNextjs || entitlements.mtadminReact || entitlements.mtadminBundle) ? (
+            <section className="mb-6 overflow-hidden rounded-xl border border-blue-200/70 bg-blue-50/40 shadow-sm dark:border-blue-900/60 dark:bg-blue-950/20">
+              <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-start gap-4">
+                  <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-200">
+                    <LayoutDashboard className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="text-lg font-semibold text-foreground">mtadmin</h2>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                        Lifetime access
+                      </span>
+                    </div>
+                    <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                      Your purchased framework source packages are ready for private download.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex shrink-0 flex-wrap gap-2">
+                  {entitlements.mtadminBundle ? (
+                    <Link href="/api/download/package/mtadmin-bundle" className="ds-btn ds-btn-primary">
+                      <Download className="h-4 w-4" />
+                      Download bundle
+                    </Link>
+                  ) : (
+                    <>
+                      {entitlements.mtadminNextjs ? (
+                        <Link href="/api/download/package/mtadmin-nextjs" className="ds-btn ds-btn-secondary">
+                          <Download className="h-4 w-4" />
+                          Next.js ZIP
+                        </Link>
+                      ) : null}
+                      {entitlements.mtadminReact ? (
+                        <Link href="/api/download/package/mtadmin-react" className="ds-btn ds-btn-secondary">
+                          <Download className="h-4 w-4" />
+                          React ZIP
+                        </Link>
+                      ) : null}
+                    </>
+                  )}
+                </div>
+              </div>
+            </section>
+          ) : null}
           <section id="library" className="ds-card p-6">
             <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>

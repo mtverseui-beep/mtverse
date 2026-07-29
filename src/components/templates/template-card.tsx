@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Download, Eye, ShoppingCart } from 'lucide-react'
 import type { Template } from '@/lib/templates-catalog'
+import { cn } from '@/lib/utils'
 
 type Props = {
   template: Template
@@ -20,10 +21,19 @@ function getFrameworkShort(template: Template): string {
 export function TemplateCard({ template, priority = false }: Props) {
   const frameworkLabel = getFrameworkShort(template)
   const showProBadge = !template.isFree && template.pricingTier === 'pro'
+  const isMtadmin = template.slug === 'mtadmin'
 
   return (
     <Link href={`/templates/${template.slug}`} prefetch={false} className="group block h-full no-underline">
-      <article className="relative h-full overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/[0.04]">
+      <article
+        className={cn(
+          'relative h-full overflow-hidden rounded-xl border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl',
+          isMtadmin
+            ? 'border-amber-300/55 hover:border-amber-400/70 hover:shadow-amber-500/[0.06]'
+            : 'border-border/60 hover:border-primary/30 hover:shadow-primary/[0.04]'
+        )}
+      >
+
         {/* Screenshot container */}
         <div className="relative overflow-hidden bg-gradient-to-br from-muted/60 via-muted/30 to-muted/50 p-3">
           <div className="relative overflow-hidden rounded-xl border border-border/70 bg-background shadow-md shadow-black/[0.04] transition-shadow duration-300 group-hover:shadow-lg group-hover:shadow-primary/[0.06]">

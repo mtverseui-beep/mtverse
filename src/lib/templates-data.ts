@@ -3,6 +3,7 @@ import { getDashboardKits } from '@/lib/dashboard-kit-store'
 import { TEMPLATE_CATEGORIES } from '@/lib/templates-catalog'
 import type { Template, TemplateCategory } from '@/lib/templates-catalog'
 import { slugify } from '@/lib/utils'
+import { getMtadminProduct } from '@/lib/mtadmin-product'
 
 export { TEMPLATE_CATEGORIES, sortTemplates } from '@/lib/templates-catalog'
 export type { Template, TemplateCategory, TemplateReview, TemplateSortMode } from '@/lib/templates-catalog'
@@ -216,7 +217,76 @@ function toTemplate(kit: DashboardKit): Template {
   }
 }
 
-export const TEMPLATES: Template[] = dashboardKits.map(toTemplate)
+function toMtadminTemplate(): Template {
+  const product = getMtadminProduct()
+
+  return {
+    id: 'template-mtadmin',
+    slug: product.slug,
+    title: product.title,
+    summary: product.summary,
+    description: product.description,
+    seoTitle: product.seo.title,
+    metaDescription: product.seo.description,
+    keywords: product.seo.keywords,
+    category: 'dashboards',
+    categoryLabel: 'Dashboards',
+    subcategory: 'Multi-framework Admin Dashboard',
+    tags: ['admin dashboard', 'multi-framework', 'SaaS', 'ecommerce', 'analytics', 'CRM', 'operations'],
+    techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
+    frameworkLabel: 'Next.js + React',
+    screenshotUrl: product.previewImages[0],
+    thumbnailUrl: product.previewImages[0],
+    price: product.bundlePriceUsd,
+    pricingTier: 'pro',
+    currency: product.currency,
+    featured: true,
+    trending: true,
+    new: true,
+    rating: 0,
+    reviewCount: 0,
+    salesCount: 0,
+    reviews: [],
+    lastUpdated: product.updatedAt,
+    author: { name: 'mtverse', avatar: 'M' },
+    features: product.featureGroups.flatMap((group) => group.items),
+    pages: product.dashboards,
+    components: product.metrics.componentsPerEdition,
+    license: product.license.name,
+    highlights: [
+      {
+        title: `${product.metrics.dashboards} dashboard experiences`,
+        description: 'Analytics, ecommerce, CRM, finance, logistics, support, SaaS, AI, and operations workspaces.',
+        icon: 'Layers',
+      },
+      {
+        title: `${product.metrics.routesPerEdition} application routes`,
+        description: 'Deep product coverage across dashboards, apps, forms, tables, authentication, and system screens.',
+        icon: 'FileText',
+      },
+      {
+        title: `${product.metrics.layouts} responsive layouts`,
+        description: 'Sidebar, compact, horizontal, two-column, full-width, and focused authentication shells.',
+        icon: 'Sparkles',
+      },
+      {
+        title: 'Multi-framework ownership',
+        description: 'Next.js and React are available now, with four additional editions included in the bundle roadmap.',
+        icon: 'Package',
+      },
+    ],
+    faq: product.faqs,
+    isFree: false,
+  }
+}
+
+const MTADMIN_TEMPLATE = toMtadminTemplate()
+
+function withMtadminFirst(templates: Template[]) {
+  return [MTADMIN_TEMPLATE, ...templates.filter((template) => template.slug !== MTADMIN_TEMPLATE.slug)]
+}
+
+export const TEMPLATES: Template[] = withMtadminFirst(dashboardKits.map(toTemplate))
 
 export function getAllTemplates(): Template[] {
   return TEMPLATES
@@ -224,7 +294,7 @@ export function getAllTemplates(): Template[] {
 
 export async function getAllTemplatesFromStore(): Promise<Template[]> {
   const kits = await getDashboardKits()
-  return kits.filter((kit) => kit.status === 'available').map(toTemplate)
+  return withMtadminFirst(kits.filter((kit) => kit.status === 'available').map(toTemplate))
 }
 
 export function getTemplateBySlug(slug: string): Template | null {

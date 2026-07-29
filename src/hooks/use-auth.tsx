@@ -25,6 +25,9 @@ type AuthState = {
   licenseKey: string | null
   entitlements: {
     uiLibrary: boolean
+    mtadminNextjs: boolean
+    mtadminReact: boolean
+    mtadminBundle: boolean
   }
   loading: boolean // true while fetching initial auth state
   authenticated: boolean
@@ -45,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user: null,
     plan: 'free',
     licenseKey: null,
-    entitlements: { uiLibrary: false },
+    entitlements: { uiLibrary: false, mtadminNextjs: false, mtadminReact: false, mtadminBundle: false },
     loading: true,
     authenticated: false,
   })
@@ -59,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           user: null,
           plan: 'free',
           licenseKey: null,
-          entitlements: { uiLibrary: false },
+          entitlements: { uiLibrary: false, mtadminNextjs: false, mtadminReact: false, mtadminBundle: false },
           authenticated: false,
           loading: false,
         })
@@ -72,6 +75,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         licenseKey: data.licenseKey || null,
         entitlements: {
           uiLibrary: Boolean(data.entitlements?.uiLibrary),
+          mtadminNextjs: Boolean(data.entitlements?.mtadminNextjs),
+          mtadminReact: Boolean(data.entitlements?.mtadminReact),
+          mtadminBundle: Boolean(data.entitlements?.mtadminBundle),
         },
         authenticated: Boolean(data.authenticated),
         loading: false,
@@ -81,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user: null,
         plan: 'free',
         licenseKey: null,
-        entitlements: { uiLibrary: false },
+        entitlements: { uiLibrary: false, mtadminNextjs: false, mtadminReact: false, mtadminBundle: false },
         authenticated: false,
         loading: false,
       })
@@ -153,7 +159,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user: null,
       plan: 'free',
       licenseKey: null,
-      entitlements: { uiLibrary: false },
+      entitlements: { uiLibrary: false, mtadminNextjs: false, mtadminReact: false, mtadminBundle: false },
       loading: false,
       authenticated: false,
     })

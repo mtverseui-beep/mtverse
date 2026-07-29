@@ -1,0 +1,237 @@
+{
+  "id": "mtadmin",
+  "slug": "mtadmin",
+  "name": "mtadmin",
+  "title": "mtadmin - Next.js & React Admin Dashboard Template",
+  "eyebrow": "Flagship admin product",
+  "summary": "A production-focused admin dashboard system with deep application coverage, reusable layouts, and framework-specific source packages.",
+  "description": "Build analytics, ecommerce, operations, CRM, finance, logistics, support, SaaS, and AI administration products from one consistent dashboard system. Each available edition includes complete source code, responsive application pages, reusable layouts, and commercial project usage.",
+  "status": "early-access",
+  "version": "1.0.0",
+  "currency": "USD",
+  "individualPriceUsd": 25,
+  "bundlePriceUsd": 30,
+  "license": {
+    "name": "Commercial project license",
+    "summary": "Use the purchased source in personal and commercial end products. Redistribution, resale, or publishing the source as a competing template is not allowed.",
+    "lifetimeAccess": true,
+    "futureEditionUpdatesIncludedInBundle": true
+  },
+  "metrics": {
+    "dashboards": 14,
+    "routesPerEdition": 90,
+    "layouts": 6,
+    "componentsPerEdition": 150,
+    "availableFrameworks": 2,
+    "comingSoonFrameworks": 4
+  },
+  "editions": [
+    {
+      "id": "nextjs",
+      "name": "Next.js",
+      "status": "available",
+      "packageId": "mtadmin-nextjs",
+      "priceUsd": 25,
+      "downloadFilename": "mtadmin-nextjs.zip",
+      "framework": "Next.js",
+      "language": "TypeScript",
+      "styling": "Tailwind CSS"
+    },
+    {
+      "id": "react",
+      "name": "React",
+      "status": "available",
+      "packageId": "mtadmin-react",
+      "priceUsd": 25,
+      "downloadFilename": "mtadmin-react.zip",
+      "framework": "React + Vite",
+      "language": "TypeScript",
+      "styling": "Tailwind CSS"
+    },
+    {
+      "id": "html",
+      "name": "HTML",
+      "status": "coming-soon",
+      "framework": "HTML",
+      "language": "HTML + JavaScript",
+      "styling": "Tailwind CSS"
+    },
+    {
+      "id": "vue",
+      "name": "Vue.js",
+      "status": "coming-soon",
+      "framework": "Vue.js",
+      "language": "TypeScript",
+      "styling": "Tailwind CSS"
+    },
+    {
+      "id": "angular",
+      "name": "Angular",
+      "status": "coming-soon",
+      "framework": "Angular",
+      "language": "TypeScript",
+      "styling": "Tailwind CSS"
+    },
+    {
+      "id": "laravel",
+      "name": "Laravel",
+      "status": "coming-soon",
+      "framework": "Laravel",
+      "language": "PHP + JavaScript",
+      "styling": "Tailwind CSS"
+    }
+  ],
+  "bundle": {
+    "id": "all-frameworks",
+    "name": "All Frameworks Bundle",
+    "packageId": "mtadmin-bundle",
+    "priceUsd": 30,
+    "availableEditionIds": [
+      "nextjs",
+      "react"
+    ],
+    "includedEditionIds": [
+      "nextjs",
+      "react",
+      "html",
+      "vue",
+      "angular",
+      "laravel"
+    ],
+    "delivery": "One private ZIP containing every currently available edition. Coming-soon editions are added to the buyer account when released."
+  },
+  "dashboards": [
+    "Overview",
+    "Ecommerce",
+    "Analytics",
+    "CRM",
+    "Finance",
+    "AI Workspace",
+    "Marketing",
+    "SaaS",
+    "Logistics",
+    "Sales",
+    "Support",
+    "Operations",
+    "Customer Intelligence",
+    "Executive Reporting"
+  ],
+  "layouts": [
+    "Default sidebar",
+    "Compact sidebar",
+    "Horizontal navigation",
+    "Two-column workspace",
+    "Full-width application",
+    "Focused authentication"
+  ],
+  "featureGroups": [
+    {
+      "title": "Dashboards and analytics",
+      "items": [
+        "Executive KPI dashboards",
+        "Interactive charts and reports",
+        "Date range and data controls",
+        "Revenue, conversion, and retention views",
+        "Export-ready report interfaces"
+      ]
+    },
+    {
+      "title": "Commerce and operations",
+      "items": [
+        "Orders and fulfillment",
+        "Inventory and products",
+        "Customer management",
+        "Logistics and carrier workflows",
+        "Finance and transaction interfaces"
+      ]
+    },
+    {
+      "title": "Application foundation",
+      "items": [
+        "Responsive desktop, tablet, and mobile layouts",
+        "Reusable TypeScript components",
+        "Authentication and account screens",
+        "Forms, tables, filters, and modal workflows",
+        "Accessible navigation and keyboard-friendly controls"
+      ]
+    },
+    {
+      "title": "Delivery and ownership",
+      "items": [
+        "Complete framework source package",
+        "Private authenticated ZIP delivery",
+        "Lifetime access to purchased editions",
+        "Bundle access to future framework editions",
+        "Commercial project usage"
+      ]
+    }
+  ],
+  "useCases": [
+    "SaaS administration",
+    "Ecommerce operations",
+    "Analytics products",
+    "CRM platforms",
+    "Finance dashboards",
+    "Logistics control centers",
+    "Customer support portals",
+    "Internal business tools"
+  ],
+  "previewImages": [
+    "/product-previews/mtadmin/mtadmin-overview.png",
+    "/product-previews/mtadmin/mtadmin-analytics.png",
+    "/product-previews/mtadmin/mtadmin-operations.png"
+  ],
+  "seo": {
+    "title": "mtadmin Admin Dashboard Template for Next.js and React",
+    "description": "Build production-ready admin dashboards with mtadmin for Next.js and React. Get 14 dashboards, 90 application routes, six layouts, reusable TypeScript components, and an all-framework bundle.",
+    "keywords": [
+      "admin dashboard template",
+      "Next.js admin dashboard",
+      "React admin dashboard",
+      "Tailwind admin template",
+      "TypeScript dashboard template",
+      "SaaS admin dashboard",
+      "ecommerce admin dashboard",
+      "analytics dashboard UI",
+      "CRM dashboard template",
+      "responsive admin panel",
+      "multi framework admin template",
+      "premium dashboard template"
+    ]
+  },
+  "faqs": [
+    {
+      "question": "What does an individual mtadmin edition include?",
+      "answer": "An individual purchase unlocks the complete source package for the selected framework, including all included dashboards, routes, layouts, and reusable components."
+    },
+    {
+      "question": "What is included in the all-frameworks bundle?",
+      "answer": "The bundle includes the Next.js and React editions immediately. HTML, Vue.js, Angular, and Laravel editions are added to the same account when they are released."
+    },
+    {
+      "question": "Is mtadmin a subscription?",
+      "answer": "No. Individual editions and the bundle are one-time purchases with lifetime access to the purchased product."
+    },
+    {
+      "question": "Can I use mtadmin in a commercial client project?",
+      "answer": "Yes. The license permits personal and commercial end products, but it does not permit reselling or redistributing the template source."
+    },
+    {
+      "question": "What happens after payment?",
+      "answer": "After Paddle confirms the transaction, the purchased edition or bundle is attached to your mtverse account. You can download it immediately from the confirmation page and return to your account for later downloads."
+    },
+    {
+      "question": "How are payments processed?",
+      "answer": "Payments are processed securely by Paddle as the merchant of record. mtverse does not store card details, and checkout supports major cards and eligible wallet or local payment methods shown by Paddle."
+    },
+    {
+      "question": "Do you offer refunds?",
+      "answer": "Refund requests are handled under the mtverse refund policy. Contact support with the purchase email and Paddle transaction ID so the order can be reviewed."
+    },
+    {
+      "question": "Will I receive product updates?",
+      "answer": "Individual purchases include updates for that framework edition. The all-frameworks bundle also includes future mtadmin framework editions when they are released."
+    }
+  ],
+  "updatedAt": "2026-07-29T00:00:00.000Z"
+}

@@ -33,7 +33,12 @@ export async function GET() {
       user: null,
       plan: 'free',
       licenseKey: null,
-      entitlements: { uiLibrary: false },
+      entitlements: {
+        uiLibrary: false,
+        mtadminNextjs: false,
+        mtadminReact: false,
+        mtadminBundle: false,
+      },
     })
   }
 
@@ -62,6 +67,9 @@ export async function GET() {
     licenseKey: planRecord?.licenseKey || null,
     entitlements: {
       uiLibrary: hasPlanPackageAccess(planRecord, 'ui-library'),
+      mtadminNextjs: hasPlanPackageAccess(planRecord, 'mtadmin-nextjs'),
+      mtadminReact: hasPlanPackageAccess(planRecord, 'mtadmin-react'),
+      mtadminBundle: hasPlanPackageAccess(planRecord, 'mtadmin-bundle'),
     },
   })
 }

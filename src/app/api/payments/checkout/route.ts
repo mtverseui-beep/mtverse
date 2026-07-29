@@ -92,7 +92,14 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         )
       }
-    } else if (!['free-unlock', 'all-paid', 'ui-library'].includes(requestedPackage)) {
+    } else if (![
+      'free-unlock',
+      'all-paid',
+      'ui-library',
+      'mtadmin-nextjs',
+      'mtadmin-react',
+      'mtadmin-bundle',
+    ].includes(requestedPackage)) {
       return NextResponse.json(
         { error: 'Template checkout requires a template slug.' },
         { status: 400 }

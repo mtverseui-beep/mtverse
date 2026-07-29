@@ -138,15 +138,15 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         </section>
 
         <section className="pt-8">
-          <div className="ds-container max-w-3xl">
-            <figure className="relative aspect-[16/9] overflow-hidden rounded-lg border border-border bg-muted shadow-sm">
+          <div className="ds-container max-w-5xl">
+            <figure className="relative aspect-[1900/900] overflow-hidden rounded-lg border border-border bg-muted shadow-sm">
               <Image
                 src={post.coverImage}
                 alt={post.title}
                 fill
                 priority
-                sizes="(max-width: 768px) 100vw, 768px"
-                className="object-cover object-top"
+                sizes="(max-width: 1024px) 100vw, 1024px"
+                className="object-contain"
               />
             </figure>
           </div>
@@ -180,6 +180,18 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                     )}
                   </section>
                 ))}
+                {post.relatedLinks?.length ? (
+                  <aside className="mt-10 rounded-lg border border-border bg-muted/30 p-5">
+                    <h2 className="text-base font-bold text-foreground">Continue exploring</h2>
+                    <div className="mt-3 flex flex-col gap-2">
+                      {post.relatedLinks.map((item) => (
+                        <Link key={item.href} href={item.href} className="inline-flex w-fit items-center text-sm font-semibold text-primary hover:underline">
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </aside>
+                ) : null}
               </div>
             </Reveal>
 

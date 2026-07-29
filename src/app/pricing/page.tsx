@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Blocks, Check, Sparkles, Shield, Download, Eye, Infinity, PackageCheck } from 'lucide-react'
+import { ArrowRight, Blocks, Check, Sparkles, Download, Eye, Infinity, PackageCheck } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { SITE_URL } from '@/lib/site-url'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
 import { CtaBackground } from '@/components/design-system/backgrounds'
-import { AmexIcon, ApplePayIcon, GooglePayIcon, MastercardIcon, PayPalIcon, VisaIcon } from '@/components/payment/payment-icons'
 import { AllPaidBundleButton } from '@/components/payment/all-paid-bundle-button'
 import { FreeUnlockButton } from '@/components/payment/free-unlock-button'
+import { PaymentMethodsSection } from '@/components/payment/payment-methods-section'
 import { PricingFreeAccountCta } from '@/components/payment/pricing-free-account-cta'
 import { UiLibraryButton } from '@/components/payment/ui-library-button'
 import { getProductPackage } from '@/lib/packages'
@@ -105,15 +105,6 @@ export default async function PricingPage() {
     'Complete UI Library project access',
     'Commercial project use under the mtverse license',
     'Copy individual components without downloading a full template',
-  ]
-
-  const paymentMethods = [
-    { name: 'Visa', Icon: VisaIcon },
-    { name: 'Mastercard', Icon: MastercardIcon },
-    { name: 'American Express', Icon: AmexIcon },
-    { name: 'PayPal', Icon: PayPalIcon },
-    { name: 'Apple Pay', Icon: ApplePayIcon },
-    { name: 'Google Pay', Icon: GooglePayIcon },
   ]
 
   const faqs = [
@@ -286,24 +277,7 @@ export default async function PricingPage() {
           </div>
         </section>
 
-        {/* Payment methods */}
-        <section className="ds-section-sm ds-bg-section">
-          <div className="ds-container max-w-4xl text-center">
-            <Reveal>
-              <p className="text-sm font-medium text-muted-foreground mb-4">Accepted payment methods</p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
-                {paymentMethods.map((method) => {
-                  const Icon = method.Icon
-                  return <Icon key={method.name} className="h-8 w-auto opacity-70 transition-opacity hover:opacity-100" />
-                })}
-              </div>
-              <p className="mt-4 text-xs text-muted-foreground">
-                <Shield className="inline h-3.5 w-3.5 mr-1" />
-                Processed securely by <strong>Paddle</strong> &middot; PCI-DSS compliant
-              </p>
-            </Reveal>
-          </div>
-        </section>
+        <PaymentMethodsSection />
 
         {/* Benefits */}
         <section className="ds-section-sm">

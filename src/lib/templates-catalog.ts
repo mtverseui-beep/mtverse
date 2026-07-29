@@ -72,21 +72,24 @@ export type TemplateSortMode = 'featured' | 'trending' | 'new' | 'downloads' | '
 
 export function sortTemplates(templates: Template[], sort: TemplateSortMode): Template[] {
   const sorted = [...templates]
+  const flagshipFirst = (a: Template, b: Template) =>
+    Number(b.slug === 'mtadmin') - Number(a.slug === 'mtadmin')
+
   switch (sort) {
     case 'trending':
-      return sorted.sort((a, b) => Number(b.trending) - Number(a.trending) || b.salesCount - a.salesCount)
+      return sorted.sort((a, b) => flagshipFirst(a, b) || Number(b.trending) - Number(a.trending) || b.salesCount - a.salesCount)
     case 'new':
-      return sorted.sort((a, b) => Number(b.new) - Number(a.new) || new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime())
+      return sorted.sort((a, b) => flagshipFirst(a, b) || Number(b.new) - Number(a.new) || new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime())
     case 'downloads':
-      return sorted.sort((a, b) => b.salesCount - a.salesCount)
+      return sorted.sort((a, b) => flagshipFirst(a, b) || b.salesCount - a.salesCount)
     case 'price-low':
-      return sorted.sort((a, b) => a.price - b.price)
+      return sorted.sort((a, b) => flagshipFirst(a, b) || a.price - b.price)
     case 'price-high':
-      return sorted.sort((a, b) => b.price - a.price)
+      return sorted.sort((a, b) => flagshipFirst(a, b) || b.price - a.price)
     case 'rating':
-      return sorted.sort((a, b) => b.rating - a.rating)
+      return sorted.sort((a, b) => flagshipFirst(a, b) || b.rating - a.rating)
     case 'featured':
     default:
-      return sorted.sort((a, b) => Number(b.featured) - Number(a.featured) || b.salesCount - a.salesCount)
+      return sorted.sort((a, b) => flagshipFirst(a, b) || Number(b.featured) - Number(a.featured) || b.salesCount - a.salesCount)
   }
 }

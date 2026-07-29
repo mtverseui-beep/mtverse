@@ -1,3 +1,5 @@
+import { MTADMIN_BLOG_POSTS } from '@/lib/mtadmin-blog-posts'
+
 export type BlogPost = {
   slug: string
   title: string
@@ -13,9 +15,10 @@ export type BlogPost = {
     body: string[]
     bullets?: string[]
   }>
+  relatedLinks?: Array<{ label: string; href: string }>
 }
-
 export const BLOG_POSTS: BlogPost[] = [
+  ...MTADMIN_BLOG_POSTS,
   {
     slug: 'website-template-selection-guide',
     title: 'How to Choose the Right Website Template for Your Product',

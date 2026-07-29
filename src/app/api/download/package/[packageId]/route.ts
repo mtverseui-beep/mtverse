@@ -36,7 +36,15 @@ class BundleSourceError extends Error {
 }
 
 function canDownloadStaticPackage(record: Awaited<ReturnType<typeof getPlan>>, packageId: PackageId) {
-  if (!['next', 'pro', 'ooster-pro', 'ui-library'].includes(packageId)) return false
+  if (![
+    'next',
+    'pro',
+    'ooster-pro',
+    'ui-library',
+    'mtadmin-nextjs',
+    'mtadmin-react',
+    'mtadmin-bundle',
+  ].includes(packageId)) return false
   return hasPlanPackageAccess(record, packageId)
 }
 
