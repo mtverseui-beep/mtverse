@@ -23,6 +23,7 @@ export const metadata: Metadata = {
 const CATEGORY_COLORS: Record<string, string> = {
   'Template Guides': 'bg-cyan-50 text-cyan-800 dark:bg-cyan-950/40 dark:text-cyan-200',
   Engineering: 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200',
+  'Enterprise Dashboards': 'bg-violet-50 text-violet-800 dark:bg-violet-950/40 dark:text-violet-200',
 }
 
 function getCategoryColor(category: string) {

@@ -75,8 +75,10 @@ export type TemplateSortMode = 'featured' | 'trending' | 'new' | 'downloads' | '
 
 export function sortTemplates(templates: Template[], sort: TemplateSortMode): Template[] {
   const sorted = [...templates]
-  const flagshipFirst = (a: Template, b: Template) =>
-    Number(b.slug === 'mtadmin') - Number(a.slug === 'mtadmin')
+  const flagshipFirst = (a: Template, b: Template) => {
+    const priority = new Map([['mtadmin', 0], ['nimbus-pro', 1]])
+    return (priority.get(a.slug) ?? Number.MAX_SAFE_INTEGER) - (priority.get(b.slug) ?? Number.MAX_SAFE_INTEGER)
+  }
 
   switch (sort) {
     case 'trending':

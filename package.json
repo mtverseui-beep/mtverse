@@ -12,6 +12,7 @@
     "r2:migrate-packages": "node --env-file=.env scripts/migrate-r2-packages.mjs",
     "package:ui-library": "node scripts/build-ui-library-package.mjs",
     "r2:upload-ui-library": "node --env-file=.env scripts/upload-ui-library-package.mjs",
+    "r2:publish-enterprise-dashboards": "node --env-file=.env scripts/publish-enterprise-dashboards.mjs",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",

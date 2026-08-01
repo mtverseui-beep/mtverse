@@ -25,14 +25,24 @@ async function pipeline(commands) {
 const beforeResult = await pipeline([['GET', key]])
 const remote = beforeResult[0]?.result ? JSON.parse(beforeResult[0].result) : { kits: [] }
 const local = JSON.parse(await readFile(new URL('../data/dashboard-kits-store.json', import.meta.url), 'utf8'))
+const enterprise = JSON.parse(await readFile(new URL('../data/enterprise-dashboard-kits.json', import.meta.url), 'utf8'))
 const merged = new Map((remote.kits || []).map((kit) => [kit.slug, kit]))
 
 for (const kit of local.kits || []) {
   merged.set(kit.slug, kit)
 }
 
+for (const kit of enterprise.kits || []) {
+  merged.set(kit.slug, kit)
+}
+
+const enterpriseSlugs = new Set((enterprise.kits || []).map((kit) => kit.slug))
+const orderedKits = [
+  ...(enterprise.kits || []).map((kit) => merged.get(kit.slug)).filter(Boolean),
+  ...[...merged.values()].filter((kit) => !enterpriseSlugs.has(kit.slug)),
+]
 const payload = {
-  kits: [...merged.values()],
+  kits: orderedKits,
   meta: {
     source: 'local-merge-sync',
     updatedAt: new Date().toISOString(),
@@ -48,6 +58,6 @@ if (writeResult[0]?.result !== 'OK') {
 const afterResult = await pipeline([['GET', key]])
 const verified = JSON.parse(afterResult[0].result)
 console.log(`redis_before=${(remote.kits || []).length}`)
-console.log(`local_templates=${(local.kits || []).length}`)
+console.log(`local_templates=${orderedKits.length}`)
 console.log(`redis_after=${verified.kits.length}`)
 console.log(`redis_source=${verified.meta.source}`)

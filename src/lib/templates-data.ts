@@ -21,6 +21,42 @@ type TemplateMeta = {
 }
 
 const TEMPLATE_META: Record<string, TemplateMeta> = {
+  fleetops: {
+    category: 'dashboards', subcategory: 'Fleet Operations Command Center', components: 74, featured: true, trending: true, new: true,
+    highlights: [
+      { title: 'Operations command center', description: 'Live fleet status, dispatch priorities, route timing, incidents, warehouses, and critical shift alerts.', icon: 'Activity' },
+      { title: 'Map-driven workflow', description: 'Leaflet and OpenStreetMap vehicle context connected to advanced fleet and dispatch views.', icon: 'Map' },
+      { title: 'Enterprise data tools', description: 'Search, filters, sorting, pagination, bulk actions, column visibility, charts, and export patterns.', icon: 'Table2' },
+      { title: 'Secure source access', description: 'The clean Next.js source ZIP is available to the signed-in buyer after checkout.', icon: 'Package' },
+    ],
+  },
+  'meridian-health': {
+    category: 'dashboards', subcategory: 'Clinical Patient Management', components: 77, featured: true, trending: true, new: true,
+    highlights: [
+      { title: 'Shift-focused workflow', description: 'Patient census, risk, appointments, care tasks, and alerts organized around active clinical operations.', icon: 'Activity' },
+      { title: 'Patient detail workspace', description: 'Overview, vitals, medications, and visit timeline remain accessible in one coordinated panel.', icon: 'HeartPulse' },
+      { title: 'Care coordination', description: 'Patient roster, appointments, care team, reports, task inbox, and notification patterns.', icon: 'Users' },
+      { title: 'Secure source access', description: 'The clean Next.js source ZIP is available to the signed-in buyer after checkout.', icon: 'Package' },
+    ],
+  },
+  'meridian-terminal': {
+    category: 'dashboards', subcategory: 'Trading and Investment Terminal', components: 92, featured: true, trending: true, new: true,
+    highlights: [
+      { title: 'Multi-panel terminal', description: 'Ticker tape, watchlist, market chart, order book, quick order ticket, positions, and orders.', icon: 'ChartCandlestick' },
+      { title: 'Portfolio intelligence', description: 'Performance, allocation, alerts, order history, fills, and deterministic market simulation.', icon: 'ChartNoAxesCombined' },
+      { title: 'Desktop and mobile', description: 'Dense desktop trading workspace plus a purpose-built compact mobile shell.', icon: 'PanelsTopLeft' },
+      { title: 'Secure source access', description: 'The clean Next.js source ZIP is available to the signed-in buyer after checkout.', icon: 'Package' },
+    ],
+  },
+  'northstar-analytics': {
+    category: 'dashboards', subcategory: 'SaaS Revenue Analytics', components: 61, featured: true, trending: true, new: true,
+    highlights: [
+      { title: 'Revenue operations', description: 'MRR, churn, conversion, expansion, customer, plan, usage, invoice, and payment workflows.', icon: 'ChartNoAxesCombined' },
+      { title: 'Real application routes', description: 'Analytics, customers, billing, settings, authentication, support, and documentation pages.', icon: 'Route' },
+      { title: 'Production foundations', description: 'Strict TypeScript, route metadata, loading and error states, responsive shell, and self-hosted avatars.', icon: 'ShieldCheck' },
+      { title: 'Secure source access', description: 'The clean Next.js source ZIP is available to the signed-in buyer after checkout.', icon: 'Package' },
+    ],
+  },
   'helios-pro': {
     category: 'dashboards',
     subcategory: 'Admin Dashboard UI Kit',
@@ -284,8 +320,13 @@ function toMtadminTemplate(): Template {
 
 const MTADMIN_TEMPLATE = toMtadminTemplate()
 
-function withMtadminFirst(templates: Template[]) {
-  return [MTADMIN_TEMPLATE, ...templates.filter((template) => template.slug !== MTADMIN_TEMPLATE.slug)]
+function withFlagshipsFirst(templates: Template[]) {
+  const combined = [MTADMIN_TEMPLATE, ...templates.filter((template) => template.slug !== MTADMIN_TEMPLATE.slug)]
+  const priority = new Map([['mtadmin', 0], ['nimbus-pro', 1]])
+  return combined
+    .map((template, index) => ({ template, index }))
+    .sort((left, right) => (priority.get(left.template.slug) ?? Number.MAX_SAFE_INTEGER) - (priority.get(right.template.slug) ?? Number.MAX_SAFE_INTEGER) || left.index - right.index)
+    .map(({ template }) => template)
 }
 
 function applyActiveTemplateOffers(templates: Template[], settings: WeeklyOfferSettings) {
@@ -315,7 +356,7 @@ function applyActiveTemplateOffers(templates: Template[], settings: WeeklyOfferS
   })
 }
 
-export const TEMPLATES: Template[] = withMtadminFirst(dashboardKits.map(toTemplate))
+export const TEMPLATES: Template[] = withFlagshipsFirst(dashboardKits.map(toTemplate))
 
 export function getAllTemplates(): Template[] {
   return TEMPLATES
@@ -326,7 +367,7 @@ export async function getAllTemplatesFromStore(): Promise<Template[]> {
     getDashboardKits(),
     getPricingCtaSettings(),
   ])
-  return applyActiveTemplateOffers(withMtadminFirst(kits.filter((kit) => kit.status === 'available').map(toTemplate)), pricing.offer)
+  return applyActiveTemplateOffers(withFlagshipsFirst(kits.filter((kit) => kit.status === 'available').map(toTemplate)), pricing.offer)
 }
 
 export function getTemplateBySlug(slug: string): Template | null {

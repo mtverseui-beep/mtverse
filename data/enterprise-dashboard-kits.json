@@ -1,0 +1,500 @@
+{
+  "kits": [
+    {
+      "id": "dashboard-kit-fleetops",
+      "slug": "fleetops",
+      "title": "FleetOps Enterprise Fleet Management Dashboard Template",
+      "shortTitle": "FleetOps",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "subcategory": "Fleet Operations Command Center",
+      "summary": "Enterprise fleet operations dashboard for dispatch, live vehicle tracking, route planning, warehouses, driver performance, incidents, analytics, and shift-critical alerts.",
+      "description": "FleetOps is a production-oriented fleet management command center built for dispatchers, logistics managers, warehouse teams, and operations leaders. The Next.js source includes a dense KPI overview, OpenStreetMap vehicle tracking, advanced fleet tables, priority dispatch queues, route timelines, driver scorecards, warehouse operations, incident monitoring, analytics, notifications, messaging, administration, and system status workflows. Its responsive shell, keyboard command palette, light and dark themes, realistic deterministic data, and reusable operational components make it a strong foundation for transportation, delivery, field-service, and supply-chain products.",
+      "seoTitle": "FleetOps Next.js Fleet Management Dashboard Template",
+      "metaDescription": "FleetOps is a Next.js fleet management dashboard template with live maps, dispatch, routes, drivers, warehouses, incidents, analytics, tables, and dark mode.",
+      "priceUsd": 12,
+      "originalPriceUsd": 12,
+      "pricingTier": "normal",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js 16 App Router",
+      "previewPath": "/dashboard-kits/fleetops",
+      "packageFilename": "fleetops.zip",
+      "packageKey": "templates/dashboards/fleetops/fleetops-2026-08-01.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/fleetops/fleetops-2026-08-01.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/fleetops/fleetops-2026-08-01.png"
+      ],
+      "tags": [
+        "fleet management dashboard",
+        "logistics dashboard",
+        "dispatch software",
+        "vehicle tracking",
+        "route planning",
+        "warehouse operations",
+        "enterprise dashboard",
+        "Next.js template",
+        "Tailwind CSS",
+        "dark mode"
+      ],
+      "keywords": [
+        "fleet management dashboard template",
+        "Next.js logistics dashboard",
+        "fleet tracking admin template",
+        "dispatch dashboard UI",
+        "vehicle management software template",
+        "route planning dashboard",
+        "warehouse operations dashboard",
+        "transportation dashboard template",
+        "React fleet dashboard",
+        "enterprise operations dashboard"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "shadcn/ui",
+        "TanStack Table",
+        "Zustand",
+        "Apache ECharts",
+        "Leaflet",
+        "OpenStreetMap",
+        "Framer Motion",
+        "Prisma"
+      ],
+      "includedPages": [
+        "Operations dashboard",
+        "Live fleet table",
+        "Vehicle detail drawer",
+        "Fleet map",
+        "Dispatch queue",
+        "Route timeline",
+        "Warehouse operations",
+        "Driver leaderboard",
+        "Analytics",
+        "Notifications",
+        "Messages",
+        "Profile",
+        "Settings",
+        "Help center",
+        "System status",
+        "User management"
+      ],
+      "features": [
+        "Live OpenStreetMap fleet visualization with color-coded vehicle markers",
+        "Advanced fleet table with search, sorting, filters, pagination, selection, bulk actions, and column visibility",
+        "Priority dispatch workflow with assign, escalate, and cancel actions",
+        "Gantt-style route timeline and warehouse throughput monitoring",
+        "Driver safety, on-time delivery, fuel efficiency, and hours-of-service scorecards",
+        "Operations analytics with ECharts and theme-aware visualizations",
+        "Command palette with keyboard search across vehicles, drivers, and actions",
+        "Responsive collapsible navigation with light, dark, and system themes",
+        "Notification center, two-pane messaging, settings, system health, and user administration",
+        "Deterministic mock operational data separated from presentation components"
+      ],
+      "highlights": [
+        {
+          "label": "Operational views",
+          "value": "16"
+        },
+        {
+          "label": "Map engine",
+          "value": "Leaflet"
+        },
+        {
+          "label": "Data table",
+          "value": "Enterprise"
+        },
+        {
+          "label": "Themes",
+          "value": "Light + Dark"
+        }
+      ],
+      "useCases": [
+        "Fleet management SaaS",
+        "Last-mile delivery operations",
+        "Transportation control centers",
+        "Field-service dispatch",
+        "Warehouse and logistics platforms",
+        "Vehicle telematics products",
+        "Supply-chain administration"
+      ],
+      "updatedAt": "2026-08-01",
+      "isFree": false,
+      "livePreviewUrl": "https://mt-fleetops.vercel.app"
+    },
+    {
+      "id": "dashboard-kit-meridian-health",
+      "slug": "meridian-health",
+      "title": "Meridian Health Enterprise Clinical Dashboard Template",
+      "shortTitle": "Meridian Health",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "subcategory": "Clinical Patient Management",
+      "summary": "Enterprise healthcare dashboard for shift-focused patient management, care coordination, appointments, clinical reports, vitals, medications, tasks, and alerts.",
+      "description": "Meridian Health is a clinical operations dashboard designed around real hospital-shift workflows. It combines an active patient roster, search and filtering, patient detail panels, vitals, medications, visit timelines, appointments, care-team coordination, reports, tasks, alerts, notifications, profile, help, and deep settings inside a responsive Next.js application shell. Deterministic clinical demo data is kept separate from the interface so healthcare teams can replace it with approved APIs and server-enforced access controls while retaining the polished workflow foundation.",
+      "seoTitle": "Meridian Health Next.js Healthcare Dashboard Template",
+      "metaDescription": "Next.js healthcare dashboard template with patient rosters, clinical detail panels, vitals, medications, appointments, care teams, reports, tasks, and alerts.",
+      "priceUsd": 12,
+      "originalPriceUsd": 12,
+      "pricingTier": "normal",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js 16 App Router",
+      "previewPath": "/dashboard-kits/meridian-health",
+      "packageFilename": "meridian-health.zip",
+      "packageKey": "templates/dashboards/meridian-health/meridian-health-2026-08-01.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/meridian-health/meridian-health-2026-08-01.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/meridian-health/meridian-health-2026-08-01.png"
+      ],
+      "tags": [
+        "healthcare dashboard",
+        "patient management",
+        "clinical dashboard",
+        "hospital admin",
+        "care coordination",
+        "medical dashboard UI",
+        "enterprise dashboard",
+        "Next.js template",
+        "Tailwind CSS",
+        "dark mode"
+      ],
+      "keywords": [
+        "healthcare dashboard template",
+        "Next.js medical dashboard",
+        "patient management dashboard UI",
+        "hospital admin template",
+        "clinical workflow dashboard",
+        "care coordination software template",
+        "patient roster dashboard",
+        "healthcare SaaS dashboard",
+        "React healthcare dashboard",
+        "enterprise clinical dashboard"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "shadcn/ui",
+        "TanStack Table",
+        "TanStack Query",
+        "Zustand",
+        "Recharts",
+        "Framer Motion",
+        "Prisma"
+      ],
+      "includedPages": [
+        "Clinical dashboard",
+        "Patient roster",
+        "Patient overview panel",
+        "Vitals panel",
+        "Medication panel",
+        "Visit timeline",
+        "Appointment schedule",
+        "Care team",
+        "Clinical reports",
+        "Task inbox",
+        "Alerts and notifications",
+        "Profile",
+        "Help center",
+        "Settings"
+      ],
+      "features": [
+        "Shift-focused overview for patient census, workload, risks, appointments, and care tasks",
+        "Patient roster with search, clinical filters, density controls, table workflows, and CSV actions",
+        "Patient detail workspace with overview, vitals, medications, and longitudinal timeline tabs",
+        "Appointment scheduling and care-team coordination views",
+        "Clinical reporting surfaces with reusable charts and status patterns",
+        "Deterministic patient, provider, vital, medication, visit, task, and alert data",
+        "Responsive collapsible shell with persisted light and dark themes",
+        "Accessible labels, keyboard-friendly controls, notifications, and task inbox patterns",
+        "Clear mock-data boundary for integration with approved healthcare APIs",
+        "Settings, profile, help, and operational support screens"
+      ],
+      "highlights": [
+        {
+          "label": "Clinical views",
+          "value": "14"
+        },
+        {
+          "label": "Patient tabs",
+          "value": "4"
+        },
+        {
+          "label": "Workflow",
+          "value": "Shift focused"
+        },
+        {
+          "label": "Themes",
+          "value": "Light + Dark"
+        }
+      ],
+      "useCases": [
+        "Hospital operations dashboards",
+        "Patient management SaaS",
+        "Clinical care coordination",
+        "Outpatient workflow tools",
+        "Medical administration portals",
+        "Healthcare product prototypes",
+        "Provider operations software"
+      ],
+      "updatedAt": "2026-08-01",
+      "isFree": false,
+      "livePreviewUrl": "https://mt-meridian-health.vercel.app"
+    },
+    {
+      "id": "dashboard-kit-meridian-terminal",
+      "slug": "meridian-terminal",
+      "title": "Meridian Terminal Enterprise Trading Dashboard Template",
+      "shortTitle": "Meridian Terminal",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "subcategory": "Trading and Investment Terminal",
+      "summary": "Enterprise trading terminal dashboard with market watchlists, charting, order book, quick order entry, positions, portfolio analytics, alerts, history, and account settings.",
+      "description": "Meridian Terminal is a professional trading and investment dashboard built around a high-density desktop workspace. The source combines a ticker tape, watchlist, interactive chart panel, order book, quick order ticket, positions and orders, portfolio analytics, market alerts, transaction history, notifications, command search, profile, help, and nine account and workspace settings modules. A dedicated mobile shell, simulated market tick cycle, deterministic financial data, responsive tables, and theme-aware interface make it suitable for brokerage prototypes, fintech analytics, wealth platforms, and internal trading tools.",
+      "seoTitle": "Meridian Terminal Next.js Trading Dashboard Template",
+      "metaDescription": "Next.js trading dashboard template with watchlists, charts, order book, order ticket, positions, portfolio analytics, alerts, history, and mobile UI.",
+      "priceUsd": 12,
+      "originalPriceUsd": 12,
+      "pricingTier": "normal",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js 16 App Router",
+      "previewPath": "/dashboard-kits/meridian-terminal",
+      "packageFilename": "meridian-terminal.zip",
+      "packageKey": "templates/dashboards/meridian-terminal/meridian-terminal-2026-08-01.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/meridian-terminal/meridian-terminal-2026-08-01.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/meridian-terminal/meridian-terminal-2026-08-01.png"
+      ],
+      "tags": [
+        "trading dashboard",
+        "investment terminal",
+        "fintech dashboard",
+        "portfolio analytics",
+        "order book",
+        "stock market UI",
+        "enterprise dashboard",
+        "Next.js template",
+        "Tailwind CSS",
+        "dark mode"
+      ],
+      "keywords": [
+        "trading dashboard template",
+        "Next.js finance dashboard",
+        "investment terminal UI",
+        "stock market dashboard template",
+        "portfolio management dashboard",
+        "order book interface",
+        "fintech admin template",
+        "brokerage dashboard UI",
+        "React trading terminal",
+        "enterprise finance dashboard"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "shadcn/ui",
+        "Zustand",
+        "Recharts",
+        "Lightweight Charts",
+        "Framer Motion",
+        "Prisma"
+      ],
+      "includedPages": [
+        "Trading terminal",
+        "Watchlist",
+        "Market chart",
+        "Order book",
+        "Quick order ticket",
+        "Positions and open orders",
+        "Portfolio analytics",
+        "Orders",
+        "Alerts",
+        "Transaction history",
+        "Notifications",
+        "Profile",
+        "Help center",
+        "Account settings",
+        "API settings",
+        "Appearance settings",
+        "Billing settings",
+        "Notification settings",
+        "Profile settings",
+        "Security settings",
+        "Shortcut settings",
+        "Team settings"
+      ],
+      "features": [
+        "Multi-panel trading workspace with persistent icon rail, ticker tape, and responsive panels",
+        "Watchlist, chart, order book, and quick-order workflows in one command surface",
+        "Portfolio allocation, performance, positions, orders, fills, alerts, and history views",
+        "Simulated live market tick updates backed by deterministic store data",
+        "Keyboard command bar with Ctrl+K and Cmd+K access",
+        "Purpose-built mobile trading shell for narrow screens",
+        "Reusable data-table, price-cell, sparkline, empty-state, and field components",
+        "Nine account, security, API, team, notification, billing, appearance, profile, and shortcut settings modules",
+        "Theme-aware desktop interface with persisted preferences",
+        "Mock financial data layer designed for replacement with licensed market and brokerage APIs"
+      ],
+      "highlights": [
+        {
+          "label": "Workspace",
+          "value": "Multi panel"
+        },
+        {
+          "label": "Settings",
+          "value": "9 modules"
+        },
+        {
+          "label": "Market data",
+          "value": "Simulated live"
+        },
+        {
+          "label": "Mobile",
+          "value": "Dedicated shell"
+        }
+      ],
+      "useCases": [
+        "Trading platform prototypes",
+        "Investment analytics products",
+        "Brokerage dashboards",
+        "Wealth management portals",
+        "Fintech administration",
+        "Portfolio monitoring tools",
+        "Internal market operations"
+      ],
+      "updatedAt": "2026-08-01",
+      "isFree": false,
+      "livePreviewUrl": "https://mt-meridian-terminal.vercel.app"
+    },
+    {
+      "id": "dashboard-kit-northstar-analytics",
+      "slug": "northstar-analytics",
+      "title": "Northstar Analytics Enterprise SaaS Dashboard Template",
+      "shortTitle": "Northstar Analytics",
+      "status": "available",
+      "category": "dashboard-kits",
+      "categoryTitle": "Dashboard Kits",
+      "subcategory": "SaaS Revenue Analytics",
+      "summary": "Production-grade SaaS analytics dashboard for MRR, churn, customers, billing, usage, invoices, teams, API keys, notifications, support, and product documentation.",
+      "description": "Northstar Analytics is a production-grade SaaS administration template built with real Next.js routes and a focused revenue-operations information architecture. It includes MRR and churn KPIs, revenue analytics, acquisition funnels, customer management, plan and usage billing, invoices, payment methods, team roles, API keys, notification settings, authentication, documentation, and support workflows. Strict TypeScript, self-hosted deterministic avatars, responsive navigation, keyboard shortcuts, loading and error states, metadata, manifest support, and clearly separated mock data make the package a strong starting point for subscription products and B2B analytics platforms.",
+      "seoTitle": "Northstar Next.js SaaS Analytics Dashboard Template",
+      "metaDescription": "Next.js SaaS analytics dashboard template with MRR, churn, customers, billing, invoices, teams, API keys, auth, support, docs, and dark mode.",
+      "priceUsd": 12,
+      "originalPriceUsd": 12,
+      "pricingTier": "normal",
+      "framework": "nextjs",
+      "frameworkLabel": "Next.js 16 App Router",
+      "previewPath": "/dashboard-kits/northstar-analytics",
+      "packageFilename": "northstar-analytics.zip",
+      "packageKey": "templates/dashboards/northstar-analytics/northstar-analytics-2026-08-01.zip",
+      "coverImage": "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/northstar-analytics/northstar-analytics-2026-08-01.png",
+      "screenshots": [
+        "https://pub-59d1b450736b455084e9eebc2ed27f14.r2.dev/templates/dashboard-previews/northstar-analytics/northstar-analytics-2026-08-01.png"
+      ],
+      "tags": [
+        "SaaS analytics dashboard",
+        "MRR dashboard",
+        "subscription analytics",
+        "customer management",
+        "billing dashboard",
+        "revenue operations",
+        "enterprise dashboard",
+        "Next.js template",
+        "Tailwind CSS",
+        "dark mode"
+      ],
+      "keywords": [
+        "SaaS dashboard template",
+        "Next.js analytics dashboard",
+        "MRR dashboard UI",
+        "subscription analytics template",
+        "customer management dashboard",
+        "billing admin template",
+        "revenue analytics dashboard",
+        "B2B SaaS admin UI",
+        "React SaaS dashboard",
+        "enterprise analytics dashboard"
+      ],
+      "techStack": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript 5",
+        "Tailwind CSS 4",
+        "shadcn/ui",
+        "Recharts",
+        "Framer Motion",
+        "Prisma",
+        "App Router",
+        "Self-hosted SVG avatars"
+      ],
+      "includedPages": [
+        "SaaS overview",
+        "Revenue analytics",
+        "Customer management",
+        "Billing and plans",
+        "Usage meters",
+        "Payment methods",
+        "Invoices",
+        "Profile settings",
+        "Team and roles",
+        "API keys",
+        "Notification settings",
+        "Sign in",
+        "Support center",
+        "Documentation",
+        "Loading state",
+        "Error boundary",
+        "Not found page"
+      ],
+      "features": [
+        "MRR, subscriber, churn, conversion, revenue, and expansion analytics",
+        "Range-aware revenue charts, MRR movement, signup funnel, and plan distribution",
+        "Searchable and filterable customer table with selection, bulk actions, and detail drawer",
+        "Billing plans, usage meters, payment-card brand detection, payment methods, and invoices",
+        "Real Next.js App Router pages with route-specific metadata",
+        "Team roles, API key rotation patterns, profile, and notification settings",
+        "Authentication, support ticket, and searchable documentation experiences",
+        "Deterministic self-hosted illustrated avatars with no external dependency",
+        "Strict TypeScript, error boundary, loading skeleton, 404, manifest, and SEO foundations",
+        "Clear mock-data integration points for database, authentication, payments, email, and monitoring"
+      ],
+      "highlights": [
+        {
+          "label": "App routes",
+          "value": "14"
+        },
+        {
+          "label": "Customers",
+          "value": "247 seeded"
+        },
+        {
+          "label": "TypeScript",
+          "value": "Strict"
+        },
+        {
+          "label": "SEO",
+          "value": "Route metadata"
+        }
+      ],
+      "useCases": [
+        "Subscription SaaS products",
+        "Revenue operations dashboards",
+        "Customer success platforms",
+        "B2B analytics tools",
+        "Billing administration",
+        "Startup admin portals",
+        "Product analytics workspaces"
+      ],
+      "updatedAt": "2026-08-01",
+      "isFree": false,
+      "livePreviewUrl": "https://northstar-analytics-seven.vercel.app"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import dashboardStore from '../../data/dashboard-kits-store.json'
+import enterpriseDashboardStore from '../../data/enterprise-dashboard-kits.json'
 import { SEO_LANGUAGES } from '@/lib/seo-languages'
 
 export type DashboardKitStatus = 'available' | 'draft' | 'coming-soon'
@@ -60,7 +61,13 @@ function withDashboardKitDefaults(kit: DashboardKitSeed): DashboardKit {
   }
 }
 
-export const dashboardKits: DashboardKit[] = (dashboardStore.kits as DashboardKitSeed[]).map(withDashboardKitDefaults)
+const enterpriseDashboardSeeds = enterpriseDashboardStore.kits as DashboardKitSeed[]
+const enterpriseDashboardSlugs = new Set(enterpriseDashboardSeeds.map((kit) => kit.slug))
+const dashboardKitSeeds = [
+  ...enterpriseDashboardSeeds,
+  ...(dashboardStore.kits as DashboardKitSeed[]).filter((kit) => !enterpriseDashboardSlugs.has(kit.slug)),
+]
+export const dashboardKits: DashboardKit[] = dashboardKitSeeds.map(withDashboardKitDefaults)
 
 export function getPreviewUrl(kit: Pick<DashboardKit, 'previewPath' | 'livePreviewUrl'>) {
   if (kit.livePreviewUrl?.trim()) return kit.livePreviewUrl.trim()

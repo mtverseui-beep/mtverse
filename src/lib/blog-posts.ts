@@ -1,4 +1,5 @@
 import { MTADMIN_BLOG_POSTS } from '@/lib/mtadmin-blog-posts'
+import { ENTERPRISE_DASHBOARD_BLOG_POSTS } from '@/lib/enterprise-dashboard-blog-posts'
 
 export type BlogPost = {
   slug: string
@@ -18,6 +19,7 @@ export type BlogPost = {
   relatedLinks?: Array<{ label: string; href: string }>
 }
 export const BLOG_POSTS: BlogPost[] = [
+  ...ENTERPRISE_DASHBOARD_BLOG_POSTS,
   ...MTADMIN_BLOG_POSTS,
   {
     slug: 'website-template-selection-guide',
