@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Download, Eye, ShoppingCart } from 'lucide-react'
 import type { Template } from '@/lib/templates-catalog'
 import { cn } from '@/lib/utils'
+import { hasWeekendTemplateOffer } from '@/lib/weekend-sale'
 
 type Props = {
   template: Template
@@ -22,6 +23,7 @@ export function TemplateCard({ template, priority = false }: Props) {
   const frameworkLabel = getFrameworkShort(template)
   const showProBadge = !template.isFree && template.pricingTier === 'pro'
   const isMtadmin = template.slug === 'mtadmin'
+  const weekendOffer = hasWeekendTemplateOffer(template)
 
   return (
     <Link href={`/templates/${template.slug}`} prefetch={false} className="group block h-full no-underline">
@@ -66,7 +68,7 @@ export function TemplateCard({ template, priority = false }: Props) {
               {template.title}
             </h3>
             <div className="flex shrink-0 items-center gap-2">
-              {showProBadge ? (
+              {showProBadge && !weekendOffer ? (
                 <span className="rounded-full border border-amber-300/80 bg-gradient-to-r from-amber-100 via-orange-50 to-rose-100 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.18em] text-amber-900 shadow-sm dark:border-amber-500/30 dark:from-amber-500/20 dark:via-orange-500/10 dark:to-rose-500/20 dark:text-amber-200">
                   Pro
                 </span>
@@ -76,7 +78,13 @@ export function TemplateCard({ template, priority = false }: Props) {
                   Free
                 </span>
               ) : (
-                <span className="text-sm font-bold text-foreground">${template.price}</span>
+                <span className="flex items-center gap-1.5">
+                  {weekendOffer ? (
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.12em] text-amber-800 dark:bg-amber-500/15 dark:text-amber-200">Weekend</span>
+                  ) : null}
+                  {weekendOffer ? <span className="text-[11px] text-muted-foreground line-through">${template.originalPriceUsd}</span> : null}
+                  <span className="text-sm font-black text-foreground">${template.price}</span>
+                </span>
               )}
             </div>
           </div>

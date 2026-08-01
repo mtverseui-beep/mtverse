@@ -15,6 +15,9 @@ const PADDLE_PRICE_ENV: Record<PackageId, string> = {
   'mtadmin-nextjs': 'PADDLE_MTADMIN_INDIVIDUAL_PRICE_ID',
   'mtadmin-react': 'PADDLE_MTADMIN_INDIVIDUAL_PRICE_ID',
   'mtadmin-bundle': 'PADDLE_MTADMIN_BUNDLE_PRICE_ID',
+  'weekend-template': 'PADDLE_WEEKEND_TEMPLATE_PRICE_ID',
+  'weekend-mtadmin-nextjs': 'PADDLE_WEEKEND_TEMPLATE_PRICE_ID',
+  'weekend-mtadmin-react': 'PADDLE_WEEKEND_TEMPLATE_PRICE_ID',
 }
 
 const PADDLE_PRICE_ENV_ALIASES: Partial<Record<PackageId, string[]>> = {

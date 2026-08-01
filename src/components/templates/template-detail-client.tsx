@@ -19,6 +19,8 @@ import type { Template } from '@/lib/templates-catalog'
 import { useAuth } from '@/hooks/use-auth'
 import { openPaddleCheckout } from '@/lib/paddle-client'
 import type { PaddleCheckoutPayload } from '@/lib/paddle-types'
+import { WeekendSaleCountdown } from '@/components/promotions/weekend-sale-countdown'
+import { hasWeekendTemplateOffer } from '@/lib/weekend-sale'
 
 type Props = {
   template: Template
@@ -43,6 +45,7 @@ export function TemplateDetailClient({ template }: Props) {
   const freeDownloadsUsed = Math.max(0, 5 - freeRemaining)
   const showFreeDownloadStatus = template.isFree && authenticated && !freeUnlocked && (freeDownloadsUsed > 0 || alreadyDownloaded || freeLimitReached)
   const hasDiscount = typeof template.originalPriceUsd === 'number' && template.originalPriceUsd > template.price
+  const weekendOffer = hasWeekendTemplateOffer(template)
 
   useEffect(() => {
     let cancelled = false
@@ -261,6 +264,11 @@ export function TemplateDetailClient({ template }: Props) {
           </>
         )}
       </div>
+      {weekendOffer ? (
+        <p className="mb-2 text-xs font-bold uppercase tracking-[0.12em] text-amber-700 dark:text-amber-300">
+          Massive weekend offer - individual template
+        </p>
+      ) : null}
       <p className="text-xs text-muted-foreground mb-3">
         {template.isFree ? 'Free download - sign in required' : 'USD - one-time payment - lifetime access'}
       </p>
@@ -340,6 +348,8 @@ export function TemplateDetailClient({ template }: Props) {
         </button>
       )}
 
+
+      {weekendOffer && !canDownload ? <WeekendSaleCountdown className="mb-3" /> : null}
       {/* Free limit reached info */}
       {freeLimitReached && template.isFree && (
         <p className="text-xs text-center text-muted-foreground mb-3">

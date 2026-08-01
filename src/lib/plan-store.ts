@@ -92,6 +92,8 @@ export function hasPlanPackageAccess(record: PlanRecord | null | undefined, pack
     (['next', 'pro', 'ooster-pro', 'all-paid'].includes(packageId) || packageId.startsWith('mtadmin-'))
   ) return true
   if (purchases.has('mtadmin-bundle') && packageId.startsWith('mtadmin-')) return true
+  if (packageId === 'mtadmin-nextjs' && purchases.has('weekend-mtadmin-nextjs')) return true
+  if (packageId === 'mtadmin-react' && purchases.has('weekend-mtadmin-react')) return true
   if (record.packageId === packageId) return true
   return Boolean(record.purchases?.includes(packageId))
 }

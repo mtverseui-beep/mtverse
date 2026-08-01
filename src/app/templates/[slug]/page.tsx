@@ -31,6 +31,7 @@ import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animati
 import { SectionBackground, CtaBackground } from '@/components/design-system/backgrounds'
 import { MtadminTemplateDetail } from '@/components/mtadmin/mtadmin-template-detail'
 import { getMtadminProduct } from '@/lib/mtadmin-product'
+import { hasWeekendTemplateOffer } from '@/lib/weekend-sale'
 
 type Params = Promise<{ slug: string }>
 
@@ -257,6 +258,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
     priceCurrency: template.currency,
     availability: 'https://schema.org/InStock',
     itemCondition: 'https://schema.org/NewCondition',
+    ...(hasWeekendTemplateOffer(template) ? { priceValidUntil: '2026-08-02' } : {}),
     seller: { '@type': 'Organization', name: 'mtverse', url: SITE_URL },
   }
   const jsonLd = {

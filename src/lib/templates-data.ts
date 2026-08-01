@@ -4,6 +4,7 @@ import { TEMPLATE_CATEGORIES } from '@/lib/templates-catalog'
 import type { Template, TemplateCategory } from '@/lib/templates-catalog'
 import { slugify } from '@/lib/utils'
 import { getMtadminProduct } from '@/lib/mtadmin-product'
+import { WEEKEND_SALE, applyWeekendTemplateOffer, isWeekendSaleActive } from '@/lib/weekend-sale'
 
 export { TEMPLATE_CATEGORIES, sortTemplates } from '@/lib/templates-catalog'
 export type { Template, TemplateCategory, TemplateReview, TemplateSortMode } from '@/lib/templates-catalog'
@@ -286,19 +287,35 @@ function withMtadminFirst(templates: Template[]) {
   return [MTADMIN_TEMPLATE, ...templates.filter((template) => template.slug !== MTADMIN_TEMPLATE.slug)]
 }
 
+function applyActiveTemplateOffers(templates: Template[]) {
+  const saleActive = isWeekendSaleActive()
+
+  return templates.map((template) => {
+    if (template.slug === MTADMIN_TEMPLATE.slug && saleActive) {
+      return {
+        ...template,
+        price: WEEKEND_SALE.priceUsd,
+        originalPriceUsd: getMtadminProduct().individualPriceUsd,
+      }
+    }
+
+    return applyWeekendTemplateOffer(template)
+  })
+}
+
 export const TEMPLATES: Template[] = withMtadminFirst(dashboardKits.map(toTemplate))
 
 export function getAllTemplates(): Template[] {
-  return TEMPLATES
+  return applyActiveTemplateOffers(TEMPLATES)
 }
 
 export async function getAllTemplatesFromStore(): Promise<Template[]> {
   const kits = await getDashboardKits()
-  return withMtadminFirst(kits.filter((kit) => kit.status === 'available').map(toTemplate))
+  return applyActiveTemplateOffers(withMtadminFirst(kits.filter((kit) => kit.status === 'available').map(toTemplate)))
 }
 
 export function getTemplateBySlug(slug: string): Template | null {
-  return TEMPLATES.find((t) => t.slug === slug) ?? null
+  return getAllTemplates().find((t) => t.slug === slug) ?? null
 }
 
 export async function getTemplateBySlugFromStore(slug: string): Promise<Template | null> {
@@ -307,12 +324,13 @@ export async function getTemplateBySlugFromStore(slug: string): Promise<Template
 }
 
 export function getTemplatesByCategory(category: string): Template[] {
-  if (!category || category === 'all') return TEMPLATES
-  return TEMPLATES.filter((t) => t.category === category)
+  const templates = getAllTemplates()
+  if (!category || category === 'all') return templates
+  return templates.filter((t) => t.category === category)
 }
 
 export function getFeaturedTemplates(limit = 4): Template[] {
-  return TEMPLATES.filter((t) => t.featured).slice(0, limit)
+  return getAllTemplates().filter((t) => t.featured).slice(0, limit)
 }
 
 export async function getFeaturedTemplatesFromStore(limit = 4): Promise<Template[]> {
@@ -321,13 +339,14 @@ export async function getFeaturedTemplatesFromStore(limit = 4): Promise<Template
 }
 
 export function getTrendingTemplates(limit = 4): Template[] {
-  return TEMPLATES.filter((t) => t.trending).slice(0, limit)
+  return getAllTemplates().filter((t) => t.trending).slice(0, limit)
 }
 
 export function getRelatedTemplates(slug: string, limit = 4): Template[] {
-  const current = getTemplateBySlug(slug)
-  if (!current) return TEMPLATES.slice(0, limit)
-  return TEMPLATES.filter((t) => t.slug !== slug && t.category === current.category).slice(0, limit)
+  const templates = getAllTemplates()
+  const current = templates.find((template) => template.slug === slug)
+  if (!current) return templates.slice(0, limit)
+  return templates.filter((t) => t.slug !== slug && t.category === current.category).slice(0, limit)
 }
 
 export async function getRelatedTemplatesFromStore(slug: string, limit = 4): Promise<Template[]> {
@@ -370,7 +389,7 @@ export function getTemplateStatsFor(templates: Template[]) {
 }
 
 export function getTemplateStats() {
-  return getTemplateStatsFor(TEMPLATES)
+  return getTemplateStatsFor(getAllTemplates())
 }
 
 export async function getTemplateStatsFromStore() {
@@ -378,9 +397,10 @@ export async function getTemplateStatsFromStore() {
 }
 
 export function searchTemplates(query: string): Template[] {
+  const templates = getAllTemplates()
   const q = query.toLowerCase().trim()
-  if (!q) return TEMPLATES
-  return TEMPLATES.filter(
+  if (!q) return templates
+  return templates.filter(
     (t) =>
       t.title.toLowerCase().includes(q) ||
       t.summary.toLowerCase().includes(q) ||

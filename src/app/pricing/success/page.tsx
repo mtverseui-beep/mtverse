@@ -8,6 +8,8 @@ import { isMockPaymentAllowed, verifyPaymentFromSearchParams } from '@/lib/payme
 import { getVerifiedPaddleTransaction } from '@/lib/paddle-transaction'
 import { hasTemplatePurchase, recordTemplatePurchase, setFreeUnlocked } from '@/lib/template-social-store'
 import { getCurrentCustomer } from '@/lib/auth/current-customer'
+import { getStandardEntitlementPackageId } from '@/lib/weekend-sale'
+import { isPackageId } from '@/lib/packages'
 
 export const dynamic = 'force-dynamic'
 
@@ -167,6 +169,9 @@ export default async function PricingSuccessPage({ searchParams }: { searchParam
   const isAllPaidBundle = result.packageId === 'all-paid'
   const isUiLibrary = result.packageId === 'ui-library'
   const uiLibraryUrl = process.env.NEXT_PUBLIC_UI_LIBRARY_URL?.trim() || 'https://ui.mtverse.dev'
+  const downloadPackageId = isPackageId(result.packageId)
+    ? getStandardEntitlementPackageId(result.packageId)
+    : 'next'
   const templateAccessReady = Boolean(
     !kitSlug ||
     isHtmlBundle ||
@@ -178,7 +183,7 @@ export default async function PricingSuccessPage({ searchParams }: { searchParam
   const paymentConfirmedWaitingForAccess = Boolean(result.valid && result.packageId && kitSlug && !templateAccessReady)
   const packageDownload = isHtmlBundle || isAllPaidBundle || isUiLibrary || !kitSlug
   const downloadHref = packageDownload
-    ? `/api/download/package/${encodeURIComponent(result.packageId || 'next')}`
+    ? `/api/download/package/${encodeURIComponent(downloadPackageId)}`
     : `/api/download/template/${encodeURIComponent(kitSlug)}`
   const successCopy = isHtmlBundle
     ? 'Your all HTML templates bundle access is active. The server will prepare one ZIP with every HTML template package.'

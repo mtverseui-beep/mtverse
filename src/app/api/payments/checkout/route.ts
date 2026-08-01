@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentCustomerEmail } from '@/lib/auth/current-customer'
 import { createCheckout } from '@/lib/payments'
-import { getTemplateCheckoutPackageId } from '@/lib/template-checkout'
+import { getStandardTemplateCheckoutPackageId, getTemplateCheckoutPackageId } from '@/lib/template-checkout'
 import { getTemplateBySlugFromStore } from '@/lib/templates-data'
 import { isPackageId } from '@/lib/packages'
 import { resolveSiteUrlFromRequestHeaders, SITE_URL } from '@/lib/site-url'
+import { getWeekendMtadminPackageId, isWeekendSaleActive, isWeekendSalePackageId } from '@/lib/weekend-sale'
 
 function normalizeCheckoutOrigin(value: string) {
   const url = new URL(value)
@@ -67,6 +68,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const saleActive = isWeekendSaleActive()
+    if (isWeekendSalePackageId(requestedPackage) && !saleActive) {
+      return NextResponse.json(
+        { error: 'The weekend template offer has ended. Refresh to see current pricing.', code: 'offer_ended' },
+        { status: 409 }
+      )
+    }
+
+    let checkoutPackage = requestedPackage
+
     const kitSlug = typeof body.kit === 'string' ? body.kit : typeof body.kitSlug === 'string' ? body.kitSlug : undefined
 
     if (kitSlug) {
@@ -78,6 +89,13 @@ export async function POST(request: NextRequest) {
         )
       }
 
+
+      if (template.slug === 'mtadmin') {
+        return NextResponse.json(
+          { error: 'Choose a framework edition from the mtadmin pricing page.' },
+          { status: 400 }
+        )
+      }
       if (template.isFree) {
         return NextResponse.json(
           { error: 'This template is free and does not require checkout.' },
@@ -85,13 +103,15 @@ export async function POST(request: NextRequest) {
         )
       }
 
+      const standardPackage = getStandardTemplateCheckoutPackageId(template)
       const expectedPackage = getTemplateCheckoutPackageId(template)
-      if (requestedPackage !== expectedPackage) {
+      if (requestedPackage !== expectedPackage && requestedPackage !== standardPackage) {
         return NextResponse.json(
           { error: 'Checkout package does not match this template.' },
           { status: 400 }
         )
       }
+      checkoutPackage = expectedPackage
     } else if (![
       'free-unlock',
       'all-paid',
@@ -99,6 +119,8 @@ export async function POST(request: NextRequest) {
       'mtadmin-nextjs',
       'mtadmin-react',
       'mtadmin-bundle',
+      'weekend-mtadmin-nextjs',
+      'weekend-mtadmin-react',
     ].includes(requestedPackage)) {
       return NextResponse.json(
         { error: 'Template checkout requires a template slug.' },
@@ -106,8 +128,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const checkout = await createCheckout({ packageId: requestedPackage, email, kitSlug })
+    if (!kitSlug && saleActive) {
+      checkoutPackage = getWeekendMtadminPackageId(checkoutPackage)
+    }
 
+
+    const checkout = await createCheckout({ packageId: checkoutPackage, email, kitSlug })
     return NextResponse.json(checkout)
   } catch (error) {
     console.error('[Payments Checkout] Error:', error)

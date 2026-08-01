@@ -10,6 +10,9 @@ export const PACKAGE_IDS = [
   'mtadmin-nextjs',
   'mtadmin-react',
   'mtadmin-bundle',
+  'weekend-template',
+  'weekend-mtadmin-nextjs',
+  'weekend-mtadmin-react',
 ] as const
 
 export type PackageId = (typeof PACKAGE_IDS)[number]
@@ -93,6 +96,30 @@ export const PRODUCT_PACKAGES: Record<PackageId, ProductPackage> = {
     name: 'mtadmin All Frameworks Bundle',
     shortName: 'mtadmin Bundle',
     amountUsd: 30,
+    currency: 'USD',
+    accessPlan: 'pro',
+  },
+  'weekend-template': {
+    id: 'weekend-template',
+    name: 'mtverse Weekend Template Offer',
+    shortName: 'Weekend Template',
+    amountUsd: 5,
+    currency: 'USD',
+    accessPlan: 'pro',
+  },
+  'weekend-mtadmin-nextjs': {
+    id: 'weekend-mtadmin-nextjs',
+    name: 'mtadmin Next.js Weekend Offer',
+    shortName: 'mtadmin Next.js',
+    amountUsd: 5,
+    currency: 'USD',
+    accessPlan: 'pro',
+  },
+  'weekend-mtadmin-react': {
+    id: 'weekend-mtadmin-react',
+    name: 'mtadmin React Weekend Offer',
+    shortName: 'mtadmin React',
+    amountUsd: 5,
     currency: 'USD',
     accessPlan: 'pro',
   },
