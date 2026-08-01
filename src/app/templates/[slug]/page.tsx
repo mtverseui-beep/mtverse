@@ -258,7 +258,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
     priceCurrency: template.currency,
     availability: 'https://schema.org/InStock',
     itemCondition: 'https://schema.org/NewCondition',
-    ...(hasWeekendTemplateOffer(template) ? { priceValidUntil: '2026-08-02' } : {}),
+    ...(hasWeekendTemplateOffer(template) && template.activeOffer ? { priceValidUntil: template.activeOffer.endAt.slice(0, 10) } : {}),
     seller: { '@type': 'Organization', name: 'mtverse', url: SITE_URL },
   }
   const jsonLd = {

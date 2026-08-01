@@ -80,7 +80,7 @@ export function TemplateCard({ template, priority = false }: Props) {
               ) : (
                 <span className="flex items-center gap-1.5">
                   {weekendOffer ? (
-                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.12em] text-amber-800 dark:bg-amber-500/15 dark:text-amber-200">Weekend</span>
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.12em] text-amber-800 dark:bg-amber-500/15 dark:text-amber-200">{template.activeOffer?.label || 'Offer'}</span>
                   ) : null}
                   {weekendOffer ? <span className="text-[11px] text-muted-foreground line-through">${template.originalPriceUsd}</span> : null}
                   <span className="text-sm font-black text-foreground">${template.price}</span>

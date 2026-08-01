@@ -8,15 +8,18 @@ import { toast } from 'sonner'
 import { useAuth } from '@/hooks/use-auth'
 import { openPaddleCheckout } from '@/lib/paddle-client'
 import type { PaddleCheckoutPayload } from '@/lib/paddle-types'
+import type { PackageId } from '@/lib/packages'
 
 type AllPaidBundleButtonProps = {
   label?: string
+  packageId?: PackageId
   signedOutLabel?: string
   className?: string
 }
 
 export function AllPaidBundleButton({
   label = 'Get all paid templates for $149',
+  packageId = 'all-paid',
   signedOutLabel = 'Sign in to get bundle',
   className = 'ds-btn ds-btn-primary w-full',
 }: AllPaidBundleButtonProps) {
@@ -36,7 +39,7 @@ export function AllPaidBundleButton({
       const response = await fetch('/api/payments/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ packageId: 'all-paid' }),
+        body: JSON.stringify({ packageId }),
       })
       const checkout = (await response.json()) as {
         url?: string
@@ -60,7 +63,7 @@ export function AllPaidBundleButton({
 
       if (checkout.paddle) {
         const successUrl = new URL('/pricing/success', window.location.origin)
-        successUrl.searchParams.set('package', 'all-paid')
+        successUrl.searchParams.set('package', packageId)
         successUrl.searchParams.set('provider', 'paddle')
         await openPaddleCheckout(checkout.paddle, successUrl.toString())
         return

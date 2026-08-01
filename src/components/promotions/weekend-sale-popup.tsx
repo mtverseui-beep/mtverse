@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { ArrowRight, BadgeDollarSign, X } from 'lucide-react'
 import { WeekendSaleCountdown } from '@/components/promotions/weekend-sale-countdown'
 import { WEEKEND_SALE, isWeekendSaleActive } from '@/lib/weekend-sale'
+import { DEFAULT_WEEKLY_OFFER_SETTINGS, getWeeklyOfferRuntime } from '@/lib/weekly-offer'
 import { cn } from '@/lib/utils'
 
 const DISMISSED_KEY = `${WEEKEND_SALE.id}:popup-dismissed`
@@ -82,7 +83,7 @@ export function WeekendSalePopup() {
           Pick any individual paid template for one flat weekend price. Bundles are excluded.
         </p>
 
-        <WeekendSaleCountdown className="mt-4" compact />
+        <WeekendSaleCountdown className="mt-4" compact runtime={getWeeklyOfferRuntime(DEFAULT_WEEKLY_OFFER_SETTINGS)} />
 
         <a
           href="/templates#templates-grid"

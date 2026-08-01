@@ -7,12 +7,12 @@ import { MtadminLivePreviewMenu, MtadminPreviewExperience } from '@/components/m
 import { WeekendSaleCountdown } from '@/components/promotions/weekend-sale-countdown'
 import type { MtadminProduct } from '@/lib/mtadmin-product'
 import type { Template } from '@/lib/templates-catalog'
-import { WEEKEND_SALE, isWeekendSaleActive } from '@/lib/weekend-sale'
 
 type Props = { product: MtadminProduct; template: Template; related: Template[]; jsonLd: object }
 
-export function MtadminTemplateDetail({ product, related, jsonLd }: Props) {
-  const weekendOffer = isWeekendSaleActive()
+export function MtadminTemplateDetail({ product, template, related, jsonLd }: Props) {
+  const offer = template.activeOffer
+  const weekendOffer = Boolean(offer)
   const previewUrls = {
     nextjs: process.env.NEXT_PUBLIC_MTADMIN_NEXTJS_PREVIEW_URL?.trim() || 'https://mt-nextjs.mtverse.dev',
     react: process.env.NEXT_PUBLIC_MTADMIN_REACT_PREVIEW_URL?.trim() || 'https://mt-react.mtverse.dev',
@@ -59,9 +59,9 @@ export function MtadminTemplateDetail({ product, related, jsonLd }: Props) {
             <div className="mt-5 grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_340px]">
               <MtadminPreviewExperience images={product.previewImages} />
               <aside className="self-start rounded-xl border border-border bg-card p-5 shadow-lg shadow-black/[0.04]">
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-700">{weekendOffer ? 'Massive Weekend Offer' : 'All Frameworks Bundle'}</p>
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-700">{offer ? offer.label : 'All Frameworks Bundle'}</p>
                 <div className="mt-3 flex items-end gap-2">
-                  <span className="text-4xl font-bold tracking-tight text-foreground">${weekendOffer ? WEEKEND_SALE.priceUsd : product.bundlePriceUsd}</span>
+                  <span className="text-4xl font-bold tracking-tight text-foreground">${weekendOffer ? template.price : product.bundlePriceUsd}</span>
                   {weekendOffer ? <span className="pb-1 text-sm text-muted-foreground line-through">${product.individualPriceUsd}</span> : null}
                   <span className="pb-1 text-sm text-muted-foreground">one-time</span>
                 </div>
@@ -69,7 +69,7 @@ export function MtadminTemplateDetail({ product, related, jsonLd }: Props) {
                   {weekendOffer ? 'Choose the complete Next.js or React edition for $5. The all-frameworks bundle remains $30.' : 'Next.js and React now. HTML, Vue.js, Angular, and Laravel are added to your account as they ship.'}
                 </p>
                 <Link href="/mtadmin/pricing" className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-bold text-primary-foreground shadow-md shadow-primary/20 transition-colors hover:bg-primary/90">{weekendOffer ? 'Choose a $5 edition' : 'Buy mtadmin'} <ArrowRight className="h-4 w-4" /></Link>
-                {weekendOffer ? <WeekendSaleCountdown className="mt-3" /> : null}
+                {offer ? <WeekendSaleCountdown className="mt-3" runtime={offer} /> : null}
                 <MtadminLivePreviewMenu editions={product.editions} previewUrls={previewUrls} />
                 <div className="mt-5 border-t border-border pt-4">
                   {['Lifetime access and product updates', 'Commercial project usage', 'Private account download delivery', 'Future framework editions in bundle'].map((item) => <div key={item} className="flex items-start gap-2 py-1.5 text-sm text-foreground"><Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" /><span>{item}</span></div>)}
@@ -144,7 +144,7 @@ export function MtadminTemplateDetail({ product, related, jsonLd }: Props) {
 
         {related.length ? <section className="ds-section-sm"><div className="ds-container"><div className="mb-6 flex items-end justify-between gap-4"><div><span className="ds-eyebrow">More templates</span><h2 className="mt-2 text-2xl font-bold tracking-tight text-foreground">Explore other admin systems</h2></div><Link href="/template-categories/dashboards" className="hidden text-sm font-semibold text-primary sm:inline-flex">View dashboards</Link></div><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{related.map((item) => <TemplateCard key={item.id} template={item} />)}</div></div></section> : null}
 
-        <section className="border-t border-border bg-zinc-950 text-white"><div className="ds-container flex flex-col gap-6 py-12 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-300">{weekendOffer ? 'Weekend offer ends Sunday' : 'Ship your admin product faster'}</p><h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">Get mtadmin from ${weekendOffer ? WEEKEND_SALE.priceUsd : product.individualPriceUsd}</h2><p className="mt-2 text-sm text-zinc-400">Compare the individual editions and all-frameworks bundle.</p></div><Link href="/mtadmin/pricing" className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-5 text-sm font-bold text-zinc-950 transition-colors hover:bg-zinc-100">View mtadmin pricing <ArrowRight className="h-4 w-4" /></Link></div></section>
+        <section className="border-t border-border bg-zinc-950 text-white"><div className="ds-container flex flex-col gap-6 py-12 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-300">{offer ? offer.label : 'Ship your admin product faster'}</p><h2 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">Get mtadmin from ${weekendOffer ? template.price : product.individualPriceUsd}</h2><p className="mt-2 text-sm text-zinc-400">Compare the individual editions and all-frameworks bundle.</p></div><Link href="/mtadmin/pricing" className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-5 text-sm font-bold text-zinc-950 transition-colors hover:bg-zinc-100">View mtadmin pricing <ArrowRight className="h-4 w-4" /></Link></div></section>
       </main>
     </PublicLayout>
   )

@@ -1,11 +1,11 @@
 import type { PackageId } from '@/lib/packages'
-import { isWeekendSaleActive } from '@/lib/weekend-sale'
 
 export type TemplateCheckoutInput = {
   slug: string
   isFree?: boolean
   pricingTier?: string | null
   price?: number | null
+  activeOffer?: unknown
 }
 
 export function getStandardTemplateCheckoutPackageId(template: TemplateCheckoutInput): PackageId {
@@ -17,6 +17,6 @@ export function getStandardTemplateCheckoutPackageId(template: TemplateCheckoutI
 }
 
 export function getTemplateCheckoutPackageId(template: TemplateCheckoutInput): PackageId {
-  if (!template.isFree && isWeekendSaleActive()) return 'weekend-template'
+  if (!template.isFree && template.activeOffer) return 'weekend-template'
   return getStandardTemplateCheckoutPackageId(template)
 }

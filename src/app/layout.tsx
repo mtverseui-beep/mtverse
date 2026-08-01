@@ -12,7 +12,7 @@ import NavigationProgress from '@/components/providers/NavigationProgress'
 import AppInsights from '@/components/providers/AppInsights'
 import { AuthProvider } from '@/hooks/use-auth'
 import { generateHreflangMap } from '@/lib/seo-languages'
-import { WeekendSalePopup } from '@/components/promotions/weekend-sale-popup'
+import { WeeklyOfferPopup } from '@/components/promotions/weekly-offer-popup'
 import { SITE_URL } from '@/lib/site-url'
 import { getGoogleAdsenseClient, isGoogleAdsenseEnabled } from '@/lib/adsense'
 
@@ -137,7 +137,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <AuthProvider>
             {children}
             <Suspense fallback={null}>
-              <WeekendSalePopup />
+              <WeeklyOfferPopup />
             </Suspense>
             <Suspense fallback={null}>
               <NavigationProgress />

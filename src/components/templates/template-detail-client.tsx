@@ -266,7 +266,7 @@ export function TemplateDetailClient({ template }: Props) {
       </div>
       {weekendOffer ? (
         <p className="mb-2 text-xs font-bold uppercase tracking-[0.12em] text-amber-700 dark:text-amber-300">
-          Massive weekend offer - individual template
+          {template.activeOffer?.label || 'Limited-time offer'} - individual template
         </p>
       ) : null}
       <p className="text-xs text-muted-foreground mb-3">
@@ -349,7 +349,7 @@ export function TemplateDetailClient({ template }: Props) {
       )}
 
 
-      {weekendOffer && !canDownload ? <WeekendSaleCountdown className="mb-3" /> : null}
+      {weekendOffer && !canDownload && template.activeOffer ? <WeekendSaleCountdown className="mb-3" runtime={template.activeOffer} /> : null}
       {/* Free limit reached info */}
       {freeLimitReached && template.isFree && (
         <p className="text-xs text-center text-muted-foreground mb-3">

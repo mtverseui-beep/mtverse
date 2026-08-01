@@ -13,6 +13,8 @@ export const PACKAGE_IDS = [
   'weekend-template',
   'weekend-mtadmin-nextjs',
   'weekend-mtadmin-react',
+  'offer-ui-library',
+  'offer-all-paid',
 ] as const
 
 export type PackageId = (typeof PACKAGE_IDS)[number]
@@ -123,8 +125,24 @@ export const PRODUCT_PACKAGES: Record<PackageId, ProductPackage> = {
     currency: 'USD',
     accessPlan: 'pro',
   },
-}
 
+  'offer-ui-library': {
+    id: 'offer-ui-library',
+    name: 'mtverse UI Library Weekly Offer',
+    shortName: 'UI Library Offer',
+    amountUsd: 5,
+    currency: 'USD',
+    accessPlan: 'pro',
+  },
+  'offer-all-paid': {
+    id: 'offer-all-paid',
+    name: 'All Paid Templates Weekly Offer',
+    shortName: 'All Templates Offer',
+    amountUsd: 50,
+    currency: 'USD',
+    accessPlan: 'pro',
+  },
+}
 export function isPackageId(value: unknown): value is PackageId {
   return typeof value === 'string' && PACKAGE_IDS.includes(value as PackageId)
 }

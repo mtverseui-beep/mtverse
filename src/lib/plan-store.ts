@@ -79,8 +79,8 @@ function mergeTransactionIds(existing: PlanRecord | undefined, incomingTransacti
 function resolvePackageId(existing: PlanRecord | undefined, incomingPackageId: string | undefined) {
   const existingPackageId = normalizePackageId(existing?.packageId)
   const incoming = normalizePackageId(incomingPackageId)
-  if (existingPackageId === 'all-paid') return existingPackageId
-  if (incoming === 'all-paid') return incoming
+  if (existingPackageId === 'all-paid' || existingPackageId === 'offer-all-paid') return existingPackageId
+  if (incoming === 'all-paid' || incoming === 'offer-all-paid') return incoming
   return incoming || existingPackageId
 }
 
@@ -88,12 +88,14 @@ export function hasPlanPackageAccess(record: PlanRecord | null | undefined, pack
   if (!record || record.status === 'revoked') return false
   const purchases = new Set([record.packageId, ...(record.purchases || [])].filter(Boolean))
   if (
-    purchases.has('all-paid') &&
+    (purchases.has('all-paid') || purchases.has('offer-all-paid')) &&
     (['next', 'pro', 'ooster-pro', 'all-paid'].includes(packageId) || packageId.startsWith('mtadmin-'))
   ) return true
   if (purchases.has('mtadmin-bundle') && packageId.startsWith('mtadmin-')) return true
   if (packageId === 'mtadmin-nextjs' && purchases.has('weekend-mtadmin-nextjs')) return true
   if (packageId === 'mtadmin-react' && purchases.has('weekend-mtadmin-react')) return true
+  if (packageId === 'ui-library' && purchases.has('offer-ui-library')) return true
+  if (packageId === 'all-paid' && purchases.has('offer-all-paid')) return true
   if (record.packageId === packageId) return true
   return Boolean(record.purchases?.includes(packageId))
 }

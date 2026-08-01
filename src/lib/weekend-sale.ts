@@ -16,12 +16,15 @@ export const WEEKEND_SALE_PACKAGE_IDS = [
   'weekend-template',
   'weekend-mtadmin-nextjs',
   'weekend-mtadmin-react',
+  'offer-ui-library',
+  'offer-all-paid',
 ] as const satisfies readonly PackageId[]
 
 type PriceableTemplate = {
   isFree?: boolean
   price: number
   originalPriceUsd?: number
+  activeOffer?: unknown
 }
 
 function toTimestamp(value: number | Date) {
@@ -68,7 +71,7 @@ export function applyWeekendTemplateOffer<T extends PriceableTemplate>(
 export function hasWeekendTemplateOffer(template: PriceableTemplate) {
   return Boolean(
     !template.isFree &&
-    template.price === WEEKEND_SALE.priceUsd &&
+    template.activeOffer &&
     typeof template.originalPriceUsd === 'number' &&
     template.originalPriceUsd > template.price
   )
@@ -87,5 +90,7 @@ export function getWeekendMtadminPackageId(packageId: PackageId): PackageId {
 export function getStandardEntitlementPackageId(packageId: PackageId): PackageId {
   if (packageId === 'weekend-mtadmin-nextjs') return 'mtadmin-nextjs'
   if (packageId === 'weekend-mtadmin-react') return 'mtadmin-react'
+  if (packageId === 'offer-ui-library') return 'ui-library'
+  if (packageId === 'offer-all-paid') return 'all-paid'
   return packageId
 }

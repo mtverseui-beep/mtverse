@@ -4,6 +4,8 @@ import { MtadminPricingClient } from '@/components/mtadmin/mtadmin-pricing-clien
 import { getMtadminProduct } from '@/lib/mtadmin-product'
 import { SITE_URL } from '@/lib/site-url'
 
+import { getPricingCtaSettings } from '@/lib/pricing-settings-store'
+import { getWeeklyOfferRuntime } from '@/lib/weekly-offer'
 const product = getMtadminProduct()
 
 export const metadata: Metadata = {
@@ -26,7 +28,9 @@ export const metadata: Metadata = {
   },
 }
 
-export default function MtadminPricingPage() {
+export default async function MtadminPricingPage() {
+  const pricing = await getPricingCtaSettings()
+  const offerRuntime = getWeeklyOfferRuntime(pricing.offer)
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -37,7 +41,7 @@ export default function MtadminPricingPage() {
     brand: { '@type': 'Brand', name: 'mtverse' },
     offers: {
       '@type': 'AggregateOffer',
-      lowPrice: String(product.individualPriceUsd),
+      lowPrice: String(offerRuntime.active && pricing.offer.mtadminEditionsEnabled ? pricing.offer.individualTemplatePriceUsd : product.individualPriceUsd),
       highPrice: String(product.bundlePriceUsd),
       priceCurrency: product.currency,
       offerCount: '3',
@@ -48,7 +52,7 @@ export default function MtadminPricingPage() {
 
   return (
     <PublicLayout schemaMarkup={schema}>
-      <MtadminPricingClient product={product} />
+      <MtadminPricingClient product={product} offerSettings={pricing.offer} />
     </PublicLayout>
   )
 }

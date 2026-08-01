@@ -8,14 +8,17 @@ import { toast } from 'sonner'
 import { useAuth } from '@/hooks/use-auth'
 import { openPaddleCheckout } from '@/lib/paddle-client'
 import type { PaddleCheckoutPayload } from '@/lib/paddle-types'
+import type { PackageId } from '@/lib/packages'
 
 type UiLibraryButtonProps = {
   label?: string
+  packageId?: PackageId
   className?: string
 }
 
 export function UiLibraryButton({
   label = 'Unlock the UI Library for $25',
+  packageId = 'ui-library',
   className = 'ds-btn ds-btn-primary w-full',
 }: UiLibraryButtonProps) {
   const { authenticated, loading: authLoading } = useAuth()
@@ -34,7 +37,7 @@ export function UiLibraryButton({
       const response = await fetch('/api/payments/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ packageId: 'ui-library' }),
+        body: JSON.stringify({ packageId }),
       })
       const checkout = (await response.json()) as {
         url?: string
@@ -58,7 +61,7 @@ export function UiLibraryButton({
 
       if (checkout.paddle) {
         const successUrl = new URL('/pricing/success', window.location.origin)
-        successUrl.searchParams.set('package', 'ui-library')
+        successUrl.searchParams.set('package', packageId)
         successUrl.searchParams.set('provider', 'paddle')
         await openPaddleCheckout(checkout.paddle, successUrl.toString())
         return

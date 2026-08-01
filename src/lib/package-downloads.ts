@@ -13,6 +13,8 @@ export const PACKAGE_DOWNLOAD_FILENAMES: Record<PackageId, string> = {
   'weekend-template': 'mtverse-weekend-template.zip',
   'weekend-mtadmin-nextjs': 'mtadmin-nextjs.zip',
   'weekend-mtadmin-react': 'mtadmin-react.zip',
+  'offer-ui-library': 'mtverse-ui-library-source.zip',
+  'offer-all-paid': 'mtverse-all-paid-templates.zip',
   'mtadmin-nextjs': 'mtadmin-nextjs.zip',
   'mtadmin-react': 'mtadmin-react.zip',
   'mtadmin-bundle': 'mtadmin-all-frameworks-bundle.zip',

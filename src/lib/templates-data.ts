@@ -4,7 +4,8 @@ import { TEMPLATE_CATEGORIES } from '@/lib/templates-catalog'
 import type { Template, TemplateCategory } from '@/lib/templates-catalog'
 import { slugify } from '@/lib/utils'
 import { getMtadminProduct } from '@/lib/mtadmin-product'
-import { WEEKEND_SALE, applyWeekendTemplateOffer, isWeekendSaleActive } from '@/lib/weekend-sale'
+import { getPricingCtaSettings } from '@/lib/pricing-settings-store'
+import { getWeeklyOfferRuntime, type WeeklyOfferSettings } from '@/lib/weekly-offer'
 
 export { TEMPLATE_CATEGORIES, sortTemplates } from '@/lib/templates-catalog'
 export type { Template, TemplateCategory, TemplateReview, TemplateSortMode } from '@/lib/templates-catalog'
@@ -287,31 +288,45 @@ function withMtadminFirst(templates: Template[]) {
   return [MTADMIN_TEMPLATE, ...templates.filter((template) => template.slug !== MTADMIN_TEMPLATE.slug)]
 }
 
-function applyActiveTemplateOffers(templates: Template[]) {
-  const saleActive = isWeekendSaleActive()
+function applyActiveTemplateOffers(templates: Template[], settings: WeeklyOfferSettings) {
+  const runtime = getWeeklyOfferRuntime(settings)
+  if (!runtime.active) return templates
 
   return templates.map((template) => {
-    if (template.slug === MTADMIN_TEMPLATE.slug && saleActive) {
+    if (template.isFree) return template
+
+    if (template.slug === MTADMIN_TEMPLATE.slug) {
+      if (!settings.mtadminEditionsEnabled) return template
       return {
         ...template,
-        price: WEEKEND_SALE.priceUsd,
+        price: settings.individualTemplatePriceUsd,
         originalPriceUsd: getMtadminProduct().individualPriceUsd,
+        activeOffer: runtime,
       }
     }
 
-    return applyWeekendTemplateOffer(template)
+    if (!settings.individualTemplatesEnabled || template.price <= settings.individualTemplatePriceUsd) return template
+    return {
+      ...template,
+      originalPriceUsd: template.price,
+      price: settings.individualTemplatePriceUsd,
+      activeOffer: runtime,
+    }
   })
 }
 
 export const TEMPLATES: Template[] = withMtadminFirst(dashboardKits.map(toTemplate))
 
 export function getAllTemplates(): Template[] {
-  return applyActiveTemplateOffers(TEMPLATES)
+  return TEMPLATES
 }
 
 export async function getAllTemplatesFromStore(): Promise<Template[]> {
-  const kits = await getDashboardKits()
-  return applyActiveTemplateOffers(withMtadminFirst(kits.filter((kit) => kit.status === 'available').map(toTemplate)))
+  const [kits, pricing] = await Promise.all([
+    getDashboardKits(),
+    getPricingCtaSettings(),
+  ])
+  return applyActiveTemplateOffers(withMtadminFirst(kits.filter((kit) => kit.status === 'available').map(toTemplate)), pricing.offer)
 }
 
 export function getTemplateBySlug(slug: string): Template | null {

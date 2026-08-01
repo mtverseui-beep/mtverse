@@ -5,7 +5,9 @@ import { getStandardTemplateCheckoutPackageId, getTemplateCheckoutPackageId } fr
 import { getTemplateBySlugFromStore } from '@/lib/templates-data'
 import { isPackageId } from '@/lib/packages'
 import { resolveSiteUrlFromRequestHeaders, SITE_URL } from '@/lib/site-url'
-import { getWeekendMtadminPackageId, isWeekendSaleActive, isWeekendSalePackageId } from '@/lib/weekend-sale'
+import { getWeekendMtadminPackageId, isWeekendSalePackageId } from '@/lib/weekend-sale'
+import { getPricingCtaSettings } from '@/lib/pricing-settings-store'
+import { getWeeklyOfferRuntime } from '@/lib/weekly-offer'
 
 function normalizeCheckoutOrigin(value: string) {
   const url = new URL(value)
@@ -68,10 +70,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const saleActive = isWeekendSaleActive()
-    if (isWeekendSalePackageId(requestedPackage) && !saleActive) {
+    const pricing = await getPricingCtaSettings()
+    const offerRuntime = getWeeklyOfferRuntime(pricing.offer)
+    const requestedOfferEnabled = requestedPackage === 'weekend-template'
+      ? pricing.offer.individualTemplatesEnabled
+      : requestedPackage === 'weekend-mtadmin-nextjs' || requestedPackage === 'weekend-mtadmin-react'
+        ? pricing.offer.mtadminEditionsEnabled
+        : requestedPackage === 'offer-ui-library'
+          ? pricing.offer.uiLibraryEnabled
+          : requestedPackage === 'offer-all-paid'
+            ? pricing.offer.allPaidBundleEnabled
+            : true
+    if (isWeekendSalePackageId(requestedPackage) && (!offerRuntime.active || !requestedOfferEnabled)) {
       return NextResponse.json(
-        { error: 'The weekend template offer has ended. Refresh to see current pricing.', code: 'offer_ended' },
+        { error: 'This offer is not active. Refresh to see current pricing.', code: 'offer_ended' },
         { status: 409 }
       )
     }
@@ -121,6 +133,8 @@ export async function POST(request: NextRequest) {
       'mtadmin-bundle',
       'weekend-mtadmin-nextjs',
       'weekend-mtadmin-react',
+      'offer-ui-library',
+      'offer-all-paid',
     ].includes(requestedPackage)) {
       return NextResponse.json(
         { error: 'Template checkout requires a template slug.' },
@@ -128,8 +142,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!kitSlug && saleActive) {
-      checkoutPackage = getWeekendMtadminPackageId(checkoutPackage)
+    if (!kitSlug && offerRuntime.active) {
+      if (pricing.offer.mtadminEditionsEnabled) checkoutPackage = getWeekendMtadminPackageId(checkoutPackage)
+      if (pricing.offer.uiLibraryEnabled && checkoutPackage === 'ui-library') checkoutPackage = 'offer-ui-library'
+      if (pricing.offer.allPaidBundleEnabled && checkoutPackage === 'all-paid') checkoutPackage = 'offer-all-paid'
     }
 
 

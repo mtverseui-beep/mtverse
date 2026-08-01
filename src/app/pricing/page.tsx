@@ -14,6 +14,8 @@ import { getProductPackage } from '@/lib/packages'
 import { getAllTemplatesFromStore } from '@/lib/templates-data'
 import { getPricingCtaSettings } from '@/lib/pricing-settings-store'
 import { TemplateFaqList } from '@/components/content/template-faq-list'
+import { WeekendSaleCountdown } from '@/components/promotions/weekend-sale-countdown'
+import { getWeeklyOfferRuntime } from '@/lib/weekly-offer'
 
 export const metadata: Metadata = {
   title: 'Template Pricing, Paid & HTML Bundles',
@@ -62,7 +64,11 @@ export default async function PricingPage() {
   const hasFreeTemplates = templates.some((t) => t.isFree)
   const htmlTemplateCount = templates.filter((t) => t.category === 'html').length
   const paidTemplates = templates.filter((t) => !t.isFree && Number(t.price || 0) > 0)
-  const bundlePrice = 149
+  const offerRuntime = getWeeklyOfferRuntime(pricingCta.offer)
+  const bundleOfferActive = offerRuntime.active && pricingCta.offer.allPaidBundleEnabled
+  const uiLibraryOfferActive = offerRuntime.active && pricingCta.offer.uiLibraryEnabled
+  const bundlePrice = bundleOfferActive ? pricingCta.offer.allPaidBundlePriceUsd : 149
+  const uiLibraryPrice = uiLibraryOfferActive ? pricingCta.offer.uiLibraryPriceUsd : 25
   const bundleRetailTotal = paidTemplates.reduce((total, template) => total + Number(template.price || 0), 0)
   const bundleSavings = Math.max(0, bundleRetailTotal - bundlePrice)
   const uiLibraryPackage = getProductPackage('ui-library')
@@ -79,7 +85,7 @@ export default async function PricingPage() {
     offers: {
       '@type': 'AggregateOffer',
       lowPrice: '5',
-      highPrice: '149',
+      highPrice: String(Math.max(bundlePrice, uiLibraryPrice)),
       priceCurrency: 'USD',
       offerCount: '4',
       availability: 'https://schema.org/InStock',
@@ -176,7 +182,7 @@ export default async function PricingPage() {
               <Reveal delay={0.06}>
                 <div className="relative flex h-full flex-col rounded-lg border-2 border-foreground bg-card p-6 shadow-md">
                   <span className="absolute right-4 top-4 rounded-md bg-foreground px-2 py-1 text-[10px] font-bold uppercase text-background">
-                    {pricingCta.badge}
+                    {bundleOfferActive ? offerRuntime.label : pricingCta.badge}
                   </span>
                   <div className="mb-6 lg:min-h-[184px]">
                     <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-foreground text-background">
@@ -185,6 +191,7 @@ export default async function PricingPage() {
                     <h3 className="text-lg font-black leading-tight">All paid templates</h3>
                     <div className="mt-2 flex items-end gap-2">
                       <span className="text-3xl font-black">${bundlePrice}</span>
+                      {bundleOfferActive ? <span className="pb-1 text-sm font-semibold text-muted-foreground line-through">$149</span> : null}
                       <span className="pb-1 text-xs font-semibold text-muted-foreground">one-time</span>
                     </div>
                     <p className="mt-2 text-sm leading-6 text-muted-foreground">
@@ -193,7 +200,8 @@ export default async function PricingPage() {
 
                   </div>
                   <div className="border-t border-border pb-5 pt-4">
-                    <AllPaidBundleButton label={pricingCta.buttonLabel} />
+                    <AllPaidBundleButton packageId={bundleOfferActive ? 'offer-all-paid' : 'all-paid'} label={bundleOfferActive ? `Get all templates - $${bundlePrice}` : pricingCta.buttonLabel} />
+                    {bundleOfferActive ? <WeekendSaleCountdown className="mt-3" compact runtime={offerRuntime} /> : null}
                   </div>
                   <ul className="space-y-3">
                     {bundleSavings > 0 && (
@@ -220,7 +228,8 @@ export default async function PricingPage() {
                     </div>
                     <h3 className="text-lg font-black">UI component library</h3>
                     <div className="mt-2 flex items-end gap-2">
-                      <span className="text-3xl font-black">${uiLibraryPackage.amountUsd}</span>
+                      <span className="text-3xl font-black">${uiLibraryPrice}</span>
+                      {uiLibraryOfferActive ? <span className="pb-1 text-sm font-semibold text-muted-foreground line-through">${uiLibraryPackage.amountUsd}</span> : null}
                       <span className="pb-1 text-xs font-semibold text-muted-foreground">lifetime</span>
                     </div>
                     <p className="mt-2 text-sm leading-6 text-muted-foreground">
@@ -228,7 +237,8 @@ export default async function PricingPage() {
                     </p>
                   </div>
                   <div className="border-t border-border pb-5 pt-4">
-                    <UiLibraryButton />
+                    <UiLibraryButton packageId={uiLibraryOfferActive ? 'offer-ui-library' : 'ui-library'} label={uiLibraryOfferActive ? `Unlock UI Library - $${uiLibraryPrice}` : undefined} />
+                    {uiLibraryOfferActive ? <WeekendSaleCountdown className="mt-3" compact runtime={offerRuntime} /> : null}
                   </div>
                   <ul className="space-y-3">
                     {uiLibraryFeatures.slice(0, 5).map((feature) => (

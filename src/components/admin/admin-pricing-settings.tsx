@@ -6,6 +6,7 @@ import { CheckCircle2, Copy, Loader2, Mail, Save, Sparkles, XCircle } from 'luci
 
 import type { PricingCtaSettings } from '@/lib/pricing-settings-store'
 import { cn } from '@/lib/utils'
+import { getWeeklyOfferRuntime } from '@/lib/weekly-offer'
 
 type EmailTemplatePreview = {
   subject: string
@@ -41,6 +42,18 @@ function TextArea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return <textarea {...props} className={cn('ds-input min-h-28 resize-y py-2 leading-6', props.className)} />
 }
 
+function Toggle({ label, description, checked, onChange }: { label: string; description: string; checked: boolean; onChange: (checked: boolean) => void }) {
+  return (
+    <label className="flex items-start justify-between gap-4 rounded-xl border border-border bg-background px-4 py-3">
+      <span>
+        <span className="block text-sm font-bold text-foreground">{label}</span>
+        <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">{description}</span>
+      </span>
+      <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} className="mt-1 h-5 w-5 shrink-0 accent-primary" />
+    </label>
+  )
+}
+
 function CodeBlock({ title, value }: { title: string; value: string }) {
   const [copied, setCopied] = useState(false)
 
@@ -69,9 +82,14 @@ export function AdminPricingSettings({ initialSettings, emailTemplate }: Props) 
   const [settings, setSettings] = useState(initialSettings)
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState<StatusMessage>(null)
+  const offerRuntime = getWeeklyOfferRuntime(settings.offer)
 
   function update<K extends keyof PricingCtaSettings>(key: K, value: PricingCtaSettings[K]) {
     setSettings((current) => ({ ...current, [key]: value }))
+  }
+
+  function updateOffer<K extends keyof PricingCtaSettings['offer']>(key: K, value: PricingCtaSettings['offer'][K]) {
+    setSettings((current) => ({ ...current, offer: { ...current.offer, [key]: value } }))
   }
 
   async function save() {
@@ -86,7 +104,7 @@ export function AdminPricingSettings({ initialSettings, emailTemplate }: Props) 
       const data = (await response.json()) as { success?: boolean; error?: string; settings?: PricingCtaSettings }
       if (!response.ok || !data.success || !data.settings) throw new Error(data.error || 'Pricing CTA save failed')
       setSettings(data.settings)
-      setStatus({ type: 'success', message: 'Pricing CTA and email copy updated.' })
+      setStatus({ type: 'success', message: 'Offer schedule, pricing controls, and campaign copy updated.' })
       router.refresh()
     } catch (error) {
       setStatus({ type: 'error', message: error instanceof Error ? error.message : 'Pricing CTA save failed' })
@@ -103,8 +121,8 @@ export function AdminPricingSettings({ initialSettings, emailTemplate }: Props) 
             <Sparkles className="h-5 w-5" />
           </div>
           <div>
-            <h2 className="text-xl font-black">Pricing CTA</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Controls the $149 all-paid bundle card and email offer copy.</p>
+            <h2 className="text-xl font-black">Offer management</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Control recurring offer phases, product pricing, popup content, and bundle campaign copy.</p>
           </div>
         </div>
 
@@ -114,6 +132,40 @@ export function AdminPricingSettings({ initialSettings, emailTemplate }: Props) 
             <span>{status.message}</span>
           </div>
         ) : null}
+
+        <section className="mb-6 rounded-2xl border-2 border-primary/20 bg-primary/[0.025] p-4 sm:p-5">
+          <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+            <div><h3 className="text-base font-black">Recurring weekly offer</h3><p className="mt-1 text-xs leading-5 text-muted-foreground">Monday-Friday and weekend phases run in IST. Turn both phases off to restore every standard price.</p></div>
+            <span className={cn('rounded-full px-2.5 py-1 text-[10px] font-black uppercase', offerRuntime.active ? 'bg-emerald-100 text-emerald-700' : 'bg-zinc-200 text-zinc-700')}>{offerRuntime.active ? `${offerRuntime.label} live` : 'Standard pricing'}</span>
+          </div>
+          <div className="grid gap-3">
+            <Toggle label="Master offer" description="Emergency control for the complete promotion." checked={settings.offer.masterEnabled} onChange={(value) => updateOffer('masterEnabled', value)} />
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Toggle label="Monday-Friday offer" description="Runs Monday 12 AM to Saturday 12 AM IST." checked={settings.offer.weekdayEnabled} onChange={(value) => updateOffer('weekdayEnabled', value)} />
+              <Toggle label="Weekend offer" description="Runs Saturday 12 AM to Monday 12 AM IST." checked={settings.offer.weekendEnabled} onChange={(value) => updateOffer('weekendEnabled', value)} />
+            </div>
+            <Toggle label="Site-wide popup" description="Shown on all pages except preview routes while the current phase is active." checked={settings.offer.popupEnabled} onChange={(value) => updateOffer('popupEnabled', value)} />
+          </div>
+          <div className="mt-5">
+            <h4 className="mb-3 text-xs font-black uppercase tracking-[0.12em] text-muted-foreground">Included products</h4>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Toggle label="Paid templates - $5 each" description="Each checkout unlocks only the selected template." checked={settings.offer.individualTemplatesEnabled} onChange={(value) => updateOffer('individualTemplatesEnabled', value)} />
+              <Toggle label="mtadmin editions - $5 each" description="Next.js and React individual editions only." checked={settings.offer.mtadminEditionsEnabled} onChange={(value) => updateOffer('mtadminEditionsEnabled', value)} />
+              <Toggle label="UI Library - $5" description="Falls back to the standard $25 price when disabled." checked={settings.offer.uiLibraryEnabled} onChange={(value) => updateOffer('uiLibraryEnabled', value)} />
+              <Toggle label="All templates bundle - $50" description="Falls back to the standard $149 price when disabled." checked={settings.offer.allPaidBundleEnabled} onChange={(value) => updateOffer('allPaidBundleEnabled', value)} />
+            </div>
+          </div>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <Field label="Weekday label"><TextInput value={settings.offer.weekdayLabel} onChange={(event) => updateOffer('weekdayLabel', event.target.value)} /></Field>
+            <Field label="Weekend label"><TextInput value={settings.offer.weekendLabel} onChange={(event) => updateOffer('weekendLabel', event.target.value)} /></Field>
+          </div>
+          <div className="mt-4 grid gap-4">
+            <Field label="Popup description"><TextArea value={settings.offer.popupDescription} onChange={(event) => updateOffer('popupDescription', event.target.value)} /></Field>
+            <Field label="Popup button label"><TextInput value={settings.offer.popupButtonLabel} onChange={(event) => updateOffer('popupButtonLabel', event.target.value)} /></Field>
+          </div>
+        </section>
+
+        <div className="mb-6 h-px bg-border" />
 
         <div className="grid gap-4">
           <div className="grid gap-4 sm:grid-cols-2">
@@ -137,7 +189,7 @@ export function AdminPricingSettings({ initialSettings, emailTemplate }: Props) 
         <div className="mt-6 flex justify-end">
           <button type="button" onClick={save} disabled={saving} className="ds-btn ds-btn-primary">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-            {saving ? 'Saving...' : 'Save pricing CTA'}
+            {saving ? 'Publishing...' : 'Publish offer settings'}
           </button>
         </div>
       </section>

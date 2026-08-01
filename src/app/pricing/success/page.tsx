@@ -166,8 +166,8 @@ export default async function PricingSuccessPage({ searchParams }: { searchParam
   const result = await verifySuccess(params, customer.email)
   const kitSlug = params.get('kit')
   const isHtmlBundle = result.packageId === 'free-unlock'
-  const isAllPaidBundle = result.packageId === 'all-paid'
-  const isUiLibrary = result.packageId === 'ui-library'
+  const isAllPaidBundle = result.packageId === 'all-paid' || result.packageId === 'offer-all-paid'
+  const isUiLibrary = result.packageId === 'ui-library' || result.packageId === 'offer-ui-library'
   const uiLibraryUrl = process.env.NEXT_PUBLIC_UI_LIBRARY_URL?.trim() || 'https://ui.mtverse.dev'
   const downloadPackageId = isPackageId(result.packageId)
     ? getStandardEntitlementPackageId(result.packageId)

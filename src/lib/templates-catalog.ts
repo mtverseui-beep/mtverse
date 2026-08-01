@@ -1,3 +1,5 @@
+import type { WeeklyOfferRuntime } from '@/lib/weekly-offer'
+
 export type TemplateCategory = {
   id: string
   label: string
@@ -24,6 +26,7 @@ export type Template = {
   slug: string
   title: string
   summary: string
+  activeOffer?: WeeklyOfferRuntime
   description: string
   seoTitle?: string
   metaDescription?: string

@@ -22,7 +22,8 @@ import type { PaddleCheckoutPayload } from '@/lib/paddle-types'
 import type { PackageId } from '@/lib/packages'
 import type { MtadminEdition, MtadminProduct } from '@/lib/mtadmin-product'
 import { WeekendSaleCountdown } from '@/components/promotions/weekend-sale-countdown'
-import { WEEKEND_SALE, getWeekendMtadminPackageId, isWeekendSaleActive } from '@/lib/weekend-sale'
+import { getWeekendMtadminPackageId } from '@/lib/weekend-sale'
+import { getWeeklyOfferRuntime, type WeeklyOfferSettings } from '@/lib/weekly-offer'
 import { cn } from '@/lib/utils'
 
 type Selection = 'bundle' | string
@@ -69,20 +70,21 @@ function PriceButton({
   )
 }
 
-export function MtadminPricingClient({ product }: { product: MtadminProduct }) {
+export function MtadminPricingClient({ product, offerSettings }: { product: MtadminProduct; offerSettings: WeeklyOfferSettings }) {
   const router = useRouter()
   const { authenticated, loading: authLoading } = useAuth()
-  const [saleActive, setSaleActive] = useState(() => isWeekendSaleActive())
-  const [selection, setSelection] = useState<Selection>(() => isWeekendSaleActive() ? (product.editions.find((edition) => edition.status === 'available')?.id || 'bundle') : 'bundle')
+  const [offerRuntime, setOfferRuntime] = useState(() => getWeeklyOfferRuntime(offerSettings))
+  const offerActive = offerRuntime.active && offerSettings.mtadminEditionsEnabled
+  const [selection, setSelection] = useState<Selection>(() => getWeeklyOfferRuntime(offerSettings).active && offerSettings.mtadminEditionsEnabled ? (product.editions.find((edition) => edition.status === 'available')?.id || 'bundle') : 'bundle')
   const [loadingPackage, setLoadingPackage] = useState<PackageId | null>(null)
 
 
   useEffect(() => {
-    const updateSale = () => setSaleActive(isWeekendSaleActive())
+    const updateSale = () => setOfferRuntime(getWeeklyOfferRuntime(offerSettings))
     updateSale()
-    const interval = window.setInterval(updateSale, 1000)
+    const interval = window.setInterval(updateSale, 30_000)
     return () => window.clearInterval(interval)
-  }, [])
+  }, [offerSettings])
   const availableFallback = product.editions.find((edition) => edition.status === 'available') || product.editions[0]
   const selectedEdition = useMemo(
     () => selection === 'bundle'
@@ -149,13 +151,13 @@ export function MtadminPricingClient({ product }: { product: MtadminProduct }) {
         .filter((edition) => edition.status === 'available')
         .map((edition) => ({ id: edition.id, name: edition.name }))
     : [{ id: selectedEdition.id, name: selectedEdition.name }]
-  const individualWeekendOffer = saleActive && !bundleSelected && editionAvailable
+  const individualWeekendOffer = offerActive && !bundleSelected && editionAvailable
   const planPackageId: PackageId | undefined = bundleSelected
     ? 'mtadmin-bundle'
     : editionAvailable
       ? individualWeekendOffer ? getWeekendMtadminPackageId(selectedEdition.packageId!) : selectedEdition.packageId
       : 'mtadmin-bundle'
-  const planPrice = bundleSelected || !editionAvailable ? product.bundle.priceUsd : individualWeekendOffer ? WEEKEND_SALE.priceUsd : selectedEdition.priceUsd
+  const planPrice = bundleSelected || !editionAvailable ? product.bundle.priceUsd : individualWeekendOffer ? offerSettings.individualTemplatePriceUsd : selectedEdition.priceUsd
   const planTitle = bundleSelected ? 'All Together - Bundle' : `${selectedEdition.name} Edition`
 
   return (
@@ -164,10 +166,10 @@ export function MtadminPricingClient({ product }: { product: MtadminProduct }) {
         <div className="ds-container max-w-6xl py-6 text-center sm:py-7">
           <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-border bg-muted/40 px-3 py-1.5 text-xs font-bold uppercase text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5 text-primary" />
-            {saleActive ? 'Massive weekend offer - single editions $5' : 'One-time access. Built for production.'}
+            {offerActive ? `${offerRuntime.label} - single editions $${offerSettings.individualTemplatePriceUsd}` : 'One-time access. Built for production.'}
           </div>
           <h1 className="mx-auto max-w-4xl text-4xl font-black leading-tight text-foreground sm:text-5xl">
-            {saleActive ? 'Choose any mtadmin edition for $5' : 'Get mtadmin for life'}
+            {offerActive ? `Choose any mtadmin edition for $${offerSettings.individualTemplatePriceUsd}` : 'Get mtadmin for life'}
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
             Choose one framework or unlock the complete multi-framework product. No subscription and no recurring renewal.
@@ -253,7 +255,7 @@ export function MtadminPricingClient({ product }: { product: MtadminProduct }) {
               <div className="flex items-center justify-between gap-4">
                 <h2 className="text-2xl font-black text-foreground">{planTitle}</h2>
                 <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-black uppercase text-emerald-700">
-                  {bundleSelected ? 'Bundle - not discounted' : individualWeekendOffer ? 'Weekend offer' : editionAvailable ? 'Available now' : 'Bundle access'}
+                  {bundleSelected ? 'Bundle - not discounted' : individualWeekendOffer ? offerRuntime.label : editionAvailable ? 'Available now' : 'Bundle access'}
                 </span>
               </div>
 
@@ -282,7 +284,7 @@ export function MtadminPricingClient({ product }: { product: MtadminProduct }) {
                   onCheckout={handleCheckout}
                 />
               </div>
-              {individualWeekendOffer ? <WeekendSaleCountdown className="mt-4 max-w-md" /> : null}
+              {individualWeekendOffer ? <WeekendSaleCountdown className="mt-4 max-w-md" runtime={offerRuntime} /> : null}
               <div className="mt-5 flex items-center gap-2 text-xs font-semibold text-muted-foreground">
                 <ShieldCheck className="h-4 w-4 text-emerald-600" />
                 Secure checkout. No subscription or recurring renewal.

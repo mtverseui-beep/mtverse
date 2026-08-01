@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Clock3 } from 'lucide-react'
-import { WEEKEND_SALE, getWeekendSaleRemainingMs } from '@/lib/weekend-sale'
+import { getWeeklyOfferRemainingMs, type WeeklyOfferRuntime } from '@/lib/weekly-offer'
 import { cn } from '@/lib/utils'
 
 type Props = {
+  runtime: WeeklyOfferRuntime
   className?: string
   compact?: boolean
   inverted?: boolean
@@ -29,6 +30,7 @@ function getParts(remainingMs: number) {
 }
 
 export function WeekendSaleCountdown({
+  runtime,
   className,
   compact = false,
   inverted = false,
@@ -40,7 +42,7 @@ export function WeekendSaleCountdown({
 
   useEffect(() => {
     const update = () => {
-      const remaining = getWeekendSaleRemainingMs()
+      const remaining = getWeeklyOfferRemainingMs(runtime)
       setRemainingMs(remaining)
       if (remaining === 0 && refreshOnEnd && !refreshedRef.current) {
         refreshedRef.current = true
@@ -51,7 +53,7 @@ export function WeekendSaleCountdown({
     update()
     const interval = window.setInterval(update, 1000)
     return () => window.clearInterval(interval)
-  }, [refreshOnEnd, router])
+  }, [refreshOnEnd, router, runtime])
 
   const parts = getParts(remainingMs ?? 0)
 
@@ -65,7 +67,7 @@ export function WeekendSaleCountdown({
         className
       )}
       role="timer"
-      aria-label={`Weekend offer ends ${WEEKEND_SALE.endLabel}`}
+      aria-label={`${runtime.label} ends ${runtime.endLabel}`}
     >
       <div className="flex items-center justify-between gap-3">
         <span className={cn('flex items-center gap-1.5 font-semibold', compact ? 'text-[11px]' : 'text-xs')}>
@@ -73,7 +75,7 @@ export function WeekendSaleCountdown({
           Offer ends in
         </span>
         <span className={cn('text-[10px] font-medium', inverted ? 'text-white/65' : 'text-amber-800/70 dark:text-amber-200/70')}>
-          {WEEKEND_SALE.endLabel}
+          {runtime.endLabel}
         </span>
       </div>
 

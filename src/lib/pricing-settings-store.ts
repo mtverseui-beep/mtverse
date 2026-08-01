@@ -3,6 +3,7 @@ import 'server-only'
 import { existsSync } from 'node:fs'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { DEFAULT_WEEKLY_OFFER_SETTINGS, normalizeWeeklyOfferSettings, type WeeklyOfferSettings } from '@/lib/weekly-offer'
 import { hasRuntimeKvStore, readRuntimeJsonNoStore, writeRuntimeJson } from '@/lib/runtime-kv'
 
 const DATA_DIR = join(process.cwd(), 'data')
@@ -10,6 +11,7 @@ const STORE_FILE = join(DATA_DIR, 'pricing-settings-store.json')
 const RUNTIME_STORE_KEY = 'mtverse:pricing-settings:v1'
 
 export type PricingCtaSettings = {
+  offer: WeeklyOfferSettings
   badge: string
   title: string
   description: string
@@ -23,6 +25,7 @@ export type PricingCtaSettings = {
 }
 
 const DEFAULT_SETTINGS: PricingCtaSettings = {
+  offer: DEFAULT_WEEKLY_OFFER_SETTINGS,
   badge: 'Best value',
   title: 'All paid templates bundle',
   description: 'Get every paid Next.js dashboard, ecommerce, and landing template in one ZIP for $149. Future paid template updates are included in your account.',
@@ -33,6 +36,11 @@ const DEFAULT_SETTINGS: PricingCtaSettings = {
   emailHeadline: 'Unlock every paid mtverse template',
   emailBody: 'Get all current paid dashboard, ecommerce, and landing templates in one protected bundle. Your account also stays eligible for future paid template updates included with this offer.',
   updatedAt: new Date().toISOString(),
+}
+
+const SAFE_FALLBACK_SETTINGS: PricingCtaSettings = {
+  ...DEFAULT_SETTINGS,
+  offer: { ...DEFAULT_WEEKLY_OFFER_SETTINGS, masterEnabled: false },
 }
 
 function cleanText(value: unknown, fallback: string, maxLength = 220) {
@@ -46,6 +54,7 @@ function normalizeSettings(input: Partial<PricingCtaSettings> | null | undefined
     badge: cleanText(input?.badge, DEFAULT_SETTINGS.badge, 40),
     title: cleanText(input?.title, DEFAULT_SETTINGS.title, 90),
     description: cleanText(input?.description, DEFAULT_SETTINGS.description, 260),
+    offer: normalizeWeeklyOfferSettings(input?.offer),
     buttonLabel: cleanText(input?.buttonLabel, DEFAULT_SETTINGS.buttonLabel, 60),
     secondaryLabel: cleanText(input?.secondaryLabel, DEFAULT_SETTINGS.secondaryLabel, 60),
     emailSubject: cleanText(input?.emailSubject, DEFAULT_SETTINGS.emailSubject, 90),
@@ -70,8 +79,13 @@ async function ensureStoreFile() {
 
 async function readStore(): Promise<PricingCtaSettings> {
   if (hasRuntimeKvStore()) {
-    const runtimeStore = await readRuntimeJsonNoStore<PricingCtaSettings>(RUNTIME_STORE_KEY)
-    if (runtimeStore) return normalizeSettings(runtimeStore)
+    try {
+      const runtimeStore = await readRuntimeJsonNoStore<PricingCtaSettings>(RUNTIME_STORE_KEY)
+      if (runtimeStore) return normalizeSettings(runtimeStore)
+    } catch (error) {
+      console.error('[Pricing] Redis settings read failed; using standard prices.', error)
+      return normalizeSettings(SAFE_FALLBACK_SETTINGS)
+    }
   }
 
   await ensureStoreFile()
@@ -80,7 +94,7 @@ async function readStore(): Promise<PricingCtaSettings> {
     const raw = await readFile(STORE_FILE, 'utf-8')
     return normalizeSettings(JSON.parse(raw) as Partial<PricingCtaSettings>)
   } catch {
-    return normalizeSettings(DEFAULT_SETTINGS)
+    return normalizeSettings(SAFE_FALLBACK_SETTINGS)
   }
 }
 
