@@ -1,5 +1,6 @@
 import { MTADMIN_BLOG_POSTS } from '@/lib/mtadmin-blog-posts'
 import { ENTERPRISE_DASHBOARD_BLOG_POSTS } from '@/lib/enterprise-dashboard-blog-posts'
+import { AUGUST_2026_TEMPLATE_BLOG_POSTS } from '@/lib/august-2026-template-blog-posts'
 
 export type BlogPost = {
   slug: string
@@ -20,6 +21,7 @@ export type BlogPost = {
 }
 export const BLOG_POSTS: BlogPost[] = [
   ...ENTERPRISE_DASHBOARD_BLOG_POSTS,
+  ...AUGUST_2026_TEMPLATE_BLOG_POSTS,
   ...MTADMIN_BLOG_POSTS,
   {
     slug: 'website-template-selection-guide',

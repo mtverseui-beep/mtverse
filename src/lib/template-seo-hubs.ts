@@ -1,5 +1,6 @@
 import type { Template } from '@/lib/templates-catalog'
 import { ENTERPRISE_DASHBOARD_SEO_HUBS } from '@/lib/enterprise-dashboard-seo-hubs'
+import { AUGUST_2026_TEMPLATE_SEO_HUBS } from '@/lib/august-2026-template-seo-hubs'
 
 export type TemplateSeoHub = {
   slug: string
@@ -22,6 +23,7 @@ export type TemplateSeoHub = {
 
 export const TEMPLATE_SEO_HUBS: TemplateSeoHub[] = [
   ...ENTERPRISE_DASHBOARD_SEO_HUBS,
+  ...AUGUST_2026_TEMPLATE_SEO_HUBS,
   {
     slug: 'nextjs-dashboard-templates',
     title: 'Next.js Dashboard Templates',

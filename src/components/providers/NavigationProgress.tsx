@@ -18,15 +18,25 @@ export default function NavigationProgress() {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const safetyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const historyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clearTimers = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
     if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
     if (intervalRef.current) clearInterval(intervalRef.current);
+    if (historyTimerRef.current) clearTimeout(historyTimerRef.current);
     timerRef.current = null;
     safetyTimerRef.current = null;
     intervalRef.current = null;
+    historyTimerRef.current = null;
   }, []);
+
+  const reset = useCallback(() => {
+    clearTimers();
+    setVisible(false);
+    setProgress(0);
+    setCompleting(false);
+  }, [clearTimers]);
 
   const complete = useCallback(() => {
     clearTimers();
@@ -131,17 +141,32 @@ export default function NavigationProgress() {
 
       historyIndexRef.current = nextIndex;
       start(nextDirection);
+
+      // A history entry can be restored from the browser's back-forward cache
+      // without producing a new pathname render. Always close this history
+      // transition after the restored page has had a chance to paint.
+      historyTimerRef.current = setTimeout(complete, 700);
     }
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [getHistoryIndex, start]);
+  }, [complete, getHistoryIndex, start]);
 
   useEffect(() => {
-    const handlePageShow = () => complete();
+    const handlePageShow = () => reset();
+    const handlePageHide = () => reset();
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") reset();
+    };
     window.addEventListener("pageshow", handlePageShow);
-    return () => window.removeEventListener("pageshow", handlePageShow);
-  }, [complete]);
+    window.addEventListener("pagehide", handlePageHide);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      window.removeEventListener("pageshow", handlePageShow);
+      window.removeEventListener("pagehide", handlePageHide);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [reset]);
 
   // Cleanup on unmount
   useEffect(() => {

@@ -21,6 +21,42 @@ type TemplateMeta = {
 }
 
 const TEMPLATE_META: Record<string, TemplateMeta> = {
+  bloom: {
+    category: 'dashboards', subcategory: 'People Operations and HR Analytics', components: 62, featured: true, trending: true, new: true,
+    highlights: [
+      { title: 'People operations system', description: 'Org structure, recruiting, employees, attrition, reviews, profiles, and deep settings across real routes.', icon: 'Users' },
+      { title: 'Interactive org chart', description: 'Pan, zoom, pinch, collapse, and inspect reporting relationships in a purpose-built Visx hierarchy.', icon: 'ChartNoAxesCombined' },
+      { title: 'Working HR workflows', description: 'Drag-and-drop hiring, CSV export, employee filters, review requests, command search, and persistent settings.', icon: 'Sparkles' },
+      { title: 'Secure source access', description: 'The clean Next.js source ZIP is available to the signed-in buyer after checkout.', icon: 'Package' },
+    ],
+  },
+  aisle: {
+    category: 'dashboards', subcategory: 'Retail, Ecommerce and Inventory Operations', components: 79, featured: true, trending: true, new: true,
+    highlights: [
+      { title: 'Retail operations suite', description: 'Revenue, merchandising, products, orders, fulfillment, inventory, replenishment, and operator settings.', icon: 'Layers' },
+      { title: 'Real commerce dataset', description: '52 products, 100 orders, correlated inventory, customer portraits, and 99 product photographs.', icon: 'Table2' },
+      { title: 'Working fulfillment flows', description: 'Advanced order table, optimistic statuses, bulk shipping, detail drawer, stock health, and reorder forms.', icon: 'Sparkles' },
+      { title: 'Secure source access', description: 'The clean Next.js source ZIP is available to the signed-in buyer after checkout.', icon: 'Package' },
+    ],
+  },
+  cadence: {
+    category: 'landing', subcategory: 'Inventory and Demand Forecasting SaaS', components: 70, featured: true, trending: true, new: true,
+    highlights: [
+      { title: 'Inventory SaaS story', description: 'A 13-section journey from forecasting pain and product proof through pricing, integrations, FAQ, and lead capture.', icon: 'ChartNoAxesCombined' },
+      { title: 'Interactive product visuals', description: 'Forecast charts, SKU tables, velocity heatmap, purchase orders, KPI views, tabs, and pricing controls.', icon: 'Sparkles' },
+      { title: 'Conversion ready', description: 'Case studies, validated contact and newsletter flows, clear CTAs, responsive themes, and reduced-motion support.', icon: 'Route' },
+      { title: 'Secure source access', description: 'The clean Next.js source ZIP is available to the signed-in buyer after checkout.', icon: 'Package' },
+    ],
+  },
+  ion: {
+    category: 'landing', subcategory: 'Enterprise AI SaaS Website and App', components: 43, featured: true, trending: true, new: true,
+    highlights: [
+      { title: '47-route SaaS foundation', description: 'Marketing, pricing, blog, docs, auth, dashboard, company, careers, changelog, community, and legal routes.', icon: 'Route' },
+      { title: 'Website plus application', description: 'Conversion site and a responsive customer app with analytics, activity, billing, team, integrations, and settings.', icon: 'Layers' },
+      { title: 'SEO infrastructure', description: 'Dynamic sitemap, robots, manifest, JSON-LD, OG assets, metadata, and accessible responsive themes are included.', icon: 'FileText' },
+      { title: 'Secure source access', description: 'The clean Next.js source ZIP is available to the signed-in buyer after checkout.', icon: 'Package' },
+    ],
+  },
   fleetops: {
     category: 'dashboards', subcategory: 'Fleet Operations Command Center', components: 74, featured: true, trending: true, new: true,
     highlights: [

@@ -1,5 +1,6 @@
 import dashboardStore from '../../data/dashboard-kits-store.json'
 import enterpriseDashboardStore from '../../data/enterprise-dashboard-kits.json'
+import august2026TemplateStore from '../../data/august-2026-template-kits.json'
 import { SEO_LANGUAGES } from '@/lib/seo-languages'
 
 export type DashboardKitStatus = 'available' | 'draft' | 'coming-soon'
@@ -62,10 +63,12 @@ function withDashboardKitDefaults(kit: DashboardKitSeed): DashboardKit {
 }
 
 const enterpriseDashboardSeeds = enterpriseDashboardStore.kits as DashboardKitSeed[]
-const enterpriseDashboardSlugs = new Set(enterpriseDashboardSeeds.map((kit) => kit.slug))
+const august2026TemplateSeeds = august2026TemplateStore.kits as DashboardKitSeed[]
+const featuredTemplateSeeds = [...august2026TemplateSeeds, ...enterpriseDashboardSeeds]
+const featuredTemplateSlugs = new Set(featuredTemplateSeeds.map((kit) => kit.slug))
 const dashboardKitSeeds = [
-  ...enterpriseDashboardSeeds,
-  ...(dashboardStore.kits as DashboardKitSeed[]).filter((kit) => !enterpriseDashboardSlugs.has(kit.slug)),
+  ...featuredTemplateSeeds,
+  ...(dashboardStore.kits as DashboardKitSeed[]).filter((kit) => !featuredTemplateSlugs.has(kit.slug)),
 ]
 export const dashboardKits: DashboardKit[] = dashboardKitSeeds.map(withDashboardKitDefaults)
 

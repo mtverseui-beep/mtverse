@@ -111,11 +111,15 @@ export function TemplateDetailClient({ template }: Props) {
         return
       }
 
-      const packageId = getTemplateCheckoutPackageId(template)
+      const isFreeUnlockCheckout = template.isFree && freeLimitReached
+      const packageId = isFreeUnlockCheckout ? 'free-unlock' : getTemplateCheckoutPackageId(template)
       const response = await fetch('/api/payments/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ packageId, kitSlug: template.slug }),
+        body: JSON.stringify({
+          packageId,
+          ...(!isFreeUnlockCheckout ? { kitSlug: template.slug } : {}),
+        }),
       })
       const checkout = (await response.json()) as {
         url?: string
@@ -141,7 +145,7 @@ export function TemplateDetailClient({ template }: Props) {
         const successUrl = new URL('/pricing/success', window.location.origin)
         successUrl.searchParams.set('package', checkout.paddle.packageId)
         successUrl.searchParams.set('provider', 'paddle')
-        successUrl.searchParams.set('kit', template.slug)
+        if (!isFreeUnlockCheckout) successUrl.searchParams.set('kit', template.slug)
         if (checkout.paddle.customerEmail) successUrl.searchParams.set('email', checkout.paddle.customerEmail)
         await openPaddleCheckout(checkout.paddle, successUrl.toString())
         return

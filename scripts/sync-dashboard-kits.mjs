@@ -26,6 +26,7 @@ const beforeResult = await pipeline([['GET', key]])
 const remote = beforeResult[0]?.result ? JSON.parse(beforeResult[0].result) : { kits: [] }
 const local = JSON.parse(await readFile(new URL('../data/dashboard-kits-store.json', import.meta.url), 'utf8'))
 const enterprise = JSON.parse(await readFile(new URL('../data/enterprise-dashboard-kits.json', import.meta.url), 'utf8'))
+const august2026 = JSON.parse(await readFile(new URL('../data/august-2026-template-kits.json', import.meta.url), 'utf8'))
 const merged = new Map((remote.kits || []).map((kit) => [kit.slug, kit]))
 
 for (const kit of local.kits || []) {
@@ -35,11 +36,16 @@ for (const kit of local.kits || []) {
 for (const kit of enterprise.kits || []) {
   merged.set(kit.slug, kit)
 }
+for (const kit of august2026.kits || []) {
+  merged.set(kit.slug, kit)
+}
 
-const enterpriseSlugs = new Set((enterprise.kits || []).map((kit) => kit.slug))
+
+const featuredKits = [...(august2026.kits || []), ...(enterprise.kits || [])]
+const featuredSlugs = new Set(featuredKits.map((kit) => kit.slug))
 const orderedKits = [
-  ...(enterprise.kits || []).map((kit) => merged.get(kit.slug)).filter(Boolean),
-  ...[...merged.values()].filter((kit) => !enterpriseSlugs.has(kit.slug)),
+  ...featuredKits.map((kit) => merged.get(kit.slug)).filter(Boolean),
+  ...[...merged.values()].filter((kit) => !featuredSlugs.has(kit.slug)),
 ]
 const payload = {
   kits: orderedKits,
