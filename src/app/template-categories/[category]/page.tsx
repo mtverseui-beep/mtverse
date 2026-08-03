@@ -1,17 +1,16 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import { ArrowRight, Code2, LayoutDashboard, LayoutGrid, Sparkles } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { TemplateCard } from '@/components/templates/template-card'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
 import { SITE_URL } from '@/lib/site-url'
 import { getAllTemplatesFromStore, getTemplateCategoriesFor } from '@/lib/templates-data'
-import { withAllTemplateSocial } from '@/lib/template-social-store'
 
 type Params = Promise<{ category: string }>
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 type CategoryPageInfo = { id: string; label: string; description: string; icon: string }
 
@@ -154,12 +153,14 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export default async function TemplateCategoryPage({ params }: { params: Params }) {
   const { category } = await params
+  if (category === 'html') permanentRedirect('/html-templates')
+
   const baseTemplates = await getAllTemplatesFromStore()
   const categories = getTemplateCategoriesFor(baseTemplates).filter((item) => item.id !== 'all')
   const selected = resolveCategoryInfo(category, categories)
   if (!selected) notFound()
 
-  const templates = await withAllTemplateSocial(baseTemplates.filter((template) => templateMatchesCategory(template.category, category)))
+  const templates = baseTemplates.filter((template) => templateMatchesCategory(template.category, category))
   const Icon = CATEGORY_ICONS[category as keyof typeof CATEGORY_ICONS] || LayoutGrid
   const seo = CATEGORY_SEO[category]
   const title = seo?.title || fallbackTitle(selected.label)

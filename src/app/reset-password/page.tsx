@@ -4,6 +4,7 @@ import { AuthForm } from '@/components/auth/auth-form'
 export const metadata: Metadata = {
   title: 'Reset Password',
   description: 'Reset your mtverse account password.',
+  robots: { index: false, follow: false },
 }
 
 type SearchParams = Promise<{

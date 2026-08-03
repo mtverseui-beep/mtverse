@@ -221,9 +221,9 @@ export const TEMPLATE_SEO_HUBS: TemplateSeoHub[] = [
   },
   {
     slug: 'free-html-templates',
-    title: 'Free HTML Templates',
-    h1: 'Free HTML templates for portfolios, business sites, ecommerce pages, and landing pages',
-    eyebrow: 'Free website templates',
+    title: 'How to Choose Free HTML Templates',
+    h1: 'How to choose a free HTML template for a fast, credible website',
+    eyebrow: 'Free HTML template guide',
     description:
       'Browse free responsive HTML templates for portfolios, agencies, SaaS, restaurants, education, healthcare, fitness, ecommerce, crypto, real estate, and static websites.',
     metaDescription:
@@ -241,7 +241,7 @@ export const TEMPLATE_SEO_HUBS: TemplateSeoHub[] = [
     intentTags: ['html', 'free', 'portfolio', 'website', 'static', 'landing', 'business'],
     categoryIds: ['html'],
     priceMode: 'free',
-    introTitle: 'Free HTML templates for quick launches',
+    introTitle: 'Evaluate free HTML templates before you launch',
     intro: [
       'Free HTML templates are useful when you need a fast static website, a client mockup, a personal portfolio, or a simple landing page without a full application stack.',
       'mtverse keeps HTML templates separate from paid dashboard templates so users can browse free static websites without mixing them with Next.js admin products.',
@@ -414,8 +414,18 @@ export function getTemplateSeoHub(slug: string) {
   return TEMPLATE_SEO_HUBS.find((hub) => hub.slug === slug) ?? null
 }
 
-function includesAny(haystack: string, needles: string[]) {
-  return needles.some((needle) => haystack.includes(needle.toLowerCase()))
+function countIntentMatches(haystack: string, needles: string[]) {
+  const matched = new Set<string>()
+
+  for (const rawNeedle of needles) {
+    const needle = rawNeedle.trim().toLowerCase()
+    if (!needle) continue
+    const escaped = needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const pattern = new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, 'i')
+    if (pattern.test(haystack)) matched.add(needle)
+  }
+
+  return matched.size
 }
 
 export function templateMatchesSeoHub(template: Template, hub: TemplateSeoHub) {
@@ -439,7 +449,7 @@ export function templateMatchesSeoHub(template: Template, hub: TemplateSeoHub) {
     .join(' ')
     .toLowerCase()
 
-  const intentMatch = includesAny(searchable, hub.intentTags)
+  const intentMatch = countIntentMatches(searchable, hub.intentTags) >= Math.min(2, hub.intentTags.length)
   return categoryMatch && intentMatch
 }
 

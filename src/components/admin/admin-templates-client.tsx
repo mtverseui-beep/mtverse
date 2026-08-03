@@ -74,7 +74,6 @@ export function AdminTemplatesClient({ templates }: Props) {
                 <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Template</th>
                 <th className="text-left px-4 py-3 font-semibold text-muted-foreground hidden md:table-cell">Category</th>
                 <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Price</th>
-                <th className="text-left px-4 py-3 font-semibold text-muted-foreground hidden lg:table-cell">Sales</th>
                 <th className="text-left px-4 py-3 font-semibold text-muted-foreground">Status</th>
                 <th className="text-right px-4 py-3 font-semibold text-muted-foreground">Actions</th>
               </tr>
@@ -82,7 +81,7 @@ export function AdminTemplatesClient({ templates }: Props) {
             <tbody className="divide-y divide-border">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-12 text-center text-muted-foreground">
+                  <td colSpan={5} className="px-4 py-12 text-center text-muted-foreground">
                     No templates found.
                   </td>
                 </tr>
@@ -114,9 +113,6 @@ export function AdminTemplatesClient({ templates }: Props) {
                     </td>
                     <td className="px-4 py-3">
                       <span className="font-semibold">${t.price}</span>
-                    </td>
-                    <td className="px-4 py-3 hidden lg:table-cell text-muted-foreground">
-                      {t.salesCount.toLocaleString()}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-1">

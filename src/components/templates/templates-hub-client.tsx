@@ -1,12 +1,14 @@
 'use client'
 
+import Link from 'next/link'
+import { track } from '@vercel/analytics'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
 import { Search, X, LayoutGrid, Sparkles, Loader2, ChevronLeft, ChevronRight } from 'lucide-react'
 import { TemplateCard } from './template-card'
 import {
   sortTemplates,
-  type Template,
+  type TemplateCatalogItem,
   type TemplateCategory,
   type TemplateSortMode,
 } from '@/lib/templates-catalog'
@@ -15,7 +17,7 @@ import { TemplatesHero3D } from '@/components/design-system/hero-3d'
 import { cn } from '@/lib/utils'
 
 type Props = {
-  templates: Template[]
+  templates: TemplateCatalogItem[]
   initialCategory?: string
   initialSearch?: string
   initialSort?: TemplateSortMode
@@ -29,7 +31,7 @@ function frameworkLabel(tech: string) {
   return tech.trim().replace(/\s+\d+(\.\d+)?$/u, '')
 }
 
-function getTemplateFramework(template: Template) {
+function getTemplateFramework(template: TemplateCatalogItem) {
   return template.frameworkLabel || frameworkLabel(template.techStack[0] || '') || 'Template'
 }
 
@@ -90,8 +92,8 @@ export function TemplatesHubClient({
   const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isHtmlCategory = initialCategory === 'html'
   const normalizedSubcategory = normalizeSubcategory(initialSubcategory)
-  const htmlSortModes: TemplateSortMode[] = ['downloads', 'new', 'featured']
-  const activeSort: TemplateSortMode = isHtmlCategory && !htmlSortModes.includes(initialSort) ? 'downloads' : initialSort
+  const htmlSortModes: TemplateSortMode[] = ['new', 'featured']
+  const activeSort: TemplateSortMode = isHtmlCategory && !htmlSortModes.includes(initialSort) ? 'featured' : initialSort
 
   // Only main frameworks — exact match (case-insensitive, ignoring version numbers)
   const KNOWN_FRAMEWORKS = ['next.js', 'react']
@@ -116,7 +118,12 @@ export function TemplatesHubClient({
     return [{ label: 'All frameworks', value: 'all' }, ...options]
   }, [allTemplates])
 
-  // Trigger loading state for 2s whenever filters change
+  useEffect(() => {
+    setIsLoading(false)
+    if (loadingTimerRef.current) clearTimeout(loadingTimerRef.current)
+  }, [searchParams])
+
+  // Trigger loading state for route and filter changes
   const triggerLoading = useCallback(() => {
     setIsLoading(true)
     if (loadingTimerRef.current) clearTimeout(loadingTimerRef.current)
@@ -136,6 +143,7 @@ export function TemplatesHubClient({
       const trimmed = searchInput.trim()
       if (trimmed !== activeSearch) {
         setActiveSearch(trimmed)
+        if (trimmed) track('template_search', { queryLength: trimmed.length })
         triggerLoading()
       }
     }, 300)
@@ -220,6 +228,7 @@ export function TemplatesHubClient({
 
   const updateParams = useCallback(
     (updates: Record<string, string | undefined>) => {
+      track('catalog_filter_changed', { filters: Object.keys(updates).sort().join(',') })
       const params = new URLSearchParams(searchParams.toString())
       if (!Object.prototype.hasOwnProperty.call(updates, 'page')) {
         params.delete('page')
@@ -243,6 +252,14 @@ export function TemplatesHubClient({
     triggerLoading()
   }, [triggerLoading])
 
+  function getPageHref(page: number) {
+    const params = new URLSearchParams(searchParams.toString())
+    if (page <= 1) params.delete('page')
+    else params.set('page', String(page))
+    const query = params.toString()
+    return query ? `/templates?${query}` : '/templates'
+  }
+
   function goToPage(page: number) {
     const nextPage = clampPage(page, totalPages)
     if (nextPage === currentPage) return
@@ -251,7 +268,6 @@ export function TemplatesHubClient({
 
   const sortOptions = isHtmlCategory
     ? [
-        { value: 'downloads', label: 'Most downloads' },
         { value: 'new', label: 'Newest' },
         { value: 'featured', label: 'Featured' },
       ]
@@ -332,7 +348,7 @@ export function TemplatesHubClient({
                       setFrameworkFilter('all')
                       setFreeOnly(false)
                       updateParams(chip.id === 'html'
-                        ? { category: chip.id, subcategory: undefined, sort: 'downloads' }
+                        ? { category: chip.id, subcategory: undefined, sort: 'featured' }
                         : { category: chip.id, subcategory: undefined, sort: undefined })
                     }}
                     className={cn(
@@ -557,20 +573,21 @@ export function TemplatesHubClient({
 
                 {paginationPages.map((page) =>
                   typeof page === 'number' ? (
-                    <button
+
+                    <Link
                       key={page}
-                      type="button"
-                      onClick={() => goToPage(page)}
+                      href={getPageHref(page)}
+                      onClick={(event) => { event.preventDefault(); goToPage(page) }}
                       aria-current={page === currentPage ? 'page' : undefined}
                       className={cn(
-                        'h-9 min-w-9 rounded-full px-3 text-sm font-semibold transition-all',
+                        'inline-flex h-9 min-w-9 items-center justify-center rounded-full px-3 text-sm font-semibold transition-all',
                         page === currentPage
                           ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20'
                           : 'text-muted-foreground hover:bg-accent hover:text-foreground'
                       )}
                     >
                       {page}
-                    </button>
+                    </Link>
                   ) : (
                     <span key={page} className="px-1 text-sm text-muted-foreground/70">...</span>
                   )

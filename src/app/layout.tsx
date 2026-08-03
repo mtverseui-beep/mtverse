@@ -10,6 +10,7 @@ import ThemeProvider from '@/components/providers/ThemeProvider'
 
 import NavigationProgress from '@/components/providers/NavigationProgress'
 import AppInsights from '@/components/providers/AppInsights'
+import { WebVitalsReporter } from '@/components/providers/WebVitalsReporter'
 import { AuthProvider } from '@/hooks/use-auth'
 import { generateHreflangMap } from '@/lib/seo-languages'
 import { WeeklyOfferPopup } from '@/components/promotions/weekly-offer-popup'
@@ -29,6 +30,7 @@ const instrumentSerif = Instrument_Serif({
   display: 'swap',
 })
 
+const googleVerification = process.env.GOOGLE_SITE_VERIFICATION?.trim()
 const yandexVerification = process.env.YANDEX_SITE_VERIFICATION?.trim()
 const naverVerification = process.env.NAVER_SITE_VERIFICATION?.trim()
 
@@ -74,6 +76,7 @@ export const metadata: Metadata = {
   creator: 'mtverse',
   publisher: 'mtverse',
   verification: {
+    ...(googleVerification ? { google: googleVerification } : {}),
     ...(yandexVerification ? { yandex: yandexVerification } : {}),
     ...(naverVerification ? { other: { 'naver-site-verification': naverVerification } } : {}),
   },
@@ -90,13 +93,13 @@ export const metadata: Metadata = {
     siteName: 'mtverse',
     type: 'website',
     locale: 'en_US',
-    images: [{ url: '/SiteLogo.png', width: 512, height: 512, alt: 'mtverse website template marketplace' }],
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'mtverse website templates and UI components' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'mtverse - Modern UI Components & Website Templates',
     description: 'Live previews for modern UI components and website templates with protected source access and secure downloads.',
-    images: ['/SiteLogo.png'],
+    images: ['/opengraph-image'],
   },
   robots: {
     index: true,
@@ -147,6 +150,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <SonnerToaster />
             <AppInsights />
             <Analytics />
+            <WebVitalsReporter />
           </AuthProvider>
         </ThemeProvider>
       </body>

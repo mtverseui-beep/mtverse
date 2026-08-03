@@ -17,184 +17,6 @@ const MAX_STORED_REVIEWS = 20
 
 const DASHBOARD_TEMPLATE_SLUGS = dashboardKits.map((kit) => kit.slug)
 
-const SEEDED_SOCIAL: Record<string, { purchaseCount: number; reviews: TemplateReview[] }> = {
-  'helios-pro': {
-    purchaseCount: 138,
-    reviews: [
-      {
-        id: 'seed-helios-1',
-        name: 'Maya Iyer',
-        rating: 5,
-        title: 'Premium admin kit feel',
-        comment: 'The page range, command palette, dark mode, and dashboard widgets make it feel like a mature product starter, not a basic admin shell.',
-        date: '2026-03-08T10:10:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-      {
-        id: 'seed-helios-2',
-        name: 'Ethan Cole',
-        rating: 5,
-        title: 'Strong SaaS dashboard base',
-        comment: 'The layouts cover the usual SaaS, analytics, ecommerce, and support screens. It is easy to picture this becoming a real client dashboard.',
-        date: '2026-03-04T14:25:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-      {
-        id: 'seed-helios-3',
-        name: 'Sara Lin',
-        rating: 4,
-        title: 'Good structure for teams',
-        comment: 'The reusable cards, tables, chart sections, and settings screens are organized clearly enough for a team to customize quickly.',
-        date: '2026-03-10T16:40:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-    ],
-  },
-  'lumiere-ecommerce': {
-    purchaseCount: 112,
-    reviews: [
-      {
-        id: 'seed-lumiere-1',
-        name: 'Nisha Patel',
-        rating: 5,
-        title: 'Storefront and admin in one package',
-        comment: 'The storefront, cart, checkout states, and admin screens line up well. It feels like a complete ecommerce starter instead of a landing page.',
-        date: '2026-02-22T09:20:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-      {
-        id: 'seed-lumiere-2',
-        name: 'Owen Brooks',
-        rating: 5,
-        title: 'Realistic ecommerce flows',
-        comment: 'Product filters, wishlist, coupons, checkout, and order views are already mapped out, which makes client demos much easier.',
-        date: '2026-02-18T13:05:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-      {
-        id: 'seed-lumiere-3',
-        name: 'Keerthana S',
-        rating: 4,
-        title: 'Useful retail starter',
-        comment: 'The demo data is practical and the admin dashboard covers the main catalog and order workflows a small store needs.',
-        date: '2026-02-04T17:30:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-    ],
-  },
-  'mtverse-modular-nextjs-dashboard-template': {
-    purchaseCount: 103,
-    reviews: [
-      {
-        id: 'seed-mtmodular-1',
-        name: 'Ravi Kumar',
-        rating: 5,
-        title: 'Clean ecommerce workflow',
-        comment: 'The dashboard sections are easy to scan, and the revenue/order views feel ready for a real commerce admin.',
-        date: '2026-02-15T09:30:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-      {
-        id: 'seed-mtmodular-2',
-        name: 'Meera Shah',
-        rating: 5,
-        title: 'Great responsive layout',
-        comment: 'The sidebar, cards, and charts keep their spacing well on laptop and tablet sizes. It saved a lot of setup time.',
-        date: '2026-02-10T12:15:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-      {
-        id: 'seed-mtmodular-3',
-        name: 'Daniel Park',
-        rating: 4,
-        title: 'Useful analytics starter',
-        comment: 'The KPI group and category views are practical for sales reporting. The code structure is simple to extend.',
-        date: '2026-01-18T16:45:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-    ],
-  },
-  'mt-box-enterprise-nextjs-dashboard-template': {
-    purchaseCount: 77,
-    reviews: [
-      {
-        id: 'seed-mtbox-1',
-        name: 'Alex Morgan',
-        rating: 5,
-        title: 'Polished enterprise feel',
-        comment: 'The navigation, revenue cards, and workspace layout look premium without feeling heavy. Good base for admin products.',
-        date: '2026-03-01T10:20:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-      {
-        id: 'seed-mtbox-2',
-        name: 'Priya Nair',
-        rating: 5,
-        title: 'Fast to customize',
-        comment: 'The component spacing and visual rhythm are consistent, so replacing the sample data with product data was straightforward.',
-        date: '2026-02-25T08:40:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-      {
-        id: 'seed-mtbox-3',
-        name: 'Sam Wilson',
-        rating: 4,
-        title: 'Strong SaaS dashboard base',
-        comment: 'The traffic and revenue sections cover the usual executive overview needs. A solid template for SaaS admin panels.',
-        date: '2026-01-22T14:05:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-    ],
-  },
-  'mat-dash-nextjs-admin-dashboard-template': {
-    purchaseCount: 146,
-    reviews: [
-      {
-        id: 'seed-matdash-1',
-        name: 'John Miller',
-        rating: 5,
-        title: 'Simple and modern',
-        comment: 'The clean layout is easy to adapt for internal tools, especially the revenue forecast and activity sections.',
-        date: '2026-02-28T11:10:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-      {
-        id: 'seed-matdash-2',
-        name: 'Ananya Rao',
-        rating: 4,
-        title: 'Good dashboard starter',
-        comment: 'The design is minimal and readable. It is a good fit when you want a calm admin interface with fewer distractions.',
-        date: '2026-02-12T13:35:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-      {
-        id: 'seed-matdash-3',
-        name: 'Chris Evans',
-        rating: 5,
-        title: 'Practical layout blocks',
-        comment: 'The left navigation and analytics cards are production-friendly. It gives a useful starting point for business dashboards.',
-        date: '2026-01-28T15:55:00.000Z',
-        verifiedPurchase: false,
-        source: 'internal',
-      },
-    ],
-  },
-}
-
 type UserTemplatePurchase = {
   count: number
   firstPurchasedAt: string
@@ -213,8 +35,6 @@ type SavedTemplateRecord = {
 
 type TemplateSocialRecord = {
   slug: string
-  basePurchaseCount: number
-  realPurchaseCount: number
   reviews: TemplateReview[]
   updatedAt: string
 }
@@ -249,9 +69,6 @@ type TemplateSocialStoreData = {
 
 export type TemplateSocial = {
   slug: string
-  basePurchaseCount: number
-  realPurchaseCount: number
-  purchaseCount: number
   rating: number
   reviewCount: number
   reviews: TemplateReview[]
@@ -294,58 +111,9 @@ function nowIso() {
   return new Date().toISOString()
 }
 
-function hashSlugForSeed(slug: string) {
-  let hash = 0
-  for (let i = 0; i < slug.length; i += 1) {
-    hash = (hash * 31 + slug.charCodeAt(i)) >>> 0
-  }
-  return hash
-}
-
-function createGenericSeededSocial(slug: string): { purchaseCount: number; reviews: TemplateReview[] } {
-  const hash = hashSlugForSeed(slug)
-  const names = ['Maya Iyer', 'Ethan Cole', 'Sara Lin', 'Vikram Das', 'Leah Stone', 'Noah Reyes']
-  const titles = ['Clear template structure', 'Good starter for client work', 'Polished first impression', 'Easy to adapt']
-  const comments = [
-    'The page structure is clear, the preview is useful, and the package feels practical for a fast implementation.',
-    'The sections are organized well enough to replace demo content with project data without a long cleanup pass.',
-    'The visual quality is strong for a starter template, especially when you need something presentable quickly.',
-    'The template gives a useful foundation with enough included screens to avoid starting from a blank project.',
-  ]
-
-  // Free HTML templates get varied download counts with no copied-looking values.
-  // Paid templates stay under 150 for modest social proof.
-  const isHtmlFree = slug.startsWith('html-') || slug.includes('-portfolio')
-  const purchaseCount = isHtmlFree
-    ? 72 + (hash % 318) + ((hash >>> 8) % 11)
-    : 54 + (hash % 96)
-
-  return {
-    purchaseCount,
-    // No reviews for free HTML templates
-    reviews: isHtmlFree ? [] : [0, 1, 2].map((offset) => ({
-      id: 'seed-' + slug + '-' + (offset + 1),
-      name: names[(hash + offset) % names.length],
-      rating: offset === 1 ? 4 : 5,
-      title: titles[(hash + offset) % titles.length],
-      comment: comments[(hash + offset) % comments.length],
-      date: new Date(Date.UTC(2026, 1, Math.max(1, 18 - offset * 4), 10 + offset, 15)).toISOString(),
-      verifiedPurchase: false,
-      source: 'internal',
-    })),
-  }
-}
-
-function getSeededSocial(slug: string) {
-  const seeded = SEEDED_SOCIAL[slug] || createGenericSeededSocial(slug)
-  return { purchaseCount: seeded.purchaseCount, reviews: [] }
-}
-
 function createTemplateRecord(slug: string): TemplateSocialRecord {
   return {
     slug,
-    basePurchaseCount: getSeededSocial(slug).purchaseCount,
-    realPurchaseCount: 0,
     reviews: [],
     updatedAt: nowIso(),
   }
@@ -480,12 +248,8 @@ function normalizeStore(input: Partial<TemplateSocialStoreData> | null | undefin
   if (input?.templates && typeof input.templates === 'object') {
     for (const [slug, record] of Object.entries(input.templates)) {
       if (!record || typeof record !== 'object') continue
-      const seeded = getSeededSocial(slug)
-      const storedBasePurchaseCount = Math.max(0, Math.floor(Number(record.basePurchaseCount) || 0))
       templates[slug] = {
         slug,
-        basePurchaseCount: storedBasePurchaseCount || seeded.purchaseCount,
-        realPurchaseCount: Math.max(0, Math.floor(Number(record.realPurchaseCount) || 0)),
         reviews: Array.isArray(record.reviews)
           ? record.reviews.map(normalizeReview).filter((review) => review.source === 'customer').slice(0, MAX_STORED_REVIEWS)
           : [],
@@ -610,9 +374,6 @@ function toPublicSocial(record: TemplateSocialRecord): TemplateSocial {
   const reviews = getVisibleReviews(record)
   return {
     slug: record.slug,
-    basePurchaseCount: record.basePurchaseCount,
-    realPurchaseCount: record.realPurchaseCount,
-    purchaseCount: record.basePurchaseCount + record.realPurchaseCount,
     rating: calculateRating(reviews),
     reviewCount: reviews.length,
     reviews,
@@ -653,7 +414,6 @@ export function applyTemplateSocial<T extends Template>(template: T, social: Tem
     ...template,
     rating: social.rating,
     reviewCount: social.reviewCount,
-    salesCount: social.purchaseCount,
     reviews: social.reviews,
   }
 }
@@ -736,7 +496,6 @@ export async function recordTemplatePurchase(slug: string | null | undefined, em
         firstPurchasedAt: now,
         lastPurchasedAt: now,
       }
-      record.realPurchaseCount += 1
     }
 
     record.updatedAt = now
@@ -1008,10 +767,6 @@ export async function recordFreeDownload(slug: string, emailInput: string): Prom
     userRecord.freeDownloads.count = userRecord.freeDownloads.slugs.length
     userRecord.updatedAt = now
     store.users[email] = userRecord
-
-    const record = getRecord(store, safeSlug)
-    record.realPurchaseCount += 1
-    record.updatedAt = now
 
     const unlocked = Boolean(userRecord.freeDownloads.unlockedAt)
     return {

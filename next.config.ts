@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
   output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
   reactStrictMode: true,
   images: {
-    formats: ["image/webp"],
+    formats: ["image/avif", "image/webp"],
     qualities: [72, 75],
     remotePatterns: [
       {

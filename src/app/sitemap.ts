@@ -1,13 +1,12 @@
 import type { MetadataRoute } from 'next'
-import { headers } from 'next/headers'
 import { BLOG_POSTS } from '@/lib/blog-posts'
 import { generateHreflangMap } from '@/lib/seo-languages'
-import { resolveSiteUrlFromRequestHeaders } from '@/lib/site-url'
+import { absoluteUrl, SITE_URL } from '@/lib/site-url'
 import { TEMPLATE_SEO_HUBS } from '@/lib/template-seo-hubs'
 import { getAllTemplatesFromStore, getTemplateCategoriesFor, TEMPLATES } from '@/lib/templates-data'
 import { UI_COMPONENT_SEO_HUBS } from '@/lib/ui-component-seo-hubs'
 
-const PRIORITY_TEMPLATE_CATEGORY_IDS = ['dashboards', 'ecommerce', 'landing', 'html'] as const
+const PRIORITY_TEMPLATE_CATEGORY_IDS = ['dashboards', 'ecommerce', 'landing'] as const
 
 function safeDate(value: Date | string, fallback: Date) {
   const resolved = value instanceof Date ? value : new Date(value)
@@ -15,8 +14,8 @@ function safeDate(value: Date | string, fallback: Date) {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = resolveSiteUrlFromRequestHeaders(await headers())
-  const staticDate = new Date('2026-07-18')
+  const baseUrl = SITE_URL
+  const staticDate = new Date('2026-08-03')
   const templates = await getAllTemplatesFromStore().catch(() => TEMPLATES)
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -43,8 +42,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const templateCategoryIds = Array.from(new Set([
     ...PRIORITY_TEMPLATE_CATEGORY_IDS,
-    ...getTemplateCategoriesFor(templates).filter((category) => category.id !== 'all').map((category) => category.id),
+    ...getTemplateCategoriesFor(templates).filter((category) => !['all', 'html'].includes(category.id)).map((category) => category.id),
   ]))
+
+  const htmlVerticalRoutes: MetadataRoute.Sitemap = ['restaurant', 'healthcare', 'education', 'fitness', 'real-estate', 'crypto'].map((slug) => ({
+    url: `${baseUrl}/html-templates/${slug}`,
+    lastModified: staticDate,
+    changeFrequency: 'weekly' as const,
+    priority: 0.95,
+  }))
 
   const templateCategoryRoutes: MetadataRoute.Sitemap = templateCategoryIds.map((categoryId) => ({
     url: `${baseUrl}/template-categories/${categoryId}`,
@@ -63,6 +69,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const templateRoutes: MetadataRoute.Sitemap = templates.map((template) => ({
     url: `${baseUrl}/templates/${template.slug}`,
     lastModified: safeDate(template.lastUpdated, staticDate),
+    images: [absoluteUrl(template.screenshotUrl)],
     changeFrequency: 'weekly' as const,
     priority: !template.isFree ? (template.pricingTier === 'pro' ? 0.99 : 0.98) : template.category === 'html' ? 0.94 : 0.91,
   }))
@@ -80,7 +87,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.72,
   }))
 
-  return [...staticRoutes, ...templateCategoryRoutes, ...templateHubRoutes, ...templateRoutes, ...uiComponentHubRoutes, ...blogRoutes].map((route) => ({
+  return [...staticRoutes, ...htmlVerticalRoutes, ...templateCategoryRoutes, ...templateHubRoutes, ...templateRoutes, ...uiComponentHubRoutes, ...blogRoutes].map((route) => ({
     ...route,
     alternates: {
       languages: generateHreflangMap(route.url.replace(baseUrl, ''), baseUrl),

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/site-url'
 import ContactClient from './contact-client'
 
-const title = 'Contact mtverse | Template Support and Partnerships'
+const title = 'Contact Template Support and Partnerships'
 const description = 'Contact mtverse for template support, billing questions, partnership requests, custom dashboard templates, and production-ready website template help.'
 
 export const metadata: Metadata = {

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { track } from '@vercel/analytics'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -35,17 +36,24 @@ export function TemplateDetailClient({ template }: Props) {
   const [buying, setBuying] = useState(false)
   const [canDownload, setCanDownload] = useState(false)
   const [checkingAccess, setCheckingAccess] = useState(false)
-  const [freeRemaining, setFreeRemaining] = useState(5)
   const [freeLimitReached, setFreeLimitReached] = useState(false)
   const [freeUnlocked, setFreeUnlocked] = useState(false)
   const [alreadyDownloaded, setAlreadyDownloaded] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [downloadError, setDownloadError] = useState<string | null>(null)
   const [accessError, setAccessError] = useState<string | null>(null)
-  const freeDownloadsUsed = Math.max(0, 5 - freeRemaining)
-  const showFreeDownloadStatus = template.isFree && authenticated && !freeUnlocked && (freeDownloadsUsed > 0 || alreadyDownloaded || freeLimitReached)
+  const showFreeDownloadStatus = template.isFree && authenticated && !freeUnlocked && (alreadyDownloaded || freeLimitReached)
   const hasDiscount = typeof template.originalPriceUsd === 'number' && template.originalPriceUsd > template.price
   const weekendOffer = hasWeekendTemplateOffer(template)
+
+  useEffect(() => {
+    track('template_viewed', {
+      slug: template.slug,
+      category: template.category,
+      price: template.price,
+      isFree: template.isFree,
+    })
+  }, [template.category, template.isFree, template.price, template.slug])
 
   useEffect(() => {
     let cancelled = false
@@ -65,7 +73,7 @@ export function TemplateDetailClient({ template }: Props) {
           fetch(`/api/templates/${encodeURIComponent(template.slug)}/access`, { credentials: 'include' }),
           fetch(`/api/templates/${encodeURIComponent(template.slug)}/save`, { credentials: 'include' }),
         ])
-        const accessPayload = (await accessResponse.json().catch(() => null)) as { canDownload?: boolean; isFree?: boolean; freeRemaining?: number; freeLimitReached?: boolean; freeUnlocked?: boolean; alreadyDownloaded?: boolean } | null
+        const accessPayload = (await accessResponse.json().catch(() => null)) as { canDownload?: boolean; isFree?: boolean; freeLimitReached?: boolean; freeUnlocked?: boolean; alreadyDownloaded?: boolean } | null
         const savedPayload = (await savedResponse.json().catch(() => null)) as { saved?: boolean } | null
 
         if (!cancelled) {
@@ -73,7 +81,6 @@ export function TemplateDetailClient({ template }: Props) {
           setLiked(Boolean(savedResponse.ok && savedPayload?.saved))
           setAccessError(accessResponse.ok ? null : 'Could not verify template access right now. Please refresh and try again.')
           if (accessPayload) {
-            setFreeRemaining(accessPayload.freeRemaining ?? 5)
             setFreeLimitReached(Boolean(accessPayload.freeLimitReached))
             setFreeUnlocked(Boolean(accessPayload.freeUnlocked))
             setAlreadyDownloaded(Boolean(accessPayload.alreadyDownloaded))
@@ -104,6 +111,7 @@ export function TemplateDetailClient({ template }: Props) {
       return
     }
 
+    track('template_checkout_started', { slug: template.slug, price: template.price, isFree: template.isFree })
     setBuying(true)
     try {
       if (template.isFree && !freeLimitReached) {
@@ -153,6 +161,7 @@ export function TemplateDetailClient({ template }: Props) {
 
       throw new Error('Checkout did not return a redirect URL.')
     } catch (error) {
+      track('template_checkout_failed', { slug: template.slug })
       toast.error(error instanceof Error ? error.message : 'Unable to start checkout')
     } finally {
       setBuying(false)
@@ -212,7 +221,6 @@ export function TemplateDetailClient({ template }: Props) {
         if (response.status === 403 && template.isFree && !alreadyDownloaded) {
           setCanDownload(false)
           setFreeLimitReached(true)
-          setFreeRemaining(0)
         }
         if (response.status === 401) {
           setAccessError('Please sign in again to continue downloading.')
@@ -235,14 +243,15 @@ export function TemplateDetailClient({ template }: Props) {
 
       if (template.isFree && !freeUnlocked && !alreadyDownloaded) {
         setAlreadyDownloaded(true)
-        setFreeRemaining((current) => Math.max(0, current - 1))
         setFreeLimitReached(false)
       }
 
       setCanDownload(true)
       setAccessError(null)
+      track('template_download_started', { slug: template.slug, isFree: template.isFree })
       toast.success('Download started!')
     } catch {
+      track('template_download_failed', { slug: template.slug })
       setDownloadError('Network error. Please check your connection and try again.')
     } finally {
       setDownloading(false)
@@ -281,10 +290,10 @@ export function TemplateDetailClient({ template }: Props) {
       {showFreeDownloadStatus && (
         <p className="text-xs text-muted-foreground mb-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1.5">
           {alreadyDownloaded
-            ? `This template is already unlocked. ${freeRemaining}/5 free downloads remaining`
+            ? 'This template is unlocked for your account.'
             : freeLimitReached
-              ? '5/5 free downloads used'
-              : `${freeRemaining}/5 free downloads remaining`}
+              ? 'Your free download allowance has been used.'
+              : 'Free download access is active.'}
         </p>
       )}
 
@@ -357,7 +366,7 @@ export function TemplateDetailClient({ template }: Props) {
       {/* Free limit reached info */}
       {freeLimitReached && template.isFree && (
         <p className="text-xs text-center text-muted-foreground mb-3">
-          You&apos;ve used all 5 free downloads. Unlock unlimited for a one-time $5 payment.
+          Your free download allowance has been used. Unlock unlimited for a one-time $5 payment.
         </p>
       )}
 
@@ -397,7 +406,7 @@ export function TemplateDetailClient({ template }: Props) {
         </div>
         <div>
           <div className="text-sm font-semibold">{template.author.name}</div>
-          <div className="text-xs text-muted-foreground">Verified author</div>
+          <div className="text-xs text-muted-foreground">Published by mtverse</div>
         </div>
       </div>
 
@@ -420,7 +429,7 @@ export function TemplateDetailClient({ template }: Props) {
 
       <div className="mt-3 pt-3 border-t text-xs text-muted-foreground flex items-center justify-between">
         <span>Updated: {new Date(template.lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-        <span>v1.0</span>
+        <span>Source package</span>
       </div>
 
       {/* Error Modal */}

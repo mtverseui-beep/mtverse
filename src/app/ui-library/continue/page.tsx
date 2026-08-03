@@ -1,8 +1,14 @@
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 import { getCurrentCustomer } from '@/lib/auth/current-customer'
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'Continue to UI Library',
+  robots: { index: false, follow: false },
+}
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>
 

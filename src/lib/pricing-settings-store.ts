@@ -3,8 +3,9 @@ import 'server-only'
 import { existsSync } from 'node:fs'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { revalidateTag } from 'next/cache'
 import { DEFAULT_WEEKLY_OFFER_SETTINGS, normalizeWeeklyOfferSettings, type WeeklyOfferSettings } from '@/lib/weekly-offer'
-import { hasRuntimeKvStore, readRuntimeJsonNoStore, writeRuntimeJson } from '@/lib/runtime-kv'
+import { hasRuntimeKvStore, readRuntimeJson, writeRuntimeJson } from '@/lib/runtime-kv'
 
 const DATA_DIR = join(process.cwd(), 'data')
 const STORE_FILE = join(DATA_DIR, 'pricing-settings-store.json')
@@ -80,7 +81,7 @@ async function ensureStoreFile() {
 async function readStore(): Promise<PricingCtaSettings> {
   if (hasRuntimeKvStore()) {
     try {
-      const runtimeStore = await readRuntimeJsonNoStore<PricingCtaSettings>(RUNTIME_STORE_KEY)
+      const runtimeStore = await readRuntimeJson<PricingCtaSettings>(RUNTIME_STORE_KEY, ['pricing-settings'])
       if (runtimeStore) return normalizeSettings(runtimeStore)
     } catch (error) {
       console.error('[Pricing] Redis settings read failed; using standard prices.', error)
@@ -101,6 +102,7 @@ async function readStore(): Promise<PricingCtaSettings> {
 async function writeStore(settings: PricingCtaSettings) {
   if (hasRuntimeKvStore()) {
     await writeRuntimeJson(RUNTIME_STORE_KEY, settings)
+    revalidateTag('pricing-settings', 'max')
     return settings
   }
 
@@ -110,6 +112,7 @@ async function writeStore(settings: PricingCtaSettings) {
 
   await ensureStoreFile()
   await writeFile(STORE_FILE, JSON.stringify(settings, null, 2), 'utf-8')
+  revalidateTag('pricing-settings', 'max')
   return settings
 }
 

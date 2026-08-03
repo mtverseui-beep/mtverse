@@ -2,17 +2,17 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Download, Eye, ShoppingCart } from 'lucide-react'
-import type { Template } from '@/lib/templates-catalog'
+import { Eye } from 'lucide-react'
+import type { TemplateCatalogItem } from '@/lib/templates-catalog'
 import { cn } from '@/lib/utils'
 import { hasWeekendTemplateOffer } from '@/lib/weekend-sale'
 
 type Props = {
-  template: Template
+  template: TemplateCatalogItem
   priority?: boolean
 }
 
-function getFrameworkShort(template: Template): string {
+function getFrameworkShort(template: TemplateCatalogItem): string {
   if (template.category === 'html') return 'HTML'
   if (template.frameworkLabel?.toLowerCase().includes('next')) return 'Next.js'
   if (template.techStack.some((t) => t.toLowerCase().startsWith('react'))) return 'React'
@@ -89,12 +89,8 @@ export function TemplateCard({ template, priority = false }: Props) {
             </div>
           </div>
 
-          {/* Meta row — downloads/purchases left, framework right */}
-          <div className="mt-1.5 flex items-center justify-between text-xs text-muted-foreground">
-            <span className="flex items-center gap-1">
-              {template.isFree ? <Download className="h-3.5 w-3.5" /> : <ShoppingCart className="h-3.5 w-3.5" />}
-              {template.salesCount.toLocaleString()} {template.isFree ? 'Downloads' : 'Purchases'}
-            </span>
+          {/* Framework */}
+          <div className="mt-1.5 text-right text-xs text-muted-foreground">
             {frameworkLabel && (
               <span className="font-medium">{frameworkLabel}</span>
             )}

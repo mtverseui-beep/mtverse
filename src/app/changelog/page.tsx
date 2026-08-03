@@ -6,7 +6,7 @@ import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animati
 import { SectionBackground } from '@/components/design-system/backgrounds'
 
 export const metadata: Metadata = {
-  title: 'Template Marketplace Changelog - mtverse',
+  title: 'Template Marketplace Changelog',
   description: 'Track updates to the mtverse template catalog, previews, checkout verification, account downloads, admin tools, and template SEO collections.',
   alternates: { canonical: '/changelog' },
 }

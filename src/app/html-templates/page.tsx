@@ -1,13 +1,14 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Check, Code2, Download, FolderOpen, Globe2, Infinity, Layers, Search, Sparkles } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { SITE_URL } from '@/lib/site-url'
 import { getAllTemplatesFromStore } from '@/lib/templates-data'
-import { withAllTemplateSocial } from '@/lib/template-social-store'
 import { TemplateCard } from '@/components/templates/template-card'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
 import { CtaBackground, SectionBackground } from '@/components/design-system/backgrounds'
+
+export const revalidate = 300
 
 export const metadata: Metadata = {
   title: 'Free HTML Website Templates & $5 Bundle',
@@ -46,6 +47,17 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, 'max-image-preview': 'large' },
 }
 
+const HTML_VERTICALS = new Set(['restaurant', 'healthcare', 'education', 'fitness', 'real-estate', 'crypto'])
+
+function getHtmlCategoryPath(id: string) {
+  if (HTML_VERTICALS.has(id)) return `/html-templates/${id}`
+  if (id === 'portfolio') return '/template-hubs/portfolio-html-templates'
+  if (id === 'agency') return '/template-hubs/agency-website-templates'
+  if (id === 'saas') return '/template-hubs/saas-templates'
+  if (id === 'ecommerce') return '/template-hubs/ecommerce-website-templates'
+  return `/templates?category=html&subcategory=${id}`
+}
+
 function normalizeSubcategory(value: string | undefined) {
   return (value || 'others')
     .trim()
@@ -56,11 +68,8 @@ function normalizeSubcategory(value: string | undefined) {
 
 export default async function HtmlTemplatesPage() {
   const allTemplates = await getAllTemplatesFromStore()
-  const htmlTemplates = await withAllTemplateSocial(allTemplates.filter((template) => template.category === 'html'))
-  const featuredHtmlTemplates = htmlTemplates
-    .slice()
-    .sort((a, b) => b.salesCount - a.salesCount)
-    .slice(0, 8)
+  const htmlTemplates = allTemplates.filter((template) => template.category === 'html')
+  const featuredHtmlTemplates = htmlTemplates.filter((template) => template.featured).slice(0, 8)
 
   const subcategoryMap = new Map<string, { label: string; count: number }>()
   for (const template of htmlTemplates) {
@@ -92,7 +101,7 @@ export default async function HtmlTemplatesPage() {
           '@type': 'ListItem',
           position: index + 1,
           name: category.label,
-          url: SITE_URL + '/templates?category=html&subcategory=' + category.id,
+          url: SITE_URL + getHtmlCategoryPath(category.id),
         })),
       },
       {
@@ -205,7 +214,7 @@ export default async function HtmlTemplatesPage() {
               {subcategories.map((category) => (
                 <Link
                   key={category.id}
-                  href={`/templates?category=html&subcategory=${category.id}`}
+                  href={getHtmlCategoryPath(category.id)}
                   className="group rounded-xl border border-border/70 bg-card p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md"
                 >
                   <div className="flex items-center justify-between gap-3">
@@ -226,11 +235,11 @@ export default async function HtmlTemplatesPage() {
             <Reveal className="ds-section-head ds-section-head-left mb-8">
               <span className="ds-eyebrow ds-eyebrow-accent">
                 <Sparkles className="h-3.5 w-3.5" />
-                Popular HTML templates
+                Featured HTML templates
               </span>
               <h2 className="ds-h1 ds-text-balance">Preview before you download</h2>
               <p className="ds-lead ds-text-pretty mt-2">
-                These are the most downloaded HTML templates from the catalog.
+                A curated selection of polished HTML templates to preview before choosing your source package.
               </p>
             </Reveal>
             <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

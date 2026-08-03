@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { AlertTriangle, ArrowLeft, Blocks, CheckCircle2, Clock3, ExternalLink, PackageCheck } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { PackageDownloadButton } from '@/components/payment/package-download-button'
+import { PurchaseAnalytics } from '@/components/payment/purchase-analytics'
 import { getPlanByProviderTransactionId, setPlan } from '@/lib/plan-store'
 import { isMockPaymentAllowed, verifyPaymentFromSearchParams } from '@/lib/payments'
 import { getVerifiedPaddleTransaction } from '@/lib/paddle-transaction'
@@ -196,6 +197,7 @@ export default async function PricingSuccessPage({ searchParams }: { searchParam
 
   return (
     <PublicLayout>
+      <PurchaseAnalytics confirmed={valid} packageId={result.packageId} templateSlug={kitSlug} />
       <main className="ds-section min-h-[70vh] bg-gradient-to-b from-background via-muted/20 to-background">
         <div className="ds-container max-w-3xl">
           <div className="ds-card overflow-hidden p-0 text-center">

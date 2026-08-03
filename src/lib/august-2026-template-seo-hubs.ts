@@ -41,7 +41,7 @@ export const AUGUST_2026_TEMPLATE_SEO_HUBS: TemplateSeoHub[] = [
       { question: 'Does Aisle connect to Shopify or another commerce backend?', answer: 'The package ships with realistic deterministic demo data. Connect your chosen commerce, warehouse, payment, and shipping services through a server-side integration layer.' },
       { question: 'Are the product images included?', answer: 'Aisle includes 99 product photographs across 33 product families plus customer portraits for its demonstration catalog and order workflows.' },
     ],
-    related: ['enterprise-dashboard-templates', 'nextjs-dashboard-templates', 'ecommerce-templates'],
+    related: ['enterprise-dashboard-templates', 'nextjs-dashboard-templates', 'ecommerce-website-templates'],
   },
   {
     slug: 'inventory-forecasting-saas-templates',
@@ -62,7 +62,7 @@ export const AUGUST_2026_TEMPLATE_SEO_HUBS: TemplateSeoHub[] = [
       { question: 'Is Cadence only for inventory forecasting products?', answer: 'Its content and visual system are purpose-built for inventory, demand planning, replenishment, and retail operations, but the typed content structure can be adapted to adjacent operational SaaS products.' },
       { question: 'Do the contact forms send production email?', answer: 'The included handlers validate submissions and document the integration point. Connect an approved email or CRM provider and add spam, rate-limit, consent, and monitoring controls before launch.' },
     ],
-    related: ['saas-templates', 'landing-page-templates', 'ecommerce-templates'],
+    related: ['saas-templates', 'landing-page-templates', 'ecommerce-website-templates'],
   },
   {
     slug: 'ai-saas-website-templates',

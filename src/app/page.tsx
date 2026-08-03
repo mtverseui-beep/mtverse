@@ -27,13 +27,12 @@ import {
   getTemplateCategoriesFor,
   getTemplateStatsFor,
 } from '@/lib/templates-data'
-import { withAllTemplateSocial } from '@/lib/template-social-store'
 import { TemplateCard } from '@/components/templates/template-card'
 import { SectionBackground } from '@/components/design-system/backgrounds'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
 import { TEMPLATE_SEO_HUBS } from '@/lib/template-seo-hubs'
 import { SITE_URL } from '@/lib/site-url'
-import { SOCIAL_EMAIL, SOCIAL_GITHUB, SOCIAL_TWITTER } from '@/lib/site-social'
+import { SOCIAL_EMAIL, SOCIAL_GITHUB } from '@/lib/site-social'
 import { NewsletterSignup } from '@/components/home/newsletter-signup'
 import { TemplateFaqList } from '@/components/content/template-faq-list'
 
@@ -81,13 +80,13 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: 'mtverse',
     type: 'website',
-    images: [{ url: '/SiteLogo.png', width: 512, height: 512, alt: 'mtverse template marketplace' }],
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'mtverse website templates and UI components' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'mtverse - Website Templates & UI Component Library',
     description: 'Live previews for website templates and UI components, protected source packages, and secure account delivery.',
-    images: ['/SiteLogo.png'],
+    images: ['/opengraph-image'],
   },
   robots: {
     index: true,
@@ -151,7 +150,7 @@ const FAQS = [
 
 export default async function Home() {
   const templates = await getAllTemplatesFromStore()
-  const featuredTemplates = await getFeaturedTemplatesFromStore(6).then((items) => withAllTemplateSocial(items))
+  const featuredTemplates = await getFeaturedTemplatesFromStore(6)
   const templateStats = getTemplateStatsFor(templates)
   const categoryOptions = getTemplateCategoriesFor(templates).filter((category) => category.id !== 'all')
   const paidTemplates = templates.filter((template) => !template.isFree).length
@@ -167,14 +166,6 @@ export default async function Home() {
         name: 'mtverse',
         description: 'Website templates for product teams plus a reusable UI component source library.',
         publisher: { '@id': `${SITE_URL}/#organization` },
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: {
-            '@type': 'EntryPoint',
-            urlTemplate: `${SITE_URL}/templates?search={search_term_string}`,
-          },
-          'query-input': 'required name=search_term_string',
-        },
       },
       {
         '@type': 'Organization',
@@ -182,7 +173,7 @@ export default async function Home() {
         name: 'mtverse',
         url: SITE_URL,
         logo: `${SITE_URL}/SiteLogo.png`,
-        sameAs: [SOCIAL_GITHUB, SOCIAL_TWITTER],
+        sameAs: [SOCIAL_GITHUB],
         contactPoint: {
           '@type': 'ContactPoint',
           email: SOCIAL_EMAIL,

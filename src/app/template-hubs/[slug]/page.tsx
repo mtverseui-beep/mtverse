@@ -7,13 +7,12 @@ import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animati
 import { TemplateCard } from '@/components/templates/template-card'
 import { SITE_URL } from '@/lib/site-url'
 import { getAllTemplatesFromStore } from '@/lib/templates-data'
-import { withAllTemplateSocial } from '@/lib/template-social-store'
 import { getHubTemplates, getTemplateSeoHub, TEMPLATE_SEO_HUBS } from '@/lib/template-seo-hubs'
 import { TemplateFaqList } from '@/components/content/template-faq-list'
 
 type Params = Promise<{ slug: string }>
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 export function generateStaticParams() {
   return TEMPLATE_SEO_HUBS.map((hub) => ({ slug: hub.slug }))
@@ -44,9 +43,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       url,
       type: 'website',
       siteName: 'mtverse',
-      images: [{ url: '/SiteLogo.png', width: 512, height: 512, alt: 'mtverse templates' }],
+      images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'mtverse template buying guides' }],
     },
-    twitter: { card: 'summary_large_image', title: hub.title, description: hub.metaDescription },
+    twitter: { card: 'summary_large_image', title: hub.title, description: hub.metaDescription, images: ['/opengraph-image'] },
     robots: {
       index: true,
       follow: true,
@@ -63,8 +62,8 @@ export default async function TemplateSeoHubPage({ params }: { params: Params })
   if (!hub) notFound()
 
   const baseTemplates = await getAllTemplatesFromStore()
-  const hubTemplates = await withAllTemplateSocial(getHubTemplates(baseTemplates, hub))
-  const fallbackTemplates = hubTemplates.length ? hubTemplates : await withAllTemplateSocial(baseTemplates.filter((template) => !template.isFree).slice(0, 9))
+  const hubTemplates = getHubTemplates(baseTemplates, hub)
+  const fallbackTemplates = hubTemplates.length ? hubTemplates : baseTemplates.filter((template) => !template.isFree).slice(0, 9)
   const canonicalUrl = `${SITE_URL}/template-hubs/${hub.slug}`
 
   const jsonLd = {

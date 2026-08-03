@@ -5,11 +5,40 @@ import { notFound } from 'next/navigation'
 import { ArrowLeft, Calendar, Clock, BookOpen } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { BLOG_POSTS, getBlogPost } from '@/lib/blog-posts'
-import { SITE_URL } from '@/lib/site-url'
+import { absoluteUrl, SITE_URL } from '@/lib/site-url'
 import { Reveal } from '@/components/design-system/animations'
 import { BlogShareButton } from '@/components/blog/blog-share-button'
 
 type Params = Promise<{ slug: string }>
+
+function truncateAtWord(value: string, maxLength: number) {
+  const normalized = value.replace(/\s+/g, ' ').trim()
+  if (normalized.length <= maxLength) return normalized
+  const shortened = normalized.slice(0, maxLength + 1)
+  const lastSpace = shortened.lastIndexOf(' ')
+  return (lastSpace > maxLength * 0.65 ? shortened.slice(0, lastSpace) : normalized.slice(0, maxLength)).replace(/[.,;:!?&-]+$/g, '')
+}
+
+function buildBlogSeoTitle(value: string) {
+  return truncateAtWord(value.replace(/\s*[|\-]\s*mtverse(?:\s+Blog)?$/i, ''), 52)
+}
+
+function buildBlogSeoDescription(value: string) {
+  const normalized = value.replace(/\s+/g, ' ').trim()
+  if (normalized.length <= 158) return normalized
+  const sentenceEnd = Math.max(normalized.lastIndexOf('.', 158), normalized.lastIndexOf('!', 158), normalized.lastIndexOf('?', 158))
+  if (sentenceEnd >= 110) return normalized.slice(0, sentenceEnd + 1)
+  return truncateAtWord(normalized, 155) + '...'
+}
+
+function estimateReadTime(post: (typeof BLOG_POSTS)[number]) {
+  const words = [post.intro, ...post.sections.flatMap((section) => [section.heading, ...section.body, ...(section.bullets || [])])]
+    .join(' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length
+  return `${Math.max(1, Math.ceil(words / 225))} min read`
+}
 
 export async function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({ slug: post.slug }))
@@ -20,9 +49,12 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const post = getBlogPost(slug)
   if (!post) return { title: 'Post not found', robots: { index: false } }
 
+  const seoTitle = buildBlogSeoTitle(post.title)
+  const seoDescription = buildBlogSeoDescription(post.excerpt)
+
   return {
-    title: `${post.title} | mtverse Blog`,
-    description: post.excerpt,
+    title: seoTitle,
+    description: seoDescription,
     keywords: [
       post.title,
       post.category,
@@ -35,19 +67,19 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     ],
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: seoTitle,
+      description: seoDescription,
       url: `${SITE_URL}/blog/${post.slug}`,
       type: 'article',
       publishedTime: post.isoDate,
       authors: ['mtverse'],
-      images: [{ url: post.coverImage, alt: post.title }],
+      images: [{ url: absoluteUrl(post.coverImage), alt: post.title }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: post.excerpt,
-      images: [post.coverImage],
+      title: seoTitle,
+      description: seoDescription,
+      images: [absoluteUrl(post.coverImage)],
     },
   }
 }
@@ -63,13 +95,22 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   const currentIndex = BLOG_POSTS.findIndex((p) => p.slug === post.slug)
   const prevPost = currentIndex > 0 ? BLOG_POSTS[currentIndex - 1] : null
   const nextPost = currentIndex < BLOG_POSTS.length - 1 ? BLOG_POSTS[currentIndex + 1] : null
+  const readTime = estimateReadTime(post)
+  const seoDescription = buildBlogSeoDescription(post.excerpt)
+  const relatedLinks = post.relatedLinks?.length
+    ? post.relatedLinks
+    : [
+        { label: 'Browse all website templates', href: '/templates' },
+        { label: 'Explore template buying guides', href: '/template-hubs/nextjs-dashboard-templates' },
+        { label: 'Compare mtverse pricing', href: '/pricing' },
+      ]
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
-    description: post.excerpt,
-    image: SITE_URL + post.coverImage,
+    description: seoDescription,
+    image: absoluteUrl(post.coverImage),
     datePublished: post.isoDate,
     dateModified: post.isoDate,
     url: `${SITE_URL}/blog/${post.slug}`,
@@ -122,7 +163,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
                     <BookOpen className="h-4 w-4 text-primary" />
                   </div>
-                  <span className="text-sm font-medium">mtverse</span>
+                  <Link href="/about" className="text-sm font-medium hover:text-primary hover:underline">mtverse editorial team</Link>
                 </div>
                 <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
                   <Calendar className="h-3.5 w-3.5" />
@@ -130,7 +171,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
                   <Clock className="h-3.5 w-3.5" />
-                  {post.readTime}
+                  {readTime}
                 </span>
               </div>
             </Reveal>
@@ -180,11 +221,11 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                     )}
                   </section>
                 ))}
-                {post.relatedLinks?.length ? (
+                {relatedLinks.length ? (
                   <aside className="mt-10 rounded-lg border border-border bg-muted/30 p-5">
                     <h2 className="text-base font-bold text-foreground">Continue exploring</h2>
                     <div className="mt-3 flex flex-col gap-2">
-                      {post.relatedLinks.map((item) => (
+                      {relatedLinks.map((item) => (
                         <Link key={item.href} href={item.href} className="inline-flex w-fit items-center text-sm font-semibold text-primary hover:underline">
                           {item.label}
                         </Link>

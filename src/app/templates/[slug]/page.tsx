@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import type { Template } from '@/lib/templates-catalog'
-import { SITE_URL } from '@/lib/site-url'
-import { notFound, redirect } from 'next/navigation'
+import { absoluteUrl, SITE_URL } from '@/lib/site-url'
+import { notFound, permanentRedirect } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -21,7 +21,7 @@ import {
 } from 'lucide-react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { getTemplateBySlugFromStore, getRelatedTemplatesFromStore, getTemplateCategoriesFromStore } from '@/lib/templates-data'
-import { withAllTemplateSocial, withTemplateSocial } from '@/lib/template-social-store'
+import { withTemplateSocial } from '@/lib/template-social-store'
 import { TemplateCard } from '@/components/templates/template-card'
 import { TemplateDetailClient } from '@/components/templates/template-detail-client'
 import { TemplateTabs } from '@/components/templates/template-tabs'
@@ -74,9 +74,16 @@ function truncateMetaDescription(value: string, maxLength = 160) {
   const normalized = normalizeText(value)
   if (normalized.length <= maxLength) return normalized
 
+  const sentenceEnd = Math.max(
+    normalized.lastIndexOf('.', maxLength),
+    normalized.lastIndexOf('!', maxLength),
+    normalized.lastIndexOf('?', maxLength)
+  )
+  if (sentenceEnd >= 110) return normalized.slice(0, sentenceEnd + 1)
+
   const shortened = normalized.slice(0, maxLength - 1)
   const lastSpace = shortened.lastIndexOf(' ')
-  return (lastSpace > 110 ? shortened.slice(0, lastSpace) : shortened).replace(/[.,;:!?-]+$/g, '') + '.'
+  return (lastSpace > 110 ? shortened.slice(0, lastSpace) : shortened).replace(/[.,;:!?-]+$/g, '') + '…'
 }
 
 function getTemplateFramework(template: Template) {
@@ -110,6 +117,13 @@ function getTemplateIntent(template: Template) {
 }
 
 function buildTemplateSeoTitle(template: Template) {
+  const storedTitle = normalizeText(template.seoTitle || '')
+    .replace(/\s*[|–—-]\s*mtverse.*$/i, '')
+    .trim()
+  if (storedTitle.length >= 20 && storedTitle.length <= 60 && !/(?:\s|^)(?:and|or|for|with|by|&)$/i.test(storedTitle)) {
+    return storedTitle
+  }
+
   const intent = getTemplateIntent(template)
   const suffix = ` - ${intent}`
   const maxBaseLength = Math.max(16, 60 - suffix.length)
@@ -125,7 +139,9 @@ function buildTemplateSeoTitle(template: Template) {
 
   const shortened = normalizedTitle.slice(0, maxBaseLength)
   const lastSpace = shortened.lastIndexOf(' ')
-  const baseTitle = (lastSpace > 12 ? shortened.slice(0, lastSpace) : shortened).replace(/[.,;:!?-]+$/g, '')
+  const baseTitle = (lastSpace > 12 ? shortened.slice(0, lastSpace) : shortened)
+    .replace(/[.,;:!?-]+$/g, '')
+    .replace(/\s+(?:and|or|for|with|by|&)$/i, '')
   return `${baseTitle}${suffix}`
 }
 
@@ -202,9 +218,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       url: SITE_URL + '/templates/' + template.slug,
       type: 'website',
       siteName: 'mtverse',
-      images: [{ url: template.screenshotUrl, width: 1900, height: 900, alt: template.title }],
+      images: [{ url: absoluteUrl(template.screenshotUrl), width: 1900, height: 900, alt: template.title }],
     },
-    twitter: { card: 'summary_large_image', title, description, images: [template.screenshotUrl] },
+    twitter: { card: 'summary_large_image', title, description, images: [absoluteUrl(template.screenshotUrl)] },
     robots: {
       index: true,
       follow: true,
@@ -224,7 +240,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
   const resolvedSlug = resolveTemplateSlug(slug)
 
   if (resolvedSlug !== slug) {
-    redirect(`/templates/${resolvedSlug}`)
+    permanentRedirect(`/templates/${resolvedSlug}`)
   }
 
   const baseTemplate = await getTemplateBySlugFromStore(resolvedSlug)
@@ -232,7 +248,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
 
   const [template, related, categories] = await Promise.all([
     withTemplateSocial(baseTemplate),
-    getRelatedTemplatesFromStore(resolvedSlug, 4).then((items) => withAllTemplateSocial(items)),
+    getRelatedTemplatesFromStore(resolvedSlug, 4),
     getTemplateCategoriesFromStore(),
   ])
   const category = categories.find((c) => c.id === template.category)
@@ -248,7 +264,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
   ]
   const productImage = {
     '@type': 'ImageObject',
-    url: template.screenshotUrl,
+    url: absoluteUrl(template.screenshotUrl),
     caption: buildTemplateImageAlt(template),
   }
   const offer = {
@@ -397,7 +413,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
                   )}
                   <span className="flex items-center gap-1">
                     <Package className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-                    {template.components}+ components
+                    {template.pages.length} pages
                   </span>
                 </div>
               </div>
@@ -510,6 +526,20 @@ export default async function TemplateDetailPage({ params }: { params: Params })
                 </div>
 
                 {/* Pages */}
+                {template.useCases?.length ? (
+                  <>
+                    <h3 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3 mt-5 sm:mt-6">Best suited for</h3>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {template.useCases.map((useCase) => (
+                        <div key={useCase} className="flex items-start gap-2 rounded-lg border bg-background p-3 text-xs sm:text-sm">
+                          <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                          <span>{useCase}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : null}
+
                 <h3 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3 mt-5 sm:mt-6">Pages included</h3>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {template.pages.map((p, i) => (
@@ -529,7 +559,7 @@ export default async function TemplateDetailPage({ params }: { params: Params })
                 <dl className="divide-y divide-border">
                   {[
                     { label: 'Pages', value: `${template.pages.length} ready pages` },
-                    { label: 'Components', value: `${template.components}+ reusable sections` },
+                    { label: 'Features', value: `${template.features.length} documented features` },
                     { label: 'License', value: template.license },
                     { label: 'Last updated', value: new Date(template.lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) },
                     { label: 'Responsive', value: 'Desktop, tablet, and mobile' },

@@ -56,6 +56,7 @@ async function uploadToR2(file: File, key: string, contentType: string, bucket: 
       Key: key,
       Body: Buffer.from(await file.arrayBuffer()),
       ContentType: contentType,
+      CacheControl: contentType.startsWith('image/') ? 'public, max-age=31536000, immutable' : 'private, no-store',
     })
   )
 }

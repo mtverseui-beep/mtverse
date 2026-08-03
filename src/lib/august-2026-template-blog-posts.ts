@@ -69,7 +69,7 @@ export const AUGUST_2026_TEMPLATE_BLOG_POSTS: BlogPost[] = [
         body: ['Retail systems commonly connect commerce platforms, warehouses, shipping providers, returns, payments, tax, and customer service. Keep provider adapters behind typed server services rather than embedding vendor payloads in UI components.', 'Add webhook verification, idempotency keys, reconciliation jobs, role checks, rate limits, and operator-visible sync health before using the interface in production.'],
       },
     ],
-    relatedLinks: [{ label: 'View Aisle template details', href: '/templates/aisle' }, { label: 'Browse retail operations dashboards', href: '/template-hubs/retail-operations-dashboard-templates' }, { label: 'Compare ecommerce templates', href: '/template-hubs/ecommerce-templates' }],
+    relatedLinks: [{ label: 'View Aisle template details', href: '/templates/aisle' }, { label: 'Browse retail operations dashboards', href: '/template-hubs/retail-operations-dashboard-templates' }, { label: 'Compare ecommerce templates', href: '/template-hubs/ecommerce-website-templates' }],
   },
   {
     slug: 'inventory-forecasting-saas-landing-page-guide',

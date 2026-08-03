@@ -4,7 +4,7 @@ import { ArrowRight, Eye, LayoutGrid, PackageCheck, ShieldCheck, Sparkles, Zap }
 import PublicLayout from '@/components/layout/PublicLayout'
 import { Reveal, Stagger, StaggerItem } from '@/components/design-system/animations'
 import { HomeHeroBackground } from '@/components/design-system/hero-backgrounds'
-import { SOCIAL_EMAIL, SOCIAL_GITHUB, SOCIAL_TWITTER } from '@/lib/site-social'
+import { SOCIAL_EMAIL, SOCIAL_GITHUB } from '@/lib/site-social'
 import { getAllTemplatesFromStore } from '@/lib/templates-data'
 import { SITE_URL } from '@/lib/site-url'
 
@@ -59,7 +59,7 @@ export default async function AboutPage() {
       url: SITE_URL,
       logo: `${SITE_URL}/SiteLogo.png`,
       description: 'A preview-first library of modern UI components, application UI kits, and website templates with protected source-package delivery.',
-      sameAs: [SOCIAL_GITHUB, SOCIAL_TWITTER],
+      sameAs: [SOCIAL_GITHUB],
       email: SOCIAL_EMAIL,
     },
   }

@@ -4,8 +4,8 @@ import { useEffect, useState, type ComponentType } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Github, Twitter, Mail, ArrowRight, LayoutGrid, LayoutDashboard, ShoppingBag, Code2, Rocket } from 'lucide-react'
-import { SOCIAL_GITHUB, SOCIAL_TWITTER, SOCIAL_EMAIL } from '@/lib/site-social'
+import { Github, Mail, ArrowRight, LayoutGrid, LayoutDashboard, ShoppingBag, Code2, Rocket } from 'lucide-react'
+import { SOCIAL_GITHUB, SOCIAL_EMAIL } from '@/lib/site-social'
 
 const FOOTER_COLUMNS: Array<{
   heading: string
@@ -42,6 +42,7 @@ const FOOTER_COLUMNS: Array<{
       { name: 'Pricing', href: '/pricing' },
       { name: 'Account', href: '/account' },
       { name: 'Blog', href: '/blog' },
+      { name: 'Changelog', href: '/changelog' },
       { name: 'FAQ', href: '/faq' },
       { name: 'Support', href: '/support' },
       { name: 'About', href: '/about' },
@@ -63,7 +64,6 @@ const FOOTER_COLUMNS: Array<{
 
 const SOCIAL_LINKS = [
   { name: 'GitHub', href: SOCIAL_GITHUB, icon: Github },
-  { name: 'Twitter / X', href: SOCIAL_TWITTER, icon: Twitter },
   { name: 'Email', href: 'mailto:' + SOCIAL_EMAIL, icon: Mail },
 ]
 

@@ -3,8 +3,9 @@ import 'server-only'
 import { existsSync } from 'fs'
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
+import { revalidateTag } from 'next/cache'
 import { dashboardKits, type DashboardKit, type DashboardKitStatus, type TemplatePricingTier } from '@/lib/dashboard-kits'
-import { hasRuntimeKvStore, readRuntimeJsonNoStore, writeRuntimeJson } from '@/lib/runtime-kv'
+import { hasRuntimeKvStore, readRuntimeJson, writeRuntimeJson } from '@/lib/runtime-kv'
 import { slugify } from '@/lib/utils'
 
 const DATA_DIR = join(process.cwd(), 'data')
@@ -188,7 +189,7 @@ async function ensureStoreFile() {
 
 async function readStore(): Promise<DashboardKitStoreData> {
   if (hasRuntimeKvStore()) {
-    const runtimeStore = await readRuntimeJsonNoStore<DashboardKitStoreData>(RUNTIME_STORE_KEY)
+    const runtimeStore = await readRuntimeJson<DashboardKitStoreData>(RUNTIME_STORE_KEY, ['templates'])
     if (runtimeStore?.kits?.length) return runtimeStore
   }
 
@@ -217,6 +218,7 @@ async function writeStore(kits: DashboardKit[], source: string) {
 
   if (hasRuntimeKvStore()) {
     await writeRuntimeJson(RUNTIME_STORE_KEY, payload)
+    revalidateTag('templates', 'max')
     return payload
   }
 
@@ -226,6 +228,7 @@ async function writeStore(kits: DashboardKit[], source: string) {
 
   await ensureStoreFile()
   await writeFile(STORE_FILE, JSON.stringify(payload, null, 2), 'utf-8')
+  revalidateTag('templates', 'max')
   return payload
 }
 

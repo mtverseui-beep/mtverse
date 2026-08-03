@@ -2,15 +2,15 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Gauge, Store, Building2, Code2 } from 'lucide-react'
 import { SITE_URL } from '@/lib/site-url'
+import { toTemplateCatalogItem } from '@/lib/templates-catalog'
 import { Suspense } from 'react'
 import PublicLayout from '@/components/layout/PublicLayout'
 import { TemplatesHubClient } from '@/components/templates/templates-hub-client'
 import { getAllTemplatesFromStore, getTemplateCategoriesFor, getTemplateStatsFor } from '@/lib/templates-data'
-import { withAllTemplateSocial } from '@/lib/template-social-store'
 import { TEMPLATE_SEO_HUBS } from '@/lib/template-seo-hubs'
 import { TemplateFaqList } from '@/components/content/template-faq-list'
 
-export const metadata: Metadata = {
+const TEMPLATES_METADATA: Metadata = {
   title: {
     default: 'Next.js Dashboards, Admin UI & HTML Templates',
     template: '%s | mtverse',
@@ -73,7 +73,23 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, 'max-image-preview': 'large' },
 }
 
-export const dynamic = 'force-dynamic'
+export async function generateMetadata({ searchParams }: { searchParams: SearchParams }): Promise<Metadata> {
+  const params = await searchParams
+  const page = Math.max(1, Math.floor(Number(params.page) || 1))
+  const hasFilter = Boolean(params.search || params.sort || params.category || params.subcategory)
+  const canonical = page > 1 && !hasFilter ? `/templates?page=${page}` : '/templates'
+
+  return {
+    ...TEMPLATES_METADATA,
+    alternates: { canonical },
+    openGraph: { ...TEMPLATES_METADATA.openGraph, url: `${SITE_URL}${canonical}` },
+    robots: hasFilter
+      ? { index: false, follow: true, 'max-image-preview': 'large' }
+      : TEMPLATES_METADATA.robots,
+  }
+}
+
+export const revalidate = 300
 const TEMPLATE_FAQS = [
   { question: 'Which template should I choose?', answer: 'Use HTML templates for static websites and quick client launches. Choose a dashboard or application template when you need richer product screens, authenticated workflows, and reusable application structure.' },
   { question: 'Are these free website templates?', answer: 'HTML templates support free individual downloads with the account limit shown on the site. The separate HTML bundle provides the complete collection and unlimited individual HTML access.' },
@@ -93,14 +109,14 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
   const sp = await searchParams
   const category = sp.category ?? 'all'
   const search = sp.search ?? ''
-  const sort = (sp.sort as 'featured' | 'trending' | 'new' | 'downloads' | 'price-low' | 'price-high' | 'rating') ?? 'featured'
+  const sort = (sp.sort as 'featured' | 'trending' | 'new' | 'price-low' | 'price-high' | 'rating') ?? 'featured'
   const subcategory = sp.subcategory ?? 'all'
   const page = Math.max(1, Math.floor(Number(sp.page) || 1))
 
   const baseTemplates = await getAllTemplatesFromStore()
-  const templates = await withAllTemplateSocial(baseTemplates)
-  const categoryOptions = getTemplateCategoriesFor(templates)
-  const stats = getTemplateStatsFor(templates)
+  const templates = baseTemplates.map(toTemplateCatalogItem)
+  const categoryOptions = getTemplateCategoriesFor(baseTemplates)
+  const stats = getTemplateStatsFor(baseTemplates)
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -108,7 +124,7 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
         '@type': 'CollectionPage',
         '@id': SITE_URL + '/templates#collection',
         name: 'Premium Dashboard and Free HTML Website Templates',
-        description: metadata.description,
+        description: TEMPLATES_METADATA.description,
         url: SITE_URL + '/templates',
         numberOfItems: templates.length,
       },
@@ -162,7 +178,7 @@ export default async function TemplatesPage({ searchParams }: { searchParams: Se
 
             <div className="mt-8 grid overflow-hidden rounded-lg border border-border sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { title: 'Free HTML templates', copy: 'Responsive static websites for portfolios, services, SaaS, ecommerce, and client launches.', icon: Code2, href: '/template-categories/html' },
+                { title: 'Free HTML templates', copy: 'Responsive static websites for portfolios, services, SaaS, ecommerce, and client launches.', icon: Code2, href: '/html-templates' },
                 { title: 'SaaS dashboards', copy: 'Admin shells, billing, analytics, workspace, and team management screens.', icon: Gauge, href: '/template-hubs/saas-templates' },
                 { title: 'Ecommerce templates', copy: 'Storefront, catalog, checkout, orders, inventory, and operations interfaces.', icon: Store, href: '/template-categories/ecommerce' },
                 { title: 'Enterprise admin UI', copy: 'Data-rich dashboards, RBAC, settings, CRM, finance, and internal tools.', icon: Building2, href: '/template-hubs/react-admin-dashboard-templates' },
