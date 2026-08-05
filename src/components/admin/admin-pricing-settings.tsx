@@ -149,9 +149,9 @@ export function AdminPricingSettings({ initialSettings, emailTemplate }: Props) 
           <div className="mt-5">
             <h4 className="mb-3 text-xs font-black uppercase tracking-[0.12em] text-muted-foreground">Included products</h4>
             <div className="grid gap-3 sm:grid-cols-2">
-              <Toggle label="Paid templates - $5 each" description="Each checkout unlocks only the selected template." checked={settings.offer.individualTemplatesEnabled} onChange={(value) => updateOffer('individualTemplatesEnabled', value)} />
-              <Toggle label="mtadmin editions - $5 each" description="Next.js and React individual editions only." checked={settings.offer.mtadminEditionsEnabled} onChange={(value) => updateOffer('mtadminEditionsEnabled', value)} />
-              <Toggle label="UI Library - $5" description="Falls back to the standard $25 price when disabled." checked={settings.offer.uiLibraryEnabled} onChange={(value) => updateOffer('uiLibraryEnabled', value)} />
+              <Toggle label="Paid templates - $7 each" description="Each checkout unlocks only the selected template." checked={settings.offer.individualTemplatesEnabled} onChange={(value) => updateOffer('individualTemplatesEnabled', value)} />
+              <Toggle label="mtadmin editions - $7 each" description="Next.js and React individual editions only." checked={settings.offer.mtadminEditionsEnabled} onChange={(value) => updateOffer('mtadminEditionsEnabled', value)} />
+              <Toggle label="UI Library - $7" description="Falls back to the standard $25 price when disabled." checked={settings.offer.uiLibraryEnabled} onChange={(value) => updateOffer('uiLibraryEnabled', value)} />
               <Toggle label="All templates bundle - $50" description="Falls back to the standard $149 price when disabled." checked={settings.offer.allPaidBundleEnabled} onChange={(value) => updateOffer('allPaidBundleEnabled', value)} />
             </div>
           </div>

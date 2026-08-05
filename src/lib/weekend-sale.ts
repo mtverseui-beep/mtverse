@@ -3,7 +3,7 @@ import type { PackageId } from '@/lib/packages'
 export const WEEKEND_SALE = {
   id: 'mtverse-weekend-2026-08-01',
   name: 'mtverse Massive Weekend Offer',
-  priceUsd: 5,
+  priceUsd: 7,
   startAt: '2026-08-01T00:00:00+05:30',
   endAt: '2026-08-03T00:00:00+05:30',
   timeZone: 'Asia/Kolkata',

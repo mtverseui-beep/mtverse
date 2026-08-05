@@ -80,12 +80,12 @@ export function WeeklyOfferPopup() {
   }
 
   if (!mounted || !offer?.runtime.active || !offer.settings.popupEnabled) return null
-  const fiveDollarProducts = [
+  const offerProducts = [
     offer.settings.individualTemplatesEnabled ? 'templates' : '',
     offer.settings.mtadminEditionsEnabled ? 'mtadmin editions' : '',
     offer.settings.uiLibraryEnabled ? 'UI Library' : '',
   ].filter(Boolean)
-  if (!fiveDollarProducts.length && !offer.settings.allPaidBundleEnabled) return null
+  if (!offerProducts.length && !offer.settings.allPaidBundleEnabled) return null
 
   return (
     <aside
@@ -106,9 +106,9 @@ export function WeeklyOfferPopup() {
           mtverse {offer.runtime.label}
         </div>
         <div className="mt-3 flex flex-wrap items-end gap-x-2 gap-y-1">
-          <span className="text-4xl font-black tracking-tight">${fiveDollarProducts.length ? offer.settings.individualTemplatePriceUsd : offer.settings.allPaidBundlePriceUsd}</span>
-          <span className="pb-1 text-sm font-semibold text-zinc-600">{fiveDollarProducts.length ? fiveDollarProducts.join(', ') : 'All Templates Bundle'}</span>
-          {fiveDollarProducts.length && offer.settings.allPaidBundleEnabled ? <span className="w-full text-xs font-bold text-indigo-700">All Templates Bundle ${offer.settings.allPaidBundlePriceUsd}</span> : null}
+          <span className="text-4xl font-black tracking-tight">${offerProducts.length ? offer.settings.individualTemplatePriceUsd : offer.settings.allPaidBundlePriceUsd}</span>
+          <span className="pb-1 text-sm font-semibold text-zinc-600">{offerProducts.length ? offerProducts.join(', ') : 'All Templates Bundle'}</span>
+          {offerProducts.length && offer.settings.allPaidBundleEnabled ? <span className="w-full text-xs font-bold text-indigo-700">All Templates Bundle ${offer.settings.allPaidBundlePriceUsd}</span> : null}
         </div>
         <p className="mt-2 text-sm leading-6 text-zinc-600">{offer.settings.popupDescription}</p>
 
