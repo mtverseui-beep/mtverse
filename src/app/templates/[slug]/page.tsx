@@ -32,35 +32,11 @@ import { SectionBackground, CtaBackground } from '@/components/design-system/bac
 import { MtadminTemplateDetail } from '@/components/mtadmin/mtadmin-template-detail'
 import { getMtadminProduct } from '@/lib/mtadmin-product'
 import { hasWeekendTemplateOffer } from '@/lib/weekend-sale'
+import { resolveTemplateSlug } from '@/lib/template-slug-aliases'
 
 type Params = Promise<{ slug: string }>
 
-const TEMPLATE_SLUG_ALIASES: Record<string, string> = {
-  'ooster-admin-dashboard-template': 'ooster',
-  'ooster-dashboard-template': 'ooster',
-  'mt-ooster-dxb4': 'ooster',
-  'nova-ig-landing-page-template': 'nova-rig-gaming-ecommerce-template',
-  'nova-ig-template': 'nova-rig-gaming-ecommerce-template',
-  'mt-nova-ig': 'nova-rig-gaming-ecommerce-template',
-  'lumina-landing-page-template': 'lumina-fragrance',
-  'mt-lumina': 'lumina-fragrance',
-  'pagepulse-landing-page-template': 'pagepulse',
-  'mt-pagepulse0': 'pagepulse',
-  'volthaus-landing-page-template': 'volthaus-streetwear-ecommerce-template',
-  'mt-volthaus': 'volthaus-streetwear-ecommerce-template',
-  'sentinelgrid-dashboard-template': 'sentinelgrid',
-  'mt-sentinelgrid-zw5j': 'sentinelgrid',
-  'planna-dashboard-template': 'planna-dashboard',
-  'mt-planna-z3pv': 'planna-dashboard',
-  'nexusgrid-admin-dashboard-template': 'nexusgrid-premium-admin-dashboard',
-  'mt-nexusgrid': 'nexusgrid-premium-admin-dashboard',
-}
-
 export const dynamic = 'force-dynamic'
-
-function resolveTemplateSlug(slug: string) {
-  return TEMPLATE_SLUG_ALIASES[slug] || slug
-}
 
 function uniqueKeywords(values: Array<string | undefined>) {
   return Array.from(new Set(values.map((value) => value?.trim()).filter(Boolean) as string[])).slice(0, 24)

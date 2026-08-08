@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { TEMPLATE_SLUG_ALIASES } from "./src/lib/template-slug-aliases";
 
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -39,6 +40,13 @@ const nextConfig: NextConfig = {
     scrollRestoration: true,
   },
   compress: true,
+  async redirects() {
+    return Object.entries(TEMPLATE_SLUG_ALIASES).map(([alias, canonicalSlug]) => ({
+      source: `/templates/${alias}`,
+      destination: `/templates/${canonicalSlug}`,
+      permanent: true,
+    }));
+  },
   async headers() {
     return [
       {
